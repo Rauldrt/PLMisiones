@@ -87,7 +87,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
       {/* Candidatos Section */}
       <section className="py-16 lg:py-24">
          <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <h2 className="text-center font-headline text-3xl font-bold text-primary md:text-4xl">
+           <h2 className="text-center font-headline text-3xl font-bold md:text-4xl">
             Nuestros Candidatos
           </h2>
            <p className="mt-4 text-center text-lg text-foreground/80">
@@ -117,8 +117,8 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                                             data-ai-hint={referente.imageHint}
                                             />
                                         </div>
-                                        <CardTitle className="pt-4 font-headline text-2xl text-primary">{referente.name}</CardTitle>
-                                        <p className="text-sm font-medium text-accent">{referente.role}</p>
+                                        <CardTitle className="pt-4 font-headline text-2xl">{referente.name}</CardTitle>
+                                        <p className="text-sm font-medium">{referente.role}</p>
                                     </CardHeader>
                                     <CardContent className="flex-grow">
                                         <p className="text-foreground/80 line-clamp-3">{referente.bio}</p>
@@ -143,7 +143,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
       {/* Organigrama Section */}
       <section className="py-16 bg-card lg:py-24">
         <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-center font-headline text-3xl font-bold text-primary md:text-4xl">
+            <h2 className="text-center font-headline text-3xl font-bold md:text-4xl">
                 Organigrama del Partido
             </h2>
             <p className="mt-4 text-center text-lg text-foreground/80">
@@ -152,8 +152,8 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
             <div className="mt-12 space-y-8">
                 {organigramaData.map(member => (
                     <div key={member.id} className="text-center" style={{ marginLeft: `${member.level * 4}rem` }}>
-                        <h3 className="font-headline text-xl font-semibold text-primary">{member.name}</h3>
-                        <p className="text-accent">{member.role}</p>
+                        <h3 className="font-headline text-xl font-semibold">{member.name}</h3>
+                        <p>{member.role}</p>
                     </div>
                 ))}
             </div>
@@ -193,7 +193,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
       {/* Accordion Section */}
       <section className="py-16 bg-card lg:py-24">
         <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-           <h2 className="text-center font-headline text-3xl font-bold text-primary md:text-4xl">
+           <h2 className="text-center font-headline text-3xl font-bold md:text-4xl">
             Nuestra Identidad
           </h2>
            <p className="mt-4 text-center text-lg text-foreground/80">
@@ -217,7 +217,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
       {/* News Section */}
       <section className="py-16 lg:py-24">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center font-headline text-3xl font-bold text-primary md:text-4xl">
+          <h2 className="text-center font-headline text-3xl font-bold md:text-4xl">
             Últimas Noticias
           </h2>
           <p className="mt-4 text-center text-lg text-foreground/80">

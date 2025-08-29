@@ -34,7 +34,7 @@ export default async function NewsArticlePage({ params }: Props) {
   return (
     <article className="container max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
       <div className="text-center">
-        <h1 className="font-headline text-4xl font-bold text-primary md:text-5xl">{article.title}</h1>
+        <h1 className="font-headline text-4xl font-bold md:text-5xl">{article.title}</h1>
         <p className="mt-4 text-lg text-foreground/60">
           Publicado el {new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}
         </p>
@@ -51,7 +51,7 @@ export default async function NewsArticlePage({ params }: Props) {
         />
       </div>
       <div
-        className="prose prose-invert mx-auto max-w-full prose-headings:font-headline prose-headings:text-primary prose-a:text-accent prose-strong:text-foreground"
+        className="prose prose-invert mx-auto max-w-full prose-headings:font-headline prose-a:text-accent prose-strong:text-foreground"
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
     </article>

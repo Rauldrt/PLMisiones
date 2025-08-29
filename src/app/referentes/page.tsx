@@ -29,8 +29,8 @@ export default async function ReferentesPage() {
                     data-ai-hint={referente.imageHint}
                   />
                 </div>
-                <CardTitle className="pt-4 font-headline text-2xl text-primary">{referente.name}</CardTitle>
-                <p className="text-sm font-medium text-accent">{referente.role}</p>
+                <CardTitle className="pt-4 font-headline text-2xl">{referente.name}</CardTitle>
+                <p className="text-sm font-medium">{referente.role}</p>
               </CardHeader>
               <CardContent>
                 <p className="text-foreground/80">{referente.bio}</p>
