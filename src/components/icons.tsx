@@ -29,8 +29,9 @@ import {
   UsersRound,
   Link as LinkIcon,
 } from 'lucide-react';
+import type { SVGProps } from 'react';
 
-const Logo = (props: React.SVGProps<SVGSVGElement>) => (
+const Logo = (props: SVGProps<SVGSVGElement>) => (
     <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path d="M50 0L61.226 38.774L100 50L61.226 61.226L50 100L38.774 61.226L0 50L38.774 38.774L50 0Z" fill="currentColor" />
     </svg>
