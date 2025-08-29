@@ -18,7 +18,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (loading || !user) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
-        <Icons.Logo className="h-12 w-12 animate-pulse" />
+        <div className="h-12 w-12 animate-pulse" />
       </div>
     );
   }

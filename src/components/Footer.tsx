@@ -20,7 +20,7 @@ export async function Footer() {
       <div className="container mx-auto max-w-7xl px-4 py-8">
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
           <div className="flex items-center gap-3">
-            <Icons.Logo className="h-8 w-8" />
+            
             <span className="font-headline text-lg font-bold text-primary">Libertario Misiones</span>
           </div>
           <div className="flex items-center gap-4">

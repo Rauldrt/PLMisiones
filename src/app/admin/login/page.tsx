@@ -38,7 +38,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 flex items-center justify-center">
-            <Icons.Logo className="h-12 w-12" />
+            
           </div>
           <CardTitle className="font-headline text-2xl">Panel de Administración</CardTitle>
           <CardDescription>Ingrese su contraseña para continuar</CardDescription>
