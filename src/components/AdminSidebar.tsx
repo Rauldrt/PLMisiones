@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
-import { Icons } from '@/components/icons';
+import { Icons, IconName } from '@/components/icons';
 import { cn } from '@/lib/utils';
 import {
   Sheet,
