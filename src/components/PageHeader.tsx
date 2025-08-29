@@ -1,3 +1,4 @@
+'use client';
 import { getIcon, IconName } from './icons';
 
 interface PageHeaderProps {
