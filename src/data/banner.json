@@ -1,0 +1,30 @@
+
+[
+  {
+    "id": "1",
+    "title": "Las Ideas de la Libertad",
+    "subtitle": "Construyendo un futuro próspero para Misiones.",
+    "imageUrl": "https://picsum.photos/1920/1080",
+    "imageHint": "landscape sunrise",
+    "ctaText": "Conocé Nuestras Propuestas",
+    "ctaLink": "/propuestas"
+  },
+  {
+    "id": "2",
+    "title": "Sumate al Cambio",
+    "subtitle": "Tu participación es fundamental. Afiliate ahora.",
+    "imageUrl": "https://picsum.photos/1920/1080",
+    "imageHint": "people volunteering",
+    "ctaText": "Afiliarse",
+    "ctaLink": "/afiliacion"
+  },
+  {
+    "id": "3",
+    "title": "Menos Impuestos, Más Libertad",
+    "subtitle": "Una economía libre para que cada misionero pueda crecer.",
+    "imageUrl": "https://picsum.photos/1920/1080",
+    "imageHint": "city economy",
+    "ctaText": "Leer Más",
+    "ctaLink": "/noticias/propuestas-economicas"
+  }
+]

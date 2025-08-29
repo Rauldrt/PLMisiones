@@ -1,0 +1,36 @@
+
+{
+  "name": "contacto",
+  "title": "Formulario de Contacto",
+  "description": "Envianos tu consulta, sugerencia o reclamo. Tu opinión es muy importante para nosotros.",
+  "fields": [
+    {
+      "name": "nombreCompleto",
+      "label": "Nombre Completo",
+      "type": "text",
+      "placeholder": "Juan Carlos Pérez",
+      "required": true
+    },
+    {
+      "name": "email",
+      "label": "Correo Electrónico",
+      "type": "email",
+      "placeholder": "tucorreo@ejemplo.com",
+      "required": true
+    },
+    {
+      "name": "asunto",
+      "label": "Asunto",
+      "type": "text",
+      "placeholder": "Consulta sobre propuestas",
+      "required": true
+    },
+    {
+      "name": "mensaje",
+      "label": "Mensaje",
+      "type": "textarea",
+      "placeholder": "Escribí tu mensaje aquí...",
+      "required": true
+    }
+  ]
+}

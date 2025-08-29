@@ -1,0 +1,23 @@
+
+[
+  {
+    "id": "1",
+    "name": "Facebook",
+    "url": "https://facebook.com"
+  },
+  {
+    "id": "2",
+    "name": "Twitter",
+    "url": "https://twitter.com"
+  },
+  {
+    "id": "3",
+    "name": "Instagram",
+    "url": "https://instagram.com"
+  },
+  {
+    "id": "4",
+    "name": "YouTube",
+    "url": "https://youtube.com"
+  }
+]

@@ -1,0 +1,35 @@
+
+[
+  {
+    "id": "1",
+    "title": "Nuestros Principios",
+    "imageUrl": "https://picsum.photos/600/600",
+    "imageHint": "philosophy book",
+    "colSpan": 2,
+    "rowSpan": 2
+  },
+  {
+    "id": "2",
+    "title": "Equipo",
+    "imageUrl": "https://picsum.photos/600/300",
+    "imageHint": "team portrait",
+    "colSpan": 2,
+    "rowSpan": 1
+  },
+  {
+    "id": "3",
+    "title": "Eventos",
+    "imageUrl": "https://picsum.photos/300/300",
+    "imageHint": "event calendar",
+    "colSpan": 1,
+    "rowSpan": 1
+  },
+  {
+    "id": "4",
+    "title": "Fiscalización",
+    "imageUrl": "https://picsum.photos/300/300",
+    "imageHint": "voting poll",
+    "colSpan": 1,
+    "rowSpan": 1
+  }
+]

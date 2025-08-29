@@ -1,0 +1,30 @@
+
+[
+  {
+    "id": "1",
+    "slug": "lanzamiento-del-partido",
+    "title": "Lanzamiento oficial del Partido Libertario en Misiones",
+    "date": "2023-10-15",
+    "imageUrl": "https://picsum.photos/800/600",
+    "imageHint": "political event",
+    "content": "<p>Con un gran acto en Posadas, el Partido Libertario presentó oficialmente su plataforma para la provincia de Misiones. Cientos de simpatizantes se reunieron para escuchar las propuestas de los principales referentes, enfocadas en la reducción de impuestos, la desregulación económica y la defensa de las libertades individuales.</p><p>El evento marca un hito en la política misionera, introduciendo una nueva fuerza con ideas claras y un fuerte compromiso con el cambio. Durante el acto, se destacaron los ejes principales de la campaña, que incluyen la simplificación del estado, el fomento a la inversión privada y una reforma educativa profunda para mejorar la calidad de la enseñanza en la provincia.</p>"
+  },
+  {
+    "id": "2",
+    "slug": "propuestas-economicas",
+    "title": "Nuevas propuestas económicas para emprendedores locales",
+    "date": "2023-11-02",
+    "imageUrl": "https://picsum.photos/800/600",
+    "imageHint": "small business",
+    "content": "<p>El equipo económico del partido presentó un paquete de medidas destinadas a aliviar la carga fiscal sobre los pequeños y medianos emprendedores de Misiones. La propuesta incluye la eliminación de tasas municipales y una reducción significativa de ingresos brutos durante los primeros dos años de actividad.</p><p>\"Queremos que Misiones sea el mejor lugar para emprender en Argentina\", afirmó el referente económico del partido. \"Para eso, necesitamos un estado que sea un aliado, no un obstáculo\". La iniciativa busca generar un boom de nuevos emprendimientos y fortalecer el tejido productivo de la provincia, creando empleo genuino y sostenible a largo plazo.</p>"
+  },
+  {
+    "id": "3",
+    "slug": "campana-de-afiliacion",
+    "title": "Exitosa campaña de afiliación en toda la provincia",
+    "date": "2023-11-20",
+    "imageUrl": "https://picsum.photos/800/600",
+    "imageHint": "community gathering",
+    "content": "<p>El Partido Libertario de Misiones celebró el éxito de su campaña de afiliación, que sumó miles de nuevos miembros en las principales ciudades de la provincia como Posadas, Oberá, Eldorado e Iguazú. La respuesta de la ciudadanía superó todas las expectativas, demostrando un claro deseo de cambio y una fuerte adhesión a las ideas de la libertad.</p><p>\"La gente está cansada de las mismas soluciones que han fracasado por décadas. Vienen a nosotros buscando una alternativa real, y estamos listos para representarlos\", comentó uno de los coordinadores de la campaña. El partido continuará con sus esfuerzos para sumar más adherentes y consolidar su estructura de cara a los próximos desafíos electorales.</p>"
+  }
+]

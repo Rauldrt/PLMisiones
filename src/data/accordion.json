@@ -1,0 +1,18 @@
+
+[
+  {
+    "id": "mision",
+    "title": "Nuestra Misión",
+    "content": "Promover y defender los principios de una sociedad libre, basada en el respeto irrestricto al proyecto de vida del prójimo, la propiedad privada, y los mercados libres de intervención estatal. Buscamos empoderar a los individuos de Misiones para que sean los arquitectos de su propio destino."
+  },
+  {
+    "id": "vision",
+    "title": "Nuestra Visión",
+    "content": "Aspiramos a una Misiones próspera, donde el gobierno sea limitado y eficiente, los impuestos sean bajos, y la libertad individual y económica sea el motor del desarrollo. Una provincia donde el mérito y el esfuerzo sean recompensados, y las oportunidades estén al alcance de todos."
+  },
+  {
+    "id": "valores",
+    "title": "Nuestros Valores",
+    "content": "Libertad, Responsabilidad Individual, Propiedad Privada, Estado de Derecho, Tolerancia y Gobierno Limitado. Creemos firmemente que estos pilares son esenciales para construir una sociedad justa, pacífica y próspera para todos los misioneros."
+  }
+]
