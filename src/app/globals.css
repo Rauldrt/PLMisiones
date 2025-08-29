@@ -23,7 +23,7 @@
     --border: 212 78% 28%;
     --input: 212 78% 28%;
     --ring: 199 98% 48%;
-    --radius: 0.5rem;
+    --radius: 1rem;
   }
 
   .dark {
@@ -46,7 +46,7 @@
     --border: 212 78% 28%;
     --input: 212 78% 28%;
     --ring: 199 98% 48%;
-    --radius: 0.5rem;
+    --radius: 1rem;
   }
 }
 
@@ -56,5 +56,19 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    transform: scale(0);
+    animation: ripple-animation 600ms linear;
+  }
+
+  @keyframes ripple-animation {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
   }
 }
