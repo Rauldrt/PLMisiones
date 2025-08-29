@@ -44,10 +44,10 @@ export const Icons = {
   Team: Users,
   Join: UserPlus,
   Contact: Mail,
-  Facebook,
-  Twitter,
-  Instagram,
-  Youtube,
+  Facebook: Facebook,
+  Twitter: Twitter,
+  Instagram: Instagram,
+  Youtube: Youtube,
   ChevronLeft,
   ChevronRight,
   Menu,
@@ -68,7 +68,6 @@ export const Icons = {
   Accordion: ListCollapse,
   Referentes: UsersRound,
   Social: LinkIcon,
-  Logo,
 };
 
 export type IconName = keyof typeof Icons;
