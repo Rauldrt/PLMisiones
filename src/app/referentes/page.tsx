@@ -14,7 +14,7 @@ export default async function ReferentesPage() {
   return (
     <div>
       {pageHeader && <PageHeader {...pageHeader} />}
-      <div className="container py-16">
+      <div className="container max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {referentes.map((referente) => (
             <Card key={referente.id} className="bg-card border-border text-center">

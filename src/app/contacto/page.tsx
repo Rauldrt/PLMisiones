@@ -13,7 +13,7 @@ export default async function ContactoPage() {
   return (
     <div>
       {pageHeader && <PageHeader {...pageHeader} />}
-      <div className="container max-w-2xl py-16">
+      <div className="container max-w-2xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <DynamicForm formDefinition={formDefinition} />
       </div>
     </div>

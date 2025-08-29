@@ -23,10 +23,9 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 max-w-7xl items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 text-primary">
-          
-          <span className="font-headline text-lg font-bold">Libertario Misiones</span>
+      <div className="container flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="flex items-center gap-3 text-primary">
+          <span className="font-headline text-xl font-bold">Libertario Misiones</span>
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           {navLinks.map((link) => (
@@ -60,11 +59,10 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[240px]">
               <div className="flex flex-col gap-6 pt-8">
-                <Link href="/" className="flex items-center gap-2 text-primary" onClick={() => setIsMobileMenuOpen(false)}>
-                  
+                <Link href="/" className="flex items-center gap-3 px-4 text-primary" onClick={() => setIsMobileMenuOpen(false)}>
                   <span className="font-headline text-lg font-bold">Libertario Misiones</span>
                 </Link>
-                <nav className="flex flex-col gap-4">
+                <nav className="flex flex-col gap-4 px-4">
                   {navLinks.map((link) => (
                     <Link
                       key={link.href}

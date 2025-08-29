@@ -32,14 +32,14 @@ export default async function NewsArticlePage({ params }: Props) {
   }
 
   return (
-    <article className="container max-w-4xl py-16">
+    <article className="container max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
       <div className="text-center">
         <h1 className="font-headline text-4xl font-bold text-primary md:text-5xl">{article.title}</h1>
         <p className="mt-4 text-lg text-foreground/60">
           Publicado el {new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}
         </p>
       </div>
-      <div className="relative my-8 h-96 w-full overflow-hidden rounded-lg">
+      <div className="relative my-8 h-64 md:h-96 w-full overflow-hidden rounded-lg">
         <Image
           src={article.imageUrl}
           alt={article.title}

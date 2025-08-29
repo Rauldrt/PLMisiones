@@ -52,7 +52,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                   />
                   <div className="absolute inset-0 bg-black/60" />
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
-                    <div className="container">
+                    <div className="container px-4 sm:px-6 lg:px-8">
                       <h1 className="font-headline text-4xl font-bold md:text-6xl lg:text-7xl">
                         {slide.title}
                       </h1>
@@ -75,7 +75,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
 
       {/* Mosaic Section */}
       <section className="py-16 lg:py-24">
-        <div className="container">
+        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:grid-rows-2 h-[600px]">
             {mosaicItems.map((item) => (
               <div
@@ -94,7 +94,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                   data-ai-hint={item.imageHint}
                 />
                 <div className="absolute inset-0 bg-black/50" />
-                <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute inset-0 flex items-center justify-center p-4 text-center">
                   <h3 className="font-headline text-2xl font-bold text-white md:text-3xl">{item.title}</h3>
                 </div>
               </div>
@@ -105,7 +105,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
       
       {/* Accordion Section */}
       <section className="py-16 bg-card lg:py-24">
-        <div className="container max-w-4xl">
+        <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
            <h2 className="text-center font-headline text-3xl font-bold text-primary md:text-4xl">
             Nuestra Identidad
           </h2>
@@ -115,7 +115,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
           <UiAccordion type="single" collapsible className="w-full mt-12">
             {accordionItems.map((item) => (
               <AccordionItem key={item.id} value={item.id}>
-                <AccordionTrigger className="font-headline text-xl hover:no-underline">
+                <AccordionTrigger className="font-headline text-xl text-left hover:no-underline">
                   {item.title}
                 </AccordionTrigger>
                 <AccordionContent className="text-base text-foreground/80">
@@ -129,7 +129,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
 
       {/* News Section */}
       <section className="py-16 lg:py-24">
-        <div className="container">
+        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-center font-headline text-3xl font-bold text-primary md:text-4xl">
             Últimas Noticias
           </h2>
