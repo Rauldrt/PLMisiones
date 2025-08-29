@@ -93,29 +93,45 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
            <p className="mt-4 text-center text-lg text-foreground/80">
             Conocé a quienes llevarán las ideas de la libertad al gobierno.
           </p>
-          <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-             {referentes.map((referente) => (
-              <Card key={referente.id} className="bg-card border-border text-center transition-transform hover:-translate-y-2">
-                <CardHeader>
-                  <div className="relative mx-auto h-32 w-32">
-                    <Image
-                      src={referente.imageUrl}
-                      alt={referente.name}
-                      fill
-                      className="rounded-full object-cover"
-                      sizes="128px"
-                      data-ai-hint={referente.imageHint}
-                    />
-                  </div>
-                  <CardTitle className="pt-4 font-headline text-2xl text-primary">{referente.name}</CardTitle>
-                  <p className="text-sm font-medium text-accent">{referente.role}</p>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-foreground/80 line-clamp-3">{referente.bio}</p>
-                </CardContent>
-              </Card>
-            ))}
-           </div>
+          <div className="mt-12">
+            <Carousel
+                opts={{
+                    align: "start",
+                    loop: true,
+                }}
+                className="w-full"
+            >
+                <CarouselContent>
+                    {referentes.map((referente) => (
+                        <CarouselItem key={referente.id} className="md:basis-1/2 lg:basis-1/3">
+                            <div className="p-1">
+                                <Card className="bg-card border-border text-center h-full flex flex-col">
+                                    <CardHeader>
+                                        <div className="relative mx-auto h-32 w-32">
+                                            <Image
+                                            src={referente.imageUrl}
+                                            alt={referente.name}
+                                            fill
+                                            className="rounded-full object-cover"
+                                            sizes="128px"
+                                            data-ai-hint={referente.imageHint}
+                                            />
+                                        </div>
+                                        <CardTitle className="pt-4 font-headline text-2xl text-primary">{referente.name}</CardTitle>
+                                        <p className="text-sm font-medium text-accent">{referente.role}</p>
+                                    </CardHeader>
+                                    <CardContent className="flex-grow">
+                                        <p className="text-foreground/80 line-clamp-3">{referente.bio}</p>
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        </CarouselItem>
+                    ))}
+                </CarouselContent>
+                <CarouselPrevious className="absolute left-[-50px] top-1/2 -translate-y-1/2 fill-black" />
+                <CarouselNext className="absolute right-[-50px] top-1/2 -translate-y-1/2 fill-black" />
+            </Carousel>
+          </div>
            <div className="mt-12 text-center">
             <Button asChild size="lg" variant="outline">
               <Link href="/referentes">Ver todos los referentes</Link>
