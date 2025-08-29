@@ -18,10 +18,9 @@ import {
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Icons } from '@/components/icons';
 import type { BannerSlide, MosaicItem, AccordionItem, NewsArticle, Referente } from '@/lib/types';
 import Autoplay from 'embla-carousel-autoplay';
-import { cn } from '@/lib/utils';
+import { ExpandingCandidateCard } from './ExpandingCandidateCard';
 
 interface HomepageClientProps {
   bannerSlides: BannerSlide[];
@@ -43,6 +42,12 @@ const organigramaData = [
 
 export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, newsArticles, referentes }: HomepageClientProps) {
   const [selectedMember, setSelectedMember] = useState(organigramaData[0]);
+  const [expandedCandidate, setExpandedCandidate] = useState<string | null>(null);
+
+  const handleCardClick = (id: string) => {
+    setExpandedCandidate(prevId => (prevId === id ? null : id));
+  };
+
 
   return (
     <div className="flex flex-col">
@@ -68,10 +73,10 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                   <div className="absolute inset-0 bg-black/60" />
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                     <div className="container px-4 sm:px-6 lg:px-8">
-                      <h1 className="font-headline text-4xl font-bold md:text-6xl lg:text-7xl">
+                      <h1 className="font-headline text-4xl font-bold md:text-6xl lg:text-7xl text-primary">
                         {slide.title}
                       </h1>
-                      <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl">
+                      <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-accent">
                         {slide.subtitle}
                       </p>
                       <Button asChild size="lg" className="mt-8">
@@ -89,46 +94,30 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
       </section>
 
       {/* Candidatos Section */}
-      <section className="py-16 lg:py-24">
+       <section className="py-16 lg:py-24 bg-muted/20">
          <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <h2 className="text-center font-headline text-3xl font-bold md:text-4xl">
+           <h2 className="text-center font-headline text-3xl font-bold md:text-4xl text-primary">
             Nuestros Candidatos
           </h2>
-           <p className="mt-4 text-center text-lg text-foreground/80">
+           <p className="mt-4 text-center text-lg text-foreground/80 font-body">
             Conocé a quienes llevarán las ideas de la libertad al gobierno.
           </p>
           <div className="mt-12">
             <Carousel
                 opts={{
                     align: "start",
-                    loop: true,
+                    loop: false,
                 }}
                 className="w-full"
             >
-                <CarouselContent>
+                <CarouselContent className="-ml-4">
                     {referentes.map((referente) => (
-                        <CarouselItem key={referente.id} className="md:basis-1/2 lg:basis-1/3">
-                            <div className="p-1">
-                                <Card className="bg-card border-border text-center h-full flex flex-col">
-                                    <CardHeader>
-                                        <div className="relative mx-auto h-32 w-32">
-                                            <Image
-                                            src={referente.imageUrl}
-                                            alt={referente.name}
-                                            fill
-                                            className="rounded-full object-cover"
-                                            sizes="128px"
-                                            data-ai-hint={referente.imageHint}
-                                            />
-                                        </div>
-                                        <CardTitle className="pt-4 font-headline text-2xl">{referente.name}</CardTitle>
-                                        <p className="text-sm font-medium">{referente.role}</p>
-                                    </CardHeader>
-                                    <CardContent className="flex-grow">
-                                        <p className="text-foreground/80 line-clamp-3">{referente.bio}</p>
-                                    </CardContent>
-                                </Card>
-                            </div>
+                        <CarouselItem key={referente.id} className="md:basis-1/2 lg:basis-1/3 pl-4">
+                           <ExpandingCandidateCard 
+                                referente={referente}
+                                isExpanded={expandedCandidate === referente.id}
+                                onClick={() => handleCardClick(referente.id)}
+                            />
                         </CarouselItem>
                     ))}
                 </CarouselContent>
@@ -147,7 +136,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
       {/* Organigrama Section */}
       <section className="py-16 bg-card lg:py-24">
         <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-center font-headline text-3xl font-bold md:text-4xl">
+            <h2 className="text-center font-headline text-3xl font-bold md:text-4xl text-primary">
                 Organigrama del Partido
             </h2>
             <p className="mt-4 text-center text-lg text-foreground/80">
@@ -186,8 +175,8 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                           />
                         </div>
                         <div className="text-center md:text-left">
-                            <CardTitle className="font-headline text-2xl">{selectedMember.name}</CardTitle>
-                            <CardDescription className="text-lg mt-1">{selectedMember.role}</CardDescription>
+                            <CardTitle className="font-headline text-2xl text-primary">{selectedMember.name}</CardTitle>
+                            <CardDescription className="text-lg mt-1 text-accent">{selectedMember.role}</CardDescription>
                             <p className="mt-4 text-foreground/80">
                                 Información detallada sobre el rol y las responsabilidades de {selectedMember.name} en el partido, destacando su compromiso con nuestros valores y su visión para el futuro de Misiones.
                             </p>
@@ -222,7 +211,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                 />
                 <div className="absolute inset-0 bg-black/50" />
                 <div className="absolute inset-0 flex items-center justify-center p-4 text-center">
-                  <h3 className="font-headline text-2xl font-bold md:text-3xl">{item.title}</h3>
+                  <h3 className="font-headline text-2xl font-bold md:text-3xl text-primary">{item.title}</h3>
                 </div>
               </div>
             ))}
@@ -233,7 +222,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
       {/* Accordion Section */}
       <section className="py-16 bg-card lg:py-24">
         <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-           <h2 className="text-center font-headline text-3xl font-bold md:text-4xl">
+           <h2 className="text-center font-headline text-3xl font-bold md:text-4xl text-primary">
             Nuestra Identidad
           </h2>
            <p className="mt-4 text-center text-lg text-foreground/80">
@@ -242,7 +231,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
           <UiAccordion type="single" collapsible className="w-full mt-12">
             {accordionItems.map((item) => (
               <AccordionItem key={item.id} value={item.id}>
-                <AccordionTrigger className="font-headline text-xl text-left hover:no-underline">
+                <AccordionTrigger className="font-headline text-xl text-left hover:no-underline text-primary">
                   {item.title}
                 </AccordionTrigger>
                 <AccordionContent className="text-base text-foreground/80">
@@ -257,7 +246,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
       {/* News Section */}
       <section className="py-16 lg:py-24">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center font-headline text-3xl font-bold md:text-4xl">
+          <h2 className="text-center font-headline text-3xl font-bold md:text-4xl text-primary">
             Últimas Noticias
           </h2>
           <p className="mt-4 text-center text-lg text-foreground/80">
@@ -278,7 +267,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                   </div>
                   <div className="p-6">
                     <CardTitle className="font-headline text-xl leading-tight">
-                        <Link href={`/noticias/${article.slug}`}>{article.title}</Link>
+                        <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
                     </CardTitle>
                     <p className="text-sm text-foreground/60 mt-2">{new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                   </div>
