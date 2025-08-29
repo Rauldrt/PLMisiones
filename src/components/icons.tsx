@@ -73,5 +73,6 @@ export const Icons = {
 export type IconName = keyof typeof Icons;
 
 export const getIcon = (name: string): React.ComponentType<{ className?: string }> => {
-  return Icons[name as IconName] || 'span';
+  const IconComponent = Icons[name as IconName];
+  return IconComponent || 'span';
 };

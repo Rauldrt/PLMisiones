@@ -35,7 +35,7 @@ function NavContent() {
       </div>
       <nav className="flex-1 space-y-2 p-4">
         {adminNavLinks.map((link) => {
-          const Icon = Icons[link.icon as IconName] || 'span';
+          const Icon = Icons[link.icon as IconName];
           return (
             <Link
               key={link.href}
