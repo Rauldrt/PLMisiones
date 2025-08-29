@@ -32,12 +32,12 @@ interface HomepageClientProps {
 }
 
 const organigramaData = [
-    { id: '1', name: 'Juan Pérez', role: 'Presidente', level: 0 },
-    { id: '2', name: 'María Gómez', role: 'Vicepresidenta', level: 1 },
-    { id: '3', name: 'Carlos Rodriguez', role: 'Secretario General', level: 1 },
-    { id: '4', name: 'Ana Garcia', role: 'Tesorera', level: 2 },
-    { id: '5', name: 'Luis Torres', role: 'Vocal Titular 1°', level: 2 },
-    { id: '6', name: 'Marta Fernandez', role: 'Vocal Titular 2°', level: 2 },
+    { id: '1', name: 'Juan Pérez', role: 'Presidente', level: 0, imageUrl: 'https://picsum.photos/200/200', imageHint: 'man portrait' },
+    { id: '2', name: 'María Gómez', role: 'Vicepresidenta', level: 1, imageUrl: 'https://picsum.photos/200/200', imageHint: 'woman portrait' },
+    { id: '3', name: 'Carlos Rodriguez', role: 'Secretario General', level: 1, imageUrl: 'https://picsum.photos/200/200', imageHint: 'person portrait' },
+    { id: '4', name: 'Ana Garcia', role: 'Tesorera', level: 2, imageUrl: 'https://picsum.photos/200/200', imageHint: 'woman portrait smiling' },
+    { id: '5', name: 'Luis Torres', role: 'Vocal Titular 1°', level: 2, imageUrl: 'https://picsum.photos/200/200', imageHint: 'man portrait serious' },
+    { id: '6', name: 'Marta Fernandez', role: 'Vocal Titular 2°', level: 2, imageUrl: 'https://picsum.photos/200/200', imageHint: 'woman portrait professional' },
 ];
 
 
@@ -66,7 +66,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                     data-ai-hint={slide.imageHint}
                   />
                   <div className="absolute inset-0 bg-black/60" />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                     <div className="container px-4 sm:px-6 lg:px-8">
                       <h1 className="font-headline text-4xl font-bold md:text-6xl lg:text-7xl">
                         {slide.title}
@@ -173,12 +173,26 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
               
               <div className="w-full">
                 <Card className="bg-background/50">
-                  <CardHeader>
-                    <CardTitle className="font-headline text-2xl">{selectedMember.name}</CardTitle>
-                    <CardDescription className="text-lg">{selectedMember.role}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p>Información detallada sobre el rol y las responsabilidades de {selectedMember.name} en el partido.</p>
+                  <CardContent className="p-6">
+                    <div className="flex flex-col md:flex-row items-center gap-6">
+                       <div className="relative h-32 w-32 md:h-40 md:w-40 flex-shrink-0">
+                          <Image
+                            src={selectedMember.imageUrl}
+                            alt={selectedMember.name}
+                            fill
+                            className="rounded-lg object-cover"
+                            sizes="(max-width: 768px) 128px, 160px"
+                            data-ai-hint={selectedMember.imageHint}
+                          />
+                        </div>
+                        <div className="text-center md:text-left">
+                            <CardTitle className="font-headline text-2xl">{selectedMember.name}</CardTitle>
+                            <CardDescription className="text-lg mt-1">{selectedMember.role}</CardDescription>
+                            <p className="mt-4 text-foreground/80">
+                                Información detallada sobre el rol y las responsabilidades de {selectedMember.name} en el partido, destacando su compromiso con nuestros valores y su visión para el futuro de Misiones.
+                            </p>
+                        </div>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
