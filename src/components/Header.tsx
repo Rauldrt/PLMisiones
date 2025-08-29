@@ -6,8 +6,8 @@ import { useState } from 'react';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
+import { NavLink } from './NavLink';
 
 const navLinks = [
   { href: '/', label: 'Inicio' },
@@ -27,23 +27,20 @@ export function Header() {
         <Link href="/" className="flex items-center gap-3 text-primary">
           <span className="font-headline text-xl font-bold">Libertario Misiones</span>
         </Link>
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-2 md:flex">
           {navLinks.map((link) => (
-            <Link
+            <NavLink
               key={link.href}
               href={link.href}
-              className={cn(
-                'text-sm font-medium transition-colors hover:text-primary',
-                pathname === link.href ? 'text-primary' : 'text-foreground/60'
-              )}
+              isActive={pathname === link.href}
             >
               {link.label}
-            </Link>
+            </NavLink>
           ))}
           {user && (
-             <Link href="/admin" className="text-sm font-medium transition-colors hover:text-primary text-foreground/60">
+             <NavLink href="/admin" isActive={pathname.startsWith('/admin')}>
               Admin
-            </Link>
+            </NavLink>
           )}
         </nav>
         <div className="flex items-center gap-2">
@@ -68,16 +65,15 @@ export function Header() {
                       key={link.href}
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={cn(
-                        'text-lg font-medium transition-colors hover:text-primary',
-                        pathname === link.href ? 'text-primary' : 'text-foreground'
-                      )}
+                      className={
+                        pathname === link.href ? 'text-primary font-semibold' : 'text-foreground'
+                      }
                     >
                       {link.label}
                     </Link>
                   ))}
                    {user && (
-                    <Link href="/admin" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium transition-colors hover:text-primary text-foreground">
+                    <Link href="/admin" onClick={() => setIsMobileMenuOpen(false)} className={pathname.startsWith('/admin') ? 'text-primary font-semibold' : 'text-foreground'}>
                       Admin
                     </Link>
                   )}
