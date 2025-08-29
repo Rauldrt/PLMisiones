@@ -37,7 +37,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 flex items-center justify-center text-primary">
+          <div className="mx-auto mb-4 flex items-center justify-center">
             <Icons.Logo className="h-12 w-12" />
           </div>
           <CardTitle className="font-headline text-2xl">Panel de Administración</CardTitle>
