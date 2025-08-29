@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -16,10 +17,11 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Icons } from '@/components/icons';
 import type { BannerSlide, MosaicItem, AccordionItem, NewsArticle, Referente } from '@/lib/types';
 import Autoplay from 'embla-carousel-autoplay';
+import { cn } from '@/lib/utils';
 
 interface HomepageClientProps {
   bannerSlides: BannerSlide[];
@@ -40,6 +42,8 @@ const organigramaData = [
 
 
 export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, newsArticles, referentes }: HomepageClientProps) {
+  const [selectedMember, setSelectedMember] = useState(organigramaData[0]);
+
   return (
     <div className="flex flex-col">
       {/* Hero Carousel */}
@@ -67,10 +71,10 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                       <h1 className="font-headline text-4xl font-bold md:text-6xl lg:text-7xl">
                         {slide.title}
                       </h1>
-                      <p className="mt-4 max-w-3xl mx-auto text-lg text-foreground/80 md:text-xl">
+                      <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl">
                         {slide.subtitle}
                       </p>
-                      <Button asChild size="lg" className="mt-8 bg-primary hover:bg-primary/90">
+                      <Button asChild size="lg" className="mt-8">
                         <Link href={slide.ctaLink}>{slide.ctaText}</Link>
                       </Button>
                     </div>
@@ -79,8 +83,8 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 text-white" />
-          <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 text-white" />
+          <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2" />
+          <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2" />
         </Carousel>
       </section>
 
@@ -128,8 +132,8 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious className="absolute left-[-50px] top-1/2 -translate-y-1/2 fill-black" />
-                <CarouselNext className="absolute right-[-50px] top-1/2 -translate-y-1/2 fill-black" />
+                <CarouselPrevious className="absolute left-[-50px] top-1/2 -translate-y-1/2" />
+                <CarouselNext className="absolute right-[-50px] top-1/2 -translate-y-1/2" />
             </Carousel>
           </div>
            <div className="mt-12 text-center">
@@ -149,13 +153,30 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
             <p className="mt-4 text-center text-lg text-foreground/80">
                 Nuestra estructura organizativa.
             </p>
-            <div className="mt-12 space-y-8">
+            <div className="mt-12 flex flex-col md:flex-row gap-8 items-start">
+              <div className="flex flex-row md:flex-col gap-2 flex-wrap justify-center">
                 {organigramaData.map(member => (
-                    <div key={member.id} className="text-center" style={{ marginLeft: `${member.level * 4}rem` }}>
-                        <h3 className="font-headline text-xl font-semibold">{member.name}</h3>
-                        <p>{member.role}</p>
-                    </div>
+                   <Button
+                    key={member.id}
+                    variant={selectedMember.id === member.id ? 'default' : 'outline'}
+                    onClick={() => setSelectedMember(member)}
+                    className="justify-start w-full md:w-48"
+                  >
+                    {member.name}
+                  </Button>
                 ))}
+              </div>
+              <div className="flex-1 w-full">
+                <Card className="bg-background/50">
+                  <CardHeader>
+                    <CardTitle className="font-headline text-2xl">{selectedMember.name}</CardTitle>
+                    <CardDescription className="text-lg">{selectedMember.role}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p>Información detallada sobre el rol y las responsabilidades de {selectedMember.name} en el partido.</p>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
         </div>
       </section>
@@ -182,7 +203,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                 />
                 <div className="absolute inset-0 bg-black/50" />
                 <div className="absolute inset-0 flex items-center justify-center p-4 text-center">
-                  <h3 className="font-headline text-2xl font-bold text-white md:text-3xl">{item.title}</h3>
+                  <h3 className="font-headline text-2xl font-bold md:text-3xl">{item.title}</h3>
                 </div>
               </div>
             ))}
@@ -238,7 +259,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                   </div>
                   <div className="p-6">
                     <CardTitle className="font-headline text-xl leading-tight">
-                        <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
+                        <Link href={`/noticias/${article.slug}`}>{article.title}</Link>
                     </CardTitle>
                     <p className="text-sm text-foreground/60 mt-2">{new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                   </div>
