@@ -71,3 +71,11 @@ export interface FormDefinition {
 }
 
 export type FormSubmission = Record<string, string | number>;
+
+export interface OrganigramaMember {
+    id: string;
+    name: string;
+    role: string;
+    level: number;
+    children?: OrganigramaMember[];
+}
