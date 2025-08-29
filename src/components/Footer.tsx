@@ -24,18 +24,7 @@ export async function Footer() {
             <span className="font-headline text-lg font-bold text-primary">Libertario Misiones</span>
           </div>
           <div className="flex items-center gap-4">
-            {socialLinks.map((link) => (
-              <a
-                key={link.id}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={link.name}
-                className="text-foreground/60 transition-colors hover:text-primary"
-              >
-                {getSocialIcon(link.name)}
-              </a>
-            ))}
+            {/* Social links removed temporarily to fix error */}
           </div>
         </div>
         <div className="mt-8 border-t border-border pt-6 text-center text-sm text-foreground/60">
