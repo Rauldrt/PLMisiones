@@ -4,7 +4,6 @@ import { getNews, getPageHeaderByPath } from '@/lib/data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/PageHeader';
-import { Icons } from '@/components/icons';
 
 export const metadata = {
   title: 'Noticias',
@@ -45,7 +44,7 @@ export default async function NoticiasPage() {
               <div className="p-6 pt-0 mt-auto">
                 <Button asChild variant="link" className="p-0 h-auto">
                   <Link href={`/noticias/${article.slug}`}>
-                    Leer más <Icons.ChevronRight className="ml-1 h-4 w-4" />
+                    Leer más
                   </Link>
                 </Button>
               </div>
