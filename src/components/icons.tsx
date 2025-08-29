@@ -74,5 +74,6 @@ export type IconName = keyof typeof Icons;
 
 export const getIcon = (name: string): React.ComponentType<{ className?: string }> => {
   const IconComponent = Icons[name as IconName];
-  return IconComponent || 'span';
+  // Ensure we return a valid component, or a fallback that doesn't crash.
+  return IconComponent || (() => null);
 };
