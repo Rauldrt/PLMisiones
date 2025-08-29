@@ -102,15 +102,24 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
            <p className="mt-4 text-center text-lg text-foreground/80 font-body">
             Conocé a quienes llevarán las ideas de la libertad al gobierno.
           </p>
-           <div className="mt-12 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
-            {referentes.map((referente) => (
-              <ExpandingCandidateCard 
-                  key={referente.id}
-                  referente={referente}
-                  isExpanded={expandedCandidate === referente.id}
-                  onClick={() => handleCardClick(referente.id)}
-              />
-            ))}
+           <div className="mt-12">
+            <Carousel opts={{ align: "start" }} className="w-full">
+              <CarouselContent>
+                {referentes.map((referente) => (
+                  <CarouselItem key={referente.id} className="basis-1/2 md:basis-1/3">
+                    <div className="p-1">
+                      <ExpandingCandidateCard 
+                          referente={referente}
+                          isExpanded={expandedCandidate === referente.id}
+                          onClick={() => handleCardClick(referente.id)}
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="hidden md:flex" />
+              <CarouselNext className="hidden md:flex" />
+            </Carousel>
           </div>
            <div className="mt-12 text-center">
             <Button asChild size="lg" variant="outline">
