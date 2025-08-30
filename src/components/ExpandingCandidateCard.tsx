@@ -25,7 +25,7 @@ export function ExpandingCandidateCard({ referente, isExpanded, onClick }: Expan
         className={cn(
           'absolute transition-all duration-500 ease-in-out overflow-hidden',
           isExpanded
-            ? 'w-full h-48 top-0 left-0 rounded-b-none rounded-t-lg'
+            ? 'w-full h-64 top-0 left-0 rounded-b-none rounded-t-lg'
             : 'w-36 h-36 top-[60px] left-1/2 -translate-x-1/2 rounded-full'
         )}
       >
@@ -53,7 +53,7 @@ export function ExpandingCandidateCard({ referente, isExpanded, onClick }: Expan
       
       <div 
         className={cn(
-          "absolute top-48 left-0 right-0 p-6 transition-opacity duration-300 ease-in-out",
+          "absolute top-64 left-0 right-0 p-6 transition-opacity duration-300 ease-in-out",
           isExpanded ? "opacity-100 delay-200" : "opacity-0 pointer-events-none"
         )}
       >
