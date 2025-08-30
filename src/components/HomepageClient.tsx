@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -47,7 +48,6 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
   const handleCardClick = (id: string) => {
     setExpandedCandidate(prevId => (prevId === id ? null : id));
   };
-
 
   return (
     <div className="flex flex-col">
@@ -263,7 +263,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                 </CardHeader>
                 <CardContent className="flex-grow p-6 pt-0">
                   <div className="text-foreground/80 line-clamp-3" dangerouslySetInnerHTML={{ __html: article.content.split('</p>')[0] + '</p>'}} />
-                </d</CardContent>
+                </CardContent>
                 <div className="p-6 pt-0">
                   <Button asChild variant="link" className="p-0 h-auto">
                     <Link href={`/noticias/${article.slug}`}>
