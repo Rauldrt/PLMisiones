@@ -86,12 +86,12 @@ export function Footer() {
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-3">
-                <span className="font-headline text-lg font-bold text-primary">Libertario Misiones</span>
+                <span className="font-headline text-lg font-bold text-primary">Partido Libertario Misiones</span>
             </div>
             <div className="text-center text-sm text-foreground/60 sm:text-right">
                 <p>&copy; {new Date().getFullYear()} Partido Libertario Misiones. Todos los derechos reservados.</p>
                 <p className="mt-1">
-                    Desarrollado con ♥ por la comunidad.
+                    Desarrollado con <span className="text-red-500">♥</span> por la libertad.
                 </p>
             </div>
             </div>
