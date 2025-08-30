@@ -89,7 +89,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col overflow-hidden">
       {/* Hero Carousel */}
       <section className="w-full">
         <Carousel
@@ -173,22 +173,24 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                 Nuestra estructura organizativa.
             </p>
             <div className="mt-12 flex flex-col gap-8 items-center">
-                <Carousel opts={{ align: "start", loop: false }} className="w-full max-w-sm md:max-w-md lg:max-w-lg">
-                    <CarouselContent className="-ml-2">
-                        {organigramaData.map((member) => (
-                            <CarouselItem key={member.id} className="pl-2 basis-auto">
-                               <Button
-                                variant={selectedMember.id === member.id ? 'default' : 'outline'}
-                                onClick={() => setSelectedMember(member)}
-                              >
-                                {member.name}
-                              </Button>
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                     <CarouselPrevious className="absolute left-[-50px] top-1/2 -translate-y-1/2" />
-                     <CarouselNext className="absolute right-[-50px] top-1/2 -translate-y-1/2" />
-                </Carousel>
+                <div className="w-full max-w-sm md:max-w-md lg:max-w-lg overflow-hidden">
+                    <Carousel opts={{ align: "start", loop: false }} className="w-full">
+                        <CarouselContent className="-ml-2">
+                            {organigramaData.map((member) => (
+                                <CarouselItem key={member.id} className="pl-2 basis-auto">
+                                <Button
+                                    variant={selectedMember.id === member.id ? 'default' : 'outline'}
+                                    onClick={() => setSelectedMember(member)}
+                                >
+                                    {member.name}
+                                </Button>
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="absolute left-[-16px] top-1/2 -translate-y-1/2" />
+                        <CarouselNext className="absolute right-[-16px] top-1/2 -translate-y-1/2" />
+                    </Carousel>
+                </div>
               
               <div className="w-full">
                 <Card className="bg-card">
