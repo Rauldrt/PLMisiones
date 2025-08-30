@@ -15,11 +15,12 @@ export function ExpandingCandidateCard({ referente, isExpanded, onClick }: Expan
     <div
       onClick={onClick}
       className={cn(
-        'relative w-full cursor-pointer overflow-hidden bg-card border border-border rounded-lg transition-all duration-500 ease-in-out',
-        isExpanded ? 'h-[400px]' : 'h-[280px]'
+        'relative w-full cursor-pointer overflow-hidden rounded-lg transition-all duration-500 ease-in-out',
+        isExpanded 
+          ? 'h-[400px] bg-card border border-border' 
+          : 'h-[280px] bg-transparent border-none'
       )}
     >
-      {/* Image container that handles the morphing effect */}
       <div
         className={cn(
           'absolute transition-all duration-500 ease-in-out overflow-hidden',
@@ -38,7 +39,6 @@ export function ExpandingCandidateCard({ referente, isExpanded, onClick }: Expan
         />
       </div>
       
-      {/* Collapsed Text Content */}
       <div 
         className={cn(
           "absolute bottom-4 left-0 right-0 p-4 text-center transition-opacity duration-300 ease-in-out",
@@ -51,7 +51,6 @@ export function ExpandingCandidateCard({ referente, isExpanded, onClick }: Expan
         <p className="text-sm font-medium text-foreground/80">{referente.role}</p>
       </div>
       
-      {/* Expanded Content - Only visible when expanded */}
       <div 
         className={cn(
           "absolute top-48 left-0 right-0 p-6 transition-opacity duration-300 ease-in-out",
