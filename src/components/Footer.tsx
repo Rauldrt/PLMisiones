@@ -1,12 +1,27 @@
+'use client';
 import Link from 'next/link';
-import { getSocialLinks, getFormDefinition } from '@/lib/data';
+import { getSocialLinksAction, getFormDefinitionAction } from '@/actions/data';
 import { Icons } from '@/components/icons';
 import { Card, CardContent } from '@/components/ui/card';
 import { DynamicForm } from './DynamicForm';
+import type { SocialLink, FormDefinition } from '@/lib/types';
+import { useEffect, useState } from 'react';
 
-export async function Footer() {
-  const socialLinks = await getSocialLinks();
-  const contactFormDefinition = await getFormDefinition('contacto');
+export function Footer() {
+  const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
+  const [contactFormDefinition, setContactFormDefinition] = useState<FormDefinition | null>(null);
+
+  useEffect(() => {
+    async function loadData() {
+      const [socials, formDef] = await Promise.all([
+        getSocialLinksAction(),
+        getFormDefinitionAction('contacto')
+      ]);
+      setSocialLinks(socials);
+      setContactFormDefinition(formDef);
+    }
+    loadData();
+  }, []);
 
   const getSocialIcon = (name: 'Facebook' | 'Twitter' | 'Instagram' | 'YouTube') => {
     switch (name) {
@@ -17,6 +32,10 @@ export async function Footer() {
       default: return null;
     }
   };
+  
+  if (!contactFormDefinition) {
+    return null; // or a loading state
+  }
 
   return (
     <footer className="bg-card" id="contacto">
@@ -30,14 +49,12 @@ export async function Footer() {
                     </div>
                     <div className="space-y-4 text-foreground/90">
                         <div className="flex items-start gap-4">
-                            <Icons.Location className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
                             <div>
                                 <h3 className="font-semibold">Nuestra Sede</h3>
                                 <p className="text-foreground/80">Av. Corrientes 1234, Posadas, Misiones, Argentina</p>
                             </div>
                         </div>
                         <div className="flex items-start gap-4">
-                            <Icons.Contact className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
                             <div>
                                 <h3 className="font-semibold">Email y Teléfono</h3>
                                 <p className="text-foreground/80">contacto@libertariomisiones.com</p>
@@ -45,7 +62,6 @@ export async function Footer() {
                             </div>
                         </div>
                         <div className="flex items-start gap-4">
-                            <Icons.Social className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
                             <div>
                                 <h3 className="font-semibold">Redes Sociales</h3>
                                 <div className="flex items-center gap-4 mt-2">

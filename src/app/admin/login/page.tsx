@@ -5,7 +5,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Icons } from '@/components/icons';
 import { useToast } from '@/hooks/use-toast';
 
 export default function LoginPage() {
@@ -37,9 +36,6 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 flex items-center justify-center">
-            
-          </div>
           <CardTitle className="font-headline text-2xl">Panel de Administración</CardTitle>
           <CardDescription>Ingrese su contraseña para continuar</CardDescription>
         </CardHeader>
