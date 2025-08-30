@@ -40,7 +40,6 @@ const organigramaData = [
     { id: '6', name: 'Marta Fernandez', role: 'Vocal Titular 2°', level: 2, imageUrl: 'https://picsum.photos/200/200', imageHint: 'woman portrait professional' },
 ];
 
-
 export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, newsArticles, referentes }: HomepageClientProps) {
   const [selectedMember, setSelectedMember] = useState(organigramaData[0]);
   const [expandedCandidate, setExpandedCandidate] = useState<string | null>(null);
