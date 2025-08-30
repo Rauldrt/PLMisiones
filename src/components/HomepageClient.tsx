@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -10,6 +10,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from '@/components/ui/carousel';
 import {
   Accordion as UiAccordion,
@@ -25,6 +26,14 @@ import { ExpandingCandidateCard } from './ExpandingCandidateCard';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 
+interface HomepageClientProps {
+    bannerSlides: BannerSlide[];
+    mosaicItems: MosaicItem[];
+    accordionItems: AccordionItem[];
+    newsArticles: NewsArticle[];
+    referentes: Referente[];
+}
+
 const organigramaData = [
     { id: '1', name: 'Juan Pérez', role: 'Presidente', level: 0, imageUrl: 'https://picsum.photos/200/200', imageHint: 'man portrait' },
     { id: '2', name: 'María Gómez', role: 'Vicepresidenta', level: 1, imageUrl: 'https://picsum.photos/200/200', imageHint: 'woman portrait' },
@@ -38,29 +47,42 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
   const [selectedMember, setSelectedMember] = useState(organigramaData[0]);
   const [expandedCandidate, setExpandedCandidate] = useState<string | null>(null);
   const isMobile = useIsMobile();
+  const [api, setApi] = useState<CarouselApi>()
 
-  const handleCardClick = (id: string) => {
+  useEffect(() => {
+    if (!api) {
+      return
+    }
+     api.on("select", () => {
+        // Do something on select.
+    })
+  }, [api])
+
+  const handleCardClick = (id: string, index: number) => {
     setExpandedCandidate(prevId => (prevId === id ? null : id));
+    if (api) {
+      api.scrollTo(index);
+    }
   };
   
   const renderCandidatos = () => {
-    return referentes.map((referente) => (
+    return referentes.map((referente, index) => (
        <ExpandingCandidateCard 
         key={referente.id}
         referente={referente}
         isExpanded={expandedCandidate === referente.id}
-        onClick={() => handleCardClick(referente.id)}
+        onClick={() => handleCardClick(referente.id, index)}
       />
     ))
   }
   
   const renderCandidatosCarousel = () => {
-    return referentes.map((referente) => (
+    return referentes.map((referente, index) => (
       <CarouselItem key={referente.id} className={cn(expandedCandidate ? 'basis-full' : 'basis-1/2')}>
          <ExpandingCandidateCard 
             referente={referente}
             isExpanded={expandedCandidate === referente.id}
-            onClick={() => handleCardClick(referente.id)}
+            onClick={() => handleCardClick(referente.id, index)}
           />
       </CarouselItem>
     ))
@@ -122,7 +144,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
             Conocé a quienes llevarán las ideas de la libertad al gobierno.
           </p>
           <div className="mt-12 md:hidden">
-             <Carousel opts={{ align: "center", loop: false }} className="w-full">
+             <Carousel setApi={setApi} opts={{ align: "center", loop: false }} className="w-full">
                 <CarouselContent>
                   {renderCandidatosCarousel()}
                 </CarouselContent>
