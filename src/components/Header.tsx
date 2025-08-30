@@ -13,7 +13,7 @@ const navLinks = [
   { href: '/', label: 'Inicio' },
   { href: '/noticias', label: 'Noticias' },
   { href: '/referentes', label: 'Referentes' },
-  { href: '/contacto', label: 'Contacto' },
+  { href: '#contacto', label: 'Contacto' },
 ];
 
 export function Header() {
@@ -21,24 +21,32 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user } = useAuth();
 
-  const handleInicioClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (pathname === '/') {
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    setIsMobileMenuOpen(false); // Always close mobile menu
+
+    if (href.startsWith('#')) {
       e.preventDefault();
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-      setIsMobileMenuOpen(false); // Close mobile menu if open
-    } else {
-        // Allow default link behavior to navigate to home page
-        setIsMobileMenuOpen(false);
+      const targetId = href.substring(1);
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    } else if (href === '/' && pathname === '/') {
+        e.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
     }
   };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-3 text-primary" onClick={handleInicioClick}>
+        <Link href="/" className="flex items-center gap-3 text-primary" onClick={(e) => handleLinkClick(e, '/')}>
           <span className="font-headline text-xl font-bold">Libertario Misiones</span>
         </Link>
         <nav className="hidden items-center gap-2 md:flex">
@@ -46,10 +54,10 @@ export function Header() {
              <Link
               key={link.href}
               href={link.href}
-              onClick={link.href === '/' ? handleInicioClick : undefined}
+              onClick={(e) => handleLinkClick(e, link.href)}
               className={cn(
                 'relative overflow-hidden rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ease-in-out hover:scale-105 hover:bg-muted',
-                pathname === link.href ? 'font-semibold text-primary' : 'text-foreground/80'
+                (pathname === link.href) ? 'font-semibold text-primary' : 'text-foreground/80'
               )}
             >
               {link.label}
@@ -77,7 +85,7 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[240px]">
               <div className="flex flex-col gap-6 pt-8">
-                <Link href="/" className="flex items-center gap-3 px-4 text-primary" onClick={handleInicioClick}>
+                <Link href="/" className="flex items-center gap-3 px-4 text-primary" onClick={(e) => handleLinkClick(e, '/')}>
                   <span className="font-headline text-lg font-bold">Libertario Misiones</span>
                 </Link>
                 <nav className="flex flex-col gap-4 px-4">
@@ -85,7 +93,7 @@ export function Header() {
                     <Link
                       key={link.href}
                       href={link.href}
-                      onClick={link.href === '/' ? handleInicioClick : () => setIsMobileMenuOpen(false)}
+                      onClick={(e) => handleLinkClick(e, link.href)}
                       className={
                         pathname === link.href ? 'text-primary font-semibold' : 'text-foreground'
                       }

@@ -17,11 +17,5 @@
     "title": "Sumate al Cambio",
     "description": "Tu participación es clave para construir la Misiones que queremos. Afiliate ahora.",
     "icon": "UserPlus"
-  },
-  {
-    "path": "/contacto",
-    "title": "Contacto",
-    "description": "Estamos para escucharte. Envianos tu consulta, sugerencia o reclamo.",
-    "icon": "Mail"
   }
 ]

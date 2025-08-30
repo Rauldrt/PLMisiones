@@ -28,6 +28,7 @@ import {
   ListCollapse,
   UsersRound,
   Link as LinkIcon,
+  MapPin
 } from 'lucide-react';
 import type { SVGProps } from 'react';
 
@@ -68,6 +69,7 @@ export const Icons = {
   Accordion: ListCollapse,
   Referentes: UsersRound,
   Social: LinkIcon,
+  Location: MapPin,
 };
 
 export type IconName = keyof typeof Icons;
