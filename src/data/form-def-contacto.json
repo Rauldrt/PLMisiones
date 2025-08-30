@@ -19,6 +19,13 @@
       "required": true
     },
     {
+      "name": "telefono",
+      "label": "Teléfono (Opcional)",
+      "type": "tel",
+      "placeholder": "011 1234-5678",
+      "required": false
+    },
+    {
       "name": "asunto",
       "label": "Asunto",
       "type": "text",
