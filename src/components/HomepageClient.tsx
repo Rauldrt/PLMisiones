@@ -25,15 +25,6 @@ import { ExpandingCandidateCard } from './ExpandingCandidateCard';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-
-interface HomepageClientProps {
-  bannerSlides: BannerSlide[];
-  mosaicItems: MosaicItem[];
-  accordionItems: AccordionItem[];
-  newsArticles: NewsArticle[];
-  referentes: Referente[];
-}
-
 const organigramaData = [
     { id: '1', name: 'Juan Pérez', role: 'Presidente', level: 0, imageUrl: 'https://picsum.photos/200/200', imageHint: 'man portrait' },
     { id: '2', name: 'María Gómez', role: 'Vicepresidenta', level: 1, imageUrl: 'https://picsum.photos/200/200', imageHint: 'woman portrait' },
@@ -65,7 +56,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
   
   const renderCandidatosCarousel = () => {
     return referentes.map((referente) => (
-      <CarouselItem key={referente.id} className="basis-full">
+      <CarouselItem key={referente.id} className={cn(expandedCandidate ? 'basis-full' : 'basis-1/2')}>
          <ExpandingCandidateCard 
             referente={referente}
             isExpanded={expandedCandidate === referente.id}
@@ -131,7 +122,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
             Conocé a quienes llevarán las ideas de la libertad al gobierno.
           </p>
           <div className="mt-12 md:hidden">
-             <Carousel opts={{ align: "start", loop: true }} className="w-full">
+             <Carousel opts={{ align: "center", loop: false }} className="w-full">
                 <CarouselContent>
                   {renderCandidatosCarousel()}
                 </CarouselContent>
