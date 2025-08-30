@@ -23,6 +23,8 @@ import type { BannerSlide, MosaicItem, AccordionItem, NewsArticle, Referente } f
 import Autoplay from 'embla-carousel-autoplay';
 import { ExpandingCandidateCard } from './ExpandingCandidateCard';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
+
 
 interface HomepageClientProps {
   bannerSlides: BannerSlide[];
@@ -44,10 +46,34 @@ const organigramaData = [
 export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, newsArticles, referentes }: HomepageClientProps) {
   const [selectedMember, setSelectedMember] = useState(organigramaData[0]);
   const [expandedCandidate, setExpandedCandidate] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   const handleCardClick = (id: string) => {
     setExpandedCandidate(prevId => (prevId === id ? null : id));
   };
+  
+  const renderCandidatos = () => {
+    return referentes.map((referente) => (
+       <ExpandingCandidateCard 
+        key={referente.id}
+        referente={referente}
+        isExpanded={expandedCandidate === referente.id}
+        onClick={() => handleCardClick(referente.id)}
+      />
+    ))
+  }
+  
+  const renderCandidatosCarousel = () => {
+    return referentes.map((referente) => (
+      <CarouselItem key={referente.id} className="basis-full">
+         <ExpandingCandidateCard 
+            referente={referente}
+            isExpanded={expandedCandidate === referente.id}
+            onClick={() => handleCardClick(referente.id)}
+          />
+      </CarouselItem>
+    ))
+  }
 
   return (
     <div className="flex flex-col">
@@ -104,15 +130,17 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
            <p className="mt-4 text-center text-lg text-foreground/80 font-body">
             Conocé a quienes llevarán las ideas de la libertad al gobierno.
           </p>
-          <div className="mt-12 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
-            {referentes.map((referente) => (
-              <ExpandingCandidateCard 
-                key={referente.id}
-                referente={referente}
-                isExpanded={expandedCandidate === referente.id}
-                onClick={() => handleCardClick(referente.id)}
-              />
-            ))}
+          <div className="mt-12 md:hidden">
+             <Carousel opts={{ align: "start", loop: true }} className="w-full">
+                <CarouselContent>
+                  {renderCandidatosCarousel()}
+                </CarouselContent>
+                <CarouselPrevious className="absolute left-[-10px] top-1/2 -translate-y-1/2" />
+                <CarouselNext className="absolute right-[-10px] top-1/2 -translate-y-1/2" />
+             </Carousel>
+          </div>
+          <div className="mt-12 hidden md:grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
+            {renderCandidatos()}
           </div>
            <div className="mt-12 text-center">
             <Button asChild size="lg" variant="outline">
