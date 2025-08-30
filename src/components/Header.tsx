@@ -7,7 +7,7 @@ import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useAuth } from '@/hooks/useAuth';
-import { NavLink } from './NavLink';
+import { cn } from '@/lib/utils';
 
 const navLinks = [
   { href: '/', label: 'Inicio' },
@@ -29,18 +29,24 @@ export function Header() {
         </Link>
         <nav className="hidden items-center gap-2 md:flex">
           {navLinks.map((link) => (
-            <NavLink
+             <Link
               key={link.href}
               href={link.href}
-              isActive={pathname === link.href}
+              className={cn(
+                'relative overflow-hidden rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ease-in-out hover:scale-105 hover:bg-muted',
+                pathname === link.href ? 'font-semibold text-primary' : 'text-foreground/80'
+              )}
             >
               {link.label}
-            </NavLink>
+            </Link>
           ))}
           {user && (
-             <NavLink href="/admin" isActive={pathname.startsWith('/admin')}>
+             <Link href="/admin" className={cn(
+                'relative overflow-hidden rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ease-in-out hover:scale-105 hover:bg-muted',
+                pathname.startsWith('/admin') ? 'font-semibold text-primary' : 'text-foreground/80'
+              )}>
               Admin
-            </NavLink>
+            </Link>
           )}
         </nav>
         <div className="flex items-center gap-2">
