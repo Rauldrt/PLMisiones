@@ -75,6 +75,15 @@ const Carousel = React.forwardRef<
 
       setCanScrollPrev(api.canScrollPrev())
       setCanScrollNext(api.canScrollNext())
+      
+      // Custom: Add data-active attribute to visible slides
+      api.slidesInView().forEach((index) => {
+        api.slideNodes()[index].setAttribute("data-active", "true")
+      })
+      api.slidesNotInView().forEach((index) => {
+        api.slideNodes()[index].removeAttribute("data-active")
+      })
+
     }, [])
 
     const scrollPrev = React.useCallback(() => {
@@ -260,3 +269,5 @@ export {
   CarouselPrevious,
   CarouselNext,
 }
+
+    

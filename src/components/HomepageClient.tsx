@@ -21,6 +21,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import type { BannerSlide, MosaicItem, AccordionItem, NewsArticle, Referente } from '@/lib/types';
 import Autoplay from 'embla-carousel-autoplay';
 import { ExpandingCandidateCard } from './ExpandingCandidateCard';
+import { cn } from '@/lib/utils';
 
 interface HomepageClientProps {
   bannerSlides: BannerSlide[];
@@ -59,37 +60,39 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
           className="relative"
         >
           <CarouselContent>
-            {bannerSlides.map((slide) => (
-              <CarouselItem key={slide.id}>
+            {bannerSlides.map((slide, index) => (
+              <CarouselItem key={slide.id} className="group">
                 <div className="relative h-[60vh] min-h-[400px] w-full md:h-[80vh]">
                   <Image
                     src={slide.imageUrl}
                     alt={slide.title}
                     fill
                     className="object-cover"
-                    priority={slide.id === '1'}
+                    priority={index === 0}
                     data-ai-hint={slide.imageHint}
                   />
                   <div className="absolute inset-0 bg-black/60" />
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                     <div className="container px-4 sm:px-6 lg:px-8">
-                      <h1 className="font-headline text-4xl font-bold md:text-6xl lg:text-7xl">
+                      <h1 className="font-headline text-4xl font-bold md:text-6xl lg:text-7xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
                         {slide.title}
                       </h1>
-                      <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl">
+                      <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.4s' }}>
                         {slide.subtitle}
                       </p>
-                      <Button asChild size="lg" className="mt-8">
-                        <Link href={slide.ctaLink}>{slide.ctaText}</Link>
-                      </Button>
+                      <div className="opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.6s' }}>
+                        <Button asChild size="lg" className="mt-8">
+                          <Link href={slide.ctaLink}>{slide.ctaText}</Link>
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2" />
-          <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2" />
+           <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10" />
+           <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10" />
         </Carousel>
       </section>
 
@@ -220,7 +223,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
               <AccordionItem key={item.id} value={item.id}>
                 <AccordionTrigger className="font-headline text-xl text-left hover:no-underline">
                   {item.title}
-                </AccordionTrigger>
+                </Trigger>
                 <AccordionContent className="text-base text-foreground/80">
                   {item.content}
                 </AccordionContent>
