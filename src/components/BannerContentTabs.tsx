@@ -20,7 +20,7 @@ interface BannerContentTabsProps {
 }
 
 export function BannerContentTabs({ referentes }: BannerContentTabsProps) {
-    const [expandedCandidate, setExpandedCandidate] = useState<string | null>(referentes.length > 0 ? referentes[0].id : null);
+    const [expandedCandidate, setExpandedCandidate] = useState<string | null>(null);
     const [carouselApi, setCarouselApi] = useState<CarouselApi>()
     const [emblaRef, emblaApi] = useEmblaCarousel({ align: "center", loop: false });
 
@@ -28,25 +28,31 @@ export function BannerContentTabs({ referentes }: BannerContentTabsProps) {
         if (!carouselApi || !emblaApi) return;
         
         const onSelect = () => {
-            const selectedId = emblaApi.slideNodes()[emblaApi.selectedScrollSnap()].getAttribute('data-referente-id');
-            if (selectedId && selectedId !== expandedCandidate) {
-                 setExpandedCandidate(selectedId);
+            if (emblaApi.slidesInView().length > 1) {
+                setExpandedCandidate(null);
+            } else {
+                 const selectedId = emblaApi.slideNodes()[emblaApi.selectedScrollSnap()].getAttribute('data-referente-id');
+                 if(selectedId) setExpandedCandidate(selectedId);
             }
         };
 
         carouselApi.on("select", onSelect);
         return () => { carouselApi.off("select", onSelect) };
-    }, [carouselApi, emblaApi, expandedCandidate]);
+    }, [carouselApi, emblaApi]);
 
     const handleCardClick = (id: string, index: number) => {
-        setExpandedCandidate(id);
-        if (emblaApi) {
-            emblaApi.scrollTo(index);
+        if (expandedCandidate === id) {
+            setExpandedCandidate(null);
+        } else {
+            setExpandedCandidate(id);
+            if (emblaApi) {
+                emblaApi.scrollTo(index);
+            }
         }
     };
     
     const candidateCards = referentes.map((referente, index) => (
-        <ExpandingCandidateCard 
+         <ExpandingCandidateCard 
             key={referente.id}
             referente={referente}
             isExpanded={expandedCandidate === referente.id}
@@ -54,17 +60,21 @@ export function BannerContentTabs({ referentes }: BannerContentTabsProps) {
         />
     ));
 
+    if (!referentes || referentes.length === 0) {
+        return null;
+    }
+
     return (
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="md:hidden">
                 <div className="overflow-hidden">
-                    <Carousel setApi={setCarouselApi} opts={{ align: "center", loop: false, skipSnaps: true }} className="w-full">
+                    <Carousel setApi={setCarouselApi} opts={{ align: "center", loop: false }} className="w-full">
                         <CarouselContent ref={emblaRef}>
                             {referentes.map((referente, index) => (
                                 <CarouselItem 
                                     key={referente.id} 
                                     data-referente-id={referente.id} 
-                                    className={cn(expandedCandidate ? (expandedCandidate === referente.id ? 'basis-full' : 'basis-0') : 'basis-1/2', 'transition-all duration-500 ease-in-out p-1')}
+                                    className={cn(expandedCandidate ? (expandedCandidate === referente.id ? 'basis-full' : 'basis-0') : 'basis-1/2 md:basis-1/3', 'transition-all duration-500 ease-in-out p-1')}
                                 >
                                     <ExpandingCandidateCard 
                                         referente={referente}

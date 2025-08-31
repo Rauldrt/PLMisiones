@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -41,14 +42,14 @@ export function ExpandingCandidateCard({ referente, isExpanded, onClick }: Expan
       
       <div 
         className={cn(
-          "absolute bottom-4 left-0 right-0 p-4 text-center transition-opacity duration-300 ease-in-out",
+          "absolute bottom-4 left-0 right-0 p-4 text-center text-white transition-opacity duration-300 ease-in-out",
           isExpanded ? "opacity-0" : "opacity-100 delay-200"
         )}
       >
-        <h3 className="font-headline text-xl font-semibold">
+        <h3 className="font-headline text-xl font-semibold drop-shadow-md">
           {referente.name}
         </h3>
-        <p className="text-sm font-medium text-foreground/80">{referente.role}</p>
+        <p className="text-sm font-medium text-white/80 drop-shadow-md">{referente.role}</p>
       </div>
       
       <div 
@@ -59,7 +60,7 @@ export function ExpandingCandidateCard({ referente, isExpanded, onClick }: Expan
       >
         <h3 className="font-headline text-2xl font-bold">{referente.name}</h3>
         <p className="text-base font-medium text-foreground/80 mt-1">{referente.role}</p>
-        <p className="text-sm text-foreground/80 mt-4 line-clamp-5">{referente.bio}</p>
+        <p className="text-sm text-foreground/80 mt-4 line-clamp-3">{referente.bio}</p>
       </div>
     </div>
   );
