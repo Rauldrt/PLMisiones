@@ -68,7 +68,7 @@ export function BannerContentTabs({ referentes }: BannerContentTabsProps) {
                                 key={referente.id} 
                                 className={cn(
                                     'transition-all duration-500 ease-in-out p-1',
-                                    expandedCandidate ? (expandedCandidate === referente.id ? 'basis-full' : 'basis-0 opacity-0') : 'basis-1/2'
+                                    expandedCandidate ? (expandedCandidate === referente.id ? 'basis-11/12' : 'basis-0 opacity-0') : 'basis-1/2'
                                 )}
                             >
                                 <ExpandingCandidateCard 
