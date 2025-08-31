@@ -47,7 +47,7 @@ const organigramaData = [
 
 export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, newsArticles, referentes }: HomepageClientProps) {
   const [selectedMember, setSelectedMember] = useState(organigramaData[0]);
-  const [expandedCandidate, setExpandedCandidate] = useState<string | null>(null);
+  const [expandedCandidate, setExpandedCandidate] = useState<string | null>(referentes.length > 0 ? referentes[0].id : null);
   const [carouselApi, setCarouselApi] = useState<CarouselApi>()
   const [emblaRef, emblaApi] = useEmblaCarousel({ align: "center", loop: false });
 
@@ -56,9 +56,12 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
       return
     }
      carouselApi.on("select", () => {
-        // Do something on select.
+        const selectedId = emblaApi?.slideNodes()[emblaApi.selectedScrollSnap()].getAttribute('data-referente-id');
+        if (selectedId) {
+            setExpandedCandidate(selectedId);
+        }
     })
-  }, [carouselApi])
+  }, [carouselApi, emblaApi])
 
   const handleCardClick = (id: string, index: number) => {
     setExpandedCandidate(prevId => (prevId === id ? null : id));
@@ -67,28 +70,14 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
     }
   };
   
-  const renderCandidatos = () => {
-    return referentes.map((referente, index) => (
-       <ExpandingCandidateCard 
-        key={referente.id}
-        referente={referente}
-        isExpanded={expandedCandidate === referente.id}
-        onClick={() => handleCardClick(referente.id, index)}
-      />
-    ))
-  }
-  
-  const renderCandidatosCarousel = () => {
-    return referentes.map((referente, index) => (
-      <CarouselItem key={referente.id} className={cn(expandedCandidate ? 'basis-full' : 'basis-1/2')}>
-         <ExpandingCandidateCard 
-            referente={referente}
-            isExpanded={expandedCandidate === referente.id}
-            onClick={() => handleCardClick(referente.id, index)}
-          />
-      </CarouselItem>
-    ))
-  }
+  const candidateCards = referentes.map((referente, index) => (
+    <ExpandingCandidateCard 
+      key={referente.id}
+      referente={referente}
+      isExpanded={expandedCandidate === referente.id}
+      onClick={() => handleCardClick(referente.id, index)}
+    />
+  ));
 
   return (
     <div className="flex flex-col overflow-x-hidden">
@@ -108,7 +97,15 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
              <div className="overflow-hidden">
                 <Carousel setApi={setCarouselApi} opts={{ align: "center", loop: false }} className="w-full">
                     <CarouselContent ref={emblaRef}>
-                    {renderCandidatosCarousel()}
+                        {referentes.map((referente, index) => (
+                            <CarouselItem key={referente.id} data-referente-id={referente.id} className={cn(expandedCandidate ? (expandedCandidate === referente.id ? 'basis-full' : 'basis-0') : 'basis-1/2', 'transition-all duration-500 ease-in-out')}>
+                                <ExpandingCandidateCard 
+                                    referente={referente}
+                                    isExpanded={expandedCandidate === referente.id}
+                                    onClick={() => handleCardClick(referente.id, index)}
+                                />
+                            </CarouselItem>
+                        ))}
                     </CarouselContent>
                     <CarouselPrevious className="absolute left-[-10px] top-1/2 -translate-y-1/2" />
                     <CarouselNext className="absolute right-[-10px] top-1/2 -translate-y-1/2" />
@@ -116,7 +113,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
              </div>
           </div>
           <div className="mt-12 hidden md:grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
-            {renderCandidatos()}
+            {candidateCards}
           </div>
            <div className="mt-12 text-center">
             <Button asChild size="lg" variant="outline">
@@ -290,3 +287,5 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
     </div>
   );
 }
+
+    
