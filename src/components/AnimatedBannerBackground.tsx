@@ -42,7 +42,8 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
           fill
           className={cn(
             'absolute inset-0 object-cover transition-opacity ease-linear duration-[2000ms]',
-            index === currentIndex ? 'opacity-100 scale-105 duration-[10000ms]' : 'opacity-0'
+            'transform-gpu', // Hardware acceleration for smoother animations
+            index === currentIndex ? 'opacity-100 scale-105 duration-[10000ms]' : 'opacity-0 scale-100 duration-1000'
           )}
           priority={index === 0}
           data-ai-hint={slide.imageHint}
