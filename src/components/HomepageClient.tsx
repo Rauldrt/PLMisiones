@@ -114,6 +114,9 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
       {/* Hero Section with Integrated Tabs */}
       <Banner bannerSlides={bannerSlides} referentes={referentes} />
 
+      {/* Organigrama Section */}
+      <OrganigramaSection />
+
       {/* Mosaic Section */}
       <section className="py-16 lg:py-24">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -143,9 +146,6 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
           </div>
         </div>
       </section>
-
-      {/* Organigrama Section */}
-      <OrganigramaSection />
       
       {/* Accordion Section */}
       <section className="py-16 bg-card lg:py-24">
