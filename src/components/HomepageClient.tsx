@@ -46,140 +46,11 @@ const organigramaData = [
 ];
 
 export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, newsArticles, referentes }: HomepageClientProps) {
-  const [selectedMember, setSelectedMember] = useState(organigramaData[0]);
-  const [expandedCandidate, setExpandedCandidate] = useState<string | null>(referentes.length > 0 ? referentes[0].id : null);
-  const [carouselApi, setCarouselApi] = useState<CarouselApi>()
-  const [emblaRef, emblaApi] = useEmblaCarousel({ align: "center", loop: false });
-
-  useEffect(() => {
-    if (!carouselApi) {
-      return
-    }
-     carouselApi.on("select", () => {
-        const selectedId = emblaApi?.slideNodes()[emblaApi.selectedScrollSnap()].getAttribute('data-referente-id');
-        if (selectedId) {
-            setExpandedCandidate(selectedId);
-        }
-    })
-  }, [carouselApi, emblaApi])
-
-  const handleCardClick = (id: string, index: number) => {
-    setExpandedCandidate(prevId => (prevId === id ? null : id));
-    if (emblaApi) {
-      emblaApi.scrollTo(index);
-    }
-  };
   
-  const candidateCards = referentes.map((referente, index) => (
-    <ExpandingCandidateCard 
-      key={referente.id}
-      referente={referente}
-      isExpanded={expandedCandidate === referente.id}
-      onClick={() => handleCardClick(referente.id, index)}
-    />
-  ));
-
   return (
     <div className="flex flex-col overflow-x-hidden">
-      {/* Hero Carousel */}
-      <Banner bannerSlides={bannerSlides} />
-
-      {/* Candidatos Section */}
-       <section className="py-16 lg:py-24 bg-card">
-         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <h2 className="text-center font-headline text-3xl font-bold md:text-4xl">
-            Nuestros Candidatos
-          </h2>
-           <p className="mt-4 text-center text-lg text-foreground/80 font-body">
-            Conocé a quienes llevarán las ideas de la libertad al gobierno.
-          </p>
-          <div className="mt-12 md:hidden">
-             <div className="overflow-hidden">
-                <Carousel setApi={setCarouselApi} opts={{ align: "center", loop: false }} className="w-full">
-                    <CarouselContent ref={emblaRef}>
-                        {referentes.map((referente, index) => (
-                            <CarouselItem key={referente.id} data-referente-id={referente.id} className={cn(expandedCandidate ? (expandedCandidate === referente.id ? 'basis-full' : 'basis-0') : 'basis-1/2', 'transition-all duration-500 ease-in-out')}>
-                                <ExpandingCandidateCard 
-                                    referente={referente}
-                                    isExpanded={expandedCandidate === referente.id}
-                                    onClick={() => handleCardClick(referente.id, index)}
-                                />
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="absolute left-[-10px] top-1/2 -translate-y-1/2" />
-                    <CarouselNext className="absolute right-[-10px] top-1/2 -translate-y-1/2" />
-                </Carousel>
-             </div>
-          </div>
-          <div className="mt-12 hidden md:grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
-            {candidateCards}
-          </div>
-           <div className="mt-12 text-center">
-            <Button asChild size="lg" variant="outline">
-              <Link href="/referentes">Ver todos los referentes</Link>
-            </Button>
-          </div>
-         </div>
-       </section>
-
-      {/* Organigrama Section */}
-      <section className="py-16 bg-background lg:py-24">
-        <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-center font-headline text-3xl font-bold md:text-4xl">
-                Organigrama del Partido
-            </h2>
-            <p className="mt-4 text-center text-lg text-foreground/80">
-                Nuestra estructura organizativa.
-            </p>
-            <div className="mt-12 flex flex-col gap-8 items-center">
-                <div className="w-full max-w-sm md:max-w-md lg:max-w-lg overflow-hidden">
-                    <Carousel opts={{ align: "start", loop: false }} className="w-full">
-                        <CarouselContent className="-ml-2">
-                            {organigramaData.map((member) => (
-                                <CarouselItem key={member.id} className="pl-2 basis-auto">
-                                <Button
-                                    variant={selectedMember.id === member.id ? 'default' : 'outline'}
-                                    onClick={() => setSelectedMember(member)}
-                                >
-                                    {member.name}
-                                </Button>
-                                </CarouselItem>
-                            ))}
-                        </CarouselContent>
-                        <CarouselPrevious className="absolute left-[-16px] top-1/2 -translate-y-1/2" />
-                        <CarouselNext className="absolute right-[-16px] top-1/2 -translate-y-1/2" />
-                    </Carousel>
-                </div>
-              
-              <div className="w-full">
-                <Card className="bg-card">
-                  <CardContent className="p-6">
-                    <div className="flex flex-col md:flex-row items-center gap-6">
-                       <div className="relative h-32 w-32 md:h-40 md:w-40 flex-shrink-0">
-                          <Image
-                            src={selectedMember.imageUrl}
-                            alt={selectedMember.name}
-                            fill
-                            className="rounded-lg object-cover"
-                            sizes="(max-width: 768px) 128px, 160px"
-                            data-ai-hint={selectedMember.imageHint}
-                          />
-                        </div>
-                        <div className="text-center md:text-left">
-                            <CardTitle className="font-headline text-2xl">{selectedMember.name}</CardTitle>
-                            <CardDescription className="text-lg mt-1">{selectedMember.role}</CardDescription>
-                            <p className="mt-4 text-foreground/80">
-                                Información detallada sobre el rol y las responsabilidades de {selectedMember.name} en el partido, destacando su compromiso con nuestros valores y su visión para el futuro de Misiones.
-                            </p>
-                        </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-        </div>
-      </section>
+      {/* Hero Section with Integrated Tabs */}
+      <Banner bannerSlides={bannerSlides} referentes={referentes} />
 
       {/* Mosaic Section */}
       <section className="py-16 lg:py-24">
@@ -287,5 +158,3 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
     </div>
   );
 }
-
-    
