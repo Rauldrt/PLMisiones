@@ -23,13 +23,13 @@ interface BannerProps {
 
 export function Banner({ bannerSlides, referentes }: BannerProps) {
   return (
-    <section className="relative w-full min-h-[600px] md:h-screen flex flex-col justify-center">
+    <section className="relative w-full min-h-[600px] md:h-screen flex flex-col">
         <div className="absolute inset-0 w-full h-full">
             <AnimatedBannerBackground slides={bannerSlides} />
             <div className="absolute inset-0 z-10 bg-black/70" />
         </div>
         
-        <div className="relative z-20 h-full w-full flex flex-col justify-center pt-24 md:pt-32">
+        <div className="relative z-20 h-full w-full flex flex-col justify-between flex-1 pt-16 md:pt-20">
             <Carousel
                 opts={{ loop: true }}
                 plugins={[Autoplay({ delay: 5000, stopOnInteraction: true })]}
@@ -39,7 +39,7 @@ export function Banner({ bannerSlides, referentes }: BannerProps) {
                     {bannerSlides.map((slide) => (
                     <CarouselItem key={slide.id} className="group">
                         <div className="relative h-full w-full">
-                        <div className="w-full px-4 flex flex-col items-center justify-center text-center py-12 md:py-16">
+                        <div className="w-full px-4 flex flex-col items-center justify-center text-center py-8">
                             <h1 className="font-headline text-4xl font-bold text-white md:text-6xl lg:text-7xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
                                 {slide.title}
                             </h1>
@@ -62,7 +62,7 @@ export function Banner({ bannerSlides, referentes }: BannerProps) {
                 <CarouselNext className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2" />
             </Carousel>
         
-            <div className="w-full pb-8 md:pb-12 mt-4 md:mt-8">
+            <div className="w-full pb-8 md:pb-12">
                 <BannerContentTabs referentes={referentes} />
             </div>
         </div>
