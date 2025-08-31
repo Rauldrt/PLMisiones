@@ -23,7 +23,7 @@ interface BannerProps {
 
 export function Banner({ bannerSlides, referentes }: BannerProps) {
   return (
-    <section className="relative w-full min-h-[600px] md:h-screen flex flex-col">
+    <section className="relative w-full min-h-[600px] md:h-[720px] flex flex-col">
         <div className="absolute inset-0 w-full h-full">
             <AnimatedBannerBackground slides={bannerSlides} />
             <div className="absolute inset-0 z-10 bg-black/70" />
