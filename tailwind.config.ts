@@ -103,8 +103,8 @@ export default {
           '20%, 80%': { opacity: '1' },
         },
         'zoom-in': {
-          from: { transform: 'scale(1)' },
-          to: { transform: 'scale(1.05)' },
+          from: { transform: 'scale(1.05)' },
+          to: { transform: 'scale(1)' },
         },
       },
       animation: {
