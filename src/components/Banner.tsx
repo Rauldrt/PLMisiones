@@ -29,7 +29,7 @@ export function Banner({ bannerSlides, referentes }: BannerProps) {
             <div className="absolute inset-0 z-10 bg-black/70" />
         </div>
         
-        <div className="relative z-20 h-full w-full flex flex-col justify-between flex-1 pt-16 md:pt-20">
+        <div className="relative z-20 h-full w-full flex flex-col justify-between flex-1 pt-8 md:pt-12">
             <Carousel
                 opts={{ loop: true }}
                 plugins={[Autoplay({ delay: 5000, stopOnInteraction: true })]}
