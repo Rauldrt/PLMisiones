@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
+import { Separator } from './ui/separator';
 
 const navLinks = [
   { href: '/', label: 'Inicio' },
@@ -73,12 +74,14 @@ export function Header() {
           )}
         </nav>
         <div className="flex items-center gap-2">
-           <Button asChild variant="outline">
-            <Link href="/fiscales">Fiscalizá</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/afiliacion">Afiliarse</Link>
-          </Button>
+           <div className="hidden md:flex items-center gap-2">
+            <Button asChild variant="outline">
+                <Link href="/fiscales">Fiscalizá</Link>
+            </Button>
+            <Button asChild>
+                <Link href="/afiliacion">Afiliarse</Link>
+            </Button>
+           </div>
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon" className="md:hidden">
@@ -87,29 +90,41 @@ export function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[240px]">
-              <div className="flex flex-col gap-6 pt-8">
-                <Link href="/" className="flex items-center gap-3 px-4" onClick={(e) => handleLinkClick(e, '/')}>
-                  <span className="font-headline text-lg font-bold">Partido Libertario Misiones</span>
-                </Link>
-                <nav className="flex flex-col gap-4 px-4">
+              <div className="flex flex-col h-full">
+                <div className="p-4 border-b">
+                    <Link href="/" className="flex items-center gap-3" onClick={(e) => handleLinkClick(e, '/')}>
+                        <span className="font-headline text-lg font-bold">Partido Libertario Misiones</span>
+                    </Link>
+                </div>
+                <nav className="flex flex-col gap-4 p-4">
                   {navLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
                       onClick={(e) => handleLinkClick(e, link.href)}
-                      className={
+                      className={cn(
+                        'block rounded-md px-3 py-2 text-base font-medium hover:bg-muted',
                         pathname === link.href ? 'font-semibold text-foreground' : 'text-foreground/80'
-                      }
+                      )}
                     >
                       {link.label}
                     </Link>
                   ))}
                    {user && (
-                    <Link href="/admin" onClick={() => setIsMobileMenuOpen(false)} className={pathname.startsWith('/admin') ? 'font-semibold text-foreground' : 'text-foreground/80'}>
+                    <Link href="/admin" onClick={() => setIsMobileMenuOpen(false)} className={cn('block rounded-md px-3 py-2 text-base font-medium hover:bg-muted', pathname.startsWith('/admin') ? 'font-semibold text-foreground' : 'text-foreground/80')}>
                       Admin
                     </Link>
                   )}
                 </nav>
+                <Separator/>
+                <div className="p-4 flex flex-col gap-4">
+                    <Button asChild variant="outline" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Link href="/fiscales">Fiscalizá</Link>
+                    </Button>
+                    <Button asChild onClick={() => setIsMobileMenuOpen(false)}>
+                        <Link href="/afiliacion">Afiliarse</Link>
+                    </Button>
+                </div>
               </div>
             </SheetContent>
           </Sheet>
