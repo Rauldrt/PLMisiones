@@ -32,7 +32,7 @@ export function Banner({ bannerSlides }: BannerProps) {
                     {bannerSlides.map((slide) => (
                     <CarouselItem key={slide.id} className="group h-full">
                         <div className="relative h-full w-full">
-                        <div className="w-full h-full px-4 flex flex-col items-center justify-center text-center py-16 md:py-24">
+                        <div className="w-full h-full px-4 flex flex-col items-center justify-center text-center py-24 md:py-32">
                             <h1 className="font-headline text-4xl font-bold text-white md:text-6xl lg:text-7xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
                                 {slide.title}
                             </h1>
