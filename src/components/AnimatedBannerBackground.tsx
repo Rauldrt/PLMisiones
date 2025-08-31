@@ -14,9 +14,16 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
 
   useEffect(() => {
     if (slides.length <= 1) return;
+
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
-    }, 5000); // Must match carousel autoplay delay
+      setCurrentIndex((prevIndex) => {
+        let nextIndex;
+        do {
+          nextIndex = Math.floor(Math.random() * slides.length);
+        } while (nextIndex === prevIndex);
+        return nextIndex;
+      });
+    }, 7000); // Change image every 7 seconds, decoupled from carousel
 
     return () => clearInterval(interval);
   }, [slides.length]);
@@ -26,7 +33,7 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
   }
 
   return (
-    <div className="absolute inset-0 z-10 overflow-hidden">
+    <>
       {slides.map((slide, index) => (
         <Image
           key={slide.id}
@@ -41,6 +48,6 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
           data-ai-hint={slide.imageHint}
         />
       ))}
-    </div>
+    </>
   );
 }
