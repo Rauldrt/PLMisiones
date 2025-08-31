@@ -57,7 +57,7 @@ export function Header() {
               onClick={(e) => handleLinkClick(e, link.href)}
               className={cn(
                 'relative overflow-hidden rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ease-in-out hover:scale-105 hover:bg-muted',
-                (pathname === link.href) ? 'font-semibold' : 'text-foreground/80'
+                (pathname === link.href) ? 'font-semibold text-foreground' : 'text-foreground/80'
               )}
             >
               {link.label}
@@ -66,7 +66,7 @@ export function Header() {
           {user && (
              <Link href="/admin" className={cn(
                 'relative overflow-hidden rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ease-in-out hover:scale-105 hover:bg-muted',
-                pathname.startsWith('/admin') ? 'font-semibold' : 'text-foreground/80'
+                pathname.startsWith('/admin') ? 'font-semibold text-foreground' : 'text-foreground/80'
               )}>
               Admin
             </Link>
@@ -74,7 +74,7 @@ export function Header() {
         </nav>
         <div className="flex items-center gap-2">
            <Button asChild variant="outline">
-            <Link href="/fiscales">Inscripción Fiscales</Link>
+            <Link href="/fiscales">Fiscalizá</Link>
           </Button>
           <Button asChild>
             <Link href="/afiliacion">Afiliarse</Link>
@@ -98,14 +98,14 @@ export function Header() {
                       href={link.href}
                       onClick={(e) => handleLinkClick(e, link.href)}
                       className={
-                        pathname === link.href ? 'font-semibold' : 'text-foreground'
+                        pathname === link.href ? 'font-semibold text-foreground' : 'text-foreground/80'
                       }
                     >
                       {link.label}
                     </Link>
                   ))}
                    {user && (
-                    <Link href="/admin" onClick={() => setIsMobileMenuOpen(false)} className={pathname.startsWith('/admin') ? 'font-semibold' : 'text-foreground'}>
+                    <Link href="/admin" onClick={() => setIsMobileMenuOpen(false)} className={pathname.startsWith('/admin') ? 'font-semibold text-foreground' : 'text-foreground/80'}>
                       Admin
                     </Link>
                   )}
