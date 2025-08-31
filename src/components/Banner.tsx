@@ -32,8 +32,7 @@ export function Banner({ bannerSlides }: BannerProps) {
                     {bannerSlides.map((slide) => (
                     <CarouselItem key={slide.id} className="group h-full">
                         <div className="relative h-full w-full">
-                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                            <div className="container px-4 sm:px-6 lg:px-8">
+                        <div className="container px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center h-full">
                             <h1 className="font-headline text-4xl font-bold text-white md:text-6xl lg:text-7xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
                                 {slide.title}
                             </h1>
@@ -45,14 +44,13 @@ export function Banner({ bannerSlides }: BannerProps) {
                                 <Link href={slide.ctaLink}>{slide.ctaText}</Link>
                                 </Button>
                             </div>
-                            </div>
                         </div>
                         </div>
                     </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10" />
-                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10" />
+                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2" />
+                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2" />
             </Carousel>
         </div>
       </section>
