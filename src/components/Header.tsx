@@ -46,8 +46,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-3 text-primary" onClick={(e) => handleLinkClick(e, '/')}>
-          <span className="font-headline text-xl font-bold">Libertario Misiones</span>
+        <Link href="/" className="flex items-center gap-3 text-accent" onClick={(e) => handleLinkClick(e, '/')}>
+          <span className="font-headline text-xl font-bold">Partido Libertario Misiones</span>
         </Link>
         <nav className="hidden items-center gap-2 md:flex">
           {navLinks.map((link) => (
@@ -57,7 +57,7 @@ export function Header() {
               onClick={(e) => handleLinkClick(e, link.href)}
               className={cn(
                 'relative overflow-hidden rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ease-in-out hover:scale-105 hover:bg-muted',
-                (pathname === link.href) ? 'font-semibold text-primary' : 'text-foreground/80'
+                (pathname === link.href) ? 'font-semibold text-accent' : 'text-foreground/80'
               )}
             >
               {link.label}
@@ -66,7 +66,7 @@ export function Header() {
           {user && (
              <Link href="/admin" className={cn(
                 'relative overflow-hidden rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ease-in-out hover:scale-105 hover:bg-muted',
-                pathname.startsWith('/admin') ? 'font-semibold text-primary' : 'text-foreground/80'
+                pathname.startsWith('/admin') ? 'font-semibold text-accent' : 'text-foreground/80'
               )}>
               Admin
             </Link>
@@ -85,8 +85,8 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[240px]">
               <div className="flex flex-col gap-6 pt-8">
-                <Link href="/" className="flex items-center gap-3 px-4 text-primary" onClick={(e) => handleLinkClick(e, '/')}>
-                  <span className="font-headline text-lg font-bold">Libertario Misiones</span>
+                <Link href="/" className="flex items-center gap-3 px-4 text-accent" onClick={(e) => handleLinkClick(e, '/')}>
+                  <span className="font-headline text-lg font-bold">Partido Libertario Misiones</span>
                 </Link>
                 <nav className="flex flex-col gap-4 px-4">
                   {navLinks.map((link) => (
@@ -95,14 +95,14 @@ export function Header() {
                       href={link.href}
                       onClick={(e) => handleLinkClick(e, link.href)}
                       className={
-                        pathname === link.href ? 'text-primary font-semibold' : 'text-foreground'
+                        pathname === link.href ? 'text-accent font-semibold' : 'text-foreground'
                       }
                     >
                       {link.label}
                     </Link>
                   ))}
                    {user && (
-                    <Link href="/admin" onClick={() => setIsMobileMenuOpen(false)} className={pathname.startsWith('/admin') ? 'text-primary font-semibold' : 'text-foreground'}>
+                    <Link href="/admin" onClick={() => setIsMobileMenuOpen(false)} className={pathname.startsWith('/admin') ? 'text-accent font-semibold' : 'text-foreground'}>
                       Admin
                     </Link>
                   )}

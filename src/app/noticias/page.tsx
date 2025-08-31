@@ -34,7 +34,7 @@ export default async function NoticiasPage() {
                 <div className="p-6">
                   <p className="text-sm text-foreground/60 mb-2">{new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                   <CardTitle className="font-headline text-xl leading-tight">
-                    <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
+                    <Link href={`/noticias/${article.slug}`} className="hover:text-accent transition-colors">{article.title}</Link>
                   </CardTitle>
                 </div>
               </CardHeader>

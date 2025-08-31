@@ -58,7 +58,7 @@ export function DynamicForm({ formDefinition }: DynamicFormProps) {
     return (
         <Card className="bg-card border-border">
             <CardHeader className="text-center">
-                <CardTitle className="font-headline text-2xl text-primary">{formDefinition.title}</CardTitle>
+                <CardTitle className="font-headline text-2xl text-accent">{formDefinition.title}</CardTitle>
             </CardHeader>
             <CardContent className="text-center">
                 <p className="text-lg">¡Gracias por tu mensaje!</p>
@@ -72,7 +72,7 @@ export function DynamicForm({ formDefinition }: DynamicFormProps) {
   return (
     <Card className="bg-card border-border">
       <CardHeader>
-        <CardTitle className="font-headline text-2xl text-primary">{formDefinition.title}</CardTitle>
+        <CardTitle className="font-headline text-2xl text-accent">{formDefinition.title}</CardTitle>
         <CardDescription>{formDefinition.description}</CardDescription>
       </CardHeader>
       <CardContent>

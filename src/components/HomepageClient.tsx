@@ -25,6 +25,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import { ExpandingCandidateCard } from './ExpandingCandidateCard';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
+import useEmblaCarousel from 'embla-carousel-react';
 
 interface HomepageClientProps {
     bannerSlides: BannerSlide[];
@@ -47,21 +48,21 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
   const [selectedMember, setSelectedMember] = useState(organigramaData[0]);
   const [expandedCandidate, setExpandedCandidate] = useState<string | null>(null);
   const isMobile = useIsMobile();
-  const [api, setApi] = useState<CarouselApi>()
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>()
 
   useEffect(() => {
-    if (!api) {
+    if (!carouselApi) {
       return
     }
-     api.on("select", () => {
+     carouselApi.on("select", () => {
         // Do something on select.
     })
-  }, [api])
+  }, [carouselApi])
 
   const handleCardClick = (id: string, index: number) => {
     setExpandedCandidate(prevId => (prevId === id ? null : id));
-    if (api) {
-      api.scrollTo(index);
+    if (carouselApi) {
+      carouselApi.scrollTo(index);
     }
   };
   
@@ -89,7 +90,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
   }
 
   return (
-    <div className="flex flex-col overflow-hidden">
+    <div className="flex flex-col overflow-x-hidden">
       {/* Hero Carousel */}
       <section className="w-full">
         <Carousel
@@ -112,7 +113,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                   <div className="absolute inset-0 bg-black/60" />
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                     <div className="container px-4 sm:px-6 lg:px-8">
-                      <h1 className="font-headline text-4xl font-bold text-primary md:text-6xl lg:text-7xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
+                      <h1 className="font-headline text-4xl font-bold text-accent md:text-6xl lg:text-7xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
                         {slide.title}
                       </h1>
                       <p className="mt-4 max-w-3xl mx-auto text-lg text-foreground/80 md:text-xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.4s' }}>
@@ -144,7 +145,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
             Conocé a quienes llevarán las ideas de la libertad al gobierno.
           </p>
           <div className="mt-12 md:hidden">
-             <Carousel setApi={setApi} opts={{ align: "center", loop: false }} className="w-full">
+             <Carousel setApi={setCarouselApi} opts={{ align: "center", loop: false }} className="w-full">
                 <CarouselContent>
                   {renderCandidatosCarousel()}
                 </CarouselContent>
@@ -243,7 +244,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                 />
                 <div className="absolute inset-0 bg-black/50" />
                 <div className="absolute inset-0 flex items-center justify-center p-4 text-center">
-                  <h3 className="font-headline text-2xl font-bold text-primary md:text-3xl">{item.title}</h3>
+                  <h3 className="font-headline text-2xl font-bold text-accent md:text-3xl">{item.title}</h3>
                 </div>
               </div>
             ))}
@@ -299,7 +300,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                   </div>
                   <div className="p-6">
                     <CardTitle className="font-headline text-xl leading-tight">
-                        <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
+                        <Link href={`/noticias/${article.slug}`} className="hover:text-accent transition-colors">{article.title}</Link>
                     </CardTitle>
                     <p className="text-sm text-foreground/60 mt-2">{new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                   </div>
