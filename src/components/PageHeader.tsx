@@ -13,7 +13,7 @@ export function PageHeader({ icon, title, description }: PageHeaderProps) {
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
           {/* Icon placeholder */}
         </div>
-        <h1 className="mt-6 font-headline text-4xl font-bold text-accent md:text-5xl">
+        <h1 className="mt-6 font-headline text-4xl font-bold md:text-5xl">
           {title}
         </h1>
         <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/80">

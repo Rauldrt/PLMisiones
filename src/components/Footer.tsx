@@ -44,7 +44,7 @@ export function Footer() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
                 <div className="space-y-8">
                     <div>
-                        <h2 className="font-headline text-2xl font-bold text-accent">Ponete en Contacto</h2>
+                        <h2 className="font-headline text-2xl font-bold">Ponete en Contacto</h2>
                         <p className="text-foreground/80 mt-2">Estamos para escucharte. Envianos tu consulta o sumate a nuestro equipo.</p>
                     </div>
                     <div className="space-y-4 text-foreground/90">
@@ -86,7 +86,7 @@ export function Footer() {
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-3">
-                <span className="font-headline text-lg font-bold text-accent">Partido Libertario Misiones</span>
+                <span className="font-headline text-lg font-bold">Partido Libertario Misiones</span>
             </div>
             <div className="text-center text-sm text-foreground/60 sm:text-right">
                 <p>&copy; {new Date().getFullYear()} Partido Libertario Misiones. Todos los derechos reservados.</p>

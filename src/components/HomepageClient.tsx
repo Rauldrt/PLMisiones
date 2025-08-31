@@ -113,7 +113,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                   <div className="absolute inset-0 bg-black/60" />
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                     <div className="container px-4 sm:px-6 lg:px-8">
-                      <h1 className="font-headline text-4xl font-bold text-accent md:text-6xl lg:text-7xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
+                      <h1 className="font-headline text-4xl font-bold md:text-6xl lg:text-7xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
                         {slide.title}
                       </h1>
                       <p className="mt-4 max-w-3xl mx-auto text-lg text-foreground/80 md:text-xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.4s' }}>
@@ -244,7 +244,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                 />
                 <div className="absolute inset-0 bg-black/50" />
                 <div className="absolute inset-0 flex items-center justify-center p-4 text-center">
-                  <h3 className="font-headline text-2xl font-bold text-accent md:text-3xl">{item.title}</h3>
+                  <h3 className="font-headline text-2xl font-bold md:text-3xl">{item.title}</h3>
                 </div>
               </div>
             ))}

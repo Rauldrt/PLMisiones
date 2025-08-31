@@ -45,7 +45,7 @@ export function ExpandingCandidateCard({ referente, isExpanded, onClick }: Expan
           isExpanded ? "opacity-0" : "opacity-100 delay-200"
         )}
       >
-        <h3 className="font-headline text-xl font-semibold text-accent">
+        <h3 className="font-headline text-xl font-semibold">
           {referente.name}
         </h3>
         <p className="text-sm font-medium text-foreground/80">{referente.role}</p>
@@ -57,7 +57,7 @@ export function ExpandingCandidateCard({ referente, isExpanded, onClick }: Expan
           isExpanded ? "opacity-100 delay-200" : "opacity-0 pointer-events-none"
         )}
       >
-        <h3 className="font-headline text-2xl font-bold text-accent">{referente.name}</h3>
+        <h3 className="font-headline text-2xl font-bold">{referente.name}</h3>
         <p className="text-base font-medium text-foreground/80 mt-1">{referente.role}</p>
         <p className="text-sm text-foreground/80 mt-4 line-clamp-5">{referente.bio}</p>
       </div>
