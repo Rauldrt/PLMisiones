@@ -51,7 +51,7 @@ export default async function NewsArticlePage({ params }: Props) {
         />
       </div>
       <div
-        className="prose prose-invert mx-auto max-w-full prose-headings:font-headline prose-a:text-accent prose-strong:text-foreground"
+        className="prose prose-invert mx-auto max-w-full prose-headings:font-headline prose-a:text-foreground/80 prose-strong:text-foreground"
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
     </article>

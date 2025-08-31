@@ -25,7 +25,6 @@ import Autoplay from 'embla-carousel-autoplay';
 import { ExpandingCandidateCard } from './ExpandingCandidateCard';
 import { cn } from '@/lib/utils';
 import useEmblaCarousel from 'embla-carousel-react';
-import { AnimatedBannerBackground } from './AnimatedBannerBackground';
 
 
 interface HomepageClientProps {
@@ -94,7 +93,54 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
     <div className="flex flex-col overflow-x-hidden">
       {/* Hero Carousel */}
       <section className="relative w-full h-[60vh] min-h-[400px] md:h-[80vh] overflow-hidden">
-        <AnimatedBannerBackground slides={bannerSlides} />
+        {bannerSlides.map((slide, index) => (
+          <Image
+            key={slide.id}
+            src={slide.imageUrl}
+            alt=""
+            fill
+            className={cn(
+              'absolute inset-0 object-cover transition-opacity duration-2000 ease-in-out animate-fade-in-out',
+            )}
+            style={{ animationDelay: `${index * 5}s` }}
+            priority={index === 0}
+            data-ai-hint={slide.imageHint}
+          />
+        ))}
+        <div className="absolute inset-0 bg-black/60 z-10" />
+        <div className="relative w-full h-full z-20">
+            <Carousel
+                opts={{ loop: true }}
+                plugins={[Autoplay({ delay: 5000, stopOnInteraction: true })]}
+                className="w-full h-full"
+            >
+                <CarouselContent className="h-full">
+                    {bannerSlides.map((slide) => (
+                    <CarouselItem key={slide.id} className="group h-full">
+                        <div className="relative h-full w-full">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                            <div className="container px-4 sm:px-6 lg:px-8">
+                            <h1 className="font-headline text-4xl font-bold text-white md:text-6xl lg:text-7xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
+                                {slide.title}
+                            </h1>
+                            <p className="mt-4 max-w-3xl mx-auto text-lg text-white/80 md:text-xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.4s' }}>
+                                {slide.subtitle}
+                            </p>
+                            <div className="opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.6s' }}>
+                                <Button asChild size="lg" className="mt-8">
+                                <Link href={slide.ctaLink}>{slide.ctaText}</Link>
+                                </Button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </CarouselItem>
+                    ))}
+                </CarouselContent>
+                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10" />
+                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10" />
+            </Carousel>
+        </div>
       </section>
 
       {/* Candidatos Section */}
@@ -208,7 +254,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                 />
                 <div className="absolute inset-0 bg-black/50" />
                 <div className="absolute inset-0 flex items-center justify-center p-4 text-center">
-                  <h3 className="font-headline text-2xl font-bold md:text-3xl">{item.title}</h3>
+                  <h3 className="font-headline text-2xl font-bold md:text-3xl text-white">{item.title}</h3>
                 </div>
               </div>
             ))}
