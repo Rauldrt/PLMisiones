@@ -41,7 +41,7 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
           alt={slide.title}
           fill
           className={cn(
-            'absolute inset-0 object-cover transition-all duration-[5000ms] ease-in-out',
+            'absolute inset-0 object-cover transition-opacity duration-[4000ms] ease-in-out',
             index === currentIndex ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
           )}
           priority={index === 0}
