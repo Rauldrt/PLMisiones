@@ -24,8 +24,9 @@ import type { BannerSlide, MosaicItem, AccordionItem, NewsArticle, Referente } f
 import Autoplay from 'embla-carousel-autoplay';
 import { ExpandingCandidateCard } from './ExpandingCandidateCard';
 import { cn } from '@/lib/utils';
-import { useIsMobile } from '@/hooks/use-mobile';
 import useEmblaCarousel from 'embla-carousel-react';
+import { AnimatedBannerBackground } from './AnimatedBannerBackground';
+
 
 interface HomepageClientProps {
     bannerSlides: BannerSlide[];
@@ -47,7 +48,6 @@ const organigramaData = [
 export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, newsArticles, referentes }: HomepageClientProps) {
   const [selectedMember, setSelectedMember] = useState(organigramaData[0]);
   const [expandedCandidate, setExpandedCandidate] = useState<string | null>(null);
-  const isMobile = useIsMobile();
   const [carouselApi, setCarouselApi] = useState<CarouselApi>()
   const [emblaRef, emblaApi] = useEmblaCarousel({ align: "center", loop: false });
 
@@ -93,25 +93,18 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
   return (
     <div className="flex flex-col overflow-x-hidden">
       {/* Hero Carousel */}
-      <section className="w-full">
+      <section className="relative w-full h-[60vh] min-h-[400px] md:h-[80vh] overflow-hidden">
+        <AnimatedBannerBackground slides={bannerSlides} />
+        <div className="absolute inset-0 bg-black/60" />
         <Carousel
           opts={{ loop: true }}
           plugins={[Autoplay({ delay: 5000, stopOnInteraction: true })]}
-          className="relative"
+          className="relative w-full h-full"
         >
-          <CarouselContent>
+          <CarouselContent className="h-full">
             {bannerSlides.map((slide, index) => (
-              <CarouselItem key={slide.id} className="group">
-                <div className="relative h-[60vh] min-h-[400px] w-full md:h-[80vh]">
-                  <Image
-                    src={slide.imageUrl}
-                    alt={slide.title}
-                    fill
-                    className="object-cover"
-                    priority={index === 0}
-                    data-ai-hint={slide.imageHint}
-                  />
-                  <div className="absolute inset-0 bg-black/60" />
+              <CarouselItem key={slide.id} className="group h-full">
+                <div className="relative h-full w-full">
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                     <div className="container px-4 sm:px-6 lg:px-8">
                       <h1 className="font-headline text-4xl font-bold text-white md:text-6xl lg:text-7xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
