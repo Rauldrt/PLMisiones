@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -59,7 +60,7 @@ export function Banner({ bannerSlides, referentes }: BannerProps) {
                 <CarouselNext className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2" />
             </Carousel>
         </div>
-        <div className="relative z-20 w-full pb-16 md:pb-24">
+        <div className="relative z-20 w-full pb-20 md:pb-32">
             <BannerContentTabs referentes={referentes} />
         </div>
       </section>
