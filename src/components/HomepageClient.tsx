@@ -25,6 +25,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import { ExpandingCandidateCard } from './ExpandingCandidateCard';
 import { cn } from '@/lib/utils';
 import useEmblaCarousel from 'embla-carousel-react';
+import { AnimatedBannerBackground } from './AnimatedBannerBackground';
 
 
 interface HomepageClientProps {
@@ -93,22 +94,8 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
     <div className="flex flex-col overflow-x-hidden">
       {/* Hero Carousel */}
       <section className="relative w-full h-[60vh] min-h-[400px] md:h-[80vh] overflow-hidden">
-        {bannerSlides.map((slide, index) => (
-          <Image
-            key={slide.id}
-            src={slide.imageUrl}
-            alt=""
-            fill
-            className={cn(
-              'absolute inset-0 object-cover transition-opacity duration-2000 ease-in-out animate-fade-in-out',
-            )}
-            style={{ animationDelay: `${index * 5}s` }}
-            priority={index === 0}
-            data-ai-hint={slide.imageHint}
-          />
-        ))}
-        <div className="absolute inset-0 bg-black/60 z-10" />
-        <div className="relative w-full h-full z-20">
+        <AnimatedBannerBackground slides={bannerSlides} />
+        <div className="absolute inset-0 z-20 bg-black/60">
             <Carousel
                 opts={{ loop: true }}
                 plugins={[Autoplay({ delay: 5000, stopOnInteraction: true })]}
