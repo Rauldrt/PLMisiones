@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import type { NewsArticle, BannerSlide, MosaicItem, AccordionItem, PageHeader, Referente, SocialLink, FormDefinition, FormSubmission } from './types';
+import type { NewsArticle, BannerSlide, MosaicItem, AccordionItem, PageHeader, Referente, SocialLink, FormDefinition, FormSubmission, Notification } from './types';
 
 // Helper function to read and parse a JSON file
 async function readJsonFile<T>(filePath: string): Promise<T> {
@@ -11,6 +11,9 @@ async function readJsonFile<T>(filePath: string): Promise<T> {
   } catch (error) {
     // If the file doesn't exist, it's not an error in this context, just return empty.
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+        if(filePath.endsWith('.json') && !filePath.includes('-')) { // check if it's a file that should exist
+             return {} as T; // for single object files like notification.json
+        }
         return [] as T;
     }
     console.error(`Error reading file ${filePath}:`, error);
@@ -28,6 +31,7 @@ export const getAccordionItems = () => readJsonFile<AccordionItem[]>('src/data/a
 export const getPageHeaders = () => readJsonFile<PageHeader[]>('src/data/page-headers.json');
 export const getReferentes = () => readJsonFile<Referente[]>('src/data/referentes.json');
 export const getSocialLinks = () => readJsonFile<SocialLink[]>('src/data/social-links.json');
+export const getNotification = () => readJsonFile<Notification>('src/data/notification.json');
 
 export const getFormDefinition = (formName: string) => readJsonFile<FormDefinition>(`src/data/form-def-${formName}.json`);
 export const getFormSubmissions = (formName: string) => readJsonFile<FormSubmission[]>(`src/data/form-submissions-${formName}.json`);

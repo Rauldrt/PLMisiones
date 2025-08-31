@@ -106,6 +106,16 @@ export default {
           from: { transform: 'scale(1.05)' },
           to: { transform: 'scale(1)' },
         },
+        'pulse-slow': {
+          '0%, 100%': {
+            transform: 'scale(1)',
+            opacity: '1',
+          },
+          '50%': {
+            transform: 'scale(1.05)',
+            opacity: '0.9',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -113,6 +123,7 @@ export default {
         'fade-in-up': 'fade-in-up 0.5s ease-out forwards',
         'fade-in-out': 'fade-in-out 5s ease-in-out infinite',
         'zoom-in': 'zoom-in forwards',
+        'pulse-slow': 'pulse-slow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       transitionDuration: {
         '2000': '2000ms',

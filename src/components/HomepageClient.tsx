@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import type { BannerSlide, MosaicItem, AccordionItem, NewsArticle, Referente } from '@/lib/types';
+import type { BannerSlide, MosaicItem, AccordionItem, NewsArticle, Referente, Notification } from '@/lib/types';
 import Autoplay from 'embla-carousel-autoplay';
 import { ExpandingCandidateCard } from './ExpandingCandidateCard';
 import { cn } from '@/lib/utils';
@@ -34,6 +34,7 @@ interface HomepageClientProps {
     accordionItems: AccordionItem[];
     newsArticles: NewsArticle[];
     referentes: Referente[];
+    notification: Notification;
 }
 
 const organigramaData = [
@@ -107,12 +108,12 @@ function OrganigramaSection() {
 }
 
 
-export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, newsArticles, referentes }: HomepageClientProps) {
+export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, newsArticles, referentes, notification }: HomepageClientProps) {
   
   return (
     <div className="flex flex-col overflow-x-hidden">
       {/* Hero Section with Integrated Tabs */}
-      <Banner bannerSlides={bannerSlides} referentes={referentes} />
+      <Banner bannerSlides={bannerSlides} referentes={referentes} notification={notification} />
 
       {/* Organigrama Section */}
       <OrganigramaSection />

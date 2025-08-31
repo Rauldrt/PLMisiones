@@ -79,3 +79,9 @@ export interface OrganigramaMember {
     level: number;
     children?: OrganigramaMember[];
 }
+
+export interface Notification {
+  enabled: boolean;
+  text: string;
+  link: string;
+}

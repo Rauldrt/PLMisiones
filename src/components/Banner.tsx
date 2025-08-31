@@ -10,24 +10,28 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
-import type { BannerSlide, Referente } from '@/lib/types';
+import type { BannerSlide, Referente, Notification } from '@/lib/types';
 import Autoplay from 'embla-carousel-autoplay';
 import { AnimatedBannerBackground } from './AnimatedBannerBackground';
 import { BannerContentTabs } from './BannerContentTabs';
+import { NotificationBubble } from './NotificationBubble';
 
 
 interface BannerProps {
     bannerSlides: BannerSlide[];
     referentes: Referente[];
+    notification: Notification;
 }
 
-export function Banner({ bannerSlides, referentes }: BannerProps) {
+export function Banner({ bannerSlides, referentes, notification }: BannerProps) {
   return (
     <section className="relative w-full min-h-[600px] md:h-[720px] flex flex-col">
         <div className="absolute inset-0 w-full h-full">
             <AnimatedBannerBackground slides={bannerSlides} />
             <div className="absolute inset-0 z-10 bg-black/70" />
         </div>
+        
+        {notification && <NotificationBubble notification={notification} />}
         
         <div className="relative z-20 h-full w-full flex flex-col justify-between flex-1 pt-8 md:pt-12">
             <Carousel

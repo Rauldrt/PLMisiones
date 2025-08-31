@@ -1,5 +1,5 @@
 import { HomepageClient } from '@/components/HomepageClient';
-import { getBannerSlides, getMosaicItems, getAccordionItems, getNews, getReferentes } from '@/lib/data';
+import { getBannerSlides, getMosaicItems, getAccordionItems, getNews, getReferentes, getNotification } from '@/lib/data';
 
 export default async function Home() {
   const bannerSlides = await getBannerSlides();
@@ -7,6 +7,7 @@ export default async function Home() {
   const accordionItems = await getAccordionItems();
   const newsArticles = await getNews();
   const referentes = await getReferentes();
+  const notification = await getNotification();
 
   return (
     <HomepageClient
@@ -15,6 +16,7 @@ export default async function Home() {
       accordionItems={accordionItems}
       newsArticles={newsArticles.slice(0, 3)} // Show latest 3 articles on home
       referentes={referentes.slice(0, 3)} // Show top 3 on home
+      notification={notification}
     />
   );
 }
