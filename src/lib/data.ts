@@ -9,6 +9,10 @@ async function readJsonFile<T>(filePath: string): Promise<T> {
     const jsonData = await fs.readFile(fullPath, 'utf-8');
     return JSON.parse(jsonData) as T;
   } catch (error) {
+    // If the file doesn't exist, it's not an error in this context, just return empty.
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+        return [] as T;
+    }
     console.error(`Error reading file ${filePath}:`, error);
     // Return a default value or throw error, depending on desired behavior.
     // For this app, returning an empty array is a safe default.

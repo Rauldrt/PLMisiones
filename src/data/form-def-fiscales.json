@@ -1,0 +1,43 @@
+
+{
+  "name": "fiscales",
+  "title": "Formulario de Inscripción para Fiscales",
+  "description": "Completá tus datos para ser fiscal del Partido Libertario de Misiones. Tu rol es crucial para defender la voluntad del pueblo.",
+  "fields": [
+    {
+      "name": "nombreCompleto",
+      "label": "Nombre Completo",
+      "type": "text",
+      "placeholder": "Juan Carlos Pérez",
+      "required": true
+    },
+    {
+      "name": "dni",
+      "label": "DNI",
+      "type": "number",
+      "placeholder": "Sin puntos ni espacios",
+      "required": true
+    },
+    {
+      "name": "email",
+      "label": "Correo Electrónico",
+      "type": "email",
+      "placeholder": "tucorreo@ejemplo.com",
+      "required": true
+    },
+    {
+      "name": "telefono",
+      "label": "Teléfono / Celular",
+      "type": "tel",
+      "placeholder": "011 1234-5678",
+      "required": true
+    },
+    {
+      "name": "localidad",
+      "label": "Localidad donde podés fiscalizar",
+      "type": "text",
+      "placeholder": "Posadas, Oberá, etc.",
+      "required": true
+    }
+  ]
+}

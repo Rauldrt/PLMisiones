@@ -17,5 +17,11 @@
     "title": "Sumate al Cambio",
     "description": "Tu participación es clave para construir la Misiones que queremos. Afiliate ahora.",
     "icon": "UserPlus"
+  },
+  {
+    "path": "/fiscales",
+    "title": "Inscripción de Fiscales",
+    "description": "Cuidemos los votos. Anotate para ser fiscal en las próximas elecciones y defendé la libertad.",
+    "icon": "FileText"
   }
 ]

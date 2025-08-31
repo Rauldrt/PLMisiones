@@ -7,17 +7,18 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function ViewSubmissionsPage() {
-  const [submissions, setSubmissions] = useState<{afiliacion: FormSubmission[], contacto: FormSubmission[]}>({ afiliacion: [], contacto: [] });
+  const [submissions, setSubmissions] = useState<{afiliacion: FormSubmission[], contacto: FormSubmission[], fiscales: FormSubmission[]}>({ afiliacion: [], contacto: [], fiscales: [] });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const [afiliacionData, contactoData] = await Promise.all([
+      const [afiliacionData, contactoData, fiscalesData] = await Promise.all([
         getFormSubmissions('afiliacion'),
-        getFormSubmissions('contacto')
+        getFormSubmissions('contacto'),
+        getFormSubmissions('fiscales'),
       ]);
-      setSubmissions({ afiliacion: afiliacionData, contacto: contactoData });
+      setSubmissions({ afiliacion: afiliacionData, contacto: contactoData, fiscales: fiscalesData });
       setIsLoading(false);
     }
     fetchData();
@@ -57,6 +58,7 @@ export default function ViewSubmissionsPage() {
         <TabsList>
             <TabsTrigger value="afiliacion">Afiliación</TabsTrigger>
             <TabsTrigger value="contacto">Contacto</TabsTrigger>
+            <TabsTrigger value="fiscales">Fiscales</TabsTrigger>
         </TabsList>
         <TabsContent value="afiliacion">
              <Card>
@@ -75,6 +77,16 @@ export default function ViewSubmissionsPage() {
                 </CardHeader>
                 <CardContent>
                 {isLoading ? <p>Cargando...</p> : renderTable(submissions.contacto)}
+                </CardContent>
+            </Card>
+        </TabsContent>
+        <TabsContent value="fiscales">
+             <Card>
+                <CardHeader>
+                <CardTitle>Inscripciones de Fiscales</CardTitle>
+                </CardHeader>
+                <CardContent>
+                {isLoading ? <p>Cargando...</p> : renderTable(submissions.fiscales)}
                 </CardContent>
             </Card>
         </TabsContent>
