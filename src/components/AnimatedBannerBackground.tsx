@@ -26,7 +26,7 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
   }
 
   return (
-    <div className="absolute inset-0 z-10">
+    <div className="absolute inset-0 z-10 overflow-hidden">
       {slides.map((slide, index) => (
         <Image
           key={slide.id}
@@ -34,8 +34,8 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
           alt={slide.title}
           fill
           className={cn(
-            'absolute inset-0 object-cover transition-opacity duration-2000 ease-in-out',
-            index === currentIndex ? 'opacity-100' : 'opacity-0'
+            'absolute inset-0 object-cover transition-all duration-[5000ms] ease-in-out',
+            index === currentIndex ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
           )}
           priority={index === 0}
           data-ai-hint={slide.imageHint}
