@@ -59,7 +59,7 @@ export function Banner({ bannerSlides, referentes }: BannerProps) {
                 <CarouselNext className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2" />
             </Carousel>
         </div>
-        <div className="relative z-20 w-full pb-8 md:pb-16">
+        <div className="relative z-20 w-full pb-16 md:pb-24">
             <BannerContentTabs referentes={referentes} />
         </div>
       </section>
