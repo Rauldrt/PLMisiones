@@ -23,13 +23,13 @@ interface BannerProps {
 
 export function Banner({ bannerSlides, referentes }: BannerProps) {
   return (
-    <section className="relative w-full min-h-[400px] md:h-screen flex flex-col">
+    <section className="relative w-full min-h-[600px] md:h-screen flex flex-col justify-center">
         <div className="absolute inset-0 w-full h-full">
             <AnimatedBannerBackground slides={bannerSlides} />
             <div className="absolute inset-0 z-10 bg-black/70" />
         </div>
         
-        <div className="relative z-20 h-full w-full flex-1 flex flex-col justify-center">
+        <div className="relative z-20 h-full w-full flex flex-col justify-center pt-24 md:pt-32">
             <Carousel
                 opts={{ loop: true }}
                 plugins={[Autoplay({ delay: 5000, stopOnInteraction: true })]}
@@ -39,7 +39,7 @@ export function Banner({ bannerSlides, referentes }: BannerProps) {
                     {bannerSlides.map((slide) => (
                     <CarouselItem key={slide.id} className="group">
                         <div className="relative h-full w-full">
-                        <div className="w-full px-4 flex flex-col items-center justify-center text-center py-24 md:py-32">
+                        <div className="w-full px-4 flex flex-col items-center justify-center text-center py-12 md:py-16">
                             <h1 className="font-headline text-4xl font-bold text-white md:text-6xl lg:text-7xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
                                 {slide.title}
                             </h1>
@@ -47,9 +47,11 @@ export function Banner({ bannerSlides, referentes }: BannerProps) {
                                 {slide.subtitle}
                             </p>
                             <div className="opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.6s' }}>
-                                <Button asChild size="lg" className="mt-8">
-                                <Link href={slide.ctaLink}>{slide.ctaText}</Link>
-                                </Button>
+                                {slide.ctaText && slide.ctaLink && (
+                                    <Button asChild size="lg" className="mt-8">
+                                        <Link href={slide.ctaLink}>{slide.ctaText}</Link>
+                                    </Button>
+                                )}
                             </div>
                         </div>
                         </div>
@@ -59,9 +61,10 @@ export function Banner({ bannerSlides, referentes }: BannerProps) {
                 <CarouselPrevious className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2" />
                 <CarouselNext className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2" />
             </Carousel>
-        </div>
-        <div className="relative z-20 w-full pb-8 md:pb-16">
-            <BannerContentTabs referentes={referentes} />
+        
+            <div className="w-full pb-8 md:pb-12 mt-4 md:mt-8">
+                <BannerContentTabs referentes={referentes} />
+            </div>
         </div>
       </section>
   )
