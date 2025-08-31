@@ -48,7 +48,7 @@ export function Banner({ bannerSlides, referentes }: BannerProps) {
                             </p>
                             <div className="opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.6s' }}>
                                 {slide.ctaText && slide.ctaLink && (
-                                    <Button asChild size="lg" className="mt-8">
+                                    <Button asChild size="lg" className="mt-4">
                                         <Link href={slide.ctaLink}>{slide.ctaText}</Link>
                                     </Button>
                                 )}
@@ -62,7 +62,7 @@ export function Banner({ bannerSlides, referentes }: BannerProps) {
                 <CarouselNext className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2" />
             </Carousel>
         
-            <div className="w-full pb-8 md:pb-12">
+            <div className="w-full pb-20 md:pb-32">
                 <BannerContentTabs referentes={referentes} />
             </div>
         </div>
