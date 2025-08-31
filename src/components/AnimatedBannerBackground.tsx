@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -27,7 +26,7 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
   }
 
   return (
-    <div className="absolute inset-0 z-10">
+    <>
       {slides.map((slide, index) => (
         <Image
           key={slide.id}
@@ -42,6 +41,6 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
           data-ai-hint={slide.imageHint}
         />
       ))}
-    </div>
+    </>
   );
 }

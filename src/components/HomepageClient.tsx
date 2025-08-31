@@ -95,7 +95,8 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
       {/* Hero Carousel */}
       <section className="relative w-full h-[60vh] min-h-[400px] md:h-[80vh] overflow-hidden">
         <AnimatedBannerBackground slides={bannerSlides} />
-        <div className="absolute inset-0 z-20 bg-black/60">
+        <div className="absolute inset-0 z-20 bg-black/60" />
+        <div className="relative z-30 h-full w-full">
             <Carousel
                 opts={{ loop: true }}
                 plugins={[Autoplay({ delay: 5000, stopOnInteraction: true })]}
