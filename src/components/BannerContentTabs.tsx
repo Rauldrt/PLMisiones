@@ -12,7 +12,6 @@ import { Button } from '@/components/ui/button';
 import type { Referente } from '@/lib/types';
 import { ExpandingCandidateCard } from './ExpandingCandidateCard';
 import { cn } from '@/lib/utils';
-import useEmblaCarousel from 'embla-carousel-react';
 
 interface BannerContentTabsProps {
     referentes: Referente[];
@@ -20,43 +19,30 @@ interface BannerContentTabsProps {
 
 export function BannerContentTabs({ referentes }: BannerContentTabsProps) {
     const [expandedCandidate, setExpandedCandidate] = useState<string | null>(null);
-    const [emblaRef, emblaApi] = useEmblaCarousel({ align: "center", loop: false });
+    const [api, setApi] = React.useState<CarouselApi>()
 
     useEffect(() => {
-        if (!emblaApi) return;
+        if (!api) return;
         
         const onSelect = () => {
-            if (!emblaApi.canScrollNext() && !emblaApi.canScrollPrev()) return;
-
-            const isFullyVisible = emblaApi.slidesInView().length === 1;
-            const selectedSlideNode = emblaApi.slideNodes()[emblaApi.selectedScrollSnap()];
-            const selectedId = selectedSlideNode?.getAttribute('data-referente-id');
-
-            if (isFullyVisible && selectedId) {
-                if (expandedCandidate !== selectedId) {
-                   setExpandedCandidate(selectedId);
-                }
-            } else {
-                setExpandedCandidate(null);
+            if (!api.canScrollNext() && !api.canScrollPrev()) {
+                // If only one slide is visible (or no scroll is possible)
+                // we might want to collapse any expanded card if user interacts
+                // in a way that suggests deselection, but for now, we do nothing.
+                return;
             }
+             // Logic to auto-collapse if needed can go here
         };
 
-        emblaApi.on("select", onSelect);
-        return () => { emblaApi.off("select", onSelect) };
-    }, [emblaApi, expandedCandidate]);
+        api.on("select", onSelect);
+        return () => { api.off("select", onSelect) };
+    }, [api]);
 
     const handleCardClick = (id: string, index: number) => {
-        if (emblaApi) {
-            if (expandedCandidate === id) {
-                 setExpandedCandidate(null);
-            } else {
-                emblaApi.scrollTo(index);
-                setExpandedCandidate(id);
-            }
-        } else {
-            // Fallback for desktop or non-carousel view
-            setExpandedCandidate(expandedCandidate === id ? null : id);
-        }
+       if (api) {
+            api.scrollTo(index);
+       }
+       setExpandedCandidate(expandedCandidate === id ? null : id);
     };
     
     const candidateCards = referentes.map((referente, index) => (
@@ -75,15 +61,14 @@ export function BannerContentTabs({ referentes }: BannerContentTabsProps) {
     return (
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="md:hidden">
-                <div className="overflow-hidden" ref={emblaRef}>
+                 <Carousel setApi={setApi} opts={{ align: "center", loop: false }}>
                     <CarouselContent>
                         {referentes.map((referente, index) => (
                             <CarouselItem 
                                 key={referente.id} 
-                                data-referente-id={referente.id} 
                                 className={cn(
                                     'transition-all duration-500 ease-in-out p-1',
-                                    expandedCandidate ? (expandedCandidate === referente.id ? 'basis-full' : 'basis-0') : 'basis-1/2'
+                                    expandedCandidate ? (expandedCandidate === referente.id ? 'basis-full' : 'basis-0 opacity-0') : 'basis-1/2'
                                 )}
                             >
                                 <ExpandingCandidateCard 
@@ -94,7 +79,7 @@ export function BannerContentTabs({ referentes }: BannerContentTabsProps) {
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                </div>
+                </Carousel>
             </div>
             <div className="mt-4 hidden md:grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4">
                 {candidateCards}
