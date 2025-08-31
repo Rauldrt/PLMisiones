@@ -109,6 +109,9 @@ export default {
         'fade-in-up': 'fade-in-up 0.5s ease-out forwards',
         'fade-in-out': 'fade-in-out 5s ease-in-out infinite',
       },
+      transitionDuration: {
+        '2000': '2000ms',
+      }
     },
   },
   plugins: [require('tailwindcss-animate')],
