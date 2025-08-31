@@ -45,6 +45,68 @@ const organigramaData = [
     { id: '6', name: 'Marta Fernandez', role: 'Vocal Titular 2°', level: 2, imageUrl: 'https://picsum.photos/200/200', imageHint: 'woman portrait professional' },
 ];
 
+function OrganigramaSection() {
+    const [selectedMember, setSelectedMember] = useState(organigramaData[0]);
+
+    return (
+        <section className="py-16 bg-card lg:py-24">
+            <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center gap-8">
+                 <div className="text-center">
+                    <h2 className="font-headline text-3xl font-bold md:text-4xl">
+                        Organigrama del Partido
+                    </h2>
+                    <p className="mt-4 text-lg text-foreground/80">
+                        Conocé la estructura que nos organiza y nos impulsa.
+                    </p>
+                </div>
+                <div className="w-full max-w-sm md:max-w-md lg:max-w-2xl overflow-hidden">
+                    <Carousel opts={{ align: "start", loop: false }} className="w-full">
+                        <CarouselContent className="-ml-2">
+                            {organigramaData.map((member) => (
+                                <CarouselItem key={member.id} className="pl-2 basis-auto">
+                                    <Button
+                                        variant={selectedMember.id === member.id ? 'primary' : 'outline'}
+                                        onClick={() => setSelectedMember(member)}
+                                    >
+                                        {member.name}
+                                    </Button>
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                    </Carousel>
+                </div>
+              
+                <div className="w-full mt-4">
+                    <Card className="bg-background border-border">
+                        <CardContent className="p-6">
+                            <div className="flex flex-col md:flex-row items-center gap-6">
+                                <div className="relative h-32 w-32 md:h-40 md:w-40 flex-shrink-0">
+                                    <Image
+                                        src={selectedMember.imageUrl}
+                                        alt={selectedMember.name}
+                                        fill
+                                        className="rounded-lg object-cover"
+                                        sizes="(max-width: 768px) 128px, 160px"
+                                        data-ai-hint={selectedMember.imageHint}
+                                    />
+                                </div>
+                                <div className="text-center md:text-left">
+                                    <CardTitle className="font-headline text-2xl text-primary">{selectedMember.name}</CardTitle>
+                                    <CardDescription className="text-lg mt-1 text-foreground">{selectedMember.role}</CardDescription>
+                                    <p className="mt-4 text-foreground/80">
+                                        Información detallada sobre el rol y las responsabilidades de {selectedMember.name} en el partido, destacando su compromiso con nuestros valores y su visión para el futuro de Misiones.
+                                    </p>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        </section>
+    )
+}
+
+
 export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, newsArticles, referentes }: HomepageClientProps) {
   
   return (
@@ -81,6 +143,9 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
           </div>
         </div>
       </section>
+
+      {/* Organigrama Section */}
+      <OrganigramaSection />
       
       {/* Accordion Section */}
       <section className="py-16 bg-card lg:py-24">
