@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -98,9 +99,27 @@ export default {
             transform: 'translateY(0)',
           },
         },
+        'zoom-in-out': {
+          '0%': { transform: 'scale(1)', opacity: '0' },
+          '10%': { transform: 'scale(1)', opacity: '1' },
+          '90%': { transform: 'scale(1.05)', opacity: '1' },
+          '100%': { transform: 'scale(1.05)', opacity: '0' },
+        },
+        'slide-in-out-left': {
+            '0%': { transform: 'translateX(-100%)', opacity: '0' },
+            '10%': { transform: 'translateX(0)', opacity: '1' },
+            '90%': { transform: 'translateX(0)', opacity: '1' },
+            '100%': { transform: 'translateX(100%)', opacity: '0' },
+        },
+        'slide-in-out-right': {
+            '0%': { transform: 'translateX(100%)', opacity: '0' },
+            '10%': { transform: 'translateX(0)', opacity: '1' },
+            '90%': { transform: 'translateX(0)', opacity: '1' },
+            '100%': { transform: 'translateX(-100%)', opacity: '0' },
+        },
         'fade-in-out': {
           '0%, 100%': { opacity: '0' },
-          '20%, 80%': { opacity: '1' },
+          '10%, 90%': { opacity: '1' },
         },
         'zoom-in': {
           from: { transform: 'scale(1.05)' },
@@ -121,7 +140,10 @@ export default {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in-up': 'fade-in-up 0.5s ease-out forwards',
-        'fade-in-out': 'fade-in-out 5s ease-in-out infinite',
+        'zoom-in-out': 'zoom-in-out linear infinite',
+        'slide-in-out-left': 'slide-in-out-left linear infinite',
+        'slide-in-out-right': 'slide-in-out-right linear infinite',
+        'fade-in-out': 'fade-in-out linear infinite',
         'zoom-in': 'zoom-in forwards',
         'pulse-slow': 'pulse-slow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },

@@ -3,32 +3,60 @@
   {
     "id": "1",
     "title": "Nuestros Principios",
-    "imageUrl": "https://picsum.photos/600/600",
-    "imageHint": "philosophy book",
+    "imageUrls": [
+      "https://picsum.photos/600/600?random=10",
+      "https://picsum.photos/600/600?random=11",
+      "https://picsum.photos/600/600?random=12"
+    ],
+    "imageHints": [
+      "philosophy book",
+      "scale justice",
+      " handshake"
+    ],
     "colSpan": 2,
     "rowSpan": 2
   },
   {
     "id": "2",
     "title": "Equipo",
-    "imageUrl": "https://picsum.photos/600/300",
-    "imageHint": "team portrait",
+    "imageUrls": [
+      "https://picsum.photos/600/300?random=20",
+      "https://picsum.photos/600/300?random=21"
+    ],
+    "imageHints": [
+      "team portrait",
+      "people working"
+    ],
     "colSpan": 2,
     "rowSpan": 1
   },
   {
     "id": "3",
     "title": "Eventos",
-    "imageUrl": "https://picsum.photos/300/300",
-    "imageHint": "event calendar",
+    "imageUrls": [
+      "https://picsum.photos/300/300?random=30",
+      "https://picsum.photos/300/300?random=31",
+      "https://picsum.photos/300/300?random=32"
+    ],
+    "imageHints": [
+      "event calendar",
+      "crowd cheering",
+      "public speaking"
+    ],
     "colSpan": 1,
     "rowSpan": 1
   },
   {
     "id": "4",
     "title": "Fiscalización",
-    "imageUrl": "https://picsum.photos/300/300",
-    "imageHint": "voting poll",
+    "imageUrls": [
+      "https://picsum.photos/300/300?random=40",
+      "https://picsum.photos/300/300?random=41"
+    ],
+    "imageHints": [
+      "voting poll",
+      "ballot box"
+    ],
     "colSpan": 1,
     "rowSpan": 1
   }

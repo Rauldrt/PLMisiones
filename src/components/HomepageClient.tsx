@@ -5,14 +5,6 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
-} from '@/components/ui/carousel';
-import {
   Accordion as UiAccordion,
   AccordionContent,
   AccordionItem,
@@ -20,12 +12,10 @@ import {
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import type { BannerSlide, MosaicItem, AccordionItem, NewsArticle, Referente, Notification } from '@/lib/types';
-import Autoplay from 'embla-carousel-autoplay';
-import { ExpandingCandidateCard } from './ExpandingCandidateCard';
-import { cn } from '@/lib/utils';
-import useEmblaCarousel from 'embla-carousel-react';
 import { Banner } from './Banner';
+import { MosaicTile } from './MosaicTile';
 
 
 interface HomepageClientProps {
@@ -112,37 +102,16 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
   
   return (
     <div className="flex flex-col overflow-x-hidden">
-      {/* Hero Section with Integrated Tabs */}
       <Banner bannerSlides={bannerSlides} referentes={referentes} notification={notification} />
 
-      {/* Organigrama Section */}
       <OrganigramaSection />
 
       {/* Mosaic Section */}
       <section className="py-16 lg:py-24">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:grid-rows-2 h-[600px]">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:grid-rows-2 h-[500px]">
             {mosaicItems.map((item) => (
-              <div
-                key={item.id}
-                className="relative overflow-hidden rounded-lg group"
-                style={{
-                  gridColumn: `span ${item.colSpan}`,
-                  gridRow: `span ${item.rowSpan}`,
-                }}
-              >
-                <Image
-                  src={item.imageUrl}
-                  alt={item.title}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  data-ai-hint={item.imageHint}
-                />
-                <div className="absolute inset-0 bg-black/50" />
-                <div className="absolute inset-0 flex items-center justify-center p-4 text-center">
-                  <h3 className="font-headline text-2xl font-bold md:text-3xl text-white">{item.title}</h3>
-                </div>
-              </div>
+              <MosaicTile key={item.id} item={item} />
             ))}
           </div>
         </div>

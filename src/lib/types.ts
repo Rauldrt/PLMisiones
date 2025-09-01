@@ -1,3 +1,4 @@
+
 export interface NewsArticle {
   id: string;
   slug: string;
@@ -21,8 +22,8 @@ export interface BannerSlide {
 export interface MosaicItem {
   id: string;
   title: string;
-  imageUrl: string;
-  imageHint?: string;
+  imageUrls: string[];
+  imageHints?: string[];
   colSpan: number;
   rowSpan: number;
 }
