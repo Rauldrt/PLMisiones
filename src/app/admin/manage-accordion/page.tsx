@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/icons';
 import { useToast } from '@/hooks/use-toast';
+import { Accordion, AccordionContent, AccordionItem as UiAccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 export default function ManageAccordionPage() {
   const [items, setItems] = useState<AccordionItem[]>([]);
@@ -73,34 +74,41 @@ export default function ManageAccordionPage() {
       <Card>
         <CardHeader>
           <CardTitle>Items del Acordeón</CardTitle>
-          <CardDescription>Edita, reordena y elimina los items. Los cambios se guardan todos juntos.</CardDescription>
+          <CardDescription>Haz clic en un item para expandirlo y editarlo. Los cambios se guardan todos juntos.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          {isLoading ? <p>Cargando...</p> : items.map((item, index) => (
-            <div key={item.id} className="rounded-lg border p-4 space-y-4 relative">
-                <div className="flex justify-between items-start">
-                    <h3 className="font-semibold font-headline">Item {index + 1}</h3>
-                    <div className="flex gap-2">
-                        <Button variant="ghost" size="icon" onClick={() => moveItem(index, 'up')} disabled={index === 0}>
-                            <Icons.ChevronUp className="w-4 h-4"/>
-                        </Button>
-                         <Button variant="ghost" size="icon" onClick={() => moveItem(index, 'down')} disabled={index === items.length - 1}>
-                            <Icons.ChevronDown className="w-4 h-4"/>
-                        </Button>
-                        <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
-                    </div>
-                </div>
-
-              <div className="space-y-1">
-                <Label htmlFor={`title-${index}`}>Título</Label>
-                <Input id={`title-${index}`} value={item.title} onChange={e => handleFieldChange(index, 'title', e.target.value)} />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor={`content-${index}`}>Contenido</Label>
-                <Textarea id={`content-${index}`} value={item.content} onChange={e => handleFieldChange(index, 'content', e.target.value)} rows={4} />
-              </div>
-            </div>
-          ))}
+        <CardContent className="space-y-2">
+          {isLoading ? <p>Cargando...</p> : (
+            <Accordion type="single" collapsible className="w-full">
+              {items.map((item, index) => (
+                <UiAccordionItem key={item.id} value={item.id}>
+                  <AccordionTrigger className="hover:no-underline">
+                      <div className="flex justify-between items-center w-full pr-4">
+                        <span>{item.title || `Item ${index + 1}`}</span>
+                         <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
+                            <Button variant="ghost" size="icon" onClick={() => moveItem(index, 'up')} disabled={index === 0}>
+                                <Icons.ChevronUp className="w-4 h-4"/>
+                            </Button>
+                             <Button variant="ghost" size="icon" onClick={() => moveItem(index, 'down')} disabled={index === items.length - 1}>
+                                <Icons.ChevronDown className="w-4 h-4"/>
+                            </Button>
+                            <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
+                        </div>
+                      </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="p-4 border-t">
+                      <div className="space-y-1">
+                        <Label htmlFor={`title-${index}`}>Título</Label>
+                        <Input id={`title-${index}`} value={item.title} onChange={e => handleFieldChange(index, 'title', e.target.value)} />
+                      </div>
+                      <div className="space-y-1 mt-4">
+                        <Label htmlFor={`content-${index}`}>Contenido</Label>
+                        <Textarea id={`content-${index}`} value={item.content} onChange={e => handleFieldChange(index, 'content', e.target.value)} rows={4} />
+                      </div>
+                  </AccordionContent>
+                </UiAccordionItem>
+              ))}
+            </Accordion>
+          )}
           <div className="flex justify-between items-center pt-4">
              <Button variant="outline" onClick={addItem}><Icons.Plus className="mr-2 h-4 w-4"/> Agregar Item</Button>
             <Button onClick={handleSave} disabled={isSaving}>

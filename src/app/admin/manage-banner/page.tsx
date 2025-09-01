@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/icons';
 import { useToast } from '@/hooks/use-toast';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 export default function ManageBannerPage() {
   const [slides, setSlides] = useState<BannerSlide[]>([]);
@@ -44,7 +45,7 @@ export default function ManageBannerPage() {
   };
   
   const addSlide = () => {
-    setSlides([...slides, { id: new Date().getTime().toString(), title: '', subtitle: '', imageUrl: 'https://picsum.photos/1920/1080', imageHint: '', ctaText: '', ctaLink: '' }]);
+    setSlides([...slides, { id: new Date().getTime().toString(), title: 'Nueva Diapositiva', subtitle: '', imageUrl: 'https://picsum.photos/1920/1080', imageHint: '', ctaText: '', ctaLink: '' }]);
   }
   
   const removeSlide = (id: string) => {
@@ -61,37 +62,49 @@ export default function ManageBannerPage() {
       <Card>
         <CardHeader>
           <CardTitle>Diapositivas del Banner</CardTitle>
-          <CardDescription>Edita los campos de cada diapositiva. Los cambios se guardan todos juntos.</CardDescription>
+          <CardDescription>Haz clic en una diapositiva para expandirla y editarla. Los cambios se guardan todos juntos.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          {isLoading ? <p>Cargando...</p> : slides.map((slide, index) => (
-            <div key={slide.id} className="rounded-lg border p-4 space-y-4 relative">
-              <h3 className="font-semibold font-headline">Diapositiva {index + 1}</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <Label htmlFor={`title-${index}`}>Título</Label>
-                  <Input id={`title-${index}`} value={slide.title} onChange={e => handleFieldChange(index, 'title', e.target.value)} />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor={`subtitle-${index}`}>Subtítulo</Label>
-                  <Input id={`subtitle-${index}`} value={slide.subtitle} onChange={e => handleFieldChange(index, 'subtitle', e.target.value)} />
-                </div>
-                <div className="space-y-1 col-span-1 md:col-span-2">
-                  <Label htmlFor={`imageUrl-${index}`}>URL de Imagen</Label>
-                  <Input id={`imageUrl-${index}`} value={slide.imageUrl} onChange={e => handleFieldChange(index, 'imageUrl', e.target.value)} />
-                </div>
-                 <div className="space-y-1">
-                  <Label htmlFor={`ctaText-${index}`}>Texto del Botón (CTA)</Label>
-                  <Input id={`ctaText-${index}`} value={slide.ctaText} onChange={e => handleFieldChange(index, 'ctaText', e.target.value)} />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor={`ctaLink-${index}`}>Enlace del Botón (CTA)</Label>
-                  <Input id={`ctaLink-${index}`} value={slide.ctaLink} onChange={e => handleFieldChange(index, 'ctaLink', e.target.value)} />
-                </div>
-              </div>
-              <Button variant="destructive" size="icon" className="absolute top-4 right-4" onClick={() => removeSlide(slide.id)}><Icons.Trash className="w-4 h-4"/></Button>
-            </div>
-          ))}
+        <CardContent className="space-y-2">
+           {isLoading ? <p>Cargando...</p> : (
+            <Accordion type="single" collapsible className="w-full">
+              {slides.map((slide, index) => (
+                <AccordionItem key={slide.id} value={slide.id}>
+                  <AccordionTrigger className="hover:no-underline">
+                     <div className="flex justify-between items-center w-full pr-4">
+                        <span>{slide.title || `Diapositiva ${index + 1}`}</span>
+                         <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
+                            <Button variant="destructive" size="icon" onClick={() => removeSlide(slide.id)}><Icons.Trash className="w-4 h-4"/></Button>
+                        </div>
+                      </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="p-4 border-t space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                          <Label htmlFor={`title-${index}`}>Título</Label>
+                          <Input id={`title-${index}`} value={slide.title} onChange={e => handleFieldChange(index, 'title', e.target.value)} />
+                        </div>
+                        <div className="space-y-1">
+                          <Label htmlFor={`subtitle-${index}`}>Subtítulo</Label>
+                          <Input id={`subtitle-${index}`} value={slide.subtitle} onChange={e => handleFieldChange(index, 'subtitle', e.target.value)} />
+                        </div>
+                        <div className="space-y-1 col-span-1 md:col-span-2">
+                          <Label htmlFor={`imageUrl-${index}`}>URL de Imagen</Label>
+                          <Input id={`imageUrl-${index}`} value={slide.imageUrl} onChange={e => handleFieldChange(index, 'imageUrl', e.target.value)} />
+                        </div>
+                         <div className="space-y-1">
+                          <Label htmlFor={`ctaText-${index}`}>Texto del Botón (CTA)</Label>
+                          <Input id={`ctaText-${index}`} value={slide.ctaText} onChange={e => handleFieldChange(index, 'ctaText', e.target.value)} />
+                        </div>
+                        <div className="space-y-1">
+                          <Label htmlFor={`ctaLink-${index}`}>Enlace del Botón (CTA)</Label>
+                          <Input id={`ctaLink-${index}`} value={slide.ctaLink} onChange={e => handleFieldChange(index, 'ctaLink', e.target.value)} />
+                        </div>
+                      </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          )}
           <div className="flex justify-between items-center pt-4">
              <Button variant="outline" onClick={addSlide}><Icons.Plus className="mr-2 h-4 w-4"/> Agregar Diapositiva</Button>
             <Button onClick={handleSave} disabled={isSaving}>

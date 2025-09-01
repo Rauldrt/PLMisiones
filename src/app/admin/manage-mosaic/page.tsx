@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/icons';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Accordion, AccordionContent, AccordionItem as UiAccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 export default function ManageMosaicPage() {
   const [items, setItems] = useState<MosaicItem[]>([]);
@@ -81,60 +82,69 @@ export default function ManageMosaicPage() {
       <Card>
         <CardHeader>
           <CardTitle>Items del Mosaico</CardTitle>
-          <CardDescription>Edita los campos de cada item. Los cambios se guardan todos juntos.</CardDescription>
+          <CardDescription>Haz clic en un mosaico para expandirlo y editarlo. Los cambios se guardan todos juntos.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          {isLoading ? <p>Cargando...</p> : items.map((item, index) => (
-            <div key={item.id} className="rounded-lg border p-4 space-y-4 relative">
-              <div className="flex justify-between items-center">
-                <h3 className="font-semibold font-headline">Mosaico {index + 1}</h3>
-                <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
-              </div>
-              
-              <div className="space-y-1">
-                <Label htmlFor={`title-${index}`}>Título</Label>
-                <Input id={`title-${index}`} value={item.title} onChange={e => handleFieldChange(index, 'title', e.target.value)} />
-              </div>
+        <CardContent className="space-y-2">
+          {isLoading ? <p>Cargando...</p> : (
+             <Accordion type="single" collapsible className="w-full">
+               {items.map((item, index) => (
+                <UiAccordionItem key={item.id} value={item.id}>
+                   <AccordionTrigger className="hover:no-underline">
+                     <div className="flex justify-between items-center w-full pr-4">
+                        <span>{item.title || `Mosaico ${index + 1}`}</span>
+                         <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
+                            <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
+                        </div>
+                      </div>
+                  </AccordionTrigger>
+                   <AccordionContent className="p-4 border-t space-y-4">
+                      <div className="space-y-1">
+                        <Label htmlFor={`title-${index}`}>Título</Label>
+                        <Input id={`title-${index}`} value={item.title} onChange={e => handleFieldChange(index, 'title', e.target.value)} />
+                      </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                    <Label>Ancho (Columnas)</Label>
-                     <Select value={String(item.colSpan)} onValueChange={(v) => handleFieldChange(index, 'colSpan', Number(v))}>
-                        <SelectTrigger><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="1">1 Columna</SelectItem>
-                            <SelectItem value="2">2 Columnas</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-                 <div className="space-y-1">
-                    <Label>Alto (Filas)</Label>
-                     <Select value={String(item.rowSpan)} onValueChange={(v) => handleFieldChange(index, 'rowSpan', Number(v))}>
-                        <SelectTrigger><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="1">1 Fila</SelectItem>
-                            <SelectItem value="2">2 Filas</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-              </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                            <Label>Ancho (Columnas)</Label>
+                             <Select value={String(item.colSpan)} onValueChange={(v) => handleFieldChange(index, 'colSpan', Number(v))}>
+                                <SelectTrigger><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="1">1 Columna</SelectItem>
+                                    <SelectItem value="2">2 Columnas</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                         <div className="space-y-1">
+                            <Label>Alto (Filas)</Label>
+                             <Select value={String(item.rowSpan)} onValueChange={(v) => handleFieldChange(index, 'rowSpan', Number(v))}>
+                                <SelectTrigger><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="1">1 Fila</SelectItem>
+                                    <SelectItem value="2">2 Filas</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                      </div>
 
-              <div className="space-y-2">
-                <Label>Imágenes</Label>
-                {item.imageUrls.map((url, imgIndex) => (
-                    <div key={imgIndex} className="flex items-center gap-2">
-                        <Input value={url} onChange={e => handleImageChange(index, imgIndex, e.target.value)} />
-                        <Button variant="ghost" size="icon" onClick={() => removeImage(index, imgIndex)}>
-                            <Icons.Trash className="w-4 h-4 text-destructive"/>
+                      <div className="space-y-2">
+                        <Label>Imágenes</Label>
+                        {item.imageUrls.map((url, imgIndex) => (
+                            <div key={imgIndex} className="flex items-center gap-2">
+                                <Input value={url} onChange={e => handleImageChange(index, imgIndex, e.target.value)} />
+                                <Button variant="ghost" size="icon" onClick={() => removeImage(index, imgIndex)}>
+                                    <Icons.Trash className="w-4 h-4 text-destructive"/>
+                                </Button>
+                            </div>
+                        ))}
+                        <Button variant="outline" size="sm" onClick={() => addImage(index)}>
+                            <Icons.Plus className="mr-2 h-4 w-4" /> Agregar Imagen
                         </Button>
-                    </div>
-                ))}
-                <Button variant="outline" size="sm" onClick={() => addImage(index)}>
-                    <Icons.Plus className="mr-2 h-4 w-4" /> Agregar Imagen
-                </Button>
-              </div>
-            </div>
-          ))}
+                      </div>
+                   </AccordionContent>
+                </UiAccordionItem>
+              ))}
+            </Accordion>
+          )}
           <div className="flex justify-between items-center pt-4">
              <Button variant="outline" onClick={addItem}><Icons.Plus className="mr-2 h-4 w-4"/> Agregar Mosaico</Button>
             <Button onClick={handleSave} disabled={isSaving}>
