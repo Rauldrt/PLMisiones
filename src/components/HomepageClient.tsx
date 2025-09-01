@@ -213,7 +213,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
         open={!!lightboxData} 
         onOpenChange={(isOpen) => !isOpen && setLightboxData(null)}
       >
-        <DialogContent className="max-w-7xl w-full h-full max-h-[90vh] p-2 bg-transparent border-0 shadow-none flex items-center justify-center">
+        <DialogContent className="max-w-none w-screen h-screen p-2 bg-black/80 backdrop-blur-sm border-0 shadow-none flex items-center justify-center">
           {lightboxData && (
             <Carousel
               opts={{
@@ -224,13 +224,13 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
             >
               <CarouselContent className="h-full">
                   {lightboxData.images.map((imageSrc, index) => (
-                      <CarouselItem key={index} className="flex items-center justify-center">
+                      <CarouselItem key={index} className="relative flex items-center justify-center h-full">
                           <Image
                               src={imageSrc}
                               alt={`${lightboxData.title} - Imagen ${index + 1}`}
-                              width={1600}
-                              height={900}
-                              className="rounded-lg object-contain w-auto h-auto max-w-full max-h-full"
+                              fill
+                              className="rounded-lg object-contain"
+                              sizes="100vw"
                               data-ai-hint={lightboxData.imageHints ? lightboxData.imageHints[index] : ''}
                           />
                       </CarouselItem>
@@ -238,8 +238,8 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
               </CarouselContent>
               {lightboxData.images.length > 1 && (
                   <>
-                      <CarouselPrevious className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 text-white bg-white/10 hover:bg-white/20 border-none" />
-                      <CarouselNext className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-white bg-white/10 hover:bg-white/20 border-none" />
+                      <CarouselPrevious className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 text-white bg-white/10 hover:bg-white/20 border-none" />
+                      <CarouselNext className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 text-white bg-white/10 hover:bg-white/20 border-none" />
                   </>
               )}
             </Carousel>
