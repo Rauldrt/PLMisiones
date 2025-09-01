@@ -1,9 +1,9 @@
+
+import './globals.css';
 import type { Metadata } from 'next';
 import { AuthProvider } from '@/components/AuthProvider';
 import { Toaster } from '@/components/ui/toaster';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
-import './globals.css';
+import { SiteLayout } from '@/components/SiteLayout';
 
 export const metadata: Metadata = {
   title: 'Libertario Misiones',
@@ -24,11 +24,9 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
         <AuthProvider>
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-grow">{children}</main>
-            <Footer />
-          </div>
+          <SiteLayout>
+            {children}
+          </SiteLayout>
           <Toaster />
         </AuthProvider>
       </body>
