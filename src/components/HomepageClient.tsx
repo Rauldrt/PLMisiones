@@ -183,7 +183,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                       fill
                       className="object-cover"
                       data-ai-hint={article.imageHint}
-                    />
+                    ></Image>
                   </div>
                   <div className="p-6">
                     <CardTitle className="font-headline text-xl leading-tight">
