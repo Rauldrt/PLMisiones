@@ -54,8 +54,8 @@ export function MosaicLightbox({ images, imageHints, title, onClose }: MosaicLig
         <Carousel className="w-full flex-1" opts={{ loop: true }}>
           <CarouselContent className="h-full">
             {images.map((src, index) => (
-              <CarouselItem key={index} className="flex items-center justify-center">
-                <div className="relative w-full h-[80%]">
+              <CarouselItem key={index} className="relative flex items-center justify-center">
+                <div className="relative w-full h-[80%] z-10">
                     <Image
                       src={src}
                       alt={`${title} - Imagen ${index + 1}`}
