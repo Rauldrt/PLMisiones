@@ -53,9 +53,6 @@ export function MosaicTile({ item, onClick }: MosaicTileProps) {
   const animationDurationStyle = {
     animationDuration: `${baseDuration}ms`
   };
-
-  const colSpanClass = `md:col-span-${item.colSpan}`;
-  const rowSpanClass = `md:row-span-${item.rowSpan}`;
   
   return (
     <div
