@@ -92,7 +92,7 @@ export function Header() {
               <Button
                 variant="default"
                 size="icon"
-                className="fixed bottom-8 right-6 z-50 h-14 w-14 rounded-full shadow-lg"
+                className="fixed bottom-12 right-6 z-50 h-14 w-14 rounded-full shadow-lg"
               >
                   <div className={cn("absolute transition-transform duration-300 ease-in-out", isMobileMenuOpen ? "rotate-45" : "rotate-0")}>
                     <Icons.Plus className={cn("h-6 w-6 transition-opacity duration-300", isMobileMenuOpen ? "opacity-100" : "opacity-0")} />
