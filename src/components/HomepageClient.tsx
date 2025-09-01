@@ -224,13 +224,13 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
             >
               <CarouselContent className="h-full">
                   {lightboxData.images.map((imageSrc, index) => (
-                      <CarouselItem key={index} className="relative h-full">
+                      <CarouselItem key={index} className="flex items-center justify-center">
                           <Image
                               src={imageSrc}
                               alt={`${lightboxData.title} - Imagen ${index + 1}`}
-                              fill
-                              className="rounded-lg object-contain"
-                              sizes="100vw"
+                              width={1600}
+                              height={900}
+                              className="rounded-lg object-contain w-auto h-auto max-w-full max-h-full"
                               data-ai-hint={lightboxData.imageHints ? lightboxData.imageHints[index] : ''}
                           />
                       </CarouselItem>
