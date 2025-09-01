@@ -127,7 +127,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
       {/* Mosaic Section */}
       <section className="py-16 lg:py-24">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:grid-rows-2 h-[500px]">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:grid-rows-2 h-[800px] md:h-[500px]">
             {mosaicItems.map((item) => (
               <MosaicTile key={item.id} item={item} onClick={handleTileClick} />
             ))}
