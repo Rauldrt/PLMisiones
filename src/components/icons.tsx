@@ -29,7 +29,9 @@ import {
   ListCollapse,
   UsersRound,
   Link as LinkIcon,
-  MapPin
+  MapPin,
+  ChevronUp,
+  ChevronDown,
 } from 'lucide-react';
 import type { SVGProps } from 'react';
 
@@ -52,6 +54,8 @@ export const Icons = {
   Youtube: Youtube,
   ChevronLeft,
   ChevronRight,
+  ChevronUp,
+  ChevronDown,
   Menu,
   Close: X,
   Plus: Plus,

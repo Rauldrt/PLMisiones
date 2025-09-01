@@ -7,7 +7,6 @@ import { useState } from 'react';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import { Separator } from './ui/separator';
 
@@ -21,7 +20,6 @@ const navLinks = [
 export function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user } = useAuth();
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     setIsMobileMenuOpen(false); // Always close mobile menu
@@ -66,14 +64,6 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
-            {user && (
-              <Link href="/admin" className={cn(
-                  'relative overflow-hidden rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ease-in-out hover:scale-105 hover:bg-muted',
-                  pathname.startsWith('/admin') ? 'font-semibold text-foreground' : 'text-foreground/80'
-                )}>
-                Admin
-              </Link>
-            )}
           </nav>
           <div className="hidden md:flex items-center gap-2">
               <Button asChild variant="outline">
@@ -124,11 +114,6 @@ export function Header() {
                     {link.label}
                   </Link>
                 ))}
-                  {user && (
-                  <Link href="/admin" onClick={() => setIsMobileMenuOpen(false)} className={cn('block rounded-md px-3 py-2 text-base font-medium hover:bg-muted', pathname.startsWith('/admin') ? 'font-semibold text-foreground' : 'text-foreground/80')}>
-                    Admin
-                  </Link>
-                )}
               </nav>
               <Separator/>
               <div className="p-4 flex flex-col gap-4">

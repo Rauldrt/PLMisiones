@@ -1,7 +1,6 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Icons, IconName } from '@/components/icons';
 import { cn } from '@/lib/utils';
@@ -24,7 +23,6 @@ const adminNavLinks = [
 
 function NavContent() {
   const pathname = usePathname();
-  const { logout } = useAuth();
 
   return (
     <div className="flex h-full flex-col">
@@ -52,10 +50,6 @@ function NavContent() {
         })}
       </nav>
       <div className="mt-auto border-t p-4">
-        <Button variant="ghost" className="w-full justify-start gap-3" onClick={logout}>
-          <Icons.Logout className="h-5 w-5" />
-          Cerrar Sesión
-        </Button>
          <Button variant="ghost" className="w-full justify-start gap-3" asChild>
             <Link href="/">
              <Icons.Close className="h-5 w-5" />
