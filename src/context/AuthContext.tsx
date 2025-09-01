@@ -24,11 +24,14 @@ export const AuthProviderComponent = ({ children }: AuthProviderProps) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // This effect runs once on mount to check the session state.
+    setLoading(true);
     try {
       const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
       setUser(isLoggedIn);
     } catch (error) {
       console.error("Could not access sessionStorage:", error);
+      setUser(false);
     } finally {
       setLoading(false);
     }
@@ -64,5 +67,5 @@ export const AuthProviderComponent = ({ children }: AuthProviderProps) => {
 
   const value = { user, loading, login, logout };
 
-  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

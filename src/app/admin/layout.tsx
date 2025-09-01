@@ -15,12 +15,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
   }, [user, loading, router]);
 
-  if (loading || !user) {
+  if (loading) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
-        <div className="h-12 w-12 animate-pulse" />
+        <div className="flex flex-col items-center gap-4">
+            <Icons.Dashboard className="h-12 w-12 animate-pulse text-primary" />
+            <p className="text-muted-foreground">Cargando panel de administración...</p>
+        </div>
       </div>
     );
+  }
+
+  if (!user) {
+    // Esto previene que se renderice el contenido del admin brevemente antes de la redirección.
+    // También puede mostrar un loader si se prefiere.
+    return null;
   }
 
   return (
