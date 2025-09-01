@@ -1,4 +1,3 @@
-
 'use client';
 import {
   Newspaper,
@@ -32,6 +31,7 @@ import {
   MapPin,
   ChevronUp,
   ChevronDown,
+  Bell,
 } from 'lucide-react';
 import type { SVGProps } from 'react';
 
@@ -75,6 +75,7 @@ export const Icons = {
   Referentes: UsersRound,
   Social: LinkIcon,
   Location: MapPin,
+  Notification: Bell,
 };
 
 export type IconName = keyof typeof Icons;

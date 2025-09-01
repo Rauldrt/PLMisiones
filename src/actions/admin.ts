@@ -2,7 +2,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { revalidatePath } from 'next/cache';
-import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate } from '@/lib/types';
+import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate, Notification } from '@/lib/types';
 import { getNews } from '@/lib/data';
 
 async function writeJsonFile(filePath: string, data: any) {
@@ -80,4 +80,10 @@ export async function saveOrganigrama(items: OrganigramaMember[]) {
     await writeJsonFile('src/data/organigrama.json', items);
     revalidatePath('/');
     return { success: true, message: 'Organigrama guardado con éxito.' };
+}
+
+export async function saveNotification(item: Notification) {
+    await writeJsonFile('src/data/notification.json', item);
+    revalidatePath('/');
+    return { success: true, message: 'Notificación guardada con éxito.' };
 }

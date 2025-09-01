@@ -14,6 +14,7 @@ const adminNavLinks = [
   { href: '/admin/manage-news', label: 'Noticias', icon: 'News' },
   { href: '/admin/manage-banner', label: 'Texto Banner', icon: 'FileText' },
   { href: '/admin/manage-banner-background', label: 'Fondo Banner', icon: 'Banner' },
+  { href: '/admin/manage-notification', label: 'Notificación', icon: 'Notification' },
   { href: '/admin/manage-candidates', label: 'Candidatos', icon: 'Referentes' },
   { href: '/admin/manage-referentes', label: 'Referentes', icon: 'Referentes' },
   { href: '/admin/manage-mosaic', label: 'Mosaico', icon: 'Mosaic' },
@@ -35,7 +36,7 @@ function NavContent() {
       </div>
       <nav className="flex-1 space-y-2 p-4">
         {adminNavLinks.map((link) => {
-          const Icon = Icons[link.icon as IconName];
+          const Icon = link.icon ? Icons[link.icon as IconName] : null;
           return (
             <Link
               key={link.href}

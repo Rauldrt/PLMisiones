@@ -11,7 +11,8 @@ import {
     getReferentes,
     getOrganigrama,
     getFormSubmissions,
-    getCandidates
+    getCandidates,
+    getNotification
 } from '@/lib/data';
 
 // These actions are safe to call from client components.
@@ -58,4 +59,8 @@ export async function getOrganigramaAction() {
 
 export async function getFormSubmissionsAction(formName: string) {
     return getFormSubmissions(formName);
+}
+
+export async function getNotificationAction() {
+    return getNotification();
 }
