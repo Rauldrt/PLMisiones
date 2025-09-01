@@ -66,7 +66,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
                             {organigramaData.map((member) => (
                                 <CarouselItem key={member.id} className="pl-2 basis-auto">
                                     <Button
-                                        variant={selectedMember?.id === member.id ? 'primary' : 'outline'}
+                                        variant={selectedMember?.id === member.id ? 'default' : 'outline'}
                                         onClick={() => setSelectedMember(member)}
                                     >
                                         {member.name}
