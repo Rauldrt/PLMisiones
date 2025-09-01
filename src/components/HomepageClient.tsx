@@ -127,7 +127,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
       {/* Mosaic Section */}
       <section className="py-16 lg:py-24">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:grid-rows-2 h-[800px] md:h-[500px]">
+          <div className="grid grid-cols-1 grid-rows-4 md:grid-cols-4 md:grid-rows-2 gap-4 h-[800px] md:h-[500px]">
             {mosaicItems.map((item) => (
               <MosaicTile key={item.id} item={item} onClick={handleTileClick} />
             ))}
@@ -224,12 +224,11 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
             >
               <CarouselContent className="h-full">
                   {lightboxData.images.map((imageSrc, index) => (
-                      <CarouselItem key={index} className="flex items-center justify-center">
+                      <CarouselItem key={index} className="relative h-full">
                           <Image
                               src={imageSrc}
                               alt={`${lightboxData.title} - Imagen ${index + 1}`}
-                              width={1600}
-                              height={900}
+                              fill
                               className="rounded-lg object-contain w-auto h-auto max-w-full max-h-full"
                               data-ai-hint={lightboxData.imageHints ? lightboxData.imageHints[index] : ''}
                           />
