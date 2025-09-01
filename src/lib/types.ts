@@ -77,8 +77,8 @@ export interface OrganigramaMember {
     id: string;
     name: string;
     role: string;
-    level: number;
-    children?: OrganigramaMember[];
+    imageUrl: string;
+    imageHint: string;
 }
 
 export interface Notification {

@@ -17,6 +17,7 @@ const adminNavLinks = [
   { href: '/admin/manage-mosaic', label: 'Mosaico', icon: 'Mosaic' },
   { href: '/admin/manage-accordion', label: 'Acordeón', icon: 'Accordion' },
   { href: '/admin/manage-referentes', label: 'Referentes', icon: 'Referentes' },
+  { href: '/admin/manage-organigrama', label: 'Organigrama', icon: 'Team' },
   { href: '/admin/manage-forms', label: 'Formularios', icon: 'Forms' },
   { href: '/admin/view-submissions', label: 'Envíos', icon: 'Submissions' },
 ];

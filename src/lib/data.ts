@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import type { NewsArticle, BannerSlide, MosaicItem, AccordionItem, PageHeader, Referente, SocialLink, FormDefinition, FormSubmission, Notification } from './types';
+import type { NewsArticle, BannerSlide, MosaicItem, AccordionItem, PageHeader, Referente, SocialLink, FormDefinition, FormSubmission, Notification, OrganigramaMember } from './types';
 
 // Helper function to read and parse a JSON file
 async function readJsonFile<T>(filePath: string): Promise<T> {
@@ -12,7 +12,19 @@ async function readJsonFile<T>(filePath: string): Promise<T> {
     // If the file doesn't exist, it's not an error in this context, just return empty.
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
         if(filePath.endsWith('.json') && !filePath.includes('-')) { // check if it's a file that should exist
-             return {} as T; // for single object files like notification.json
+             try {
+                // If the file is expected to be an object, create it empty
+                if (filePath.includes('notification.json')) {
+                    await fs.writeFile(path.join(process.cwd(), filePath), '{}');
+                    return {} as T;
+                }
+                // Otherwise assume it's an array
+                await fs.writeFile(path.join(process.cwd(), filePath), '[]');
+                return [] as T;
+             } catch (writeError) {
+                 console.error(`Failed to create empty file ${filePath}:`, writeError);
+                 return [] as T;
+             }
         }
         return [] as T;
     }
@@ -32,6 +44,7 @@ export const getPageHeaders = () => readJsonFile<PageHeader[]>('src/data/page-he
 export const getReferentes = () => readJsonFile<Referente[]>('src/data/referentes.json');
 export const getSocialLinks = () => readJsonFile<SocialLink[]>('src/data/social-links.json');
 export const getNotification = () => readJsonFile<Notification>('src/data/notification.json');
+export const getOrganigrama = () => readJsonFile<OrganigramaMember[]>('src/data/organigrama.json');
 
 export const getFormDefinition = (formName: string) => readJsonFile<FormDefinition>(`src/data/form-def-${formName}.json`);
 export const getFormSubmissions = (formName: string) => readJsonFile<FormSubmission[]>(`src/data/form-submissions-${formName}.json`);
