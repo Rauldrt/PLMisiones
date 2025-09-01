@@ -8,12 +8,13 @@ import { cn } from '@/lib/utils';
 
 interface MosaicTileProps {
   item: MosaicItem;
+  onClick: () => void;
 }
 
 const animationTypes = ['fade', 'slide-left', 'slide-right', 'zoom'];
 const animationDurations = [5000, 7000, 9000];
 
-export function MosaicTile({ item }: MosaicTileProps) {
+export function MosaicTile({ item, onClick }: MosaicTileProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Memoize random values so they are consistent across re-renders
@@ -55,7 +56,8 @@ export function MosaicTile({ item }: MosaicTileProps) {
 
   return (
     <div
-      className="relative overflow-hidden rounded-3xl group"
+      onClick={onClick}
+      className="relative overflow-hidden rounded-3xl group cursor-pointer"
       style={{
         gridColumn: `span ${item.colSpan}`,
         gridRow: `span ${item.rowSpan}`,

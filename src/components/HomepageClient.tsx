@@ -16,6 +16,7 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import type { BannerSlide, MosaicItem, AccordionItem, NewsArticle, Referente, Notification } from '@/lib/types';
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
+import { MosaicLightbox } from './MosaicLightbox';
 
 
 interface HomepageClientProps {
@@ -99,7 +100,28 @@ function OrganigramaSection() {
 
 
 export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, newsArticles, referentes, notification }: HomepageClientProps) {
-  
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxImages, setLightboxImages] = useState<string[]>([]);
+  const [lightboxImageHints, setLightboxImageHints] = useState<string[] | undefined>([]);
+  const [lightboxTitle, setLightboxTitle] = useState('');
+
+  const handleTileClick = (item: MosaicItem) => {
+    setLightboxImages(item.imageUrls);
+    setLightboxImageHints(item.imageHints);
+    setLightboxTitle(item.title);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+    // Clear data after a short delay to allow for the closing animation
+    setTimeout(() => {
+        setLightboxImages([]);
+        setLightboxImageHints(undefined);
+        setLightboxTitle('');
+    }, 300);
+  };
+
   return (
     <div className="flex flex-col overflow-x-hidden">
       <Banner bannerSlides={bannerSlides} referentes={referentes} notification={notification} />
@@ -111,7 +133,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:grid-rows-2 h-[500px]">
             {mosaicItems.map((item) => (
-              <MosaicTile key={item.id} item={item} />
+              <MosaicTile key={item.id} item={item} onClick={() => handleTileClick(item)} />
             ))}
           </div>
         </div>
@@ -190,6 +212,15 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
           </div>
         </div>
       </section>
+
+      {lightboxOpen && (
+        <MosaicLightbox
+          images={lightboxImages}
+          imageHints={lightboxImageHints}
+          title={lightboxTitle}
+          onClose={closeLightbox}
+        />
+      )}
     </div>
   );
 }
