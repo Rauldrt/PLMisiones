@@ -229,7 +229,8 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                               src={imageSrc}
                               alt={`${lightboxData.title} - Imagen ${index + 1}`}
                               fill
-                              className="rounded-lg object-contain w-auto h-auto max-w-full max-h-full"
+                              className="rounded-lg object-contain"
+                              sizes="100vw"
                               data-ai-hint={lightboxData.imageHints ? lightboxData.imageHints[index] : ''}
                           />
                       </CarouselItem>
