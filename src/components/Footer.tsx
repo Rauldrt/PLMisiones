@@ -92,6 +92,8 @@ export function Footer() {
                 <p>&copy; {new Date().getFullYear()} Partido Libertario Misiones. Todos los derechos reservados.</p>
                 <p className="mt-1">
                     Desarrollado con <span className="text-red-500">♥</span> por la libertad.
+                    <span className="mx-2">|</span>
+                    <Link href="/admin" className="hover:text-accent transition-colors">Admin</Link>
                 </p>
             </div>
             </div>
