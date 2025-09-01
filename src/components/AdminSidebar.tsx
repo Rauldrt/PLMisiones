@@ -45,7 +45,7 @@ function NavContent() {
                 pathname.startsWith(link.href) ? 'bg-muted font-semibold text-foreground' : ''
               )}
             >
-              <Icon className="h-5 w-5" />
+              {Icon && <Icon className="h-5 w-5" />}
               {link.label}
             </Link>
           );
