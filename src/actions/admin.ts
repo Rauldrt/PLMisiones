@@ -2,7 +2,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { revalidatePath } from 'next/cache';
-import type { NewsArticle, BannerSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate } from '@/lib/types';
+import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate } from '@/lib/types';
 import { getNews } from '@/lib/data';
 
 async function writeJsonFile(filePath: string, data: any) {
@@ -20,10 +20,16 @@ export async function saveNews(articles: NewsArticle[]) {
   return { success: true, message: 'Noticias guardadas con éxito.' };
 }
 
-export async function saveBanner(slides: BannerSlide[]) {
+export async function saveBannerText(slides: BannerTextSlide[]) {
     await writeJsonFile('src/data/banner.json', slides);
     revalidatePath('/');
-    return { success: true, message: 'Banner guardado con éxito.' };
+    return { success: true, message: 'Texto del banner guardado con éxito.' };
+}
+
+export async function saveBannerBackground(slides: BannerBackgroundSlide[]) {
+    await writeJsonFile('src/data/banner-background.json', slides);
+    revalidatePath('/');
+    return { success: true, message: 'Fondo del banner guardado con éxito.' };
 }
 
 export async function saveMosaic(items: MosaicItem[]) {

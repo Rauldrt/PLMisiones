@@ -10,7 +10,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
-import type { BannerSlide, Referente, Notification, Candidate } from '@/lib/types';
+import type { BannerTextSlide, BannerBackgroundSlide, Notification, Candidate } from '@/lib/types';
 import Autoplay from 'embla-carousel-autoplay';
 import { AnimatedBannerBackground } from './AnimatedBannerBackground';
 import { BannerContentTabs } from './BannerContentTabs';
@@ -18,16 +18,17 @@ import { NotificationBubble } from './NotificationBubble';
 
 
 interface BannerProps {
-    bannerSlides: BannerSlide[];
+    textSlides: BannerTextSlide[];
+    backgroundSlides: BannerBackgroundSlide[];
     candidates: Candidate[];
     notification: Notification;
 }
 
-export function Banner({ bannerSlides, candidates, notification }: BannerProps) {
+export function Banner({ textSlides, backgroundSlides, candidates, notification }: BannerProps) {
   return (
     <section className="relative w-full min-h-[600px] md:h-[720px] flex flex-col">
         <div className="absolute inset-0 w-full h-full">
-            <AnimatedBannerBackground slides={bannerSlides} />
+            <AnimatedBannerBackground slides={backgroundSlides} />
         </div>
         
         {notification && <NotificationBubble notification={notification} />}
@@ -39,7 +40,7 @@ export function Banner({ bannerSlides, candidates, notification }: BannerProps) 
                 className="w-full"
             >
                 <CarouselContent>
-                    {bannerSlides.map((slide) => (
+                    {textSlides.map((slide) => (
                     <CarouselItem key={slide.id} className="group">
                         <div className="relative h-full w-full">
                         <div className="w-full px-4 flex flex-col items-center justify-center text-center">

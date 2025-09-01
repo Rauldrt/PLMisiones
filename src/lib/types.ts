@@ -9,18 +9,23 @@ export interface NewsArticle {
   content: string;
 }
 
-export interface BannerSlide {
+export interface BannerTextSlide {
   id: string;
   title: string;
   subtitle: string;
-  imageUrl: string;
-  imageHint?: string;
   ctaText: string;
   ctaLink: string;
+}
+
+export interface BannerBackgroundSlide {
+  id: string;
+  imageUrl: string;
+  imageHint?: string;
   animationType?: 'zoom-in' | 'fade' | 'slide-from-left' | 'slide-from-right';
   animationDuration?: number;
   overlayOpacity?: number;
 }
+
 
 export interface MosaicItem {
   id: string;

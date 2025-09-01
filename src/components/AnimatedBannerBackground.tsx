@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import type { BannerSlide } from '@/lib/types';
+import type { BannerBackgroundSlide } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
 interface AnimatedBannerBackgroundProps {
-  slides: BannerSlide[];
+  slides: BannerBackgroundSlide[];
 }
 
 export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundProps) {
@@ -42,7 +42,7 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
           <Image
             key={slide.id}
             src={slide.imageUrl}
-            alt={slide.title}
+            alt="Banner Background"
             fill
             className={cn(
               'absolute inset-0 object-cover transition-opacity ease-linear',

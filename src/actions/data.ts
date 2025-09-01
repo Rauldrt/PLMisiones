@@ -4,7 +4,8 @@ import {
     getSocialLinks, 
     getFormDefinition,
     getNews,
-    getBannerSlides,
+    getBannerTextSlides,
+    getBannerBackgroundSlides,
     getMosaicItems,
     getAccordionItems,
     getReferentes,
@@ -27,8 +28,12 @@ export async function getNewsAction() {
     return getNews();
 }
 
-export async function getBannerSlidesAction() {
-    return getBannerSlides();
+export async function getBannerTextSlidesAction() {
+    return getBannerTextSlides();
+}
+
+export async function getBannerBackgroundSlidesAction() {
+    return getBannerBackgroundSlides();
 }
 
 export async function getMosaicItemsAction() {

@@ -14,13 +14,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import type { BannerSlide, MosaicItem, AccordionItem, NewsArticle, Candidate, Notification, OrganigramaMember } from '@/lib/types';
+import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, NewsArticle, Candidate, Notification, OrganigramaMember } from '@/lib/types';
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
 
 
 interface HomepageClientProps {
-    bannerSlides: BannerSlide[];
+    bannerTextSlides: BannerTextSlide[];
+    bannerBackgroundSlides: BannerBackgroundSlide[];
     mosaicItems: MosaicItem[];
     accordionItems: AccordionItem[];
     newsArticles: NewsArticle[];
@@ -110,7 +111,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
 }
 
 
-export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, newsArticles, candidates, notification, organigramaData }: HomepageClientProps) {
+export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notification, organigramaData }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
 
     const handleTileClick = (item: MosaicItem, startIndex: number) => {
@@ -124,7 +125,11 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
 
   return (
     <div className="flex flex-col overflow-x-hidden">
-      <Banner bannerSlides={bannerSlides} candidates={candidates} notification={notification} />
+      <Banner 
+        textSlides={bannerTextSlides}
+        backgroundSlides={bannerBackgroundSlides} 
+        candidates={candidates} 
+        notification={notification} />
 
       <OrganigramaSection organigramaData={organigramaData} />
 

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "bg-1",
+    "imageUrl": "https://picsum.photos/1920/1080?random=1",
+    "imageHint": "landscape sunrise",
+    "animationType": "zoom-in",
+    "animationDuration": 10,
+    "overlayOpacity": 0.7
+  },
+  {
+    "id": "bg-2",
+    "imageUrl": "https://picsum.photos/1920/1080?random=2",
+    "imageHint": "people volunteering",
+    "animationType": "fade",
+    "animationDuration": 8,
+    "overlayOpacity": 0.6
+  },
+  {
+    "id": "bg-3",
+    "imageUrl": "https://picsum.photos/1920/1080?random=3",
+    "imageHint": "city economy",
+    "animationType": "slide-from-left",
+    "animationDuration": 12,
+    "overlayOpacity": 0.75
+  },
+  {
+    "id": "bg-4",
+    "imageUrl": "https://picsum.photos/1920/1080?random=4",
+    "imageHint": "voting ballot",
+    "animationType": "zoom-in",
+    "animationDuration": 10,
+    "overlayOpacity": 0.7
+  },
+  {
+    "id": "bg-5",
+    "imageUrl": "https://picsum.photos/1920/1080?random=5",
+    "imageHint": "group celebration",
+    "animationType": "fade",
+    "animationDuration": 9,
+    "overlayOpacity": 0.65
+  },
+  {
+    "id": "bg-6",
+    "imageUrl": "https://picsum.photos/1920/1080?random=6",
+    "imageHint": "handshake deal",
+    "animationType": "slide-from-right",
+    "animationDuration": 10,
+    "overlayOpacity": 0.7
+  }
+]

@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import type { NewsArticle, BannerSlide, MosaicItem, AccordionItem, PageHeader, Referente, SocialLink, FormDefinition, FormSubmission, Notification, OrganigramaMember, Candidate } from './types';
+import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, PageHeader, Referente, SocialLink, FormDefinition, FormSubmission, Notification, OrganigramaMember, Candidate } from './types';
 
 // Helper function to read and parse a JSON file
 async function readJsonFile<T>(filePath: string): Promise<T> {
@@ -37,7 +37,8 @@ async function readJsonFile<T>(filePath: string): Promise<T> {
 
 // Service functions for each data type
 export const getNews = () => readJsonFile<NewsArticle[]>('src/data/news.json');
-export const getBannerSlides = () => readJsonFile<BannerSlide[]>('src/data/banner.json');
+export const getBannerTextSlides = () => readJsonFile<BannerTextSlide[]>('src/data/banner.json');
+export const getBannerBackgroundSlides = () => readJsonFile<BannerBackgroundSlide[]>('src/data/banner-background.json');
 export const getMosaicItems = () => readJsonFile<MosaicItem[]>('src/data/mosaic.json');
 export const getAccordionItems = () => readJsonFile<AccordionItem[]>('src/data/accordion.json');
 export const getPageHeaders = () => readJsonFile<PageHeader[]>('src/data/page-headers.json');
