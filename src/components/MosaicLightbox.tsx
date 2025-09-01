@@ -54,17 +54,15 @@ export function MosaicLightbox({ images, imageHints, title, onClose }: MosaicLig
         <Carousel className="w-full flex-1" opts={{ loop: true }}>
           <CarouselContent className="h-full">
             {images.map((src, index) => (
-              <CarouselItem key={index} className="relative flex items-center justify-center">
-                <div className="relative w-full h-[80%] z-10">
-                    <Image
-                      src={src}
-                      alt={`${title} - Imagen ${index + 1}`}
-                      fill
-                      className="object-contain"
-                      sizes="100vw"
-                      data-ai-hint={imageHints ? imageHints[index] : ''}
-                    />
-                </div>
+              <CarouselItem key={index} className="relative h-full">
+                <Image
+                  src={src}
+                  alt={`${title} - Imagen ${index + 1}`}
+                  fill
+                  className="object-contain"
+                  sizes="100vw"
+                  data-ai-hint={imageHints ? imageHints[index] : ''}
+                />
               </CarouselItem>
             ))}
           </CarouselContent>
