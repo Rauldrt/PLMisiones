@@ -1,7 +1,5 @@
 'use server';
 
-import 'dotenv/config';
-
 // This is a mock authentication check.
 // In a real production environment, use a secure method like
 // Firebase Authentication, and store secrets in a secure way
