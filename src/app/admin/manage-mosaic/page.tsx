@@ -89,14 +89,14 @@ export default function ManageMosaicPage() {
              <Accordion type="single" collapsible className="w-full">
                {items.map((item, index) => (
                 <UiAccordionItem key={item.id} value={item.id}>
-                   <AccordionTrigger className="hover:no-underline">
-                     <div className="flex justify-between items-center w-full pr-4">
+                    <div className="flex justify-between items-center w-full pr-4">
+                      <AccordionTrigger className="hover:no-underline flex-1 text-left">
                         <span>{item.title || `Mosaico ${index + 1}`}</span>
-                         <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
-                            <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
-                        </div>
+                      </AccordionTrigger>
+                      <div className="flex gap-2 items-center">
+                          <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
                       </div>
-                  </AccordionTrigger>
+                    </div>
                    <AccordionContent className="p-4 border-t space-y-4">
                       <div className="space-y-1">
                         <Label htmlFor={`title-${index}`}>Título</Label>

@@ -69,14 +69,14 @@ export default function ManageBannerPage() {
             <Accordion type="single" collapsible className="w-full">
               {slides.map((slide, index) => (
                 <AccordionItem key={slide.id} value={slide.id}>
-                  <AccordionTrigger className="hover:no-underline">
-                     <div className="flex justify-between items-center w-full pr-4">
+                    <div className="flex justify-between items-center w-full pr-4">
+                      <AccordionTrigger className="hover:no-underline flex-1 text-left">
                         <span>{slide.title || `Diapositiva ${index + 1}`}</span>
-                         <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
-                            <Button variant="destructive" size="icon" onClick={() => removeSlide(slide.id)}><Icons.Trash className="w-4 h-4"/></Button>
-                        </div>
+                      </AccordionTrigger>
+                      <div className="flex gap-2 items-center">
+                          <Button variant="destructive" size="icon" onClick={() => removeSlide(slide.id)}><Icons.Trash className="w-4 h-4"/></Button>
                       </div>
-                  </AccordionTrigger>
+                    </div>
                   <AccordionContent className="p-4 border-t space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-1">

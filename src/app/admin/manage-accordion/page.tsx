@@ -81,20 +81,20 @@ export default function ManageAccordionPage() {
             <Accordion type="single" collapsible className="w-full">
               {items.map((item, index) => (
                 <UiAccordionItem key={item.id} value={item.id}>
-                  <AccordionTrigger className="hover:no-underline">
-                      <div className="flex justify-between items-center w-full pr-4">
-                        <span>{item.title || `Item ${index + 1}`}</span>
-                         <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
-                            <Button variant="ghost" size="icon" onClick={() => moveItem(index, 'up')} disabled={index === 0}>
-                                <Icons.ChevronUp className="w-4 h-4"/>
-                            </Button>
-                             <Button variant="ghost" size="icon" onClick={() => moveItem(index, 'down')} disabled={index === items.length - 1}>
-                                <Icons.ChevronDown className="w-4 h-4"/>
-                            </Button>
-                            <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
-                        </div>
+                    <div className="flex justify-between items-center w-full pr-4">
+                      <AccordionTrigger className="hover:no-underline flex-1 text-left">
+                          <span>{item.title || `Item ${index + 1}`}</span>
+                      </AccordionTrigger>
+                      <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
+                          <Button variant="ghost" size="icon" onClick={() => moveItem(index, 'up')} disabled={index === 0}>
+                              <Icons.ChevronUp className="w-4 h-4"/>
+                          </Button>
+                            <Button variant="ghost" size="icon" onClick={() => moveItem(index, 'down')} disabled={index === items.length - 1}>
+                              <Icons.ChevronDown className="w-4 h-4"/>
+                          </Button>
+                          <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
                       </div>
-                  </AccordionTrigger>
+                    </div>
                   <AccordionContent className="p-4 border-t">
                       <div className="space-y-1">
                         <Label htmlFor={`title-${index}`}>Título</Label>

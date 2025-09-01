@@ -71,17 +71,17 @@ export default function ManageOrganigramaPage() {
             <Accordion type="single" collapsible className="w-full">
               {items.map((item, index) => (
                 <AccordionItem key={item.id} value={item.id}>
-                  <AccordionTrigger className="hover:no-underline">
-                     <div className="flex justify-between items-center w-full pr-4">
-                        <div className="flex items-center gap-4">
-                           <Image src={item.imageUrl} alt={item.name} width={40} height={40} className="rounded-lg object-cover h-10 w-10" />
-                           <span>{item.name || `Miembro ${index + 1}`}</span>
-                        </div>
-                         <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
-                            <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
-                        </div>
+                  <div className="flex justify-between items-center w-full pr-4">
+                    <AccordionTrigger className="hover:no-underline flex-1">
+                      <div className="flex items-center gap-4 text-left">
+                          <Image src={item.imageUrl} alt={item.name} width={40} height={40} className="rounded-lg object-cover h-10 w-10" />
+                          <span>{item.name || `Miembro ${index + 1}`}</span>
                       </div>
-                  </AccordionTrigger>
+                    </AccordionTrigger>
+                    <div className="flex gap-2 items-center">
+                        <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
+                    </div>
+                  </div>
                   <AccordionContent className="p-4 border-t space-y-4">
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-1">
