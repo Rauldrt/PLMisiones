@@ -17,6 +17,9 @@ export interface BannerSlide {
   imageHint?: string;
   ctaText: string;
   ctaLink: string;
+  animationType?: 'zoom-in' | 'fade' | 'slide-from-left' | 'slide-from-right';
+  animationDuration?: number;
+  overlayOpacity?: number;
 }
 
 export interface MosaicItem {

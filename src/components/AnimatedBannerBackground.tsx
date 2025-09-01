@@ -15,40 +15,52 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
   useEffect(() => {
     if (slides.length <= 1) return;
 
+    const currentSlide = slides[currentIndex];
+    const duration = (currentSlide?.animationDuration || 10) * 1000;
+
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => {
-        let nextIndex;
-        do {
-          nextIndex = Math.floor(Math.random() * slides.length);
-        } while (nextIndex === prevIndex);
-        return nextIndex;
-      });
-    }, 10000); // Change image every 10 seconds
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
+    }, duration);
 
     return () => clearInterval(interval);
-  }, [slides.length]);
-
+  }, [slides, currentIndex]);
+  
   if (!slides || slides.length === 0) {
     return <div className="absolute inset-0 bg-background z-0" />;
   }
+  
+  const currentSlide = slides[currentIndex];
+  const overlayOpacity = currentSlide?.overlayOpacity ?? 0.7;
 
   return (
     <>
-      {slides.map((slide, index) => (
-        <Image
-          key={slide.id}
-          src={slide.imageUrl}
-          alt={slide.title}
-          fill
-          className={cn(
-            'absolute inset-0 object-cover transition-opacity duration-[2000ms] ease-linear',
-            index === currentIndex ? 'opacity-100 animate-zoom-in' : 'opacity-0'
-          )}
-          style={{ animationDuration: '10s' }}
-          priority={index === 0}
-          data-ai-hint={slide.imageHint}
-        />
-      ))}
+      {slides.map((slide, index) => {
+        const animationType = slide.animationType || 'zoom-in';
+        const animationDuration = slide.animationDuration || 10;
+        
+        return (
+          <Image
+            key={slide.id}
+            src={slide.imageUrl}
+            alt={slide.title}
+            fill
+            className={cn(
+              'absolute inset-0 object-cover transition-opacity ease-linear',
+              index === currentIndex ? `opacity-100 animate-${animationType}` : 'opacity-0',
+            )}
+            style={{ 
+              animationDuration: `${animationDuration}s`,
+              transitionDuration: '2000ms' // Fade transition between images
+            }}
+            priority={index === 0}
+            data-ai-hint={slide.imageHint}
+          />
+        )
+      })}
+      <div 
+        className="absolute inset-0 z-10 bg-black" 
+        style={{ opacity: overlayOpacity }}
+      />
     </>
   );
 }

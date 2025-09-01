@@ -10,6 +10,8 @@ import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/icons';
 import { useToast } from '@/hooks/use-toast';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
 
 export default function ManageBannerPage() {
   const [slides, setSlides] = useState<BannerSlide[]>([]);
@@ -38,14 +40,25 @@ export default function ManageBannerPage() {
     });
   };
 
-  const handleFieldChange = (index: number, field: keyof BannerSlide, value: string) => {
+  const handleFieldChange = (index: number, field: keyof BannerSlide, value: string | number | undefined) => {
     const newSlides = [...slides];
-    newSlides[index] = { ...newSlides[index], [field]: value };
+    (newSlides[index] as any)[field] = value;
     setSlides(newSlides);
   };
   
   const addSlide = () => {
-    setSlides([...slides, { id: new Date().getTime().toString(), title: 'Nueva Diapositiva', subtitle: '', imageUrl: 'https://picsum.photos/1920/1080', imageHint: '', ctaText: '', ctaLink: '' }]);
+    setSlides([...slides, { 
+        id: new Date().getTime().toString(), 
+        title: 'Nueva Diapositiva', 
+        subtitle: '', 
+        imageUrl: 'https://picsum.photos/1920/1080', 
+        imageHint: '', 
+        ctaText: '', 
+        ctaLink: '',
+        animationType: 'zoom-in',
+        animationDuration: 10,
+        overlayOpacity: 0.7
+    }]);
   }
   
   const removeSlide = (id: string) => {
@@ -56,7 +69,7 @@ export default function ManageBannerPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold font-headline">Gestionar Banner Principal</h1>
-        <p className="text-muted-foreground">Administra las diapositivas del carrusel de la página de inicio.</p>
+        <p className="text-muted-foreground">Administra las diapositivas del carrusel, sus animaciones y apariencia.</p>
       </div>
 
       <Card>
@@ -73,7 +86,7 @@ export default function ManageBannerPage() {
                       <AccordionTrigger className="hover:no-underline flex-1 text-left">
                         <span>{slide.title || `Diapositiva ${index + 1}`}</span>
                       </AccordionTrigger>
-                      <div className="flex gap-2 items-center">
+                      <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
                           <Button variant="destructive" size="icon" onClick={() => removeSlide(slide.id)}><Icons.Trash className="w-4 h-4"/></Button>
                       </div>
                     </div>
@@ -98,6 +111,39 @@ export default function ManageBannerPage() {
                         <div className="space-y-1">
                           <Label htmlFor={`ctaLink-${index}`}>Enlace del Botón (CTA)</Label>
                           <Input id={`ctaLink-${index}`} value={slide.ctaLink} onChange={e => handleFieldChange(index, 'ctaLink', e.target.value)} />
+                        </div>
+                      </div>
+                      <div className="border-t pt-4 mt-4 space-y-4">
+                        <h4 className="text-base font-semibold">Animación de Fondo</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-1">
+                                <Label>Tipo de Animación</Label>
+                                <Select value={slide.animationType || 'zoom-in'} onValueChange={(v) => handleFieldChange(index, 'animationType', v)}>
+                                    <SelectTrigger><SelectValue /></SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="zoom-in">Zoom In</SelectItem>
+                                        <SelectItem value="fade">Fade</SelectItem>
+                                        <SelectItem value="slide-from-left">Slide From Left</SelectItem>
+                                        <SelectItem value="slide-from-right">Slide From Right</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div className="space-y-1">
+                                <Label>Duración (segundos)</Label>
+                                <Input type="number" value={slide.animationDuration || 10} onChange={e => handleFieldChange(index, 'animationDuration', Number(e.target.value))} />
+                            </div>
+                            <div className="space-y-1 col-span-1 md:col-span-2">
+                                <Label>Opacidad de Superposición (0-100%)</Label>
+                                <div className="flex items-center gap-4">
+                                  <Slider
+                                    value={[(slide.overlayOpacity ?? 0.7) * 100]}
+                                    onValueChange={(v) => handleFieldChange(index, 'overlayOpacity', v[0] / 100)}
+                                    max={100}
+                                    step={1}
+                                  />
+                                  <span>{Math.round((slide.overlayOpacity ?? 0.7) * 100)}%</span>
+                                </div>
+                            </div>
                         </div>
                       </div>
                   </AccordionContent>

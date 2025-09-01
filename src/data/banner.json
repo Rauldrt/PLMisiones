@@ -7,7 +7,10 @@
     "imageUrl": "https://picsum.photos/1920/1080?random=1",
     "imageHint": "landscape sunrise",
     "ctaText": "Conocé Nuestras Propuestas",
-    "ctaLink": "/propuestas"
+    "ctaLink": "/propuestas",
+    "animationType": "zoom-in",
+    "animationDuration": 10,
+    "overlayOpacity": 0.7
   },
   {
     "id": "2",
@@ -16,7 +19,10 @@
     "imageUrl": "https://picsum.photos/1920/1080?random=2",
     "imageHint": "people volunteering",
     "ctaText": "Afiliarse",
-    "ctaLink": "/afiliacion"
+    "ctaLink": "/afiliacion",
+    "animationType": "fade",
+    "animationDuration": 8,
+    "overlayOpacity": 0.6
   },
   {
     "id": "3",
@@ -25,7 +31,10 @@
     "imageUrl": "https://picsum.photos/1920/1080?random=3",
     "imageHint": "city economy",
     "ctaText": "Leer Más",
-    "ctaLink": "/noticias/propuestas-economicas"
+    "ctaLink": "/noticias/propuestas-economicas",
+    "animationType": "slide-from-left",
+    "animationDuration": 12,
+    "overlayOpacity": 0.75
   },
   {
     "id": "4",
@@ -34,7 +43,10 @@
     "imageUrl": "https://picsum.photos/1920/1080?random=4",
     "imageHint": "voting ballot",
     "ctaText": "Ser Fiscal",
-    "ctaLink": "/fiscales"
+    "ctaLink": "/fiscales",
+    "animationType": "zoom-in",
+    "animationDuration": 10,
+    "overlayOpacity": 0.7
   },
   {
     "id": "5",
@@ -43,7 +55,10 @@
     "imageUrl": "https://picsum.photos/1920/1080?random=5",
     "imageHint": "group celebration",
     "ctaText": "Conocé al Equipo",
-    "ctaLink": "/referentes"
+    "ctaLink": "/referentes",
+    "animationType": "fade",
+    "animationDuration": 9,
+    "overlayOpacity": 0.65
   },
   {
     "id": "6",
@@ -52,6 +67,9 @@
     "imageUrl": "https://picsum.photos/1920/1080?random=6",
     "imageHint": "handshake deal",
     "ctaText": "Nuestros Valores",
-    "ctaLink": "#"
+    "ctaLink": "#",
+    "animationType": "slide-from-right",
+    "animationDuration": 10,
+    "overlayOpacity": 0.7
   }
 ]

@@ -28,7 +28,6 @@ export function Banner({ bannerSlides, candidates, notification }: BannerProps) 
     <section className="relative w-full min-h-[600px] md:h-[720px] flex flex-col">
         <div className="absolute inset-0 w-full h-full">
             <AnimatedBannerBackground slides={bannerSlides} />
-            <div className="absolute inset-0 z-10 bg-black/70" />
         </div>
         
         {notification && <NotificationBubble notification={notification} />}
