@@ -1,6 +1,7 @@
 import { getNews, getNewsArticleBySlug } from '@/lib/data';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 type Props = {
   params: { slug: string };
@@ -31,6 +32,9 @@ export default async function NewsArticlePage({ params }: Props) {
     notFound();
   }
 
+  // Detect if the content is likely an embed code
+  const isEmbed = /<iframe|<blockquote/.test(article.content.trim());
+
   return (
     <article className="container max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
       <div className="text-center">
@@ -39,19 +43,28 @@ export default async function NewsArticlePage({ params }: Props) {
           Publicado el {new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}
         </p>
       </div>
-      <div className="relative my-8 h-64 md:h-96 w-full overflow-hidden rounded-lg">
-        <Image
-          src={article.imageUrl}
-          alt={article.title}
-          fill
-          className="object-cover"
-          sizes="100vw"
-          priority
-          data-ai-hint={article.imageHint}
-        />
-      </div>
+      
+      {!isEmbed && (
+        <div className="relative my-8 h-64 md:h-96 w-full overflow-hidden rounded-lg">
+            <Image
+                src={article.imageUrl}
+                alt={article.title}
+                fill
+                className="object-cover"
+                sizes="100vw"
+                priority
+                data-ai-hint={article.imageHint}
+            />
+        </div>
+      )}
+
       <div
-        className="prose prose-invert mx-auto max-w-full prose-headings:font-headline prose-a:text-foreground/80 prose-strong:text-foreground"
+        className={cn(
+            'mt-8',
+            isEmbed 
+                ? 'flex justify-center' 
+                : 'prose prose-invert mx-auto max-w-full prose-headings:font-headline prose-a:text-foreground/80 prose-strong:text-foreground'
+        )}
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
     </article>
