@@ -213,7 +213,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
         open={!!lightboxData} 
         onOpenChange={(isOpen) => !isOpen && setLightboxData(null)}
       >
-        <DialogContent className="max-w-7xl w-full max-h-[90vh] p-2 bg-transparent border-0 shadow-none flex items-center justify-center">
+        <DialogContent className="max-w-7xl w-full h-full max-h-[90vh] p-2 bg-transparent border-0 shadow-none flex items-center justify-center">
           {lightboxData && (
             <Carousel
               opts={{

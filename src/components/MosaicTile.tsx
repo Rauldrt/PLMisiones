@@ -54,14 +54,17 @@ export function MosaicTile({ item, onClick }: MosaicTileProps) {
     animationDuration: `${baseDuration}ms`
   };
 
+  const colSpanClass = `md:col-span-${item.colSpan}`;
+  const rowSpanClass = `md:row-span-${item.rowSpan}`;
+  
   return (
     <div
       onClick={() => onClick(item, currentIndex)}
-      className="relative overflow-hidden rounded-3xl group cursor-pointer"
-      style={{
-        gridColumn: `span ${item.colSpan}`,
-        gridRow: `span ${item.rowSpan}`,
-      }}
+      className={cn(
+        'relative overflow-hidden rounded-3xl group cursor-pointer',
+        `md:col-span-${item.colSpan}`,
+        `md:row-span-${item.rowSpan}`
+      )}
     >
       {item.imageUrls.map((url, index) => (
         <Image
@@ -74,7 +77,7 @@ export function MosaicTile({ item, onClick }: MosaicTileProps) {
             getAnimationClass(index === currentIndex)
           )}
           style={animationDurationStyle}
-          sizes={`(max-width: 768px) ${item.colSpan * 50}vw, ${item.colSpan * 25}vw`}
+          sizes={`(max-width: 768px) 100vw, ${item.colSpan * 25}vw`}
           data-ai-hint={item.imageHints ? item.imageHints[index] : ''}
           priority={index === 0}
         />

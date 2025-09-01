@@ -8,6 +8,14 @@ export default {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    // These classes are dynamically generated for the mosaic tiles,
+    // so we need to tell Tailwind to keep them.
+    'md:col-span-1',
+    'md:col-span-2',
+    'md:row-span-1',
+    'md:row-span-2',
+  ],
   theme: {
     extend: {
       fontFamily: {
