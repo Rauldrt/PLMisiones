@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useTransition, useCallback } from 'react';
 import Image from 'next/image';
-import { getNews } from '@/lib/data';
+import { getNewsAction } from '@/actions/data';
 import { saveNews } from '@/actions/admin';
 import type { NewsArticle } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -30,7 +30,7 @@ export default function ManageNewsPage() {
 
   const fetchNews = useCallback(async () => {
     setIsLoading(true);
-    const newsData = await getNews();
+    const newsData = await getNewsAction();
     setArticles(newsData);
     setIsLoading(false);
   }, []);

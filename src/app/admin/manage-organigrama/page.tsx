@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useTransition } from 'react';
-import { getOrganigrama } from '@/lib/data';
+import { getOrganigramaAction } from '@/actions/data';
 import { saveOrganigrama } from '@/actions/admin';
 import type { OrganigramaMember } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -20,7 +20,7 @@ export default function ManageOrganigramaPage() {
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const data = await getOrganigrama();
+      const data = await getOrganigramaAction();
       setItems(data);
       setIsLoading(false);
     }

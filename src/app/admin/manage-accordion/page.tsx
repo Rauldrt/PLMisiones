@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useTransition } from 'react';
-import { getAccordionItems } from '@/lib/data';
+import { getAccordionItemsAction } from '@/actions/data';
 import { saveAccordion } from '@/actions/admin';
 import type { AccordionItem } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -20,7 +20,7 @@ export default function ManageAccordionPage() {
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const data = await getAccordionItems();
+      const data = await getAccordionItemsAction();
       setItems(data);
       setIsLoading(false);
     }

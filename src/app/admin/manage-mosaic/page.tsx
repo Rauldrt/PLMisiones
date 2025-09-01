@@ -1,7 +1,6 @@
-
 'use client';
 import { useState, useEffect, useTransition } from 'react';
-import { getMosaicItems } from '@/lib/data';
+import { getMosaicItemsAction } from '@/actions/data';
 import { saveMosaic } from '@/actions/admin';
 import type { MosaicItem } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -21,7 +20,7 @@ export default function ManageMosaicPage() {
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const data = await getMosaicItems();
+      const data = await getMosaicItemsAction();
       setItems(data);
       setIsLoading(false);
     }

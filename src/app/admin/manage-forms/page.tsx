@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useTransition } from 'react';
-import { getFormDefinition } from '@/lib/data';
+import { getFormDefinitionAction } from '@/actions/data';
 import { saveFormDefinition } from '@/actions/admin';
 import type { FormDefinition, FormFieldDefinition } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -28,7 +28,7 @@ function FormEditor({ formName }: FormEditorProps) {
     useEffect(() => {
         async function fetchData() {
           setIsLoading(true);
-          const data = await getFormDefinition(formName);
+          const data = await getFormDefinitionAction(formName);
           setDefinition(data);
           setIsLoading(false);
         }

@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { getFormSubmissions } from '@/lib/data';
+import { getFormSubmissionsAction } from '@/actions/data';
 import type { FormSubmission } from '@/lib/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -14,9 +14,9 @@ export default function ViewSubmissionsPage() {
     async function fetchData() {
       setIsLoading(true);
       const [afiliacionData, contactoData, fiscalesData] = await Promise.all([
-        getFormSubmissions('afiliacion'),
-        getFormSubmissions('contacto'),
-        getFormSubmissions('fiscales'),
+        getFormSubmissionsAction('afiliacion'),
+        getFormSubmissionsAction('contacto'),
+        getFormSubmissionsAction('fiscales'),
       ]);
       setSubmissions({ afiliacion: afiliacionData, contacto: contactoData, fiscales: fiscalesData });
       setIsLoading(false);

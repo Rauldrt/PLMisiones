@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useTransition } from 'react';
-import { getBannerSlides } from '@/lib/data';
+import { getBannerSlidesAction } from '@/actions/data';
 import { saveBanner } from '@/actions/admin';
 import type { BannerSlide } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -19,7 +19,7 @@ export default function ManageBannerPage() {
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const data = await getBannerSlides();
+      const data = await getBannerSlidesAction();
       setSlides(data);
       setIsLoading(false);
     }

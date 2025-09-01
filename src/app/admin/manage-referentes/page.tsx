@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useTransition } from 'react';
-import { getReferentes } from '@/lib/data';
+import { getReferentesAction } from '@/actions/data';
 import { saveReferentes } from '@/actions/admin';
 import type { Referente } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -21,7 +21,7 @@ export default function ManageReferentesPage() {
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const data = await getReferentes();
+      const data = await getReferentesAction();
       setItems(data);
       setIsLoading(false);
     }
