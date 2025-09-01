@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -12,11 +12,11 @@ import {
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import type { BannerSlide, MosaicItem, AccordionItem, NewsArticle, Referente, Notification } from '@/lib/types';
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
-import { MosaicLightbox } from './MosaicLightbox';
 
 
 interface HomepageClientProps {
@@ -26,6 +26,13 @@ interface HomepageClientProps {
     newsArticles: NewsArticle[];
     referentes: Referente[];
     notification: Notification;
+}
+
+interface LightboxData {
+    images: string[];
+    imageHints?: string[];
+    title: string;
+    startIndex: number;
 }
 
 const organigramaData = [
@@ -100,27 +107,16 @@ function OrganigramaSection() {
 
 
 export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, newsArticles, referentes, notification }: HomepageClientProps) {
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [lightboxImages, setLightboxImages] = useState<string[]>([]);
-  const [lightboxImageHints, setLightboxImageHints] = useState<string[] | undefined>([]);
-  const [lightboxTitle, setLightboxTitle] = useState('');
+    const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
 
-  const handleTileClick = (item: MosaicItem) => {
-    setLightboxImages(item.imageUrls);
-    setLightboxImageHints(item.imageHints);
-    setLightboxTitle(item.title);
-    setLightboxOpen(true);
-  };
-
-  const closeLightbox = () => {
-    setLightboxOpen(false);
-    // Clear data after a short delay to allow for the closing animation
-    setTimeout(() => {
-        setLightboxImages([]);
-        setLightboxImageHints(undefined);
-        setLightboxTitle('');
-    }, 300);
-  };
+    const handleTileClick = (item: MosaicItem, startIndex: number) => {
+        setLightboxData({ 
+            images: item.imageUrls,
+            imageHints: item.imageHints,
+            title: item.title,
+            startIndex,
+        });
+    };
 
   return (
     <div className="flex flex-col overflow-x-hidden">
@@ -133,7 +129,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:grid-rows-2 h-[500px]">
             {mosaicItems.map((item) => (
-              <MosaicTile key={item.id} item={item} onClick={() => handleTileClick(item)} />
+              <MosaicTile key={item.id} item={item} onClick={handleTileClick} />
             ))}
           </div>
         </div>
@@ -183,7 +179,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                       fill
                       className="object-cover"
                       data-ai-hint={article.imageHint}
-                    ></Image>
+                    />
                   </div>
                   <div className="p-6">
                     <CardTitle className="font-headline text-xl leading-tight">
@@ -213,14 +209,43 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
         </div>
       </section>
 
-      {lightboxOpen && (
-        <MosaicLightbox
-          images={lightboxImages}
-          imageHints={lightboxImageHints}
-          title={lightboxTitle}
-          onClose={closeLightbox}
-        />
-      )}
+      <Dialog 
+        open={!!lightboxData} 
+        onOpenChange={(isOpen) => !isOpen && setLightboxData(null)}
+      >
+        <DialogContent className="max-w-7xl w-full h-full max-h-[90vh] p-2 bg-transparent border-0 shadow-none flex items-center justify-center">
+          {lightboxData && (
+            <Carousel
+              opts={{
+                  loop: lightboxData.images.length > 1,
+                  startIndex: lightboxData.startIndex,
+              }}
+              className="w-full h-full"
+            >
+              <CarouselContent className="h-full">
+                  {lightboxData.images.map((imageSrc, index) => (
+                      <CarouselItem key={index} className="flex items-center justify-center">
+                          <Image
+                              src={imageSrc}
+                              alt={`${lightboxData.title} - Imagen ${index + 1}`}
+                              width={1600}
+                              height={900}
+                              className="rounded-lg object-contain w-auto h-auto max-w-full max-h-full"
+                              data-ai-hint={lightboxData.imageHints ? lightboxData.imageHints[index] : ''}
+                          />
+                      </CarouselItem>
+                  ))}
+              </CarouselContent>
+              {lightboxData.images.length > 1 && (
+                  <>
+                      <CarouselPrevious className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 text-white bg-white/10 hover:bg-white/20 border-none" />
+                      <CarouselNext className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-white bg-white/10 hover:bg-white/20 border-none" />
+                  </>
+              )}
+            </Carousel>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

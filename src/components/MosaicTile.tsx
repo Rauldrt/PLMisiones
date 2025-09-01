@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 
 interface MosaicTileProps {
   item: MosaicItem;
-  onClick: () => void;
+  onClick: (item: MosaicItem, startIndex: number) => void;
 }
 
 const animationTypes = ['fade', 'slide-left', 'slide-right', 'zoom'];
@@ -56,7 +56,7 @@ export function MosaicTile({ item, onClick }: MosaicTileProps) {
 
   return (
     <div
-      onClick={onClick}
+      onClick={() => onClick(item, currentIndex)}
       className="relative overflow-hidden rounded-3xl group cursor-pointer"
       style={{
         gridColumn: `span ${item.colSpan}`,
