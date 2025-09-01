@@ -1,3 +1,4 @@
+
 'use client';
 import {
   Newspaper,
@@ -12,7 +13,7 @@ import {
   ChevronRight,
   Menu,
   X,
-  PlusCircle,
+  Plus,
   Trash2,
   Edit,
   Save,
@@ -53,7 +54,7 @@ export const Icons = {
   ChevronRight,
   Menu,
   Close: X,
-  Plus: PlusCircle,
+  Plus: Plus,
   Trash: Trash2,
   Edit,
   Save,
