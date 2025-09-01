@@ -1,0 +1,27 @@
+
+[
+  {
+    "id": "1",
+    "name": "Juan Pérez",
+    "role": "Candidato a Gobernador",
+    "imageUrl": "https://picsum.photos/400/400?random=101",
+    "imageHint": "man portrait serious",
+    "bio": "Emprendedor y firme defensor de las ideas de la libertad. Con más de 20 años de experiencia en el sector privado, busca aplicar principios de eficiencia y austeridad en la gestión pública."
+  },
+  {
+    "id": "2",
+    "name": "María Gómez",
+    "role": "Candidata a Vicegobernadora",
+    "imageUrl": "https://picsum.photos/400/400?random=102",
+    "imageHint": "woman portrait smiling",
+    "bio": "Abogada especialista en derecho constitucional. Su principal objetivo es garantizar el respeto a la propiedad privada y reducir la burocracia que ahoga a los ciudadanos y empresas."
+  },
+  {
+    "id": "3",
+    "name": "Carlos Rodriguez",
+    "role": "Candidato a Diputado Nacional",
+    "imageUrl": "https://picsum.photos/400/400?random=103",
+    "imageHint": "person portrait professional",
+    "bio": "Docente y analista político. Trabaja en una profunda reforma educativa para Misiones, basada en la libertad de elección, la competencia y la excelencia académica."
+  }
+]

@@ -9,7 +9,8 @@ import {
     getAccordionItems,
     getReferentes,
     getOrganigrama,
-    getFormSubmissions
+    getFormSubmissions,
+    getCandidates
 } from '@/lib/data';
 
 // These actions are safe to call from client components.
@@ -40,6 +41,10 @@ export async function getAccordionItemsAction() {
 
 export async function getReferentesAction() {
     return getReferentes();
+}
+
+export async function getCandidatesAction() {
+    return getCandidates();
 }
 
 export async function getOrganigramaAction() {

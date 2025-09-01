@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import type { NewsArticle, BannerSlide, MosaicItem, AccordionItem, PageHeader, Referente, SocialLink, FormDefinition, FormSubmission, Notification, OrganigramaMember } from './types';
+import type { NewsArticle, BannerSlide, MosaicItem, AccordionItem, PageHeader, Referente, SocialLink, FormDefinition, FormSubmission, Notification, OrganigramaMember, Candidate } from './types';
 
 // Helper function to read and parse a JSON file
 async function readJsonFile<T>(filePath: string): Promise<T> {
@@ -42,6 +42,7 @@ export const getMosaicItems = () => readJsonFile<MosaicItem[]>('src/data/mosaic.
 export const getAccordionItems = () => readJsonFile<AccordionItem[]>('src/data/accordion.json');
 export const getPageHeaders = () => readJsonFile<PageHeader[]>('src/data/page-headers.json');
 export const getReferentes = () => readJsonFile<Referente[]>('src/data/referentes.json');
+export const getCandidates = () => readJsonFile<Candidate[]>('src/data/candidates.json');
 export const getSocialLinks = () => readJsonFile<SocialLink[]>('src/data/social-links.json');
 export const getNotification = () => readJsonFile<Notification>('src/data/notification.json');
 export const getOrganigrama = () => readJsonFile<OrganigramaMember[]>('src/data/organigrama.json');

@@ -9,15 +9,15 @@ import {
   type CarouselApi,
 } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
-import type { Referente } from '@/lib/types';
+import type { Candidate } from '@/lib/types';
 import { ExpandingCandidateCard } from './ExpandingCandidateCard';
 import { cn } from '@/lib/utils';
 
 interface BannerContentTabsProps {
-    referentes: Referente[];
+    candidates: Candidate[];
 }
 
-export function BannerContentTabs({ referentes }: BannerContentTabsProps) {
+export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
     const [expandedCandidate, setExpandedCandidate] = useState<string | null>(null);
     const [api, setApi] = React.useState<CarouselApi>()
 
@@ -45,16 +45,16 @@ export function BannerContentTabs({ referentes }: BannerContentTabsProps) {
        setExpandedCandidate(expandedCandidate === id ? null : id);
     };
     
-    const candidateCards = referentes.map((referente, index) => (
+    const candidateCards = candidates.map((candidate, index) => (
          <ExpandingCandidateCard 
-            key={referente.id}
-            referente={referente}
-            isExpanded={expandedCandidate === referente.id}
-            onClick={() => handleCardClick(referente.id, index)}
+            key={candidate.id}
+            candidate={candidate}
+            isExpanded={expandedCandidate === candidate.id}
+            onClick={() => handleCardClick(candidate.id, index)}
         />
     ));
 
-    if (!referentes || referentes.length === 0) {
+    if (!candidates || candidates.length === 0) {
         return null;
     }
 
@@ -63,18 +63,18 @@ export function BannerContentTabs({ referentes }: BannerContentTabsProps) {
             <div className="md:hidden">
                  <Carousel setApi={setApi} opts={{ align: "center", loop: false }}>
                     <CarouselContent>
-                        {referentes.map((referente, index) => (
+                        {candidates.map((candidate, index) => (
                             <CarouselItem 
-                                key={referente.id} 
+                                key={candidate.id} 
                                 className={cn(
                                     'transition-all duration-500 ease-in-out p-1',
-                                    expandedCandidate ? (expandedCandidate === referente.id ? 'basis-11/12' : 'basis-0 opacity-0') : 'basis-1/2'
+                                    expandedCandidate ? (expandedCandidate === candidate.id ? 'basis-11/12' : 'basis-0 opacity-0') : 'basis-1/2'
                                 )}
                             >
                                 <ExpandingCandidateCard 
-                                    referente={referente}
-                                    isExpanded={expandedCandidate === referente.id}
-                                    onClick={() => handleCardClick(referente.id, index)}
+                                    candidate={candidate}
+                                    isExpanded={expandedCandidate === candidate.id}
+                                    onClick={() => handleCardClick(candidate.id, index)}
                                 />
                             </CarouselItem>
                         ))}

@@ -2,16 +2,16 @@
 'use client';
 
 import Image from 'next/image';
-import type { Referente } from '@/lib/types';
+import type { Candidate } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
 interface ExpandingCandidateCardProps {
-  referente: Referente;
+  candidate: Candidate;
   isExpanded: boolean;
   onClick: () => void;
 }
 
-export function ExpandingCandidateCard({ referente, isExpanded, onClick }: ExpandingCandidateCardProps) {
+export function ExpandingCandidateCard({ candidate, isExpanded, onClick }: ExpandingCandidateCardProps) {
   return (
     <div
       onClick={onClick}
@@ -31,12 +31,12 @@ export function ExpandingCandidateCard({ referente, isExpanded, onClick }: Expan
         )}
       >
         <Image
-          src={referente.imageUrl}
-          alt={referente.name}
+          src={candidate.imageUrl}
+          alt={candidate.name}
           fill
           className="object-cover transition-transform duration-500"
           sizes="(max-width: 768px) 50vw, 33vw"
-          data-ai-hint={referente.imageHint}
+          data-ai-hint={candidate.imageHint}
         />
       </div>
       
@@ -47,9 +47,9 @@ export function ExpandingCandidateCard({ referente, isExpanded, onClick }: Expan
         )}
       >
         <h3 className="font-headline text-xl font-semibold drop-shadow-md">
-          {referente.name}
+          {candidate.name}
         </h3>
-        <p className="text-sm font-medium text-white/80 drop-shadow-md">{referente.role}</p>
+        <p className="text-sm font-medium text-white/80 drop-shadow-md">{candidate.role}</p>
       </div>
       
       <div 
@@ -58,9 +58,9 @@ export function ExpandingCandidateCard({ referente, isExpanded, onClick }: Expan
           isExpanded ? "opacity-100 delay-200" : "opacity-0 pointer-events-none"
         )}
       >
-        <h3 className="font-headline text-2xl font-bold">{referente.name}</h3>
-        <p className="text-base font-medium text-foreground/80 mt-1">{referente.role}</p>
-        <p className="text-sm text-foreground/80 mt-4 line-clamp-3">{referente.bio}</p>
+        <h3 className="font-headline text-2xl font-bold">{candidate.name}</h3>
+        <p className="text-base font-medium text-foreground/80 mt-1">{candidate.role}</p>
+        <p className="text-sm text-foreground/80 mt-4 line-clamp-3">{candidate.bio}</p>
       </div>
     </div>
   );

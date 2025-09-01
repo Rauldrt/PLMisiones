@@ -50,6 +50,8 @@ export interface Referente {
   bio: string;
 }
 
+export interface Candidate extends Referente {}
+
 export interface SocialLink {
   id: string;
   name: 'Facebook' | 'Twitter' | 'Instagram' | 'YouTube';

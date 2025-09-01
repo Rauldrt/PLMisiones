@@ -2,7 +2,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { revalidatePath } from 'next/cache';
-import type { NewsArticle, BannerSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember } from '@/lib/types';
+import type { NewsArticle, BannerSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate } from '@/lib/types';
 import { getNews } from '@/lib/data';
 
 async function writeJsonFile(filePath: string, data: any) {
@@ -43,6 +43,12 @@ export async function saveReferentes(items: Referente[]) {
     revalidatePath('/');
     revalidatePath('/referentes');
     return { success: true, message: 'Referentes guardados con éxito.' };
+}
+
+export async function saveCandidates(items: Candidate[]) {
+    await writeJsonFile('src/data/candidates.json', items);
+    revalidatePath('/');
+    return { success: true, message: 'Candidatos guardados con éxito.' };
 }
 
 export async function saveFormDefinition(formName: string, definition: FormDefinition) {

@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import type { BannerSlide, MosaicItem, AccordionItem, NewsArticle, Referente, Notification, OrganigramaMember } from '@/lib/types';
+import type { BannerSlide, MosaicItem, AccordionItem, NewsArticle, Candidate, Notification, OrganigramaMember } from '@/lib/types';
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
 
@@ -24,7 +24,7 @@ interface HomepageClientProps {
     mosaicItems: MosaicItem[];
     accordionItems: AccordionItem[];
     newsArticles: NewsArticle[];
-    referentes: Referente[];
+    candidates: Candidate[];
     notification: Notification;
     organigramaData: OrganigramaMember[];
 }
@@ -110,7 +110,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
 }
 
 
-export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, newsArticles, referentes, notification, organigramaData }: HomepageClientProps) {
+export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, newsArticles, candidates, notification, organigramaData }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
 
     const handleTileClick = (item: MosaicItem, startIndex: number) => {
@@ -124,7 +124,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
 
   return (
     <div className="flex flex-col overflow-x-hidden">
-      <Banner bannerSlides={bannerSlides} referentes={referentes} notification={notification} />
+      <Banner bannerSlides={bannerSlides} candidates={candidates} notification={notification} />
 
       <OrganigramaSection organigramaData={organigramaData} />
 
