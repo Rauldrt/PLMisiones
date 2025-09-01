@@ -55,7 +55,7 @@ export function MosaicTile({ item }: MosaicTileProps) {
 
   return (
     <div
-      className="relative overflow-hidden rounded-lg group"
+      className="relative overflow-hidden rounded-2xl group"
       style={{
         gridColumn: `span ${item.colSpan}`,
         gridRow: `span ${item.rowSpan}`,
