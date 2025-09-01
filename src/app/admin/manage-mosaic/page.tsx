@@ -1,10 +1,77 @@
+
 'use client';
-// This is a placeholder for the full Mosaic management UI.
-// A complete implementation would be similar to the Banner management page,
-// allowing users to edit each mosaic item's properties.
+import { useState, useEffect, useTransition } from 'react';
+import { getMosaicItems } from '@/lib/data';
+import { saveMosaic } from '@/actions/admin';
+import type { MosaicItem } from '@/lib/types';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Icons } from '@/components/icons';
+import { useToast } from '@/hooks/use-toast';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function ManageMosaicPage() {
+  const [items, setItems] = useState<MosaicItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, startSavingTransition] = useTransition();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      const data = await getMosaicItems();
+      setItems(data);
+      setIsLoading(false);
+    }
+    fetchData();
+  }, []);
+
+  const handleSave = () => {
+    startSavingTransition(async () => {
+      const result = await saveMosaic(items);
+      if (result.success) {
+        toast({ title: 'Éxito', description: result.message });
+      } else {
+        toast({ variant: 'destructive', title: 'Error', description: 'No se pudo guardar el mosaico.' });
+      }
+    });
+  };
+
+  const handleFieldChange = <T extends keyof MosaicItem>(index: number, field: T, value: MosaicItem[T]) => {
+    const newItems = [...items];
+    newItems[index] = { ...newItems[index], [field]: value };
+    setItems(newItems);
+  };
+  
+  const handleImageChange = (itemIndex: number, imageIndex: number, value: string) => {
+    const newItems = [...items];
+    const newImageUrls = [...newItems[itemIndex].imageUrls];
+    newImageUrls[imageIndex] = value;
+    handleFieldChange(itemIndex, 'imageUrls', newImageUrls);
+  };
+
+  const addImage = (itemIndex: number) => {
+    const newItems = [...items];
+    const newImageUrls = [...newItems[itemIndex].imageUrls, `https://picsum.photos/600/600?random=${new Date().getTime()}`];
+    handleFieldChange(itemIndex, 'imageUrls', newImageUrls);
+  };
+
+  const removeImage = (itemIndex: number, imageIndex: number) => {
+    const newItems = [...items];
+    const newImageUrls = newItems[itemIndex].imageUrls.filter((_, i) => i !== imageIndex);
+    handleFieldChange(itemIndex, 'imageUrls', newImageUrls);
+  };
+
+  const addItem = () => {
+    setItems([...items, { id: new Date().getTime().toString(), title: 'Nuevo Mosaico', imageUrls: ['https://picsum.photos/600/600'], imageHints: [], colSpan: 1, rowSpan: 1 }]);
+  };
+  
+  const removeItem = (id: string) => {
+    setItems(items.filter(item => item.id !== id));
+  };
+
   return (
     <div className="space-y-8">
       <div>
@@ -14,14 +81,67 @@ export default function ManageMosaicPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Configuración del Mosaico</CardTitle>
-          <CardDescription>
-            Funcionalidad en desarrollo. En una versión futura, aquí podrás editar las imágenes, títulos y tamaños de cada
-            elemento del mosaico.
-          </CardDescription>
+          <CardTitle>Items del Mosaico</CardTitle>
+          <CardDescription>Edita los campos de cada item. Los cambios se guardan todos juntos.</CardDescription>
         </CardHeader>
-        <CardContent>
-          <p>El manejo del mosaico se implementará próximamente.</p>
+        <CardContent className="space-y-6">
+          {isLoading ? <p>Cargando...</p> : items.map((item, index) => (
+            <div key={item.id} className="rounded-lg border p-4 space-y-4 relative">
+              <div className="flex justify-between items-center">
+                <h3 className="font-semibold font-headline">Mosaico {index + 1}</h3>
+                <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
+              </div>
+              
+              <div className="space-y-1">
+                <Label htmlFor={`title-${index}`}>Título</Label>
+                <Input id={`title-${index}`} value={item.title} onChange={e => handleFieldChange(index, 'title', e.target.value)} />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                    <Label>Ancho (Columnas)</Label>
+                     <Select value={String(item.colSpan)} onValueChange={(v) => handleFieldChange(index, 'colSpan', Number(v))}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="1">1 Columna</SelectItem>
+                            <SelectItem value="2">2 Columnas</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                 <div className="space-y-1">
+                    <Label>Alto (Filas)</Label>
+                     <Select value={String(item.rowSpan)} onValueChange={(v) => handleFieldChange(index, 'rowSpan', Number(v))}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="1">1 Fila</SelectItem>
+                            <SelectItem value="2">2 Filas</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Imágenes</Label>
+                {item.imageUrls.map((url, imgIndex) => (
+                    <div key={imgIndex} className="flex items-center gap-2">
+                        <Input value={url} onChange={e => handleImageChange(index, imgIndex, e.target.value)} />
+                        <Button variant="ghost" size="icon" onClick={() => removeImage(index, imgIndex)}>
+                            <Icons.Trash className="w-4 h-4 text-destructive"/>
+                        </Button>
+                    </div>
+                ))}
+                <Button variant="outline" size="sm" onClick={() => addImage(index)}>
+                    <Icons.Plus className="mr-2 h-4 w-4" /> Agregar Imagen
+                </Button>
+              </div>
+            </div>
+          ))}
+          <div className="flex justify-between items-center pt-4">
+             <Button variant="outline" onClick={addItem}><Icons.Plus className="mr-2 h-4 w-4"/> Agregar Mosaico</Button>
+            <Button onClick={handleSave} disabled={isSaving}>
+                {isSaving ? 'Guardando...' : 'Guardar Cambios'}
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>
