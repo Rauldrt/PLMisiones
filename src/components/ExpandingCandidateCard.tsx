@@ -16,7 +16,7 @@ export function ExpandingCandidateCard({ referente, isExpanded, onClick }: Expan
     <div
       onClick={onClick}
       className={cn(
-        'relative w-full cursor-pointer overflow-hidden rounded-lg transition-all duration-500 ease-in-out',
+        'group relative w-full cursor-pointer overflow-hidden rounded-lg transition-all duration-500 ease-in-out',
         isExpanded 
           ? 'h-[400px] bg-card border border-border' 
           : 'h-[280px] bg-transparent border-none'
@@ -27,14 +27,14 @@ export function ExpandingCandidateCard({ referente, isExpanded, onClick }: Expan
           'absolute transition-all duration-500 ease-in-out overflow-hidden',
           isExpanded
             ? 'w-full h-64 top-0 left-0 rounded-b-none rounded-t-lg'
-            : 'w-36 h-36 top-[60px] left-1/2 -translate-x-1/2 rounded-full'
+            : 'w-36 h-36 top-[60px] left-1/2 -translate-x-1/2 rounded-full group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-black/50'
         )}
       >
         <Image
           src={referente.imageUrl}
           alt={referente.name}
           fill
-          className="object-cover"
+          className="object-cover transition-transform duration-500"
           sizes="(max-width: 768px) 50vw, 33vw"
           data-ai-hint={referente.imageHint}
         />
