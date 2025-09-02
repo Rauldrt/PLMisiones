@@ -9,7 +9,6 @@ import {
   CarouselItem,
   type CarouselApi,
 } from '@/components/ui/carousel';
-import Autoplay from "embla-carousel-autoplay"
 import { Button } from '@/components/ui/button';
 import type { Candidate } from '@/lib/types';
 import { ExpandingCandidateCard } from './ExpandingCandidateCard';
@@ -22,9 +21,6 @@ interface BannerContentTabsProps {
 export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
     const [expandedCandidate, setExpandedCandidate] = useState<string | null>(null);
     const [api, setApi] = React.useState<CarouselApi>()
-    const autoplayPlugin = React.useRef(
-        Autoplay({ delay: 4000, stopOnInteraction: true, stopOnMouseEnter: true })
-    );
 
     useEffect(() => {
         if (!api) return;
@@ -36,16 +32,6 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
         api.on("select", onSelect);
         return () => { api.off("select", onSelect) };
     }, [api]);
-    
-    useEffect(() => {
-      if (expandedCandidate) {
-        autoplayPlugin.current.stop();
-      } else {
-        if (api?.plugins()?.autoplay) {
-            autoplayPlugin.current.play();
-        }
-      }
-    }, [expandedCandidate, api])
 
 
     const handleCardClick = (id: string, index: number) => {
@@ -74,7 +60,6 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                     loop: true,
                     slidesToScroll: 1,
                 }}
-                plugins={[autoplayPlugin.current]}
                 className="w-full"
             >
                 <CarouselContent className="-ml-2 md:-ml-4">
