@@ -1,3 +1,4 @@
+
 'use client';
 import Link from 'next/link';
 import { getSocialLinksAction, getFormDefinitionAction } from '@/actions/data';
@@ -89,7 +90,7 @@ export function Footer() {
                 <span className="font-headline text-lg font-bold">Partido Libertario Misiones</span>
             </div>
             <div className="text-center text-sm text-foreground/60 sm:text-right">
-                <p>&copy; {new Date().getFullYear()} Partido Libertario Misiones. Todos los derechos reservados.</p>
+                <p>&copy; {new Date().getFullYear()} Partido Libertario Misiones. Todos los derechos reservados. | <Link href="/admin" className="hover:text-accent">Admin</Link></p>
                 <p className="mt-1">
                     Desarrollado con <span className="text-red-500">♥</span> por la libertad.
                 </p>
