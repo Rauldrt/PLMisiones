@@ -23,7 +23,6 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
     const [expandedCandidate, setExpandedCandidate] = useState<Candidate | null>(null);
     const [isAnimating, setIsAnimating] = useState(false);
     
-    // Almacenar la posición de la tarjeta clickeada
     const [cardPosition, setCardPosition] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
 
     const handleCardClick = (candidate: Candidate, e: React.MouseEvent<HTMLDivElement>) => {
@@ -45,10 +44,10 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
         if (!expandedCandidate) return;
         
         setIsAnimating(false);
-        // Esperar a que la animación de cierre termine para limpiar el candidato
         setTimeout(() => {
             setExpandedCandidate(null);
-        }, 500); // Coincide con la duración de la transición
+            setCardPosition(null);
+        }, 500); 
     }
 
     if (!candidates || candidates.length === 0) {
@@ -56,7 +55,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
     }
 
     return (
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative min-h-[380px] flex flex-col justify-end">
+        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative min-h-[320px] flex flex-col justify-end">
              {/* Carousel Layer */}
              <div className={cn("transition-opacity duration-300", expandedCandidate ? 'opacity-0' : 'opacity-100')}>
                 <Carousel 
@@ -73,11 +72,13 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                                 key={candidate.id} 
                                 className="pl-2 md:pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
                             >
-                                <ExpandingCandidateCard 
-                                    candidate={candidate}
-                                    isExpanded={false}
-                                    onClick={(e) => handleCardClick(candidate, e)}
-                                />
+                                <div onClick={(e) => handleCardClick(candidate, e)}>
+                                    <ExpandingCandidateCard 
+                                        candidate={candidate}
+                                        isExpanded={false}
+                                        onClick={() => {}}
+                                    />
+                                </div>
                             </CarouselItem>
                         ))}
                     </CarouselContent>
@@ -103,7 +104,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                             '--width': `${cardPosition.width}px`,
                             '--height': `${cardPosition.height}px`,
                         } as React.CSSProperties}
-                        onClick={(e) => e.stopPropagation()} // Evita que el clic en la tarjeta cierre el modal
+                        onClick={(e) => e.stopPropagation()} 
                     >
                          <ExpandingCandidateCard
                             candidate={expandedCandidate}
