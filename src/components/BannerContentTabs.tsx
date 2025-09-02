@@ -24,14 +24,16 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
 
     useEffect(() => {
         if (!api) return;
-        
-        const onSelect = () => {
-            setExpandedCandidate(null); // Collapse any expanded card on manual scroll
+
+        const onScroll = () => {
+            if (expandedCandidate) {
+                setExpandedCandidate(null);
+            }
         };
 
-        api.on("select", onSelect);
-        return () => { api.off("select", onSelect) };
-    }, [api]);
+        api.on("scroll", onScroll);
+        return () => { api.off("scroll", onScroll) };
+    }, [api, expandedCandidate]);
 
 
     const handleCardClick = (id: string, index: number) => {
