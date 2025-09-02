@@ -45,7 +45,6 @@ const Logo = (props: SVGProps<SVGSVGElement>) => (
 
 
 export const Icons = {
-  Logo,
   News: Newspaper,
   Team: Users,
   Join: UserPlus,
@@ -79,6 +78,7 @@ export const Icons = {
   Location: MapPin,
   Notification: Bell,
   Gallery: GalleryIcon,
+  Logo: Logo,
 };
 
 export type IconName = keyof typeof Icons;
