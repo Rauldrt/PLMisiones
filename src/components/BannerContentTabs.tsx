@@ -21,20 +21,46 @@ interface BannerContentTabsProps {
 export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
     const [api, setApi] = useState<CarouselApi>();
     const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
-    const [expandedCandidate, setExpandedCandidate] = useState<Candidate | null>(null);
+    const [isExpanded, setIsExpanded] = useState(false);
 
     const handleCardClick = (candidate: Candidate) => {
-        if (expandedCandidate?.id === candidate.id) {
-            setExpandedCandidate(null);
+        if (selectedCandidate?.id === candidate.id && isExpanded) {
+            setIsExpanded(false);
         } else {
             setSelectedCandidate(candidate);
-            setTimeout(() => setExpandedCandidate(candidate), 50); // Allow state to update for animation
+            // Wait for state to update before scrolling, then expand
+            setTimeout(() => {
+                const candidateIndex = candidates.findIndex(c => c.id === candidate.id);
+                if (api && candidateIndex !== -1) {
+                    api.scrollTo(candidateIndex);
+                }
+                setIsExpanded(true);
+            }, 50);
         }
     };
     
     const handleClose = () => {
-        setExpandedCandidate(null);
+        setIsExpanded(false);
     }
+
+    // Effect to handle closing when carousel is scrolled manually
+    useEffect(() => {
+        if (!api) return;
+
+        const onScroll = () => {
+            if (isExpanded) {
+                // If the carousel is scrolled by any means other than our click handler, close the card
+                // This is a simple way to handle manual drags/swipes
+                 setIsExpanded(false);
+            }
+        };
+
+        api.on("scroll", onScroll);
+        return () => {
+            api.off("scroll", onScroll);
+        };
+    }, [api, isExpanded]);
+
 
     if (!candidates || candidates.length === 0) {
         return null;
@@ -42,11 +68,11 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
 
     return (
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative min-h-[380px] flex flex-col justify-end">
-            {/* Carousel Layer */}
+             {/* Carousel Layer */}
              <div 
                 className={cn(
                     "transition-opacity duration-300",
-                    expandedCandidate ? "opacity-0 pointer-events-none" : "opacity-100"
+                    isExpanded ? "opacity-0 pointer-events-none" : "opacity-100"
                 )}
             >
                 <Carousel 
@@ -74,34 +100,29 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                 </Carousel>
             </div>
             
-            {/* Expanded Card Layer */}
+            {/* Expanded Card Layer - It's always here, just hidden/visible */}
             {selectedCandidate && (
-                 <div 
+                <div 
                     className={cn(
                         "absolute inset-0 w-full h-full flex items-center justify-center transition-opacity duration-300 z-20",
-                        expandedCandidate ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+                        isExpanded ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
                     )}
                 >
-                    <div className={cn("w-full max-w-md mx-auto transition-all duration-500 ease-in-out",
-                        expandedCandidate ? 'scale-100' : 'scale-50'
-                    )}>
+                    <div className={cn("w-full max-w-xs mx-auto")}>
                         <ExpandingCandidateCard
                             candidate={selectedCandidate}
                             isExpanded={true}
                             onClick={handleClose}
                         />
-                        <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            className={cn(
-                                "absolute -top-2 -right-2 text-white transition-opacity duration-300 z-30",
-                                expandedCandidate ? "opacity-100" : "opacity-0"
-                                )}
-                            onClick={handleClose}
-                        >
-                            <Icons.Close className="w-6 h-6" />
-                        </Button>
                     </div>
+                    <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="absolute top-0 right-0 md:top-2 md:right-2 text-white bg-black/20 hover:bg-black/40 rounded-full z-30"
+                        onClick={handleClose}
+                    >
+                        <Icons.Close className="w-6 h-6" />
+                    </Button>
                 </div>
             )}
         </div>
