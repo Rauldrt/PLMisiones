@@ -50,12 +50,18 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
         }, 500); 
     }
 
+    useEffect(() => {
+        if (expandedCandidate) {
+            setIsAnimating(true);
+        }
+    }, [expandedCandidate]);
+
     if (!candidates || candidates.length === 0) {
         return null;
     }
 
     return (
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative min-h-[280px] flex flex-col justify-end">
+        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative flex flex-col justify-end">
              {/* Carousel Layer */}
              <div className={cn("transition-opacity duration-300", expandedCandidate ? 'opacity-0' : 'opacity-100')}>
                 <Carousel 
