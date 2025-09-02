@@ -33,7 +33,7 @@ export function Banner({ textSlides, backgroundSlides, candidates, notification 
         
         {notification && <NotificationBubble notification={notification} />}
         
-        <div className="relative z-20 h-full w-full flex flex-col justify-between flex-1 pt-8 md:pt-12">
+        <div className="relative z-20 h-full w-full flex flex-col justify-between flex-1 pt-16 md:pt-20">
             <Carousel
                 opts={{ loop: true }}
                 plugins={[Autoplay({ delay: 5000, stopOnInteraction: true })]}
