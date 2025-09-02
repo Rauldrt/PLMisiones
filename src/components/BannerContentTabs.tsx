@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -26,6 +25,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
         if (!api) return;
 
         const onScroll = () => {
+            // When the user manually scrolls, close any expanded card.
             if (expandedCandidate) {
                 setExpandedCandidate(null);
             }
@@ -38,7 +38,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
 
     const handleCardClick = (id: string, index: number) => {
        if (api && api.selectedScrollSnap() !== index) {
-            api.scrollTo(index);
+            api.scrollTo(index, true); // Do not jump
        }
        setExpandedCandidate(prev => (prev === id ? null : id));
     };
