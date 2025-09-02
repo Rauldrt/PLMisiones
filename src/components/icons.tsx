@@ -32,6 +32,7 @@ import {
   ChevronUp,
   ChevronDown,
   Bell,
+  Image as GalleryIcon,
 } from 'lucide-react';
 import type { SVGProps } from 'react';
 
@@ -76,6 +77,7 @@ export const Icons = {
   Social: LinkIcon,
   Location: MapPin,
   Notification: Bell,
+  Gallery: GalleryIcon,
 };
 
 export type IconName = keyof typeof Icons;

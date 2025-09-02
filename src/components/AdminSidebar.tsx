@@ -22,6 +22,7 @@ const adminNavLinks = [
   { href: '/admin/manage-organigrama', label: 'Organigrama', icon: 'Team' },
   { href: '/admin/manage-forms', label: 'Formularios', icon: 'Forms' },
   { href: '/admin/view-submissions', label: 'Envíos', icon: 'Submissions' },
+  { href: '/admin/gallery', label: 'Galería', icon: 'Gallery' },
 ];
 
 function NavContent() {

@@ -12,12 +12,16 @@ import { Icons } from '@/components/icons';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { ImageGallery } from '@/components/ImageGallery';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 export default function ManageCandidatesPage() {
   const [items, setItems] = useState<Candidate[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, startSavingTransition] = useTransition();
   const { toast } = useToast();
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -46,8 +50,15 @@ export default function ManageCandidatesPage() {
     setItems(newItems);
   };
   
+  const handleImageSelect = (imageUrl: string) => {
+    if (editingIndex !== null) {
+      handleFieldChange(editingIndex, 'imageUrl', imageUrl);
+    }
+    setGalleryOpen(false);
+  };
+  
   const addItem = () => {
-    setItems([...items, { id: new Date().getTime().toString(), name: 'Nuevo Candidato', role: 'Cargo al que postula', imageUrl: 'https://picsum.photos/400/400', imageHint: 'person portrait', bio: 'Biografía del candidato...' }]);
+    setItems([...items, { id: new Date().getTime().toString(), name: 'Nuevo Candidato', role: 'Cargo al que postula', imageUrl: '/placeholder.png', imageHint: 'person portrait', bio: 'Biografía del candidato...' }]);
   }
   
   const removeItem = (id: string) => {
@@ -55,69 +66,84 @@ export default function ManageCandidatesPage() {
   }
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold font-headline">Gestionar Candidatos del Banner</h1>
-        <p className="text-muted-foreground">Administra los perfiles de los candidatos que aparecen en el banner de la página de inicio.</p>
-      </div>
+    <Dialog open={galleryOpen} onOpenChange={setGalleryOpen}>
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-3xl font-bold font-headline">Gestionar Candidatos del Banner</h1>
+          <p className="text-muted-foreground">Administra los perfiles de los candidatos que aparecen en el banner de la página de inicio.</p>
+        </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Perfiles de Candidatos</CardTitle>
-          <CardDescription>Haz clic en un perfil para expandirlo y editarlo. Los cambios se guardan todos juntos.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          {isLoading ? <p>Cargando...</p> : (
-            <Accordion type="single" collapsible className="w-full">
-              {items.map((item, index) => (
-                <AccordionItem key={item.id} value={item.id}>
-                    <div className="flex justify-between items-center w-full pr-4">
-                      <AccordionTrigger className="hover:no-underline flex-1">
-                        <div className="flex items-center gap-4 text-left">
-                            <Image src={item.imageUrl} alt={item.name} width={40} height={40} className="rounded-full object-cover h-10 w-10" />
-                            <span>{item.name || `Perfil ${index + 1}`}</span>
-                        </div>
-                      </AccordionTrigger>
-                      <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
-                          <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
-                      </div>
-                    </div>
-                   <AccordionContent className="p-4 border-t space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-1">
-                          <Label htmlFor={`name-${index}`}>Nombre</Label>
-                          <Input id={`name-${index}`} value={item.name} onChange={e => handleFieldChange(index, 'name', e.target.value)} />
-                        </div>
-                        <div className="space-y-1">
-                          <Label htmlFor={`role-${index}`}>Cargo</Label>
-                          <Input id={`role-${index}`} value={item.role} onChange={e => handleFieldChange(index, 'role', e.target.value)} />
+        <Card>
+          <CardHeader>
+            <CardTitle>Perfiles de Candidatos</CardTitle>
+            <CardDescription>Haz clic en un perfil para expandirlo y editarlo. Los cambios se guardan todos juntos.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {isLoading ? <p>Cargando...</p> : (
+              <Accordion type="single" collapsible className="w-full">
+                {items.map((item, index) => (
+                  <AccordionItem key={item.id} value={item.id}>
+                      <div className="flex justify-between items-center w-full pr-4">
+                        <AccordionTrigger className="hover:no-underline flex-1">
+                          <div className="flex items-center gap-4 text-left">
+                              <Image src={item.imageUrl} alt={item.name} width={40} height={40} className="rounded-full object-cover h-10 w-10" />
+                              <span>{item.name || `Perfil ${index + 1}`}</span>
+                          </div>
+                        </AccordionTrigger>
+                        <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
+                            <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
                         </div>
                       </div>
-                       <div className="space-y-1">
-                          <Label htmlFor={`imageUrl-${index}`}>URL de Imagen</Label>
-                          <Input id={`imageUrl-${index}`} value={item.imageUrl} onChange={e => handleFieldChange(index, 'imageUrl', e.target.value)} />
+                    <AccordionContent className="p-4 border-t space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-1">
+                            <Label htmlFor={`name-${index}`}>Nombre</Label>
+                            <Input id={`name-${index}`} value={item.name} onChange={e => handleFieldChange(index, 'name', e.target.value)} />
+                          </div>
+                          <div className="space-y-1">
+                            <Label htmlFor={`role-${index}`}>Cargo</Label>
+                            <Input id={`role-${index}`} value={item.role} onChange={e => handleFieldChange(index, 'role', e.target.value)} />
+                          </div>
                         </div>
                         <div className="space-y-1">
-                          <Label htmlFor={`imageHint-${index}`}>Pista de Imagen (para IA)</Label>
-                          <Input id={`imageHint-${index}`} value={item.imageHint || ''} onChange={e => handleFieldChange(index, 'imageHint', e.target.value)} placeholder="Ej: man portrait smiling" />
-                        </div>
-                         <div className="space-y-1">
-                          <Label htmlFor={`bio-${index}`}>Biografía</Label>
-                          <Textarea id={`bio-${index}`} value={item.bio} onChange={e => handleFieldChange(index, 'bio', e.target.value)} rows={3}/>
-                        </div>
-                   </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          )}
-          <div className="flex justify-between items-center pt-4">
-             <Button variant="outline" onClick={addItem}><Icons.Plus className="mr-2 h-4 w-4"/> Agregar Candidato</Button>
-            <Button onClick={handleSave} disabled={isSaving}>
-                {isSaving ? 'Guardando...' : 'Guardar Cambios'}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+                            <Label htmlFor={`imageUrl-${index}`}>URL de Imagen</Label>
+                            <div className="flex items-center gap-2">
+                                <Input id={`imageUrl-${index}`} value={item.imageUrl} onChange={e => handleFieldChange(index, 'imageUrl', e.target.value)} />
+                                <DialogTrigger asChild>
+                                    <Button variant="outline" size="icon" onClick={() => setEditingIndex(index)}>
+                                        <Icons.Gallery className="w-4 h-4" />
+                                    </Button>
+                                </DialogTrigger>
+                            </div>
+                          </div>
+                          <div className="space-y-1">
+                            <Label htmlFor={`imageHint-${index}`}>Pista de Imagen (para IA)</Label>
+                            <Input id={`imageHint-${index}`} value={item.imageHint || ''} onChange={e => handleFieldChange(index, 'imageHint', e.target.value)} placeholder="Ej: man portrait smiling" />
+                          </div>
+                          <div className="space-y-1">
+                            <Label htmlFor={`bio-${index}`}>Biografía</Label>
+                            <Textarea id={`bio-${index}`} value={item.bio} onChange={e => handleFieldChange(index, 'bio', e.target.value)} rows={3}/>
+                          </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            )}
+            <div className="flex justify-between items-center pt-4">
+              <Button variant="outline" onClick={addItem}><Icons.Plus className="mr-2 h-4 w-4"/> Agregar Candidato</Button>
+              <Button onClick={handleSave} disabled={isSaving}>
+                  {isSaving ? 'Guardando...' : 'Guardar Cambios'}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+       <DialogContent className="max-w-4xl h-[80vh]">
+            <DialogHeader>
+                <DialogTitle>Seleccionar Imagen de la Galería</DialogTitle>
+            </DialogHeader>
+            <ImageGallery onImageSelect={handleImageSelect} />
+        </DialogContent>
+    </Dialog>
   );
 }
