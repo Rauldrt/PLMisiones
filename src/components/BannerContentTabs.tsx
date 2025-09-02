@@ -2,7 +2,6 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
 import {
   Carousel,
   CarouselContent,
@@ -20,44 +19,41 @@ interface BannerContentTabsProps {
 }
 
 export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
+    const [api, setApi] = useState<CarouselApi>();
     const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
-    const [isExpanded, setIsExpanded] = useState(false);
-    
+    const [expandedCandidate, setExpandedCandidate] = useState<Candidate | null>(null);
+
     const handleCardClick = (candidate: Candidate) => {
-        if (selectedCandidate?.id === candidate.id) {
-            // If the same card is clicked, close it
-            setIsExpanded(false);
-            // We use a timeout to allow the closing animation to finish
-            setTimeout(() => setSelectedCandidate(null), 500); 
+        if (expandedCandidate?.id === candidate.id) {
+            setExpandedCandidate(null);
         } else {
-            // If a new card is clicked, select it first (without expanding)
             setSelectedCandidate(candidate);
-            // Then, trigger the expansion animation
-            setTimeout(() => setIsExpanded(true), 50);
+            setTimeout(() => setExpandedCandidate(candidate), 50); // Allow state to update for animation
         }
     };
-
+    
     const handleClose = () => {
-         setIsExpanded(false);
-         setTimeout(() => setSelectedCandidate(null), 500); 
-    };
+        setExpandedCandidate(null);
+    }
 
     if (!candidates || candidates.length === 0) {
         return null;
     }
 
     return (
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative min-h-[380px] flex flex-col justify-center">
-            <div 
+        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative min-h-[380px] flex flex-col justify-end">
+            {/* Carousel Layer */}
+             <div 
                 className={cn(
                     "transition-opacity duration-300",
-                    selectedCandidate ? "opacity-0 pointer-events-none" : "opacity-100"
+                    expandedCandidate ? "opacity-0 pointer-events-none" : "opacity-100"
                 )}
             >
                 <Carousel 
+                    setApi={setApi}
                     opts={{ 
                         align: "center", 
-                        loop: candidates.length > 3,
+                        loop: false,
                     }}
                     className="w-full"
                 >
@@ -76,20 +72,18 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                         ))}
                     </CarouselContent>
                 </Carousel>
-               
-                <div className="mt-8 text-center">
-                    <Button asChild size="lg" variant="outline" className="bg-background/20 backdrop-blur-sm border-white/20 text-white hover:bg-white/10">
-                        <Link href="/referentes">Ver todos los referentes</Link>
-                    </Button>
-                </div>
             </div>
             
             {/* Expanded Card Layer */}
             {selectedCandidate && (
-                <div className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none">
-                    <div className={cn("w-full max-w-lg mx-auto transition-transform duration-500 ease-in-out",
-                        isExpanded ? 'scale-100' : 'scale-50',
-                        'pointer-events-auto'
+                 <div 
+                    className={cn(
+                        "absolute inset-0 w-full h-full flex items-center justify-center transition-opacity duration-300 z-20",
+                        expandedCandidate ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+                    )}
+                >
+                    <div className={cn("w-full max-w-md mx-auto transition-all duration-500 ease-in-out",
+                        expandedCandidate ? 'scale-100' : 'scale-50'
                     )}>
                         <ExpandingCandidateCard
                             candidate={selectedCandidate}
@@ -100,8 +94,8 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                             variant="ghost" 
                             size="icon" 
                             className={cn(
-                                "absolute -top-2 -right-2 text-white transition-opacity duration-300",
-                                isExpanded ? "opacity-100" : "opacity-0"
+                                "absolute -top-2 -right-2 text-white transition-opacity duration-300 z-30",
+                                expandedCandidate ? "opacity-100" : "opacity-0"
                                 )}
                             onClick={handleClose}
                         >
