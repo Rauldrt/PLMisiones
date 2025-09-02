@@ -1,7 +1,7 @@
 [
   {
     "id": "bg-1",
-    "imageUrl": "https://picsum.photos/1920/1080?random=1",
+    "imageUrl": "/IMG-20230903-WA0002.jpg",
     "imageHint": "landscape sunrise",
     "animationType": "zoom-in",
     "animationDuration": 10,
@@ -9,7 +9,7 @@
   },
   {
     "id": "bg-2",
-    "imageUrl": "https://picsum.photos/1920/1080?random=2",
+    "imageUrl": "/20231016_185842.jpg",
     "imageHint": "people volunteering",
     "animationType": "fade",
     "animationDuration": 8,
@@ -17,7 +17,7 @@
   },
   {
     "id": "bg-3",
-    "imageUrl": "https://picsum.photos/1920/1080?random=3",
+    "imageUrl": "/IMG-20231119-WA0411.jpg",
     "imageHint": "city economy",
     "animationType": "slide-from-left",
     "animationDuration": 12,
@@ -25,7 +25,7 @@
   },
   {
     "id": "bg-4",
-    "imageUrl": "https://picsum.photos/1920/1080?random=4",
+    "imageUrl": "/20231022_123119_HDR.jpg",
     "imageHint": "voting ballot",
     "animationType": "zoom-in",
     "animationDuration": 10,
@@ -33,7 +33,7 @@
   },
   {
     "id": "bg-5",
-    "imageUrl": "https://picsum.photos/1920/1080?random=5",
+    "imageUrl": "/IMG-20230903-WA0054.jpg",
     "imageHint": "group celebration",
     "animationType": "fade",
     "animationDuration": 9,
@@ -41,7 +41,7 @@
   },
   {
     "id": "bg-6",
-    "imageUrl": "https://picsum.photos/1920/1080?random=6",
+    "imageUrl": "/IMG-20240812-WA0626.jpg",
     "imageHint": "handshake deal",
     "animationType": "slide-from-right",
     "animationDuration": 10,
