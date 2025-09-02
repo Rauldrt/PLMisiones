@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import {
   Carousel,
@@ -21,30 +21,42 @@ interface BannerContentTabsProps {
 
 export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
     const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
-
-    const handleCardClick = (candidate: Candidate) => {
-        setSelectedCandidate(candidate);
-    };
-
-    const handleCloseExpanded = () => {
-        setSelectedCandidate(null);
-    };
+    const [isExpanded, setIsExpanded] = useState(false);
     
+    const handleCardClick = (candidate: Candidate) => {
+        if (selectedCandidate?.id === candidate.id) {
+            // If the same card is clicked, close it
+            setIsExpanded(false);
+            // We use a timeout to allow the closing animation to finish
+            setTimeout(() => setSelectedCandidate(null), 500); 
+        } else {
+            // If a new card is clicked, select it first (without expanding)
+            setSelectedCandidate(candidate);
+            // Then, trigger the expansion animation
+            setTimeout(() => setIsExpanded(true), 50);
+        }
+    };
+
+    const handleClose = () => {
+         setIsExpanded(false);
+         setTimeout(() => setSelectedCandidate(null), 500); 
+    };
+
     if (!candidates || candidates.length === 0) {
         return null;
     }
 
     return (
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative min-h-[380px]">
+        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative min-h-[380px] flex flex-col justify-center">
             <div 
                 className={cn(
-                    "transition-opacity duration-500",
+                    "transition-opacity duration-300",
                     selectedCandidate ? "opacity-0 pointer-events-none" : "opacity-100"
                 )}
             >
                 <Carousel 
                     opts={{ 
-                        align: "start", 
+                        align: "center", 
                         loop: candidates.length > 3,
                     }}
                     className="w-full"
@@ -57,7 +69,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                             >
                                 <ExpandingCandidateCard 
                                     candidate={candidate}
-                                    isExpanded={false} // Never expanded inside the carousel
+                                    isExpanded={false}
                                     onClick={() => handleCardClick(candidate)}
                                 />
                             </CarouselItem>
@@ -71,20 +83,27 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                     </Button>
                 </div>
             </div>
-
+            
+            {/* Expanded Card Layer */}
             {selectedCandidate && (
-                <div className="absolute inset-0 w-full h-full flex items-center justify-center p-1 animate-fade-in-up">
-                    <div className="w-full max-w-lg mx-auto">
+                <div className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none">
+                    <div className={cn("w-full max-w-lg mx-auto transition-transform duration-500 ease-in-out",
+                        isExpanded ? 'scale-100' : 'scale-50',
+                        'pointer-events-auto'
+                    )}>
                         <ExpandingCandidateCard
                             candidate={selectedCandidate}
                             isExpanded={true}
-                            onClick={handleCloseExpanded}
+                            onClick={handleClose}
                         />
                         <Button 
                             variant="ghost" 
                             size="icon" 
-                            className="absolute top-0 right-0 text-white"
-                            onClick={handleCloseExpanded}
+                            className={cn(
+                                "absolute -top-2 -right-2 text-white transition-opacity duration-300",
+                                isExpanded ? "opacity-100" : "opacity-0"
+                                )}
+                            onClick={handleClose}
                         >
                             <Icons.Close className="w-6 h-6" />
                         </Button>
