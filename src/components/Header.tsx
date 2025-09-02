@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -49,7 +48,7 @@ export function Header() {
       <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-3" onClick={(e) => handleLinkClick(e, '/')}>
-            <Image src="/logo.png" alt="Logo del Partido" width={40} height={40} />
+            <Image src="/logo.png" alt="Logo del Partido" width={50} height={50} />
             <span className="font-headline text-xl font-bold">Partido Libertario Misiones</span>
           </Link>
           <nav className="hidden items-center gap-2 md:flex">
@@ -99,7 +98,7 @@ export function Header() {
             <div className="flex flex-col h-full">
               <div className="p-4 border-b">
                   <Link href="/" className="flex items-center gap-3" onClick={(e) => handleLinkClick(e, '/')}>
-                      <Image src="/logo.png" alt="Logo del Partido" width={32} height={32} />
+                      <Image src="/logo.png" alt="Logo del Partido" width={40} height={40} />
                       <span className="font-headline text-lg font-bold">Libertario Misiones</span>
                   </Link>
               </div>

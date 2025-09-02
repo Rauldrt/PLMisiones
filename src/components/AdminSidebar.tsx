@@ -34,7 +34,7 @@ function NavContent() {
     <div className="flex h-full flex-col">
       <div className="border-b p-4">
         <Link href="/admin" className="flex items-center gap-2 text-primary">
-          <Image src="/logo.png" alt="Logo del Partido" width={32} height={32} />
+          <Image src="/logo.png" alt="Logo del Partido" width={40} height={40} />
           <span className="font-headline text-lg font-bold">Admin Panel</span>
         </Link>
       </div>
