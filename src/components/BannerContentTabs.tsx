@@ -57,7 +57,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                 setApi={setApi} 
                 opts={{ 
                     align: "center", 
-                    loop: true,
+                    loop: candidates.length > 3,
                     slidesToScroll: 1,
                 }}
                 className="w-full"
