@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Carousel,
   CarouselContent,
@@ -87,14 +87,14 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
             {/* Expanded Card Layer - Animación */}
             {expandedCandidate && cardPosition && (
                 <div 
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
                     onClick={handleClose}
                 >
                     <div
                         className={cn(
                             'absolute transition-all duration-500 ease-in-out',
                             isAnimating 
-                                ? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[18rem]'
+                                ? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[16rem]'
                                 : 'top-[var(--top)] left-[var(--left)] w-[var(--width)] h-[var(--height)]'
                         )}
                         style={{
