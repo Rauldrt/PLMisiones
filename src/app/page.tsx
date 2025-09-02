@@ -18,7 +18,7 @@ export default async function Home() {
       mosaicItems={mosaicItems}
       accordionItems={accordionItems}
       newsArticles={newsArticles.slice(0, 3)} // Show latest 3 articles on home
-      candidates={candidates.slice(0, 3)} // Show top 3 on home
+      candidates={candidates}
       notification={notification}
       organigramaData={organigrama}
     />

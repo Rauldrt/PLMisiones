@@ -8,6 +8,7 @@ import {
   CarouselItem,
   type CarouselApi,
 } from '@/components/ui/carousel';
+import Autoplay from "embla-carousel-autoplay"
 import { Button } from '@/components/ui/button';
 import type { Candidate } from '@/lib/types';
 import { ExpandingCandidateCard } from './ExpandingCandidateCard';
@@ -81,8 +82,24 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                     </CarouselContent>
                 </Carousel>
             </div>
-            <div className="mt-4 hidden md:grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4">
-                {candidateCards}
+            <div className="mt-4 hidden md:block">
+                 <Carousel
+                    opts={{ align: "start", loop: true, dragFree: true }}
+                    plugins={[Autoplay({ delay: 1, stopOnInteraction: false, stopOnMouseEnter: true })]}
+                    className="w-full"
+                >
+                    <CarouselContent>
+                        {candidates.map((candidate, index) => (
+                            <CarouselItem key={candidate.id} className="basis-1/2 lg:basis-1/3">
+                                 <ExpandingCandidateCard 
+                                    candidate={candidate}
+                                    isExpanded={false} // never expanded in carousel mode
+                                    onClick={() => {}} // click does nothing
+                                />
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                </Carousel>
             </div>
             <div className="mt-8 text-center">
                 <Button asChild size="lg" variant="outline" className="bg-background/20 backdrop-blur-sm border-white/20 text-white hover:bg-white/10">

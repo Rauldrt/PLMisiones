@@ -1,26 +1,34 @@
 [
   {
     "id": "1",
-    "name": "Juan Pérez",
-    "role": "Candidato a Gobernador",
-    "imageUrl": "https://picsum.photos/400/400?random=101",
+    "name": "Ninfa Alvarenga",
+    "role": "Candidato a Diputado Nacional",
+    "imageUrl": "/WhatsApp Image 2025-08-26 at 12.48.35 PM.jpeg",
     "imageHint": "man portrait serious",
-    "bio": "Emprendedor y firme defensor de las ideas de la libertad."
+    "bio": ""
   },
   {
     "id": "2",
-    "name": "María Gómez",
-    "role": "Candidata a Vicegobernadora",
-    "imageUrl": "https://picsum.photos/400/400?random=102",
+    "name": "Gustavo Villalba",
+    "role": "Candidato a Diputado Nacional",
+    "imageUrl": "/WhatsApp Image 2025-08-26 at 12.48.35 PM (1).jpeg",
     "imageHint": "woman portrait smiling",
-    "bio": "Abogada especialista en derecho constitucional. Su principal objetivo es garantizar el respeto a la propiedad privada y reducir la burocracia que ahoga a los ciudadanos y empresas."
+    "bio": ""
   },
   {
     "id": "3",
-    "name": "Carlos Rodriguez",
+    "name": "Mónica Benítez",
     "role": "Candidato a Diputado Nacional",
-    "imageUrl": "https://picsum.photos/400/400?random=103",
+    "imageUrl": "/WhatsApp Image 2025-08-26 at 12.48.35 PM (2).jpeg",
     "imageHint": "person portrait professional",
-    "bio": "Docente y analista político. Trabaja en una profunda reforma educativa para Misiones, basada en la libertad de elección, la competencia y la excelencia académica."
+    "bio": ""
+  },
+  {
+    "id": "1756784861536",
+    "name": "Julio Peralta",
+    "role": "Candidato a Diputado Nacional",
+    "imageUrl": "/WhatsApp Image 2025-08-26 at 12.48.36 PM.jpeg",
+    "imageHint": "person portrait",
+    "bio": ""
   }
 ]
