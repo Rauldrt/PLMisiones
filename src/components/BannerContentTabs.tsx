@@ -36,7 +36,6 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
             height: rect.height,
         });
 
-        setIsAnimating(true);
         setExpandedCandidate(candidate);
     };
     
@@ -44,6 +43,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
         if (!expandedCandidate) return;
         
         setIsAnimating(false);
+        // Delay hiding the component to allow the animation to finish
         setTimeout(() => {
             setExpandedCandidate(null);
             setCardPosition(null);
@@ -52,7 +52,11 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
 
     useEffect(() => {
         if (expandedCandidate) {
-            setIsAnimating(true);
+            // Use a short delay to allow the state to update before starting the animation
+            const timer = setTimeout(() => setIsAnimating(true), 10);
+            return () => clearTimeout(timer);
+        } else {
+            setIsAnimating(false);
         }
     }, [expandedCandidate]);
 
@@ -76,7 +80,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                         {candidates.map((candidate) => (
                             <CarouselItem 
                                 key={candidate.id} 
-                                className="pl-2 md:pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                                className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4"
                             >
                                 <div onClick={(e) => handleCardClick(candidate, e)}>
                                     <ExpandingCandidateCard 
