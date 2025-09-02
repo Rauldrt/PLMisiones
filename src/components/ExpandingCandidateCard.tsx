@@ -18,7 +18,7 @@ export function ExpandingCandidateCard({ candidate, isExpanded, onClick }: Expan
       className={cn(
         'group relative w-full cursor-pointer overflow-hidden rounded-lg transition-all duration-500 ease-in-out',
         isExpanded 
-          ? 'h-[400px] bg-card border border-border' 
+          ? 'h-[420px] bg-card border border-border' 
           : 'h-[280px] bg-transparent border-none'
       )}
     >
@@ -26,7 +26,7 @@ export function ExpandingCandidateCard({ candidate, isExpanded, onClick }: Expan
         className={cn(
           'absolute transition-all duration-500 ease-in-out overflow-hidden',
           isExpanded
-            ? 'w-full h-64 top-0 left-0 rounded-b-none rounded-t-lg'
+            ? 'w-full h-72 top-0 left-0 rounded-b-none rounded-t-lg'
             : 'w-36 h-36 top-[60px] left-1/2 -translate-x-1/2 rounded-full group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-black/50'
         )}
       >
@@ -54,7 +54,7 @@ export function ExpandingCandidateCard({ candidate, isExpanded, onClick }: Expan
       
       <div 
         className={cn(
-          "absolute top-64 left-0 right-0 p-6 transition-opacity duration-300 ease-in-out",
+          "absolute top-72 left-0 right-0 p-6 transition-opacity duration-300 ease-in-out",
           isExpanded ? "opacity-100 delay-200" : "opacity-0 pointer-events-none"
         )}
       >
