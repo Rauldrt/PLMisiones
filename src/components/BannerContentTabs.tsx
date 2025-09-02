@@ -94,7 +94,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                         className={cn(
                             'absolute transition-all duration-500 ease-in-out',
                             isAnimating 
-                                ? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+                                ? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[18rem]'
                                 : 'top-[var(--top)] left-[var(--left)] w-[var(--width)] h-[var(--height)]'
                         )}
                         style={{
@@ -105,13 +105,11 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                         } as React.CSSProperties}
                         onClick={(e) => e.stopPropagation()} // Evita que el clic en la tarjeta cierre el modal
                     >
-                         <div className={cn("w-full max-w-[18rem] mx-auto")}>
-                             <ExpandingCandidateCard
-                                candidate={expandedCandidate}
-                                isExpanded={true}
-                                onClick={handleClose}
-                            />
-                        </div>
+                         <ExpandingCandidateCard
+                            candidate={expandedCandidate}
+                            isExpanded={true}
+                            onClick={handleClose}
+                        />
                         <Button 
                             variant="ghost" 
                             size="icon" 
