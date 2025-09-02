@@ -84,8 +84,8 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
             </div>
             <div className="mt-4 hidden md:block">
                  <Carousel
-                    opts={{ align: "start", loop: true, dragFree: true }}
-                    plugins={[Autoplay({ delay: 1, stopOnInteraction: false, stopOnMouseEnter: true })]}
+                    opts={{ align: "start", loop: true }}
+                    plugins={[Autoplay({ delay: 4000, stopOnInteraction: true, stopOnMouseEnter: true })]}
                     className="w-full"
                 >
                     <CarouselContent>
