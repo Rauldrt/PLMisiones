@@ -26,7 +26,7 @@ interface BannerProps {
 
 export function Banner({ textSlides, backgroundSlides, candidates, notification }: BannerProps) {
   return (
-    <section className="relative w-full min-h-[600px] md:h-[720px] flex flex-col">
+    <section className="relative w-full min-h-[600px] md:h-[720px] flex flex-col z-0">
         <div className="absolute inset-0 w-full h-full">
             <AnimatedBannerBackground slides={backgroundSlides} />
         </div>
