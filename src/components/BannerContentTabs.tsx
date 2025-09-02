@@ -41,7 +41,9 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
       if (expandedCandidate) {
         autoplayPlugin.current.stop();
       } else {
-        if (api) autoplayPlugin.current.play();
+        if (api?.plugins()?.autoplay) {
+            autoplayPlugin.current.play();
+        }
       }
     }, [expandedCandidate, api])
 
@@ -57,21 +59,33 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
         return null;
     }
 
+    const basisClass = (length: number) => {
+        if (length === 1) return 'basis-full';
+        if (length === 2) return 'md:basis-1/2';
+        return 'md:basis-1/2 lg:basis-1/3';
+    }
+
     return (
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
              <Carousel 
                 setApi={setApi} 
-                opts={{ align: "center", loop: true }}
+                opts={{ 
+                    align: "center", 
+                    loop: true,
+                    slidesToScroll: 1,
+                }}
                 plugins={[autoplayPlugin.current]}
                 className="w-full"
             >
-                <CarouselContent>
+                <CarouselContent className="-ml-2 md:-ml-4">
                     {candidates.map((candidate, index) => (
                         <CarouselItem 
                             key={candidate.id} 
                              className={cn(
-                                'p-1 transition-all duration-500 ease-in-out md:basis-1/2 lg:basis-1/3',
-                                expandedCandidate && (expandedCandidate !== candidate.id) ? 'md:basis-0 opacity-0' : ''
+                                'p-1 transition-all duration-500 ease-in-out',
+                                basisClass(candidates.length),
+                                expandedCandidate && (expandedCandidate !== candidate.id) ? 'basis-0 md:basis-0 lg:basis-0 opacity-0' : '',
+                                'pl-2 md:pl-4'
                             )}
                         >
                             <ExpandingCandidateCard 
