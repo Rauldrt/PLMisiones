@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Carousel,
   CarouselContent,
@@ -36,8 +36,8 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
             height: rect.height,
         });
 
-        setExpandedCandidate(candidate);
         setIsAnimating(true);
+        setExpandedCandidate(candidate);
     };
     
     const handleClose = () => {
@@ -55,7 +55,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
     }
 
     return (
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative min-h-[320px] flex flex-col justify-end">
+        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative min-h-[280px] flex flex-col justify-end">
              {/* Carousel Layer */}
              <div className={cn("transition-opacity duration-300", expandedCandidate ? 'opacity-0' : 'opacity-100')}>
                 <Carousel 
