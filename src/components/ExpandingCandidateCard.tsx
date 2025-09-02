@@ -34,7 +34,7 @@ export function ExpandingCandidateCard({ candidate, isExpanded, onClick }: Expan
           src={candidate.imageUrl}
           alt={candidate.name}
           fill
-          className="object-cover transition-transform duration-500"
+          className="object-contain transition-transform duration-500"
           sizes="(max-width: 768px) 50vw, 33vw"
           data-ai-hint={candidate.imageHint}
         />
