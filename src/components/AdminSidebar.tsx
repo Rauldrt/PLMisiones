@@ -32,6 +32,7 @@ function NavContent() {
     <div className="flex h-full flex-col">
       <div className="border-b p-4">
         <Link href="/admin" className="flex items-center gap-2 text-primary">
+          <Icons.Logo className="h-6 w-6" />
           <span className="font-headline text-lg font-bold">Admin Panel</span>
         </Link>
       </div>

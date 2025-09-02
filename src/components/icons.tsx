@@ -45,6 +45,7 @@ const Logo = (props: SVGProps<SVGSVGElement>) => (
 
 
 export const Icons = {
+  Logo,
   News: Newspaper,
   Team: Users,
   Join: UserPlus,
