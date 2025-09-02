@@ -5,7 +5,8 @@
     "imageHint": "landscape sunrise",
     "animationType": "zoom-in",
     "animationDuration": 10,
-    "overlayOpacity": 0.7
+    "overlayOpacity": 0.7,
+    "objectPosition": "center"
   },
   {
     "id": "bg-2",
@@ -13,15 +14,8 @@
     "imageHint": "people volunteering",
     "animationType": "fade",
     "animationDuration": 8,
-    "overlayOpacity": 0.6
-  },
-  {
-    "id": "bg-3",
-    "imageUrl": "/IMG-20231119-WA0411.jpg",
-    "imageHint": "city economy",
-    "animationType": "slide-from-left",
-    "animationDuration": 12,
-    "overlayOpacity": 0.75
+    "overlayOpacity": 0.6,
+    "objectPosition": "center"
   },
   {
     "id": "bg-4",
@@ -29,7 +23,8 @@
     "imageHint": "voting ballot",
     "animationType": "zoom-in",
     "animationDuration": 10,
-    "overlayOpacity": 0.7
+    "overlayOpacity": 0.7,
+    "objectPosition": "center"
   },
   {
     "id": "bg-5",
@@ -37,7 +32,8 @@
     "imageHint": "group celebration",
     "animationType": "fade",
     "animationDuration": 9,
-    "overlayOpacity": 0.65
+    "overlayOpacity": 0.65,
+    "objectPosition": "center"
   },
   {
     "id": "bg-6",
@@ -45,6 +41,79 @@
     "imageHint": "handshake deal",
     "animationType": "slide-from-right",
     "animationDuration": 10,
-    "overlayOpacity": 0.7
+    "overlayOpacity": 0.7,
+    "objectPosition": "center"
+  },
+  {
+    "id": "1756847261234",
+    "imageUrl": "/IMG-20240221-WA0261.jpg",
+    "imageHint": "",
+    "animationType": "zoom-in",
+    "animationDuration": 10,
+    "overlayOpacity": 0.7,
+    "objectPosition": "center"
+  },
+  {
+    "id": "1756847286634",
+    "imageUrl": "/IMG-20240119-WA0585.jpg",
+    "imageHint": "",
+    "animationType": "zoom-in",
+    "animationDuration": 10,
+    "overlayOpacity": 0.7,
+    "objectPosition": "center"
+  },
+  {
+    "id": "1756847306154",
+    "imageUrl": "/IMG-20240929-WA0594.jpg",
+    "imageHint": "",
+    "animationType": "zoom-in",
+    "animationDuration": 10,
+    "overlayOpacity": 0.7,
+    "objectPosition": "center"
+  },
+  {
+    "id": "1756847329602",
+    "imageUrl": "/IMG-20240512-WA0375.jpg",
+    "imageHint": "",
+    "animationType": "zoom-in",
+    "animationDuration": 10,
+    "overlayOpacity": 0.7,
+    "objectPosition": "center"
+  },
+  {
+    "id": "1756847344801",
+    "imageUrl": "/IMG-20241013-WA0195.jpg",
+    "imageHint": "",
+    "animationType": "zoom-in",
+    "animationDuration": 10,
+    "overlayOpacity": 0.7,
+    "objectPosition": "center"
+  },
+  {
+    "id": "1756847359937",
+    "imageUrl": "/IMG-20240929-WA0567.jpg",
+    "imageHint": "",
+    "animationType": "zoom-in",
+    "animationDuration": 10,
+    "overlayOpacity": 0.7,
+    "objectPosition": "center"
+  },
+  {
+    "id": "1756847372505",
+    "imageUrl": "/IMG-20241017-WA0305.jpg",
+    "imageHint": "",
+    "animationType": "zoom-in",
+    "animationDuration": 10,
+    "overlayOpacity": 0.7,
+    "objectPosition": "center"
+  },
+  {
+    "id": "1756847447154",
+    "imageUrl": "/IMG-20241027-WA0184.jpg",
+    "imageHint": "",
+    "animationType": "zoom-in",
+    "animationDuration": 10,
+    "overlayOpacity": 0.7,
+    "objectPosition": "center"
   }
 ]

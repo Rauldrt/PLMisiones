@@ -64,7 +64,8 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
               )}
               style={{ 
                 animationDuration: `${animationDuration}s`,
-                transitionDuration: '2000ms' // Fade transition between images
+                transitionDuration: '2000ms', // Fade transition between images
+                objectPosition: slide.objectPosition || 'center',
               }}
               priority={index === 0}
               data-ai-hint={slide.imageHint}

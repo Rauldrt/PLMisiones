@@ -24,6 +24,7 @@ export interface BannerBackgroundSlide {
   animationType?: 'zoom-in' | 'fade' | 'slide-from-left' | 'slide-from-right';
   animationDuration?: number;
   overlayOpacity?: number;
+  objectPosition?: string;
 }
 
 

@@ -65,7 +65,8 @@ export default function ManageBannerBackgroundPage() {
         imageHint: '', 
         animationType: 'zoom-in',
         animationDuration: 10,
-        overlayOpacity: 0.7
+        overlayOpacity: 0.7,
+        objectPosition: 'center'
     }]);
   }
   
@@ -114,9 +115,15 @@ export default function ManageBannerBackgroundPage() {
                                 </DialogTrigger>
                             </div>
                         </div>
-                        <div className="space-y-1">
-                            <Label htmlFor={`imageHint-${index}`}>Pista de la Imagen (para IA)</Label>
-                            <Input id={`imageHint-${index}`} value={slide.imageHint} onChange={e => handleFieldChange(index, 'imageHint', e.target.value)} placeholder="Ej: landscape sunrise" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-1">
+                                <Label htmlFor={`imageHint-${index}`}>Pista de la Imagen (para IA)</Label>
+                                <Input id={`imageHint-${index}`} value={slide.imageHint} onChange={e => handleFieldChange(index, 'imageHint', e.target.value)} placeholder="Ej: landscape sunrise" />
+                            </div>
+                            <div className="space-y-1">
+                                <Label htmlFor={`objectPosition-${index}`}>Posición de Objeto</Label>
+                                <Input id={`objectPosition-${index}`} value={slide.objectPosition || 'center'} onChange={e => handleFieldChange(index, 'objectPosition', e.target.value)} placeholder="Ej: center, top, 50% 25%" />
+                            </div>
                         </div>
                         <div className="border-t pt-4 mt-4 space-y-4">
                             <h4 className="text-base font-semibold">Animación y Apariencia</h4>
