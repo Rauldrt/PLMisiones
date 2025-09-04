@@ -15,10 +15,10 @@ import Autoplay from 'embla-carousel-autoplay';
 import { AnimatedBannerBackground } from './AnimatedBannerBackground';
 import { BannerContentTabs } from './BannerContentTabs';
 import { NotificationBubble } from './NotificationBubble';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 import { Icons } from './icons';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { Card } from './ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 
 
 interface BannerProps {
@@ -31,12 +31,11 @@ interface BannerProps {
 
 export function Banner({ textSlides, backgroundSlides, candidates, notification, proposals }: BannerProps) {
   return (
-    <section className="relative w-full flex flex-col z-0 min-h-[600px] md:min-h-[720px] justify-between">
+    <section className="relative w-full flex flex-col z-0 min-h-[600px] md:min-h-[720px]">
         <AnimatedBannerBackground slides={backgroundSlides} />
         
-        {notification && <NotificationBubble notification={notification} />}
-        
         <div className="relative z-20 h-full w-full flex flex-col justify-between flex-1 pt-16 md:pt-20">
+            {notification && <NotificationBubble notification={notification} />}
             <Carousel
                 opts={{ loop: true }}
                 plugins={[Autoplay({ delay: 5000, stopOnInteraction: true })]}
@@ -75,17 +74,20 @@ export function Banner({ textSlides, backgroundSlides, candidates, notification,
 
             {proposals && proposals.length > 0 && (
                 <div className="w-full pb-20 md:pb-32 px-4">
-                    <Collapsible className="max-w-4xl mx-auto">
-                        <CollapsibleTrigger asChild>
-                            <Button variant="outline" className="w-full bg-black/20 border-white/20 text-white hover:bg-black/40 backdrop-blur-sm">
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button variant="outline" className="w-full max-w-4xl mx-auto bg-black/20 border-white/20 text-white hover:bg-black/40 backdrop-blur-sm flex items-center">
                                 <Icons.Proposals className="mr-2 animate-icon-glow text-yellow-400" />
                                 Ver Propuestas de Campaña
-                                <Icons.ChevronDown className="ml-auto h-5 w-5 transition-transform data-[state=open]:rotate-180" />
+                                <Icons.ChevronDown className="ml-auto h-5 w-5" />
                             </Button>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent>
-                            <Card className="mt-2 bg-background/80 backdrop-blur-md border-border">
-                                <Accordion type="single" collapsible className="w-full p-4 md:p-6">
+                        </DialogTrigger>
+                        <DialogContent className="max-w-2xl bg-card">
+                           <DialogHeader>
+                               <DialogTitle className="font-headline text-2xl text-primary">Nuestras Propuestas</DialogTitle>
+                           </DialogHeader>
+                            <Card className="mt-2 bg-transparent border-none shadow-none">
+                                <Accordion type="single" collapsible className="w-full">
                                     {proposals.map((proposal) => (
                                     <AccordionItem key={proposal.id} value={proposal.id}>
                                         <AccordionTrigger className="font-headline text-lg text-left hover:no-underline">
@@ -98,8 +100,8 @@ export function Banner({ textSlides, backgroundSlides, candidates, notification,
                                     ))}
                                 </Accordion>
                             </Card>
-                        </CollapsibleContent>
-                    </Collapsible>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             )}
         </div>
