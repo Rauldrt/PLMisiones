@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { DynamicForm } from './DynamicForm';
 import type { SocialLink, FormDefinition, FooterContent } from '@/lib/types';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 export function Footer() {
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
