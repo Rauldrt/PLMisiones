@@ -24,6 +24,7 @@ const adminNavLinks = [
   { href: '/admin/manage-accordion', label: 'Acordeón', icon: 'Accordion' },
   { href: '/admin/manage-organigrama', label: 'Organigrama', icon: 'Team' },
   { href: '/admin/manage-forms', label: 'Formularios', icon: 'Forms' },
+  { href: '/admin/manage-footer', label: 'Footer', icon: 'Footer' },
   { href: '/admin/view-submissions', label: 'Envíos', icon: 'Submissions' },
   { href: '/admin/gallery', label: 'Galería', icon: 'Gallery' },
 ];

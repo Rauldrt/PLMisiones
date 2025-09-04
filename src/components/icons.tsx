@@ -35,6 +35,7 @@ import {
   Bell,
   Image as GalleryIcon,
   Lightbulb,
+  Footprints,
 } from 'lucide-react';
 import type { SVGProps } from 'react';
 
@@ -74,6 +75,7 @@ export const Icons = {
   Notification: Bell,
   Gallery: GalleryIcon,
   Proposals: Lightbulb,
+  Footer: Footprints,
 };
 
 export type IconName = keyof typeof Icons;

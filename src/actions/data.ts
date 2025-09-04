@@ -14,7 +14,8 @@ import {
     getFormSubmissions,
     getCandidates,
     getNotification,
-    getProposals
+    getProposals,
+    getFooterContent
 } from '@/lib/data';
 
 // These actions are safe to call from client components.
@@ -69,4 +70,8 @@ export async function getFormSubmissionsAction(formName: string) {
 
 export async function getNotificationAction() {
     return getNotification();
+}
+
+export async function getFooterContentAction() {
+    return getFooterContent();
 }

@@ -103,3 +103,16 @@ export interface Proposal {
   title: string;
   content: string;
 }
+
+export interface FooterContent {
+  contactTitle: string;
+  contactDescription: string;
+  headquartersTitle: string;
+  address: string;
+  contactInfoTitle: string;
+  email: string;
+  phone: string;
+  socialsTitle: string;
+  copyright: string;
+  credits: string;
+}

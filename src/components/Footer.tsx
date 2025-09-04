@@ -1,25 +1,31 @@
 
 'use client';
 import Link from 'next/link';
-import { getSocialLinksAction, getFormDefinitionAction } from '@/actions/data';
+import { getSocialLinksAction, getFormDefinitionAction, getFooterContentAction } from '@/actions/data';
 import { Icons } from '@/components/icons';
 import { Card, CardContent } from '@/components/ui/card';
 import { DynamicForm } from './DynamicForm';
-import type { SocialLink, FormDefinition } from '@/lib/types';
+import type { SocialLink, FormDefinition, FooterContent } from '@/lib/types';
 import { useEffect, useState } from 'react';
 
 export function Footer() {
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
   const [contactFormDefinition, setContactFormDefinition] = useState<FormDefinition | null>(null);
+  const [footerContent, setFooterContent] = useState<FooterContent | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
-      const [socials, formDef] = await Promise.all([
+      setIsLoading(true);
+      const [socials, formDef, footerData] = await Promise.all([
         getSocialLinksAction(),
-        getFormDefinitionAction('contacto')
+        getFormDefinitionAction('contacto'),
+        getFooterContentAction()
       ]);
       setSocialLinks(socials);
       setContactFormDefinition(formDef);
+      setFooterContent(footerData);
+      setIsLoading(false);
     }
     loadData();
   }, []);
@@ -34,9 +40,11 @@ export function Footer() {
     }
   };
   
-  if (!contactFormDefinition) {
+  if (isLoading || !contactFormDefinition || !footerContent) {
     return null; // or a loading state
   }
+
+  const copyrightText = footerContent.copyright.replace('{year}', new Date().getFullYear().toString());
 
   return (
     <footer className="bg-card" id="contacto">
@@ -45,26 +53,26 @@ export function Footer() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
                 <div className="space-y-8">
                     <div>
-                        <h2 className="font-headline text-2xl font-bold">Ponete en Contacto</h2>
-                        <p className="text-foreground/80 mt-2">Estamos para escucharte. Envianos tu consulta o sumate a nuestro equipo.</p>
+                        <h2 className="font-headline text-2xl font-bold">{footerContent.contactTitle}</h2>
+                        <p className="text-foreground/80 mt-2">{footerContent.contactDescription}</p>
                     </div>
                     <div className="space-y-4 text-foreground/90">
                         <div className="flex items-start gap-4">
                             <div>
-                                <h3 className="font-semibold">Nuestra Sede</h3>
-                                <p className="text-foreground/80">Av. Corrientes 1234, Posadas, Misiones, Argentina</p>
+                                <h3 className="font-semibold">{footerContent.headquartersTitle}</h3>
+                                <p className="text-foreground/80">{footerContent.address}</p>
                             </div>
                         </div>
                         <div className="flex items-start gap-4">
                             <div>
-                                <h3 className="font-semibold">Email y Teléfono</h3>
-                                <p className="text-foreground/80">contacto@libertariomisiones.com</p>
-                                <p className="text-foreground/80">+54 9 376 412-3456</p>
+                                <h3 className="font-semibold">{footerContent.contactInfoTitle}</h3>
+                                <p className="text-foreground/80">{footerContent.email}</p>
+                                <p className="text-foreground/80">{footerContent.phone}</p>
                             </div>
                         </div>
                         <div className="flex items-start gap-4">
                             <div>
-                                <h3 className="font-semibold">Redes Sociales</h3>
+                                <h3 className="font-semibold">{footerContent.socialsTitle}</h3>
                                 <div className="flex items-center gap-4 mt-2">
                                      {socialLinks.map((link) => (
                                         <Link key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-accent transition-colors">
@@ -87,12 +95,13 @@ export function Footer() {
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-3">
+                <Image src="/logo.png" alt="Logo del Partido" width={50} height={50} />
                 <span className="font-headline text-lg font-bold">Partido Libertario Misiones</span>
             </div>
             <div className="text-center text-sm text-foreground/60 sm:text-right">
-                <p>&copy; {new Date().getFullYear()} Partido Libertario Misiones. Todos los derechos reservados. | <Link href="/admin" className="hover:text-accent">Admin</Link></p>
+                <p>{copyrightText} | <Link href="/admin" className="hover:text-accent">Admin</Link></p>
                 <p className="mt-1">
-                    Desarrollado con <span className="text-red-500">♥</span> por la libertad.
+                   {footerContent.credits}
                 </p>
             </div>
             </div>

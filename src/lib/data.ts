@@ -1,7 +1,7 @@
 
 import { promises as fs } from 'fs';
 import path from 'path';
-import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, PageHeader, Referente, SocialLink, FormDefinition, FormSubmission, Notification, OrganigramaMember, Candidate, Proposal } from './types';
+import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, PageHeader, Referente, SocialLink, FormDefinition, FormSubmission, Notification, OrganigramaMember, Candidate, Proposal, FooterContent } from './types';
 
 // Helper function to read and parse a JSON file
 async function readJsonFile<T>(filePath: string): Promise<T> {
@@ -15,7 +15,7 @@ async function readJsonFile<T>(filePath: string): Promise<T> {
         if(filePath.endsWith('.json') && !filePath.includes('-')) { // check if it's a file that should exist
              try {
                 // If the file is expected to be an object, create it empty
-                if (filePath.includes('notification.json')) {
+                if (filePath.includes('notification.json') || filePath.includes('footer.json')) {
                     await fs.writeFile(path.join(process.cwd(), filePath), '{}');
                     return {} as T;
                 }
@@ -49,6 +49,7 @@ export const getSocialLinks = () => readJsonFile<SocialLink[]>('src/data/social-
 export const getNotification = () => readJsonFile<Notification>('src/data/notification.json');
 export const getOrganigrama = () => readJsonFile<OrganigramaMember[]>('src/data/organigrama.json');
 export const getProposals = () => readJsonFile<Proposal[]>('src/data/proposals.json');
+export const getFooterContent = () => readJsonFile<FooterContent>('src/data/footer.json');
 
 export const getFormDefinition = (formName: string) => readJsonFile<FormDefinition>(`src/data/form-def-${formName}.json`);
 export const getFormSubmissions = (formName: string) => readJsonFile<FormSubmission[]>(`src/data/form-submissions-${formName}.json`);
