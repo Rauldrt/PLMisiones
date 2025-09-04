@@ -155,6 +155,16 @@ export default {
             opacity: '0.9',
           },
         },
+        'icon-glow': {
+          '0%, 100%': {
+            transform: 'scale(1)',
+            opacity: '0.8',
+          },
+          '50%': {
+            transform: 'scale(1.1)',
+            opacity: '1',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -169,6 +179,7 @@ export default {
         'slide-from-left': 'bg-slide-from-left ease-out forwards',
         'slide-from-right': 'bg-slide-from-right ease-out forwards',
         'pulse-slow': 'pulse-slow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'icon-glow': 'icon-glow 2s ease-in-out infinite',
       },
       transitionDuration: {
         '2000': '2000ms',

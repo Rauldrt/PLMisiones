@@ -80,7 +80,7 @@ export function Banner({ textSlides, backgroundSlides, candidates, notification,
                     <Collapsible className="max-w-4xl mx-auto">
                         <CollapsibleTrigger asChild>
                             <Button variant="outline" className="w-full bg-black/20 border-white/20 text-white hover:bg-black/40 backdrop-blur-sm">
-                                <Icons.Proposals className="mr-2" />
+                                <Icons.Proposals className="mr-2 animate-icon-glow" />
                                 Ver Propuestas de Campaña
                                 <Icons.ChevronDown className="ml-auto h-5 w-5 transition-transform data-[state=open]:rotate-180" />
                             </Button>
