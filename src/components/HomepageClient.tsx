@@ -98,7 +98,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
                                         <CardTitle className="font-headline text-2xl text-primary">{selectedMember.name}</CardTitle>
                                         <CardDescription className="text-lg mt-1 text-foreground">{selectedMember.role}</CardDescription>
                                         <p className="mt-4 text-foreground/80">
-                                            Información detallada sobre el rol y las responsabilidades de {selectedMember.name} en el partido, destacando su compromiso con nuestros valores y su visión para el futuro de Misiones.
+                                            {selectedMember.description}
                                         </p>
                                     </div>
                                 </div>

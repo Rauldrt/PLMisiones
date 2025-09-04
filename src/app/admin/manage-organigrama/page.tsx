@@ -1,3 +1,4 @@
+
 'use client';
 import { useState, useEffect, useTransition } from 'react';
 import { getOrganigramaAction } from '@/actions/data';
@@ -5,6 +6,7 @@ import { saveOrganigrama } from '@/actions/admin';
 import type { OrganigramaMember } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/icons';
@@ -58,7 +60,7 @@ export default function ManageOrganigramaPage() {
   };
 
   const addItem = () => {
-    setItems([...items, { id: new Date().getTime().toString(), name: 'Nuevo Miembro', role: 'Cargo', imageUrl: '/placeholder.png', imageHint: 'person portrait' }]);
+    setItems([...items, { id: new Date().getTime().toString(), name: 'Nuevo Miembro', role: 'Cargo', imageUrl: '/placeholder.png', imageHint: 'person portrait', description: 'Descripción del miembro...' }]);
   }
   
   const removeItem = (id: string) => {
@@ -119,6 +121,10 @@ export default function ManageOrganigramaPage() {
                           <div className="space-y-1">
                             <Label htmlFor={`imageHint-${index}`}>Pista de Imagen (para IA)</Label>
                             <Input id={`imageHint-${index}`} value={item.imageHint || ''} onChange={e => handleFieldChange(index, 'imageHint', e.target.value)} placeholder="Ej: man portrait smiling" />
+                          </div>
+                          <div className="space-y-1">
+                            <Label htmlFor={`description-${index}`}>Descripción</Label>
+                            <Textarea id={`description-${index}`} value={item.description} onChange={e => handleFieldChange(index, 'description', e.target.value)} rows={3}/>
                           </div>
                     </AccordionContent>
                   </AccordionItem>

@@ -90,6 +90,7 @@ export interface OrganigramaMember {
     role: string;
     imageUrl: string;
     imageHint: string;
+    description: string;
 }
 
 export interface Notification {

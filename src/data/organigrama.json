@@ -2,44 +2,50 @@
 [
   {
     "id": "1",
-    "name": "Juan Pérez",
+    "name": "Ninfa Alvarenga",
     "role": "Presidente",
-    "imageUrl": "https://picsum.photos/200/200?random=1",
-    "imageHint": "man portrait"
+    "imageUrl": "/WhatsApp Image 2025-08-26 at 12.48.35 PM.jpeg",
+    "imageHint": "man portrait",
+    "description": "Lidera el partido con una visión clara para una Misiones más libre y próspera, enfocada en el desarrollo económico y la reducción del aparato estatal."
   },
   {
     "id": "2",
     "name": "María Gómez",
     "role": "Vicepresidenta",
     "imageUrl": "https://picsum.photos/200/200?random=2",
-    "imageHint": "woman portrait"
+    "imageHint": "woman portrait",
+    "description": "Trabaja en estrecha colaboración con la presidencia para asegurar la correcta implementación de las estrategias del partido y representa al partido en eventos clave."
   },
   {
     "id": "3",
     "name": "Carlos Rodriguez",
     "role": "Secretario General",
     "imageUrl": "https://picsum.photos/200/200?random=3",
-    "imageHint": "person portrait"
+    "imageHint": "person portrait",
+    "description": "Responsable de la organización interna del partido, la comunicación con los afiliados y la coordinación de las actividades políticas en toda la provincia."
   },
   {
     "id": "4",
     "name": "Ana Garcia",
     "role": "Tesorera",
     "imageUrl": "https://picsum.photos/200/200?random=4",
-    "imageHint": "woman portrait smiling"
+    "imageHint": "woman portrait smiling",
+    "description": "Gestiona con transparencia y eficiencia los recursos financieros del partido, asegurando el cumplimiento de todas las normativas y la sostenibilidad económica."
   },
   {
     "id": "5",
     "name": "Luis Torres",
     "role": "Vocal Titular 1°",
     "imageUrl": "https://picsum.photos/200/200?random=5",
-    "imageHint": "man portrait serious"
+    "imageHint": "man portrait serious",
+    "description": "Participa activamente en la toma de decisiones del comité ejecutivo, aportando su experiencia en el sector privado para el desarrollo de nuevas propuestas."
   },
   {
     "id": "6",
     "name": "Marta Fernandez",
     "role": "Vocal Titular 2°",
     "imageUrl": "https://picsum.photos/200/200?random=6",
-    "imageHint": "woman portrait professional"
+    "imageHint": "woman portrait professional",
+    "description": "Enfocada en el área social, trabaja para acercar las ideas de la libertad a diferentes comunidades y supervisa los programas de voluntariado y acción social."
   }
 ]
