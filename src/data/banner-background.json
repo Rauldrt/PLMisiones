@@ -63,15 +63,6 @@
     "objectPosition": "bottom"
   },
   {
-    "id": "1756847306154",
-    "imageUrl": "/IMG-20240929-WA0594.jpg",
-    "imageHint": "",
-    "animationType": "zoom-in",
-    "animationDuration": 10,
-    "overlayOpacity": 0.7,
-    "objectPosition": "center"
-  },
-  {
     "id": "1756847329602",
     "imageUrl": "/IMG-20240512-WA0375.jpg",
     "imageHint": "",
@@ -96,7 +87,7 @@
     "animationType": "zoom-in",
     "animationDuration": 10,
     "overlayOpacity": 0.7,
-    "objectPosition": "center"
+    "objectPosition": "top"
   },
   {
     "id": "1756847372505",
