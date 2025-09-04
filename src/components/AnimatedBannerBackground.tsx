@@ -43,41 +43,39 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
   const overlayOpacity = currentSlide?.overlayOpacity ?? 0.7;
 
   return (
-    <>
-      <div 
-        className="absolute inset-0 h-full w-full"
-        style={{ transform: `translateY(${offsetY * 0.5}px)` }}
-      >
-        {slides.map((slide, index) => {
-          const animationType = slide.animationType || 'zoom-in';
-          const animationDuration = slide.animationDuration || 10;
-          
-          return (
-            <Image
-              key={slide.id}
-              src={slide.imageUrl}
-              alt="Banner Background"
-              fill
-              className={cn(
-                'absolute inset-0 object-cover transition-opacity ease-linear',
-                index === currentIndex ? `opacity-100 animate-${animationType}` : 'opacity-0',
-              )}
-              style={{ 
-                animationDuration: `${animationDuration}s`,
-                transitionDuration: '2000ms', // Fade transition between images
-                objectPosition: slide.objectPosition || 'center',
-              }}
-              priority={index === 0}
-              data-ai-hint={slide.imageHint}
-            />
-          )
-        })}
-      </div>
+    <div 
+      className="absolute inset-0 h-full w-full z-0"
+      style={{ transform: `translateY(${offsetY * 0.5}px)` }}
+    >
+      {slides.map((slide, index) => {
+        const animationType = slide.animationType || 'zoom-in';
+        const animationDuration = slide.animationDuration || 10;
+        
+        return (
+          <Image
+            key={slide.id}
+            src={slide.imageUrl}
+            alt="Banner Background"
+            fill
+            className={cn(
+              'absolute inset-0 object-cover transition-opacity ease-linear',
+              index === currentIndex ? `opacity-100 animate-${animationType}` : 'opacity-0',
+            )}
+            style={{ 
+              animationDuration: `${animationDuration}s`,
+              transitionDuration: '2000ms', // Fade transition between images
+              objectPosition: slide.objectPosition || 'center',
+            }}
+            priority={index === 0}
+            data-ai-hint={slide.imageHint}
+          />
+        )
+      })}
       <div 
         className="absolute inset-0 z-10 bg-black" 
         style={{ opacity: overlayOpacity }}
       />
-    </>
+    </div>
   );
 }
 

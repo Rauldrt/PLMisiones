@@ -31,10 +31,8 @@ interface BannerProps {
 
 export function Banner({ textSlides, backgroundSlides, candidates, notification, proposals }: BannerProps) {
   return (
-    <section className="relative w-full flex flex-col z-0">
-        <div className="absolute inset-0 w-full h-full min-h-[600px] md:h-[720px]">
-            <AnimatedBannerBackground slides={backgroundSlides} />
-        </div>
+    <section className="relative w-full flex flex-col z-0 min-h-[600px] md:min-h-[720px] justify-between">
+        <AnimatedBannerBackground slides={backgroundSlides} />
         
         {notification && <NotificationBubble notification={notification} />}
         
