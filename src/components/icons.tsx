@@ -36,6 +36,7 @@ import {
   Image as GalleryIcon,
   Lightbulb,
   Footprints,
+  MessageCircle,
 } from 'lucide-react';
 import type { SVGProps } from 'react';
 
@@ -49,6 +50,7 @@ export const Icons = {
   Twitter,
   Instagram,
   Youtube,
+  Whatsapp: MessageCircle,
   ChevronLeft,
   ChevronRight,
   ChevronUp,

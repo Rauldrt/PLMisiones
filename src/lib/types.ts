@@ -112,6 +112,7 @@ export interface FooterContent {
   contactInfoTitle: string;
   email: string;
   phone: string;
+  whatsapp?: string;
   socialsTitle: string;
   copyright: string;
   credits: string;

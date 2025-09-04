@@ -94,6 +94,11 @@ export default function ManageFooterPage() {
                     <Label htmlFor="phone">Teléfono</Label>
                     <Input id="phone" value={content.phone} onChange={e => handleFieldChange('phone', e.target.value)} />
                 </div>
+                <div className="space-y-2">
+                    <Label htmlFor="whatsapp">WhatsApp</Label>
+                    <Input id="whatsapp" value={content.whatsapp || ''} onChange={e => handleFieldChange('whatsapp', e.target.value)} placeholder="Ej: +5491122334455" />
+                    <p className="text-xs text-muted-foreground">Incluir código de país, sin espacios ni símbolos.</p>
+                </div>
                  <div className="space-y-2">
                     <Label htmlFor="socialsTitle">Título Redes Sociales</Label>
                     <Input id="socialsTitle" value={content.socialsTitle} onChange={e => handleFieldChange('socialsTitle', e.target.value)} />

@@ -8,6 +8,7 @@ import { DynamicForm } from './DynamicForm';
 import type { SocialLink, FormDefinition, FooterContent } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { Button } from './ui/button';
 
 export function Footer() {
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
@@ -68,8 +69,18 @@ export function Footer() {
                         <div className="flex items-start gap-4">
                             <div>
                                 <h3 className="font-semibold">{footerContent.contactInfoTitle}</h3>
-                                <p className="text-foreground/80">{footerContent.email}</p>
-                                <p className="text-foreground/80">{footerContent.phone}</p>
+                                <div className="text-foreground/80 space-y-2 mt-2">
+                                  <p>{footerContent.email}</p>
+                                  <p>{footerContent.phone}</p>
+                                  {footerContent.whatsapp && (
+                                      <Button asChild variant="outline" className="bg-green-500/10 border-green-500/30 hover:bg-green-500/20 text-green-400 hover:text-green-300">
+                                          <Link href={`https://wa.me/${footerContent.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer">
+                                              <Icons.Whatsapp className="mr-2" />
+                                              Contactar por WhatsApp
+                                          </Link>
+                                      </Button>
+                                  )}
+                                </div>
                             </div>
                         </div>
                         <div className="flex items-start gap-4">
