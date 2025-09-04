@@ -46,6 +46,7 @@ export function Footer() {
   }
 
   const copyrightText = footerContent.copyright.replace('{year}', new Date().getFullYear().toString());
+  const creditsParts = footerContent.credits.split('♥');
 
   return (
     <footer className="bg-card" id="contacto">
@@ -102,7 +103,15 @@ export function Footer() {
             <div className="text-center text-sm text-foreground/60 sm:text-right">
                 <p>{copyrightText} | <Link href="/admin" className="hover:text-accent">Admin</Link></p>
                 <p className="mt-1">
-                   {footerContent.credits}
+                   {creditsParts.length === 2 ? (
+                        <>
+                            {creditsParts[0]}
+                            <span className="text-red-500">♥</span>
+                            {creditsParts[1]}
+                        </>
+                    ) : (
+                        footerContent.credits
+                    )}
                 </p>
             </div>
             </div>
