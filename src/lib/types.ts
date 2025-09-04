@@ -97,3 +97,9 @@ export interface Notification {
   text: string;
   link: string;
 }
+
+export interface Proposal {
+  id: string;
+  title: string;
+  content: string;
+}

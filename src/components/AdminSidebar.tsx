@@ -17,6 +17,7 @@ const adminNavLinks = [
   { href: '/admin/manage-banner', label: 'Texto Banner', icon: 'FileText' },
   { href: '/admin/manage-banner-background', label: 'Fondo Banner', icon: 'Banner' },
   { href: '/admin/manage-notification', label: 'Notificación', icon: 'Notification' },
+  { href: '/admin/manage-proposals', label: 'Propuestas', icon: 'Proposals' },
   { href: '/admin/manage-candidates', label: 'Candidatos', icon: 'Referentes' },
   { href: '/admin/manage-referentes', label: 'Referentes', icon: 'Referentes' },
   { href: '/admin/manage-mosaic', label: 'Mosaico', icon: 'Mosaic' },

@@ -1,3 +1,4 @@
+
 'use server';
 
 import { 
@@ -12,7 +13,8 @@ import {
     getOrganigrama,
     getFormSubmissions,
     getCandidates,
-    getNotification
+    getNotification,
+    getProposals
 } from '@/lib/data';
 
 // These actions are safe to call from client components.
@@ -43,6 +45,10 @@ export async function getMosaicItemsAction() {
 
 export async function getAccordionItemsAction() {
     return getAccordionItems();
+}
+
+export async function getProposalsAction() {
+    return getProposals();
 }
 
 export async function getReferentesAction() {

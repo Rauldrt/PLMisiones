@@ -30,5 +30,21 @@
     "imageUrl": "/WhatsApp Image 2025-08-26 at 12.48.36 PM.jpeg",
     "imageHint": "person portrait",
     "bio": ""
+  },
+  {
+    "id": "1756978761073",
+    "name": "Darife Tebecheri",
+    "role": "Candidato a Diputado Nacional",
+    "imageUrl": "/WhatsApp Image 2025-08-26 at 12.48.36 PM (1).jpeg",
+    "imageHint": "person portrait",
+    "bio": "Biografía del candidato..."
+  },
+  {
+    "id": "1756978799953",
+    "name": "Jorge Fernandez",
+    "role": "Candidato a Diputado Nacional",
+    "imageUrl": "/WhatsApp Image 2025-08-26 at 12.48.36 PM (2).jpeg",
+    "imageHint": "person portrait",
+    "bio": "Biografía del candidato..."
   }
 ]

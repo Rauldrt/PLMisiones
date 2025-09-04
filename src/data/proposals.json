@@ -1,0 +1,23 @@
+
+[
+  {
+    "id": "1",
+    "title": "Reducción de Impuestos",
+    "content": "Implementaremos una reducción significativa de los impuestos provinciales para aliviar la carga sobre los ciudadanos y fomentar la inversión y el consumo."
+  },
+  {
+    "id": "2",
+    "title": "Desregulación Económica",
+    "content": "Eliminaremos regulaciones innecesarias que obstaculizan la creación de empresas y la generación de empleo. Queremos un mercado más libre y dinámico."
+  },
+  {
+    "id": "3",
+    "title": "Reforma Educativa",
+    "content": "Introduciremos un sistema de vouchers educativos para que los padres puedan elegir la escuela que prefieran para sus hijos, fomentando la competencia y la calidad."
+  },
+  {
+    "id": "4",
+    "title": "Seguridad y Justicia",
+    "content": "Aumentaremos la presencia policial en las calles, modernizaremos el equipamiento de las fuerzas de seguridad y garantizaremos el cumplimiento de la ley para todos."
+  }
+]

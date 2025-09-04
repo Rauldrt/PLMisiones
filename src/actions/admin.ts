@@ -1,8 +1,9 @@
+
 'use server';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { revalidatePath } from 'next/cache';
-import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate, Notification } from '@/lib/types';
+import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate, Notification, Proposal } from '@/lib/types';
 import { getNews } from '@/lib/data';
 
 async function writeJsonFile(filePath: string, data: any) {
@@ -42,6 +43,12 @@ export async function saveAccordion(items: AccordionItem[]) {
     await writeJsonFile('src/data/accordion.json', items);
     revalidatePath('/');
     return { success: true, message: 'Acordeón guardado con éxito.' };
+}
+
+export async function saveProposals(items: Proposal[]) {
+    await writeJsonFile('src/data/proposals.json', items);
+    revalidatePath('/');
+    return { success: true, message: 'Propuestas guardadas con éxito.' };
 }
 
 export async function saveReferentes(items: Referente[]) {

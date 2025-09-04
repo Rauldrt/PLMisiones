@@ -1,5 +1,6 @@
+
 import { HomepageClient } from '@/components/HomepageClient';
-import { getBannerTextSlides, getBannerBackgroundSlides, getMosaicItems, getAccordionItems, getNews, getCandidates, getNotification, getOrganigrama } from '@/lib/data';
+import { getBannerTextSlides, getBannerBackgroundSlides, getMosaicItems, getAccordionItems, getNews, getCandidates, getNotification, getOrganigrama, getProposals } from '@/lib/data';
 
 export default async function Home() {
   const bannerTextSlides = await getBannerTextSlides();
@@ -10,6 +11,7 @@ export default async function Home() {
   const candidates = await getCandidates();
   const notification = await getNotification();
   const organigrama = await getOrganigrama();
+  const proposals = await getProposals();
 
   return (
     <HomepageClient
@@ -21,6 +23,7 @@ export default async function Home() {
       candidates={candidates}
       notification={notification}
       organigramaData={organigrama}
+      proposals={proposals}
     />
   );
 }
