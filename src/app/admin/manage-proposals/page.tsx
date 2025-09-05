@@ -104,6 +104,7 @@ export default function ManageProposalsPage() {
                       <div className="space-y-1 mt-4">
                         <Label htmlFor={`content-${index}`}>Contenido</Label>
                         <Textarea id={`content-${index}`} value={item.content} onChange={e => handleFieldChange(index, 'content', e.target.value)} rows={4} />
+                        <p className="text-xs text-muted-foreground">Puedes usar HTML para insertar videos o imágenes. Ej: &lt;iframe src="..."&gt;&lt;/iframe&gt;</p>
                       </div>
                   </AccordionContent>
                 </UiAccordionItem>

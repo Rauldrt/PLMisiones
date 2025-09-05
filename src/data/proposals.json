@@ -1,22 +1,23 @@
+
 [
   {
     "id": "1",
     "title": "Reducción de Impuestos",
-    "content": ""
+    "content": "Proponemos una reducción drástica de los impuestos provinciales y municipales para aliviar la carga sobre los ciudadanos y las empresas. Esto incluye la eliminación de Ingresos Brutos para los primeros 5 años de un nuevo emprendimiento y una baja generalizada del 30% en las tasas municipales."
   },
   {
     "id": "2",
     "title": "Desregulación Económica",
-    "content": ""
+    "content": "Menos trámites, más libertad. Simplificaremos el marco regulatorio para que abrir un negocio o construir tu casa sea más fácil y rápido. Eliminaremos regulaciones innecesarias que solo sirven para obstaculizar el crecimiento económico de Misiones."
   },
   {
     "id": "3",
-    "title": "Reforma Educativa",
-    "content": ""
+    "title": "Reforma Educativa con Vouchers",
+    "content": "<p>Implementaremos un sistema de vouchers educativos para que los padres puedan elegir la escuela que consideren mejor para sus hijos, ya sea pública o privada. Fomentaremos la competencia entre instituciones para elevar la calidad de la educación en toda la provincia.</p><p>A continuación un video explicativo:</p><iframe width=\"100%\" height=\"315\" src=\"https://www.youtube.com/embed/videoseries?si=FOQ8P_3fG-lqYdYf&amp;list=PL-P0VpX5iOoZ6YqYgM-v0hD6W6xZ8r-9Z\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>"
   },
   {
     "id": "4",
     "title": "Seguridad y Justicia",
-    "content": ""
+    "content": "Tolerancia cero con la delincuencia. Aumentaremos la presencia policial en las calles, dotaremos a las fuerzas de seguridad con mejor equipamiento y tecnología, y propondremos reformas legales para endurecer las penas a los delincuentes. Quien las hace, las paga."
   }
 ]

@@ -19,6 +19,7 @@ import { Icons } from './icons';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { Card } from './ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
+import { cn } from '@/lib/utils';
 
 
 interface BannerProps {
@@ -93,9 +94,13 @@ export function Banner({ textSlides, backgroundSlides, candidates, notification,
                                         <AccordionTrigger className="font-headline text-lg text-left hover:no-underline">
                                         {proposal.title}
                                         </AccordionTrigger>
-                                        <AccordionContent className="text-base text-foreground/80 pt-2">
-                                        {proposal.content}
-                                        </AccordionContent>
+                                        <AccordionContent 
+                                            className={cn(
+                                                "text-base text-foreground/80 pt-2",
+                                                "prose prose-sm prose-invert max-w-full"
+                                            )}
+                                            dangerouslySetInnerHTML={{ __html: proposal.content }}
+                                        />
                                     </AccordionItem>
                                     ))}
                                 </Accordion>
