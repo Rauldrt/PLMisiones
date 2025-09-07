@@ -1,3 +1,4 @@
+
 'use client';
 import { useState, useEffect, useTransition } from 'react';
 import { getMosaicItemsAction } from '@/actions/data';
@@ -77,7 +78,7 @@ export default function ManageMosaicPage() {
   };
 
   const addItem = () => {
-    setItems([...items, { id: new Date().getTime().toString(), title: 'Nuevo Mosaico', imageUrls: ['/placeholder.png'], imageHints: [], colSpan: 1, rowSpan: 1 }]);
+    setItems([...items, { id: new Date().getTime().toString(), title: 'Nuevo Mosaico', imageUrls: ['/placeholder.png'], imageHints: [], colSpan: 1, rowSpan: 1, animationType: 'fade', animationDuration: 7000 }]);
   };
   
   const removeItem = (id: string) => {
@@ -139,7 +140,30 @@ export default function ManageMosaicPage() {
                           </div>
                         </div>
 
-                        <div className="space-y-2">
+                        <div className="border-t pt-4 mt-4 space-y-4">
+                            <h4 className="text-base font-semibold">Animación y Apariencia</h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <Label>Tipo de Transición</Label>
+                                    <Select value={item.animationType || 'fade'} onValueChange={(v) => handleFieldChange(index, 'animationType', v as any)}>
+                                        <SelectTrigger><SelectValue /></SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="fade">Fade</SelectItem>
+                                            <SelectItem value="slide-left">Slide Left</SelectItem>
+                                            <SelectItem value="slide-right">Slide Right</SelectItem>
+                                            <SelectItem value="zoom">Zoom</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="space-y-1">
+                                    <Label>Duración de cada imagen (ms)</Label>
+                                    <Input type="number" value={item.animationDuration || 7000} onChange={e => handleFieldChange(index, 'animationDuration', Number(e.target.value))} placeholder="Ej: 7000" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div className="space-y-2 border-t pt-4 mt-4">
                           <Label>Imágenes</Label>
                           {item.imageUrls.map((url, imgIndex) => (
                               <div key={imgIndex} className="flex items-center gap-2">

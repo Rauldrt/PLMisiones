@@ -1,3 +1,4 @@
+
 [
   {
     "id": "1",
@@ -16,29 +17,39 @@
       " handshake"
     ],
     "colSpan": 2,
-    "rowSpan": 2
+    "rowSpan": 2,
+    "animationType": "zoom",
+    "animationDuration": 9000
   },
   {
     "id": "2",
     "title": "Equipo",
     "imageUrls": [
-      "https://picsum.photos/600/300?random=20",
-      "https://picsum.photos/600/300?random=21"
+      "/IMG-20230903-WA0002.jpg",
+      "/IMG-20230903-WA0054.jpg",
+      "/IMG-20231126-WA0000.jpg",
+      "/IMG-20240113-WA0203.jpg",
+      "/IMG-20240512-WA0375.jpg"
     ],
     "imageHints": [
       "team portrait",
       "people working"
     ],
     "colSpan": 2,
-    "rowSpan": 1
+    "rowSpan": 1,
+    "animationType": "fade",
+    "animationDuration": 7000
   },
   {
     "id": "3",
     "title": "Eventos",
     "imageUrls": [
-      "https://picsum.photos/300/300?random=30",
-      "https://picsum.photos/300/300?random=31",
-      "https://picsum.photos/300/300?random=32"
+      "/20231125_221053.jpg",
+      "/IMG-20230903-WA0013.jpg",
+      "/IMG-20240107-WA0219.jpg",
+      "/IMG-20240721-WA0554.jpg",
+      "/IMG-20240107-WA0217.jpg",
+      "/IMG-20240922-WA0546.jpg"
     ],
     "imageHints": [
       "event calendar",
@@ -46,20 +57,27 @@
       "public speaking"
     ],
     "colSpan": 1,
-    "rowSpan": 1
+    "rowSpan": 1,
+    "animationType": "slide-left",
+    "animationDuration": 8000
   },
   {
     "id": "4",
     "title": "Fiscalización",
     "imageUrls": [
-      "https://picsum.photos/300/300?random=40",
-      "https://picsum.photos/300/300?random=41"
+      "/20231022_101754.jpg",
+      "/20231022_123119_HDR.jpg",
+      "/20231022_102234.jpg",
+      "/20231022_101800.jpg",
+      "/IMG-20241027-WA0223.jpg"
     ],
     "imageHints": [
       "voting poll",
       "ballot box"
     ],
     "colSpan": 1,
-    "rowSpan": 1
+    "rowSpan": 1,
+    "animationType": "slide-right",
+    "animationDuration": 10000
   }
 ]

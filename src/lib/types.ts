@@ -35,6 +35,8 @@ export interface MosaicItem {
   imageHints?: string[];
   colSpan: number;
   rowSpan: number;
+  animationType?: 'fade' | 'slide-left' | 'slide-right' | 'zoom';
+  animationDuration?: number;
 }
 
 export interface AccordionItem {

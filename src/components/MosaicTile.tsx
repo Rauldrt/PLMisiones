@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import type { MosaicItem } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -11,25 +11,18 @@ interface MosaicTileProps {
   onClick: (item: MosaicItem, startIndex: number) => void;
 }
 
-const animationTypes = ['fade', 'slide-left', 'slide-right', 'zoom'];
-const animationDurations = [5000, 7000, 9000];
-
 export function MosaicTile({ item, onClick }: MosaicTileProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Memoize random values so they are consistent across re-renders
-  const { animationType, baseDuration } = useMemo(() => {
-    const animationType = animationTypes[Math.floor(Math.random() * animationTypes.length)];
-    const baseDuration = animationDurations[Math.floor(Math.random() * animationDurations.length)];
-    return { animationType, baseDuration };
-  }, []);
+  const baseDuration = item.animationDuration || 7000;
+  const animationType = item.animationType || 'fade';
   
   useEffect(() => {
     if (item.imageUrls.length <= 1) return;
 
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % item.imageUrls.length);
-    }, baseDuration + (Math.random() * 2000 - 1000)); // Add some randomness to interval
+    }, baseDuration);
 
     return () => clearInterval(interval);
   }, [item.imageUrls.length, baseDuration]);
