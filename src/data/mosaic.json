@@ -1,12 +1,14 @@
-
 [
   {
     "id": "1",
-    "title": "Nuestros Principios",
+    "title": "Libertarios Misioneros",
     "imageUrls": [
-      "https://picsum.photos/600/600?random=10",
-      "https://picsum.photos/600/600?random=11",
-      "https://picsum.photos/600/600?random=12"
+      "/20231016_185842.jpg",
+      "/20231016_185830.jpg",
+      "/IMG-20241017-WA0305.jpg",
+      "/IMG-20241013-WA0195.jpg",
+      "/IMG-20241027-WA0184.jpg",
+      "/IMG-20240916-WA0517.jpg"
     ],
     "imageHints": [
       "philosophy book",

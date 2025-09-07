@@ -79,9 +79,8 @@ export function MosaicTile({ item, onClick }: MosaicTileProps) {
           priority={index === 0}
         />
       ))}
-      <div className="absolute inset-0 bg-black/50" />
       <div className="absolute inset-0 flex items-end justify-start p-4 md:p-6">
-        <h3 className="font-headline text-2xl font-bold text-white drop-shadow-md">{item.title}</h3>
+        <h3 className="font-headline text-2xl font-bold text-white bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full">{item.title}</h3>
       </div>
     </div>
   );
