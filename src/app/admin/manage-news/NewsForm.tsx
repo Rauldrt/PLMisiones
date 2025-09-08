@@ -16,7 +16,7 @@ import { Icons } from '@/components/icons';
 const formSchema = z.object({
   title: z.string().min(5, 'El título debe tener al menos 5 caracteres.'),
   date: z.string().date('Fecha inválida.'),
-  imageUrl: z.string().url('URL de imagen inválida.'),
+  imageUrl: z.string().optional(),
   imageHint: z.string().optional(),
   content: z.string().min(50, 'El contenido debe tener al menos 50 caracteres.'),
 });
@@ -38,7 +38,7 @@ export function NewsForm({ onArticleAdded, setFormContent }: NewsFormProps & { f
     defaultValues: {
       title: '',
       date: new Date().toISOString().split('T')[0],
-      imageUrl: '/placeholder.png',
+      imageUrl: '',
       imageHint: '',
       content: '',
     },
@@ -62,7 +62,7 @@ export function NewsForm({ onArticleAdded, setFormContent }: NewsFormProps & { f
         form.reset({ 
             title: '',
             date: new Date().toISOString().split('T')[0],
-            imageUrl: '/placeholder.png',
+            imageUrl: '',
             imageHint: '',
             content: '',
         });
@@ -105,9 +105,9 @@ export function NewsForm({ onArticleAdded, setFormContent }: NewsFormProps & { f
               name="imageUrl"
               render={({ field }) => (
                   <FormItem>
-                  <FormLabel>URL de la Imagen</FormLabel>
+                  <FormLabel>URL de la Imagen (Opcional)</FormLabel>
                     <div className="flex items-center gap-2">
-                      <FormControl><Input placeholder="https://..." {...field} /></FormControl>
+                      <FormControl><Input placeholder="https://... o /ruta/local.jpg" {...field} /></FormControl>
                       <DialogTrigger asChild>
                           <Button variant="outline" size="icon">
                               <Icons.Gallery className="w-4 h-4" />

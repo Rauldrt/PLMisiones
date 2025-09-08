@@ -44,7 +44,7 @@ export default async function NewsArticlePage({ params }: Props) {
         </p>
       </div>
       
-      {!isEmbed && (
+      {article.imageUrl && !isEmbed && (
         <div className="relative my-8 h-64 md:h-96 w-full overflow-hidden rounded-lg">
             <Image
                 src={article.imageUrl}

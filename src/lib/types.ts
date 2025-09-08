@@ -4,7 +4,7 @@ export interface NewsArticle {
   slug: string;
   title: string;
   date: string;
-  imageUrl: string;
+  imageUrl?: string;
   imageHint?: string;
   content: string;
 }
