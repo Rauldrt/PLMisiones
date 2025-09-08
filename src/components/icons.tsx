@@ -1,4 +1,3 @@
-
 'use client';
 import {
   Newspaper,
@@ -37,6 +36,7 @@ import {
   Lightbulb,
   Footprints,
   MessageCircle,
+  Eye,
 } from 'lucide-react';
 import type { SVGProps } from 'react';
 
@@ -78,6 +78,7 @@ export const Icons = {
   Gallery: GalleryIcon,
   Proposals: Lightbulb,
   Footer: Footprints,
+  View: Eye,
 };
 
 export type IconName = keyof typeof Icons;
