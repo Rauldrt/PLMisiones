@@ -184,15 +184,17 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                 {newsArticles.map((article) => (
                 <Card key={article.id} className="flex flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
                     <CardHeader className="p-0">
-                    <div className="relative h-48 w-full">
-                        <Image
-                        src={article.imageUrl}
-                        alt={article.title}
-                        fill
-                        className="object-cover"
-                        data-ai-hint={article.imageHint}
-                        />
-                    </div>
+                    {article.imageUrl && (
+                      <div className="relative h-48 w-full">
+                          <Image
+                          src={article.imageUrl}
+                          alt={article.title}
+                          fill
+                          className="object-cover"
+                          data-ai-hint={article.imageHint}
+                          />
+                      </div>
+                    )}
                     <div className="p-6">
                         <CardTitle className="font-headline text-xl leading-tight">
                             <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
