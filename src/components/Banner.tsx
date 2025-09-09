@@ -74,13 +74,12 @@ export function Banner({ textSlides, backgroundSlides, candidates, notification,
             </div>
 
             {proposals && proposals.length > 0 && (
-                <div className="w-full pb-20 md:pb-32 px-4">
+                <div className="w-full flex justify-center pb-20 md:pb-32 px-4">
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button variant="outline" className="w-full max-w-4xl mx-auto bg-black/20 border-white/20 text-white hover:bg-black/40 backdrop-blur-sm flex items-center">
-                                <Icons.Proposals className="mr-2 animate-icon-glow text-yellow-400" />
-                                Ver Propuestas de Campaña
-                                <Icons.ChevronDown className="ml-auto h-5 w-5" />
+                            <Button variant="outline" className="bg-black/20 border-white/20 text-white hover:bg-black/40 backdrop-blur-sm flex items-center">
+                                <Icons.Proposals className="mr-3 h-6 w-6 animate-icon-glow text-yellow-400" />
+                                Ver Nuestras Propuestas
                             </Button>
                         </DialogTrigger>
                         <DialogContent className="max-w-2xl bg-card">
