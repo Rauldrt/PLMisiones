@@ -19,7 +19,7 @@ const adminNavLinks = [
   { href: '/admin/manage-notification', label: 'Notificación', icon: 'Notification' },
   { href: '/admin/manage-proposals', label: 'Propuestas', icon: 'Proposals' },
   { href: '/admin/manage-candidates', label: 'Candidatos', icon: 'Referentes' },
-  { href: '/admin/manage-referentes', label: 'Referentes', icon: 'Referentes' },
+  { href: '/admin/manage-referentes', label: 'Referentes', icon: 'Team' },
   { href: '/admin/manage-mosaic', label: 'Mosaico', icon: 'Mosaic' },
   { href: '/admin/manage-accordion', label: 'Acordeón', icon: 'Accordion' },
   { href: '/admin/manage-organigrama', label: 'Organigrama', icon: 'Team' },

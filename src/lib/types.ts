@@ -59,6 +59,7 @@ export interface Referente {
   imageUrl: string;
   imageHint?: string;
   bio: string;
+  locality?: string;
 }
 
 export interface Candidate extends Referente {}

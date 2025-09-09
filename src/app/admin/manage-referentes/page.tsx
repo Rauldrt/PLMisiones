@@ -1,3 +1,4 @@
+
 'use client';
 import { useState, useEffect, useTransition } from 'react';
 import { getReferentesAction } from '@/actions/data';
@@ -58,7 +59,7 @@ export default function ManageReferentesPage() {
   };
   
   const addItem = () => {
-    setItems([...items, { id: new Date().getTime().toString(), name: 'Nuevo Referente', role: 'Cargo', imageUrl: '/placeholder.png', imageHint: 'person portrait', bio: 'Biografía...' }]);
+    setItems([...items, { id: new Date().getTime().toString(), name: 'Nuevo Referente', role: 'Cargo', imageUrl: '/placeholder.png', imageHint: 'person portrait', bio: 'Biografía...', locality: 'Localidad' }]);
   }
   
   const removeItem = (id: string) => {
@@ -90,7 +91,7 @@ export default function ManageReferentesPage() {
                               <span>{item.name || `Perfil ${index + 1}`}</span>
                           </div>
                         </AccordionTrigger>
-                        <div className="flex gap-2 items-center">
+                        <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
                             <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
                         </div>
                       </div>
@@ -103,6 +104,10 @@ export default function ManageReferentesPage() {
                           <div className="space-y-1">
                             <Label htmlFor={`role-${index}`}>Cargo</Label>
                             <Input id={`role-${index}`} value={item.role} onChange={e => handleFieldChange(index, 'role', e.target.value)} />
+                          </div>
+                           <div className="space-y-1">
+                            <Label htmlFor={`locality-${index}`}>Localidad(es)</Label>
+                            <Input id={`locality-${index}`} value={item.locality || ''} onChange={e => handleFieldChange(index, 'locality', e.target.value)} placeholder="Ej: Posadas, Oberá"/>
                           </div>
                         </div>
                         <div className="space-y-1">
