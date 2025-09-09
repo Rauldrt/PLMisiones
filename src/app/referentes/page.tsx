@@ -1,37 +1,36 @@
 
 'use client';
 import { useState, useEffect } from 'react';
-import type { Referente, MapEmbed } from '@/lib/types';
-import { getReferentesAction, getMapsAction } from '@/actions/data';
-import { PageHeader } from '@/components/ui/page-header';
+import type { Referente, MapEmbed, PageHeader as PageHeaderType } from '@/lib/types';
+import { getReferentesAction, getMapsAction, getPageHeadersAction } from '@/actions/data';
+import { PageHeader } from '@/components/PageHeader';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Icons } from '@/components/icons';
 import { InteractiveMap } from '@/components/InteractiveMap';
+import { Skeleton } from '@/components/ui/skeleton';
 
-const pageHeader = {
-    path: "/referentes",
-    title: "Nuestros Referentes",
-    description: "Encontrá a los referentes del Partido Libertario en tu localidad.",
-    icon: "UsersRound"
-};
 
 export default function ReferentesPage() {
     const [referentes, setReferentes] = useState<Referente[]>([]);
     const [maps, setMaps] = useState<MapEmbed[]>([]);
+    const [pageHeader, setPageHeader] = useState<PageHeaderType | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         async function loadData() {
             setIsLoading(true);
-            const [referentesData, mapsData] = await Promise.all([
+            const [referentesData, mapsData, headersData] = await Promise.all([
                 getReferentesAction(),
-                getMapsAction()
+                getMapsAction(),
+                getPageHeadersAction()
             ]);
             setReferentes(referentesData);
             setMaps(mapsData.filter(m => m.enabled));
+            const currentHeader = headersData.find(h => h.path === '/referentes');
+            setPageHeader(currentHeader || null);
             setIsLoading(false);
         }
         loadData();
@@ -44,7 +43,7 @@ export default function ReferentesPage() {
 
     return (
         <div>
-            <PageHeader {...pageHeader} />
+            {pageHeader ? <PageHeader {...pageHeader} /> : <Skeleton className="h-96 w-full"/>}
             <div className="container max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 space-y-16">
                 
                 <div>
