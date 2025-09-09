@@ -186,43 +186,45 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                 {newsArticles.map((article) => {
                   const isEmbed = /<iframe|<blockquote/.test(article.content?.trim() || '');
                   return (
-                    <Card key={article.id} className="flex flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
-                        <CardHeader className="p-0">
-                        {article.imageUrl && !isEmbed && (
-                          <div className="relative h-48 w-full bg-muted">
-                              <Image
-                              src={article.imageUrl}
-                              alt={article.title}
-                              fill
-                              className="object-cover"
-                              data-ai-hint={article.imageHint}
-                              />
-                          </div>
-                        )}
-                        <div className="px-1 py-4">
-                            <CardTitle className="font-headline text-xl leading-tight">
-                                <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
-                            </CardTitle>
-                            <p className="text-sm text-foreground/60 mt-2">{new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                        </div>
-                        </CardHeader>
-                        <CardContent className="flex-grow px-1 py-4 pt-0">
-                          {isEmbed ? (
-                            <div className="relative max-h-80 overflow-y-auto p-1 border rounded-md no-scrollbar">
-                                <div dangerouslySetInnerHTML={{ __html: article.content }} />
+                    <div key={article.id} className="flex justify-center">
+                        <Card className="flex w-full flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
+                            <CardHeader className="p-0">
+                            {article.imageUrl && !isEmbed && (
+                              <div className="relative h-48 w-full bg-muted">
+                                  <Image
+                                  src={article.imageUrl}
+                                  alt={article.title}
+                                  fill
+                                  className="object-cover"
+                                  data-ai-hint={article.imageHint}
+                                  />
+                              </div>
+                            )}
+                            <div className="px-1 py-4">
+                                <CardTitle className="font-headline text-xl leading-tight">
+                                    <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
+                                </CardTitle>
+                                <p className="text-sm text-foreground/60 mt-2">{new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                             </div>
-                          ) : (
-                            <div className="text-foreground/80 line-clamp-3" dangerouslySetInnerHTML={{ __html: article.content.split('</p>')[0] + '</p>'}} />
-                          )}
-                        </CardContent>
-                        <div className="px-1 py-4 pt-0 mt-auto">
-                        <Button asChild variant="link" className="p-0 h-auto">
-                            <Link href={`/noticias/${article.slug}`}>
-                            Leer más
-                            </Link>
-                        </Button>
-                        </div>
-                    </Card>
+                            </CardHeader>
+                            <CardContent className="flex-grow px-1 py-4 pt-0">
+                              {isEmbed ? (
+                                <div className="relative max-h-80 overflow-y-auto p-1 border rounded-md no-scrollbar">
+                                    <div dangerouslySetInnerHTML={{ __html: article.content }} />
+                                </div>
+                              ) : (
+                                <div className="text-foreground/80 line-clamp-3" dangerouslySetInnerHTML={{ __html: article.content.split('</p>')[0] + '</p>'}} />
+                              )}
+                            </CardContent>
+                            <div className="px-1 py-4 pt-0 mt-auto">
+                            <Button asChild variant="link" className="p-0 h-auto">
+                                <Link href={`/noticias/${article.slug}`}>
+                                Leer más
+                                </Link>
+                            </Button>
+                            </div>
+                        </Card>
+                    </div>
                   )
                 })}
             </div>
