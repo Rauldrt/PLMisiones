@@ -72,7 +72,7 @@ export default function ReferentesPage() {
 
                     {isLoading ? (
                         <div className="text-center text-muted-foreground">Cargando referentes...</div>
-                    ) : filteredReferentes.length > 0 ? (
+                    ) : searchTerm !== '' && filteredReferentes.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {filteredReferentes.map((referente) => (
                                 <Card key={referente.id} className="flex flex-col text-center items-center bg-card border-border">
@@ -96,11 +96,11 @@ export default function ReferentesPage() {
                                 </Card>
                             ))}
                         </div>
-                    ) : (
+                    ) : searchTerm !== '' ? (
                         <div className="text-center text-muted-foreground py-16">
                             <p>No se encontraron referentes con ese criterio de búsqueda.</p>
                         </div>
-                    )}
+                    ) : null}
                 </div>
             </div>
         </div>
