@@ -207,7 +207,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                         </CardHeader>
                         <CardContent className="flex-grow p-6 pt-0">
                           {isEmbed ? (
-                            <div className="relative max-h-60 overflow-y-auto p-1 border rounded-md">
+                            <div className="relative max-h-80 overflow-y-auto p-1 border rounded-md">
                                 <div dangerouslySetInnerHTML={{ __html: article.content }} />
                             </div>
                           ) : (
