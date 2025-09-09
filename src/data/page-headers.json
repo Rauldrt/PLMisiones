@@ -1,11 +1,10 @@
-
 [
   {
     "path": "/noticias",
     "title": "Noticias y Novedades",
     "description": "Mantenete informado sobre nuestras actividades, comunicados y propuestas.",
     "icon": "News",
-    "imageUrl": "/IMG-20240922-WA0546.jpg",
+    "imageUrl": "/IMG-20240221-WA0261.jpg",
     "imageHint": "political debate"
   },
   {
