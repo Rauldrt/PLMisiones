@@ -17,18 +17,20 @@ interface ParsedEmbed {
 }
 
 function parseEmbedCode(embedCode: string): ParsedEmbed | null {
-    const iframeMatch = embedCode.match(/<iframe.*?src="(.*?)"[^>]*?title="(.*?)"[^>]*?>/);
+    const srcMatch = embedCode.match(/<iframe.*?src="(.*?)"/);
+    const titleMatch = embedCode.match(/<iframe.*?title="(.*?)"/);
     const scriptMatch = embedCode.match(/<script.*?>(.*?)<\/script>/s);
 
-    if (iframeMatch && scriptMatch) {
+    if (srcMatch && srcMatch[1] && titleMatch && titleMatch[1] && scriptMatch && scriptMatch[1]) {
         return {
-            iframeSrc: iframeMatch[1],
-            iframeTitle: iframeMatch[2],
+            iframeSrc: srcMatch[1],
+            iframeTitle: titleMatch[1],
             scriptContent: scriptMatch[1],
         };
     }
     return null;
 }
+
 
 export function InteractiveMap({ map }: InteractiveMapProps) {
     const [parsedCode, setParsedCode] = useState<ParsedEmbed | null>(null);
