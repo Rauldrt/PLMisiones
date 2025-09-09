@@ -55,7 +55,7 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
 
       <div
         className={cn(
-            'mt-8',
+            'w-full mt-8',
             isEmbed 
                 ? 'flex justify-center' 
                 : 'prose prose-invert mx-auto max-w-full prose-headings:font-headline prose-a:text-foreground/80 prose-strong:text-foreground'
