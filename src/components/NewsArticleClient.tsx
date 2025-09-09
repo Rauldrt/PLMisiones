@@ -62,7 +62,7 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
         )}
       >
         {isEmbed ? (
-          <div className="w-full max-h-[80vh] overflow-y-auto">
+          <div className="max-h-[80vh] overflow-y-auto">
              <div dangerouslySetInnerHTML={{ __html: article.content }} />
           </div>
         ) : (
