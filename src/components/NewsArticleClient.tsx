@@ -21,10 +21,16 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
   const isEmbed = article && /<iframe|<blockquote/.test(article.content?.trim() || '');
 
   useEffect(() => {
-    if (isEmbed && typeof window.instgrm !== 'undefined') {
-      window.instgrm.Embeds.process();
+    if (isEmbed) {
+      const interval = setInterval(() => {
+        if (window.instgrm) {
+          window.instgrm.Embeds.process();
+          clearInterval(interval);
+        }
+      }, 100); // Check every 100ms
+      return () => clearInterval(interval);
     }
-  }, [isEmbed, article]);
+  }, [isEmbed, article.id]);
 
   if (!article) {
     return notFound();
