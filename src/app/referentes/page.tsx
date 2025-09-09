@@ -1,43 +1,33 @@
-import Image from 'next/image';
 import { getReferentes, getPageHeaderByPath } from '@/lib/data';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageHeader } from '@/components/PageHeader';
+import { DatawrapperMap } from '@/components/DatawrapperMap';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 export const metadata = {
   title: 'Nuestros Referentes',
 };
 
 export default async function ReferentesPage() {
-  const referentes = await getReferentes();
   const pageHeader = await getPageHeaderByPath('/referentes');
 
   return (
     <div>
       {pageHeader && <PageHeader {...pageHeader} />}
       <div className="container max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {referentes.map((referente) => (
-            <Card key={referente.id} className="bg-card border-border text-center">
-              <CardHeader>
-                <div className="relative mx-auto h-32 w-32">
-                  <Image
-                    src={referente.imageUrl}
-                    alt={referente.name}
-                    fill
-                    className="rounded-full object-cover"
-                    sizes="128px"
-                    data-ai-hint={referente.imageHint}
-                  />
-                </div>
-                <CardTitle className="pt-4 font-headline text-2xl">{referente.name}</CardTitle>
-                <p className="text-sm font-medium">{referente.role}</p>
-              </CardHeader>
-              <CardContent>
-                <p className="text-foreground/80">{referente.bio}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-headline text-2xl">Mapa de Referentes</CardTitle>
+            <CardDescription>
+              Explorá el mapa para encontrar a nuestros referentes en cada rincón de la provincia de Misiones.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <DatawrapperMap 
+              title="Misiones por dptos" 
+              src="https://datawrapper.dwcdn.net/FeapF/2/"
+            />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
