@@ -47,18 +47,6 @@ export default function ReferentesPage() {
             <PageHeader {...pageHeader} />
             <div className="container max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 space-y-16">
                 
-                {maps.length > 0 && (
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="font-headline text-2xl">{maps[0].title}</CardTitle>
-                             <CardDescription>Explorá el mapa interactivo de la provincia.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <InteractiveMap map={maps[0]} />
-                        </CardContent>
-                    </Card>
-                )}
-
                 <div>
                     <div className="max-w-xl mx-auto mb-12">
                         <Input
@@ -102,6 +90,19 @@ export default function ReferentesPage() {
                         </div>
                     ) : null}
                 </div>
+
+                {maps.length > 0 && (
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="font-headline text-2xl">{maps[0].title}</CardTitle>
+                             <CardDescription>Explorá el mapa interactivo de la provincia.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <InteractiveMap map={maps[0]} />
+                        </CardContent>
+                    </Card>
+                )}
+
             </div>
         </div>
     );
