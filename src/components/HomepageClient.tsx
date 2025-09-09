@@ -187,10 +187,10 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                   return (
                     <Card key={article.id} className="flex flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
                         <CardHeader className="p-0">
-                        {(article.imageUrl || isEmbed) && (
+                        {article.imageUrl && !isEmbed && (
                           <div className="relative h-48 w-full bg-muted">
                               <Image
-                              src={article.imageUrl || '/placeholder.png'}
+                              src={article.imageUrl}
                               alt={article.title}
                               fill
                               className="object-cover"
@@ -207,15 +207,14 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                         </CardHeader>
                         <CardContent className="flex-grow p-6 pt-0">
                           {isEmbed ? (
-                            <div className="text-foreground/80 text-sm flex items-center gap-2">
-                                <Icons.Media className="h-4 w-4" />
-                                <span>Contenido interactivo. Hacé clic en "Leer más" para verlo.</span>
+                            <div className="relative max-h-60 overflow-y-auto p-1 border rounded-md">
+                                <div dangerouslySetInnerHTML={{ __html: article.content }} />
                             </div>
                           ) : (
                             <div className="text-foreground/80 line-clamp-3" dangerouslySetInnerHTML={{ __html: article.content.split('</p>')[0] + '</p>'}} />
                           )}
                         </CardContent>
-                        <div className="p-6 pt-0">
+                        <div className="p-6 pt-0 mt-auto">
                         <Button asChild variant="link" className="p-0 h-auto">
                             <Link href={`/noticias/${article.slug}`}>
                             Leer más
