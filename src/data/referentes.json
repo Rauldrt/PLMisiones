@@ -1,39 +1,20 @@
-
 [
   {
     "id": "1",
-    "name": "Juan Pérez",
-    "role": "Presidente del Partido",
-    "imageUrl": "https://picsum.photos/400/400",
+    "name": "Miguel Duarte",
+    "role": "Referente de Wanda",
+    "imageUrl": "/IMG-20230930-WA0024.jpeg",
     "imageHint": "man portrait",
-    "bio": "Emprendedor y firme defensor de las ideas de la libertad. Con más de 20 años de experiencia en el sector privado, busca aplicar principios de eficiencia y austeridad en la gestión pública.",
-    "locality": "Posadas"
+    "bio": "",
+    "locality": "Wanda"
   },
   {
     "id": "2",
-    "name": "María Gómez",
-    "role": "Vicepresidenta",
-    "imageUrl": "https://picsum.photos/401/401",
+    "name": "Raul Duarte",
+    "role": "Referente",
+    "imageUrl": "/IMG-20231126-WA0061.jpg",
     "imageHint": "woman portrait",
-    "bio": "Abogada especialista en derecho constitucional. Su principal objetivo es garantizar el respeto a la propiedad privada y reducir la burocracia que ahoga a los ciudadanos y empresas.",
-    "locality": "Oberá"
-  },
-  {
-    "id": "3",
-    "name": "Carlos Rodriguez",
-    "role": "Secretario General",
-    "imageUrl": "https://picsum.photos/402/402",
-    "imageHint": "person portrait",
-    "bio": "Docente y analista político. Trabaja en una profunda reforma educativa para Misiones, basada en la libertad de elección, la competencia y la excelencia académica.",
-    "locality": "Eldorado"
-  },
-  {
-    "id": "4",
-    "name": "Ana García",
-    "role": "Referente de Juventud",
-    "imageUrl": "https://picsum.photos/403/403",
-    "imageHint": "woman portrait smiling",
-    "bio": "Estudiante de economía y líder juvenil. Impulsa la participación de los jóvenes en la política y la defensa de un futuro con más oportunidades y menos estado.",
-    "locality": "Posadas, Garupá"
+    "bio": "",
+    "locality": "Wanda"
   }
 ]

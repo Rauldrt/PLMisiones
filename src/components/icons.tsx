@@ -1,3 +1,4 @@
+
 'use client';
 import {
   Newspaper,
@@ -22,6 +23,7 @@ import {
   LayoutDashboard,
   FileText,
   MessageSquare,
+  MessageCircle,
   Sparkles,
   Image as ImageIcon,
   Columns,
@@ -35,8 +37,8 @@ import {
   Image as GalleryIcon,
   Lightbulb,
   Footprints,
-  MessageCircle,
   Eye,
+  Heading1,
 } from 'lucide-react';
 import type { SVGProps } from 'react';
 
@@ -79,6 +81,7 @@ export const Icons = {
   Proposals: Lightbulb,
   Footer: Footprints,
   View: Eye,
+  Header: Heading1,
 };
 
 export type IconName = keyof typeof Icons;

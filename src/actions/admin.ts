@@ -3,7 +3,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { revalidatePath } from 'next/cache';
-import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate, Notification, Proposal, FooterContent, MapEmbed } from '@/lib/types';
+import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate, Notification, Proposal, FooterContent, MapEmbed, PageHeader } from '@/lib/types';
 import { getNews } from '@/lib/data';
 
 async function writeJsonFile(filePath: string, data: any) {
@@ -105,4 +105,10 @@ export async function saveMaps(items: MapEmbed[]) {
     await writeJsonFile('src/data/maps.json', items);
     revalidatePath('/referentes');
     return { success: true, message: 'Mapas guardados con éxito.' };
+}
+
+export async function savePageHeaders(items: PageHeader[]) {
+    await writeJsonFile('src/data/page-headers.json', items);
+    items.forEach(item => revalidatePath(item.path));
+    return { success: true, message: 'Encabezados guardados con éxito.' };
 }

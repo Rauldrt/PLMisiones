@@ -50,6 +50,8 @@ export interface PageHeader {
   title: string;
   description: string;
   icon: string;
+  imageUrl?: string;
+  imageHint?: string;
 }
 
 export interface Referente {

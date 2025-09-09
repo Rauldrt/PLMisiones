@@ -14,6 +14,7 @@ import Image from 'next/image';
 
 const adminNavLinks = [
   { href: '/admin/manage-news', label: 'Noticias', icon: 'News' },
+  { href: '/admin/manage-page-headers', label: 'Encabezados', icon: 'Header' },
   { href: '/admin/manage-banner', label: 'Texto Banner', icon: 'FileText' },
   { href: '/admin/manage-banner-background', label: 'Fondo Banner', icon: 'Banner' },
   { href: '/admin/manage-notification', label: 'Notificación', icon: 'Notification' },

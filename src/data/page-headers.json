@@ -4,24 +4,32 @@
     "path": "/noticias",
     "title": "Noticias y Novedades",
     "description": "Mantenete informado sobre nuestras actividades, comunicados y propuestas.",
-    "icon": "Newspaper"
+    "icon": "News",
+    "imageUrl": "/IMG-20240922-WA0546.jpg",
+    "imageHint": "political debate"
   },
   {
     "path": "/referentes",
     "title": "Nuestros Referentes",
     "description": "Conocé a las personas que lideran el cambio en Misiones.",
-    "icon": "Users"
+    "icon": "Team",
+    "imageUrl": "/IMG-20240811-WA0287.jpg",
+    "imageHint": "community leaders"
   },
   {
     "path": "/afiliacion",
     "title": "Sumate al Cambio",
     "description": "Tu participación es clave para construir la Misiones que queremos. Afiliate ahora.",
-    "icon": "UserPlus"
+    "icon": "Join",
+    "imageUrl": "/IMG-20230903-WA0054.jpg",
+    "imageHint": "people joining"
   },
   {
     "path": "/fiscales",
     "title": "Inscripción de Fiscales",
     "description": "Cuidemos los votos. Anotate para ser fiscal en las próximas elecciones y defendé la libertad.",
-    "icon": "FileText"
+    "icon": "Forms",
+    "imageUrl": "/20231022_123119_HDR.jpg",
+    "imageHint": "voting ballot"
   }
 ]
