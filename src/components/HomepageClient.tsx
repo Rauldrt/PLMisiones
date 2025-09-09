@@ -18,6 +18,7 @@ import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem,
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
 import { Icons } from './icons';
+import { cn } from '@/lib/utils';
 
 
 interface HomepageClientProps {
@@ -207,7 +208,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                         </CardHeader>
                         <CardContent className="flex-grow p-4 pt-0">
                           {isEmbed ? (
-                            <div className="relative max-h-80 overflow-y-auto p-1 border rounded-md">
+                            <div className="relative max-h-80 overflow-y-auto p-1 border rounded-md no-scrollbar">
                                 <div dangerouslySetInnerHTML={{ __html: article.content }} />
                             </div>
                           ) : (
