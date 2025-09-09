@@ -78,7 +78,7 @@ export function Banner({ textSlides, backgroundSlides, candidates, notification,
                     <Dialog>
                         <DialogTrigger asChild>
                             <Button variant="outline" className="bg-black/20 border-white/20 text-white hover:bg-black/40 backdrop-blur-sm flex items-center">
-                                <Icons.Proposals className="mr-3 h-8 w-8 animate-icon-glow text-yellow-400" />
+                                <Icons.Proposals className="mr-3 h-10 w-10 animate-icon-glow text-yellow-400" />
                                 Ver Nuestras Propuestas
                             </Button>
                         </DialogTrigger>
