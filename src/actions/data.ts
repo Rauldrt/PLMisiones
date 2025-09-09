@@ -15,7 +15,8 @@ import {
     getCandidates,
     getNotification,
     getProposals,
-    getFooterContent
+    getFooterContent,
+    getMaps
 } from '@/lib/data';
 
 // These actions are safe to call from client components.
@@ -74,4 +75,8 @@ export async function getNotificationAction() {
 
 export async function getFooterContentAction() {
     return getFooterContent();
+}
+
+export async function getMapsAction() {
+    return getMaps();
 }

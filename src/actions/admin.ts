@@ -3,7 +3,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { revalidatePath } from 'next/cache';
-import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate, Notification, Proposal, FooterContent } from '@/lib/types';
+import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate, Notification, Proposal, FooterContent, MapEmbed } from '@/lib/types';
 import { getNews } from '@/lib/data';
 
 async function writeJsonFile(filePath: string, data: any) {
@@ -99,4 +99,10 @@ export async function saveFooterContent(item: FooterContent) {
     await writeJsonFile('src/data/footer.json', item);
     revalidatePath('/*'); // Revalidate all pages since footer is global
     return { success: true, message: 'Contenido del pie de página guardado con éxito.' };
+}
+
+export async function saveMaps(items: MapEmbed[]) {
+    await writeJsonFile('src/data/maps.json', items);
+    revalidatePath('/referentes');
+    return { success: true, message: 'Mapas guardados con éxito.' };
 }

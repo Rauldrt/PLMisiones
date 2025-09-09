@@ -121,3 +121,10 @@ export interface FooterContent {
   copyright: string;
   credits: string;
 }
+
+export interface MapEmbed {
+  id: string;
+  title: string;
+  embedCode: string;
+  enabled: boolean;
+}
