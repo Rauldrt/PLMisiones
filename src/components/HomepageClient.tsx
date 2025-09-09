@@ -126,6 +126,13 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         });
     };
 
+    useEffect(() => {
+        // This is necessary to re-render Instagram embeds when the component mounts/updates
+        if (typeof window.instgrm !== 'undefined') {
+            window.instgrm.Embeds.process();
+        }
+    }, [newsArticles]);
+
   return (
     <div className="flex flex-col overflow-x-hidden">
       <Banner 
