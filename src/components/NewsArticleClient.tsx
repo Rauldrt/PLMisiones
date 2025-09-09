@@ -60,8 +60,15 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
                 ? 'flex justify-center' 
                 : 'prose prose-invert mx-auto max-w-full prose-headings:font-headline prose-a:text-foreground/80 prose-strong:text-foreground'
         )}
-        dangerouslySetInnerHTML={{ __html: article.content }}
-      />
+      >
+        {isEmbed ? (
+          <div className="w-full max-h-[80vh] overflow-y-auto">
+             <div dangerouslySetInnerHTML={{ __html: article.content }} />
+          </div>
+        ) : (
+          <div dangerouslySetInnerHTML={{ __html: article.content }} />
+        )}
+      </div>
     </article>
   );
 }
