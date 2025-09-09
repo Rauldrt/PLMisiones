@@ -42,7 +42,7 @@ function NavContent() {
           <span className="font-headline text-lg font-bold">Admin Panel</span>
         </Link>
       </div>
-      <nav className="flex-1 space-y-2 p-4">
+      <nav className="flex-1 space-y-2 p-4 overflow-y-auto">
         {adminNavLinks.map((link) => {
           const Icon = link.icon ? Icons[link.icon as IconName] : null;
           return (
