@@ -11,21 +11,22 @@ interface NewsArticleClientProps {
   article: NewsArticle;
 }
 
+declare global {
+  interface Window {
+    instgrm?: any;
+  }
+}
+
 export function NewsArticleClient({ article }: NewsArticleClientProps) {
-  // The ?.trim() is important because content could be null/undefined initially
   const isEmbed = article && /<iframe|<blockquote/.test(article.content?.trim() || '');
 
   useEffect(() => {
-    // This effect runs after the component mounts and the article content is rendered.
-    // It triggers the Instagram embed script to process any blockquotes.
-    if (isEmbed && typeof (window as any).instgrm !== 'undefined') {
-      (window as any).instgrm.Embeds.process();
+    if (isEmbed && typeof window.instgrm !== 'undefined') {
+      window.instgrm.Embeds.process();
     }
   }, [isEmbed, article]);
 
   if (!article) {
-    // This should technically be handled by the parent server component,
-    // but as a fallback, we can call notFound() here too.
     return notFound();
   }
   
