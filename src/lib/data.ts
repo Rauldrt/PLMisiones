@@ -38,6 +38,12 @@ async function readJsonFile<T>(filePath: string): Promise<T> {
 
 // Service functions for each data type
 export const getNews = () => readJsonFile<NewsArticle[]>('src/data/news.json');
+
+export const getPublicNews = async () => {
+    const allNews = await getNews();
+    return allNews.filter(article => !article.hidden);
+}
+
 export const getBannerTextSlides = () => readJsonFile<BannerTextSlide[]>('src/data/banner.json');
 export const getBannerBackgroundSlides = () => readJsonFile<BannerBackgroundSlide[]>('src/data/banner-background.json');
 export const getMosaicItems = () => readJsonFile<MosaicItem[]>('src/data/mosaic.json');
@@ -57,7 +63,12 @@ export const getFormSubmissions = (formName: string) => readJsonFile<FormSubmiss
 
 export async function getNewsArticleBySlug(slug: string): Promise<NewsArticle | undefined> {
   const news = await getNews();
-  return news.find(article => article.slug === slug);
+  const article = news.find(article => article.slug === slug);
+  // On public pages, don't show hidden articles unless it's a direct link
+  if (article && article.hidden) {
+      return undefined;
+  }
+  return article;
 }
 
 export async function getPageHeaderByPath(path: string): Promise<PageHeader | undefined> {

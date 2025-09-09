@@ -40,6 +40,7 @@ import {
   Eye,
   Heading1,
   Video,
+  EyeOff,
 } from 'lucide-react';
 import type { SVGProps } from 'react';
 
@@ -82,6 +83,7 @@ export const Icons = {
   Proposals: Lightbulb,
   Footer: Footprints,
   View: Eye,
+  Hide: EyeOff,
   Header: Heading1,
   Media: Video,
 };

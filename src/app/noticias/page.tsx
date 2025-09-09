@@ -1,17 +1,17 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { getNews, getPageHeaderByPath } from '@/lib/data';
+import { getPublicNews, getPageHeaderByPath } from '@/lib/data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { PageHeader } from '@/components/PageHeader';
+import { PageHeader } from '@/components/ui/page-header';
 
 export const metadata = {
   title: 'Noticias',
 };
 
 export default async function NoticiasPage() {
-  const news = (await getNews()).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const news = (await getPublicNews()).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   const pageHeader = await getPageHeaderByPath('/noticias');
 
   return (

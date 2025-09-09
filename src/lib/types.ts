@@ -7,6 +7,7 @@ export interface NewsArticle {
   imageUrl?: string;
   imageHint?: string;
   content: string;
+  hidden?: boolean;
 }
 
 export interface BannerTextSlide {

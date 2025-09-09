@@ -1,8 +1,7 @@
-
 [
   {
     "id": "1",
-    "title": "Reducción de Impuestos",
+    "title": "Reforma tributaria",
     "content": "Proponemos una reducción drástica de los impuestos provinciales y municipales para aliviar la carga sobre los ciudadanos y las empresas. Esto incluye la eliminación de Ingresos Brutos para los primeros 5 años de un nuevo emprendimiento y una baja generalizada del 30% en las tasas municipales."
   },
   {
@@ -12,12 +11,17 @@
   },
   {
     "id": "3",
-    "title": "Reforma Educativa con Vouchers",
+    "title": "Impulso a la educación ",
     "content": "<p>Implementaremos un sistema de vouchers educativos para que los padres puedan elegir la escuela que consideren mejor para sus hijos, ya sea pública o privada. Fomentaremos la competencia entre instituciones para elevar la calidad de la educación en toda la provincia.</p><p>A continuación un video explicativo:</p><iframe width=\"100%\" height=\"315\" src=\"https://www.youtube.com/embed/videoseries?si=FOQ8P_3fG-lqYdYf&amp;list=PL-P0VpX5iOoZ6YqYgM-v0hD6W6xZ8r-9Z\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>"
   },
   {
     "id": "4",
     "title": "Seguridad y Justicia",
     "content": "Tolerancia cero con la delincuencia. Aumentaremos la presencia policial en las calles, dotaremos a las fuerzas de seguridad con mejor equipamiento y tecnología, y propondremos reformas legales para endurecer las penas a los delincuentes. Quien las hace, las paga."
+  },
+  {
+    "id": "1757384220583",
+    "title": "Reforma previsional ",
+    "content": "Descripción de la propuesta..."
   }
 ]

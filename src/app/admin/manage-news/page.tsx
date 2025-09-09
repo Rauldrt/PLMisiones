@@ -1,3 +1,4 @@
+
 'use client';
 import { useState, useEffect, useTransition, useCallback } from 'react';
 import Image from 'next/image';
@@ -31,6 +32,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { cn } from '@/lib/utils';
+import { Switch } from '@/components/ui/switch';
 
 
 export default function ManageNewsPage() {
@@ -38,7 +40,7 @@ export default function ManageNewsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, startSavingTransition] = useTransition();
   const { toast } = useToast();
-  const [previewArticle, setPreviewArticle] = useState<NewsArticle | null>(null);
+  const [editingArticle, setEditingArticle] = useState<NewsArticle | null>(null);
 
   const fetchNews = useCallback(async () => {
     setIsLoading(true);
@@ -54,22 +56,49 @@ export default function ManageNewsPage() {
   const handleSetFormContent = (data: { title: string, content: string }) => {
     // This is a dummy function to pass to NewsForm. 
     // The actual logic is inside NewsForm component itself.
-    // A more robust solution might use context or lifting state up properly.
   }
-
-  const handleDelete = (id: string) => {
-    const updatedArticles = articles.filter(article => article.id !== id);
+  
+  const handleSaveChanges = (updatedArticles: NewsArticle[], successMessage: string) => {
     setArticles(updatedArticles);
     startSavingTransition(async () => {
         const result = await saveNews(updatedArticles);
         if (result.success) {
-            toast({ title: 'Éxito', description: 'Artículo eliminado.' });
+            toast({ title: 'Éxito', description: successMessage });
         } else {
-            toast({ variant: 'destructive', title: 'Error', description: 'No se pudo eliminar el artículo.' });
+            toast({ variant: 'destructive', title: 'Error', description: 'No se pudieron guardar los cambios.' });
             fetchNews(); // Revert changes on failure
         }
     });
+  }
+
+  const handleDelete = (id: string) => {
+    const updatedArticles = articles.filter(article => article.id !== id);
+    handleSaveChanges(updatedArticles, 'Artículo eliminado.');
   };
+  
+  const handleToggleHidden = (id: string, isHidden: boolean) => {
+      const updatedArticles = articles.map(article => 
+        article.id === id ? { ...article, hidden: isHidden } : article
+      );
+      handleSaveChanges(updatedArticles, `Artículo ${isHidden ? 'ocultado' : 'mostrado'}.`);
+  };
+  
+  const moveArticle = (index: number, direction: 'up' | 'down') => {
+    if ((direction === 'up' && index === 0) || (direction === 'down' && index === articles.length - 1)) {
+        return;
+    }
+    const newArticles = [...articles];
+    const article = newArticles.splice(index, 1)[0];
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+    newArticles.splice(newIndex, 0, article);
+    handleSaveChanges(newArticles, 'Orden de artículos actualizado.');
+  };
+  
+  const handleEdit = (article: NewsArticle) => {
+      const updatedArticles = articles.map(a => a.id === article.id ? article : a);
+      handleSaveChanges(updatedArticles, "Artículo actualizado con éxito.");
+      setEditingArticle(null);
+  }
 
   return (
     <div className="space-y-8">
@@ -98,24 +127,35 @@ export default function ManageNewsPage() {
           {isLoading ? <p>Cargando artículos...</p> : (
             <Dialog>
                 <Accordion type="single" collapsible className="w-full space-y-2">
-                {articles.map(article => (
-                    <AccordionItem key={article.id} value={article.id} className="border rounded-md px-4">
+                {articles.map((article, index) => (
+                    <AccordionItem key={article.id} value={article.id} className={cn("border rounded-md px-4", article.hidden && "bg-muted/30")}>
                     <div className="flex justify-between items-center w-full">
                         <AccordionTrigger className="hover:no-underline py-2 flex-1">
                         <div className="flex items-center gap-4 text-left">
                             <Image src={article.imageUrl || '/placeholder.png'} alt={article.title} width={40} height={40} className="rounded-md object-cover h-10 w-10" data-ai-hint={article.imageHint} />
                             <div>
-                                <h3 className="font-semibold">{article.title}</h3>
+                                <h3 className={cn("font-semibold", article.hidden && "text-muted-foreground line-through")}>{article.title}</h3>
                                 <p className="text-sm text-muted-foreground">{new Date(article.date).toLocaleDateString('es-AR')}</p>
                             </div>
                         </div>
                         </AccordionTrigger>
-                        <div className="flex items-center gap-2 pr-2">
-                            <DialogTrigger asChild>
-                                <Button variant="outline" size="icon" onClick={() => setPreviewArticle(article)}>
-                                    <Icons.View className="h-4 w-4" />
+                        <div className="flex items-center gap-1.5 pr-2">
+                            <Button variant="ghost" size="icon" onClick={() => moveArticle(index, 'up')} disabled={index === 0 || isSaving}>
+                                <Icons.ChevronUp className="h-4 w-4" />
+                            </Button>
+                             <Button variant="ghost" size="icon" onClick={() => moveArticle(index, 'down')} disabled={index === articles.length - 1 || isSaving}>
+                                <Icons.ChevronDown className="h-4 w-4" />
+                            </Button>
+                             <DialogTrigger asChild>
+                                <Button variant="outline" size="icon" onClick={() => setEditingArticle(article)}>
+                                    <Icons.Edit className="h-4 w-4" />
                                 </Button>
                             </DialogTrigger>
+                             <Switch
+                                checked={!article.hidden}
+                                onCheckedChange={(checked) => handleToggleHidden(article.id, !checked)}
+                                aria-label={article.hidden ? 'Mostrar artículo' : 'Ocultar artículo'}
+                            />
                             <AlertDialog>
                             <AlertDialogTrigger asChild>
                                 <Button variant="destructive" size="icon" disabled={isSaving}>
@@ -146,32 +186,23 @@ export default function ManageNewsPage() {
                     </AccordionItem>
                 ))}
                 </Accordion>
-                {previewArticle && (
+                {editingArticle && (
                     <DialogContent className="max-w-4xl">
                         <DialogHeader>
-                            <DialogTitle className="font-headline text-2xl">{previewArticle.title}</DialogTitle>
-                            <DialogDescription>
-                                Publicado el {new Date(previewArticle.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}
+                            <DialogTitle className="font-headline text-2xl">Editar Artículo</DialogTitle>
+                             <DialogDescription>
+                                Realiza los cambios necesarios y haz clic en guardar.
                             </DialogDescription>
                         </DialogHeader>
                         <div className="mt-4 max-h-[70vh] overflow-y-auto pr-4">
-                            {previewArticle.imageUrl && (
-                                <div className="relative my-6 h-64 w-full overflow-hidden rounded-lg">
-                                <Image
-                                    src={previewArticle.imageUrl}
-                                    alt={previewArticle.title}
-                                    fill
-                                    className="object-cover"
-                                    data-ai-hint={previewArticle.imageHint}
-                                />
-                                </div>
-                            )}
-                            <div
-                                className={cn(
-                                    'mt-6',
-                                    'prose prose-sm prose-invert max-w-full prose-headings:font-headline prose-a:text-foreground/80 prose-strong:text-foreground'
-                                )}
-                                dangerouslySetInnerHTML={{ __html: previewArticle.content }}
+                            <NewsForm
+                                key={editingArticle.id}
+                                onArticleAdded={() => {}} // Not used for editing
+                                setFormContent={() => {}} // Not used for editing
+                                formContent={editingArticle}
+                                isEditing={true}
+                                onEditSubmit={handleEdit}
+                                onCancel={() => setEditingArticle(null)}
                             />
                         </div>
                     </DialogContent>
