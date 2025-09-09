@@ -17,6 +17,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, NewsArticle, Candidate, Notification, OrganigramaMember, Proposal } from '@/lib/types';
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
+import { Icons } from './icons';
 
 
 interface HomepageClientProps {
@@ -181,39 +182,49 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                 Mantenete al tanto de nuestras últimas actividades y comunicados.
             </p>
             <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {newsArticles.map((article) => (
-                <Card key={article.id} className="flex flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
-                    <CardHeader className="p-0">
-                    {article.imageUrl && (
-                      <div className="relative h-48 w-full">
-                          <Image
-                          src={article.imageUrl}
-                          alt={article.title}
-                          fill
-                          className="object-cover"
-                          data-ai-hint={article.imageHint}
-                          />
-                      </div>
-                    )}
-                    <div className="p-6">
-                        <CardTitle className="font-headline text-xl leading-tight">
-                            <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
-                        </CardTitle>
-                        <p className="text-sm text-foreground/60 mt-2">{new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                    </div>
-                    </CardHeader>
-                    <CardContent className="flex-grow p-6 pt-0">
-                    <div className="text-foreground/80 line-clamp-3" dangerouslySetInnerHTML={{ __html: article.content.split('</p>')[0] + '</p>'}} />
-                    </CardContent>
-                    <div className="p-6 pt-0">
-                    <Button asChild variant="link" className="p-0 h-auto">
-                        <Link href={`/noticias/${article.slug}`}>
-                        Leer más
-                        </Link>
-                    </Button>
-                    </div>
-                </Card>
-                ))}
+                {newsArticles.map((article) => {
+                  const isEmbed = /<iframe|<blockquote/.test(article.content?.trim() || '');
+                  return (
+                    <Card key={article.id} className="flex flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
+                        <CardHeader className="p-0">
+                        {(article.imageUrl || isEmbed) && (
+                          <div className="relative h-48 w-full bg-muted">
+                              <Image
+                              src={article.imageUrl || '/placeholder.png'}
+                              alt={article.title}
+                              fill
+                              className="object-cover"
+                              data-ai-hint={article.imageHint}
+                              />
+                          </div>
+                        )}
+                        <div className="p-6">
+                            <CardTitle className="font-headline text-xl leading-tight">
+                                <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
+                            </CardTitle>
+                            <p className="text-sm text-foreground/60 mt-2">{new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                        </div>
+                        </CardHeader>
+                        <CardContent className="flex-grow p-6 pt-0">
+                          {isEmbed ? (
+                            <div className="text-foreground/80 text-sm flex items-center gap-2">
+                                <Icons.Media className="h-4 w-4" />
+                                <span>Contenido interactivo. Hacé clic en "Leer más" para verlo.</span>
+                            </div>
+                          ) : (
+                            <div className="text-foreground/80 line-clamp-3" dangerouslySetInnerHTML={{ __html: article.content.split('</p>')[0] + '</p>'}} />
+                          )}
+                        </CardContent>
+                        <div className="p-6 pt-0">
+                        <Button asChild variant="link" className="p-0 h-auto">
+                            <Link href={`/noticias/${article.slug}`}>
+                            Leer más
+                            </Link>
+                        </Button>
+                        </div>
+                    </Card>
+                  )
+                })}
             </div>
             <div className="mt-12 text-center">
                 <Button asChild size="lg" variant="outline">

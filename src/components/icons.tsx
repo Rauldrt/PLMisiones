@@ -39,6 +39,7 @@ import {
   Footprints,
   Eye,
   Heading1,
+  Video,
 } from 'lucide-react';
 import type { SVGProps } from 'react';
 
@@ -82,6 +83,7 @@ export const Icons = {
   Footer: Footprints,
   View: Eye,
   Header: Heading1,
+  Media: Video,
 };
 
 export type IconName = keyof typeof Icons;
