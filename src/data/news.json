@@ -1,5 +1,15 @@
 [
   {
+    "title": "Ninfa en canal 4",
+    "date": "2025-08-14",
+    "imageUrl": "",
+    "imageHint": "",
+    "content": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/gwfQlk5xtM8?si=9tC12PohVqLZReSv\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
+    "hidden": false,
+    "id": "1757466121051",
+    "slug": "ninfa-en-canal-4"
+  },
+  {
     "title": "Tu arma contra la renovación",
     "date": "2025-08-24",
     "imageUrl": "",

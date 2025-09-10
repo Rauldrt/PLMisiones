@@ -128,9 +128,13 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
 
     useEffect(() => {
         // This is necessary to re-render Instagram embeds when the component mounts/updates
-        if (typeof window.instgrm !== 'undefined') {
-            window.instgrm.Embeds.process();
-        }
+        const interval = setInterval(() => {
+            if (window.instgrm) {
+                window.instgrm.Embeds.process();
+                clearInterval(interval);
+            }
+        }, 100);
+        return () => clearInterval(interval);
     }, [newsArticles]);
 
   return (
@@ -207,23 +211,21 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                                   />
                               </div>
                             )}
-                            <div className="px-1 py-4">
+                            <div className="px-6 py-4">
                                 <CardTitle className="font-headline text-xl leading-tight">
                                     <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
                                 </CardTitle>
                                 <p className="text-sm text-foreground/60 mt-2">{new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                             </div>
                             </CardHeader>
-                            <CardContent className="flex-grow px-1 py-4 pt-0">
+                            <CardContent className="flex-grow px-6 py-4 pt-0">
                               {isEmbed ? (
-                                <div className="relative max-h-80 overflow-y-auto p-1 border rounded-md no-scrollbar">
-                                    <div dangerouslySetInnerHTML={{ __html: article.content }} />
-                                </div>
+                                <div className="responsive-video" dangerouslySetInnerHTML={{ __html: article.content }} />
                               ) : (
                                 <div className="text-foreground/80 line-clamp-3" dangerouslySetInnerHTML={{ __html: article.content.split('</p>')[0] + '</p>'}} />
                               )}
                             </CardContent>
-                            <div className="px-1 py-4 pt-0 mt-auto">
+                            <div className="px-6 py-4 pt-0 mt-auto">
                             <Button asChild variant="link" className="p-0 h-auto">
                                 <Link href={`/noticias/${article.slug}`}>
                                 Leer más

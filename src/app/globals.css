@@ -81,4 +81,11 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+  .responsive-video {
+    @apply relative w-full overflow-hidden;
+    aspect-ratio: 16 / 9;
+  }
+  .responsive-video iframe {
+    @apply absolute top-0 left-0 w-full h-full;
+  }
 }
