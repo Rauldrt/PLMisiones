@@ -198,7 +198,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                   const isEmbed = /<iframe|<blockquote/.test(article.content?.trim() || '');
                   return (
                     <div key={article.id} className="flex justify-center">
-                        <Card className="flex w-full flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
+                        <Card className="flex w-full min-h-[500px] flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
                             <CardHeader className="p-0">
                             {article.imageUrl && !isEmbed && (
                               <div className="relative h-48 w-full bg-muted">
@@ -221,8 +221,8 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                             {isEmbed ? (
                                 <CardContent className="responsive-video flex-grow p-0" dangerouslySetInnerHTML={{ __html: article.content }} />
                             ) : (
-                                <CardContent className="flex-grow px-6 py-4 pt-0">
-                                    <div className="text-foreground/80 line-clamp-3" dangerouslySetInnerHTML={{ __html: article.content.split('</p>')[0] + '</p>'}} />
+                                <CardContent className="flex-grow px-6 py-4 pt-0 overflow-y-auto no-scrollbar">
+                                    <div className="text-foreground/80" dangerouslySetInnerHTML={{ __html: article.content.split('</p>')[0] + '</p>'}} />
                                 </CardContent>
                             )}
                             <div className="px-6 py-4 pt-0 mt-auto">
