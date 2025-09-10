@@ -18,7 +18,12 @@ declare global {
 }
 
 export function NewsArticleClient({ article }: NewsArticleClientProps) {
-  const isEmbed = article && /<iframe|<blockquote/.test(article.content?.trim() || '');
+  
+  if (!article) {
+    notFound();
+  }
+
+  const isEmbed = /<iframe|<blockquote/.test(article.content?.trim() || '');
 
   useEffect(() => {
     if (isEmbed) {
@@ -27,14 +32,10 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
           window.instgrm.Embeds.process();
           clearInterval(interval);
         }
-      }, 100); // Check every 100ms
+      }, 100);
       return () => clearInterval(interval);
     }
   }, [isEmbed, article.id]);
-
-  if (!article) {
-    return notFound();
-  }
   
   return (
     <article className="container max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
@@ -62,15 +63,11 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
       <div
         className={cn(
             'w-full mt-8',
-            isEmbed 
-                ? 'flex justify-center' 
-                : 'prose prose-invert mx-auto max-w-full prose-headings:font-headline prose-a:text-foreground/80 prose-strong:text-foreground'
+            !isEmbed && 'prose prose-invert mx-auto max-w-full prose-headings:font-headline prose-a:text-foreground/80 prose-strong:text-foreground'
         )}
       >
         {isEmbed ? (
-          <div className="max-h-[80vh] overflow-y-auto">
-             <div dangerouslySetInnerHTML={{ __html: article.content }} />
-          </div>
+          <div className="responsive-video" dangerouslySetInnerHTML={{ __html: article.content }} />
         ) : (
           <div dangerouslySetInnerHTML={{ __html: article.content }} />
         )}
@@ -78,3 +75,5 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
     </article>
   );
 }
+
+    

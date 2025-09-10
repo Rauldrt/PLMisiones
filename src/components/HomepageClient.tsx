@@ -218,13 +218,13 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                                 <p className="text-sm text-foreground/60 mt-2">{new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                             </div>
                             </CardHeader>
-                            <CardContent className="flex-grow px-6 py-4 pt-0">
-                              {isEmbed ? (
-                                <div className="responsive-video" dangerouslySetInnerHTML={{ __html: article.content }} />
-                              ) : (
-                                <div className="text-foreground/80 line-clamp-3" dangerouslySetInnerHTML={{ __html: article.content.split('</p>')[0] + '</p>'}} />
-                              )}
-                            </CardContent>
+                            {isEmbed ? (
+                                <CardContent className="responsive-video flex-grow p-0" dangerouslySetInnerHTML={{ __html: article.content }} />
+                            ) : (
+                                <CardContent className="flex-grow px-6 py-4 pt-0">
+                                    <div className="text-foreground/80 line-clamp-3" dangerouslySetInnerHTML={{ __html: article.content.split('</p>')[0] + '</p>'}} />
+                                </CardContent>
+                            )}
                             <div className="px-6 py-4 pt-0 mt-auto">
                             <Button asChild variant="link" className="p-0 h-auto">
                                 <Link href={`/noticias/${article.slug}`}>
@@ -286,3 +286,5 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
     </div>
   );
 }
+
+    
