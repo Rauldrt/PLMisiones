@@ -24,19 +24,20 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
   }
 
   const isEmbed = /<iframe|<blockquote/.test(article.content?.trim() || '');
+  const isInstagramEmbed = isEmbed && article.content.includes('instagram-media');
 
   useEffect(() => {
-    // Only run this effect if the article content includes an Instagram embed
-    if (isEmbed && article.content.includes('instagram-media')) {
-      // Function to process embeds
+    if (isInstagramEmbed) {
       const processInstagram = () => {
         if (window.instgrm) {
           window.instgrm.Embeds.process();
         }
       };
 
-      // Check if the Instagram script already exists
-      if (!document.querySelector('script[src="//www.instagram.com/embed.js"]')) {
+      // Check if the Instagram script is already on the page
+      if (document.querySelector('script[src="//www.instagram.com/embed.js"]')) {
+        processInstagram();
+      } else {
         // If not, create and append it
         const script = document.createElement('script');
         script.async = true;
@@ -45,13 +46,9 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
           processInstagram();
         };
         document.body.appendChild(script);
-      } else {
-        // If the script exists, it might have been loaded on a previous page.
-        // We still need to tell it to process the new content on this page.
-        processInstagram();
       }
     }
-  }, [isEmbed, article.content, article.id]); // Rerun whenever the article ID changes
+  }, [isInstagramEmbed, article.id]); // Rerun whenever the article ID changes
   
   return (
     <article className="container max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
@@ -83,7 +80,7 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
         )}
       >
         {isEmbed ? (
-          <div className="responsive-video" dangerouslySetInnerHTML={{ __html: article.content }} />
+          <div className="responsive-video flex justify-center" dangerouslySetInnerHTML={{ __html: article.content }} />
         ) : (
           <div dangerouslySetInnerHTML={{ __html: article.content }} />
         )}

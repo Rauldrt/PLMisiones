@@ -127,15 +127,12 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
     };
 
     useEffect(() => {
-        // This is necessary to re-render Instagram embeds when the component mounts/updates
-        const interval = setInterval(() => {
-            if (window.instgrm) {
-                window.instgrm.Embeds.process();
-                clearInterval(interval);
-            }
-        }, 100);
-        return () => clearInterval(interval);
+        const hasInstagramEmbed = newsArticles.some(article => article.content?.includes('instagram-media'));
+        if (hasInstagramEmbed && window.instgrm) {
+            window.instgrm.Embeds.process();
+        }
     }, [newsArticles]);
+
 
   return (
     <div className="flex flex-col overflow-x-hidden">
@@ -218,15 +215,19 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                                 <p className="text-sm text-foreground/60 mt-2">{new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                             </div>
                             </CardHeader>
-                            {isEmbed ? (
-                                <CardContent className="responsive-video flex-grow p-0" dangerouslySetInnerHTML={{ __html: article.content }} />
-                            ) : (
-                                <CardContent className="flex-1 min-h-0 px-6 py-4 pt-0 text-foreground/80 overflow-y-auto">
+                            <CardContent className={cn(
+                                "flex-1 min-h-0",
+                                isEmbed ? "p-0" : "p-6 pt-0 text-foreground/80"
+                            )}>
+                                {isEmbed ? (
+                                    <div className="responsive-video h-full w-full" dangerouslySetInnerHTML={{ __html: article.content }} />
+                                ) : (
                                     <div 
+                                        className="h-full overflow-y-auto"
                                         dangerouslySetInnerHTML={{ __html: article.content }} 
                                     />
-                                </CardContent>
-                            )}
+                                )}
+                            </CardContent>
                             <div className="px-6 py-4 pt-0">
                                 <Button asChild variant="link" className="p-0 h-auto">
                                     <Link href={`/noticias/${article.slug}`}>
@@ -288,9 +289,3 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
     </div>
   );
 }
-
-    
-
-    
-
-    
