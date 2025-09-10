@@ -26,16 +26,36 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
   const isEmbed = /<iframe|<blockquote/.test(article.content?.trim() || '');
 
   useEffect(() => {
-    if (isEmbed) {
-      const interval = setInterval(() => {
+    if (isEmbed && article.content.includes('instagram-media')) {
+      const loadInstagramScript = () => {
         if (window.instgrm) {
           window.instgrm.Embeds.process();
-          clearInterval(interval);
+          return;
         }
-      }, 100);
-      return () => clearInterval(interval);
+
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = '//www.instagram.com/embed.js';
+        script.onload = () => {
+          if (window.instgrm) {
+            window.instgrm.Embeds.process();
+          }
+        };
+        document.body.appendChild(script);
+      };
+      
+      loadInstagramScript();
+      
+      // Cleanup function to remove the script if the component unmounts
+      return () => {
+        const script = document.querySelector('script[src="//www.instagram.com/embed.js"]');
+        if (script) {
+          // It's generally safe to leave it, but for strict cleanup:
+          // script.remove();
+        }
+      };
     }
-  }, [isEmbed, article.id]);
+  }, [isEmbed, article.content, article.id]);
   
   return (
     <article className="container max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
@@ -75,5 +95,3 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
     </article>
   );
 }
-
-    
