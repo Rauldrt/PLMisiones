@@ -79,7 +79,7 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
         )}
       >
         {isEmbed ? (
-          <div className="responsive-video flex justify-center" dangerouslySetInnerHTML={{ __html: article.content }} />
+          <div className="responsive-video" dangerouslySetInnerHTML={{ __html: article.content }} />
         ) : (
           <div dangerouslySetInnerHTML={{ __html: article.content }} />
         )}
