@@ -134,8 +134,25 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
 
     useEffect(() => {
         const hasInstagramEmbed = newsArticles.some(article => article.content?.includes('instagram-media'));
-        if (hasInstagramEmbed && window.instgrm) {
-            window.instgrm.Embeds.process();
+        if (hasInstagramEmbed) {
+            const scriptId = 'instagram-embed-script';
+
+            const processInstagram = () => {
+                if (window.instgrm) {
+                    window.instgrm.Embeds.process();
+                }
+            };
+
+            if (document.getElementById(scriptId)) {
+                processInstagram();
+            } else {
+                const script = document.createElement('script');
+                script.id = scriptId;
+                script.src = '//www.instagram.com/embed.js';
+                script.async = true;
+                script.onload = processInstagram;
+                document.body.appendChild(script);
+            }
         }
     }, [newsArticles]);
 
@@ -223,12 +240,12 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                             </CardHeader>
                             <CardContent className={cn(
                                 "flex-1 min-h-0",
-                                isEmbed ? "p-0" : "p-6 pt-0 text-foreground/80 overflow-y-auto"
+                                isEmbed ? "p-0" : "p-6 pt-0 text-foreground/80"
                             )}>
                                 {isEmbed ? (
                                     <div className="responsive-video h-full w-full" dangerouslySetInnerHTML={{ __html: article.content }} />
                                 ) : (
-                                    <div 
+                                     <div 
                                         className="h-full overflow-y-auto no-scrollbar"
                                         dangerouslySetInnerHTML={{ __html: article.content }} 
                                     />

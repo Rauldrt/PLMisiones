@@ -29,28 +29,25 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
   useEffect(() => {
     if (isInstagramEmbed) {
       const scriptId = 'instagram-embed-script';
-      let script = document.getElementById(scriptId);
-
+      
       const processInstagram = () => {
         if (window.instgrm) {
           window.instgrm.Embeds.process();
         }
       };
-      
-      if (!script) {
-        script = document.createElement('script');
+
+      if (document.getElementById(scriptId)) {
+        processInstagram();
+      } else {
+        const script = document.createElement('script');
         script.id = scriptId;
         script.src = '//www.instagram.com/embed.js';
         script.async = true;
         script.onload = processInstagram;
         document.body.appendChild(script);
-      } else {
-        // If script already exists, it might have been loaded on a previous page.
-        // We just need to tell it to process the new embeds on this page.
-        processInstagram();
       }
     }
-  }, [isInstagramEmbed, article.id]); // Rerun whenever the article ID changes
+  }, [isInstagramEmbed, article.id]);
   
   return (
     <article className="container max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
