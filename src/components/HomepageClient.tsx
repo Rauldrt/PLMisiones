@@ -221,8 +221,11 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                             {isEmbed ? (
                                 <CardContent className="responsive-video flex-grow p-0" dangerouslySetInnerHTML={{ __html: article.content }} />
                             ) : (
-                                <CardContent className="flex-1 min-h-0 px-6 py-4 pt-0 overflow-y-auto no-scrollbar">
-                                    <div className="text-foreground/80" dangerouslySetInnerHTML={{ __html: article.content.split('</p>')[0] + '</p>'}} />
+                                <CardContent className="px-6 py-4 pt-0">
+                                    <div 
+                                        className="text-foreground/80 h-36 overflow-y-auto no-scrollbar"
+                                        dangerouslySetInnerHTML={{ __html: article.content }} 
+                                    />
                                 </CardContent>
                             )}
                             <div className="px-6 py-4 pt-0 mt-auto">
@@ -287,5 +290,4 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
   );
 }
 
-    
     
