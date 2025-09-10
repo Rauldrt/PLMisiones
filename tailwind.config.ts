@@ -20,7 +20,7 @@ export default {
     extend: {
       fontFamily: {
         body: ['Roboto', 'sans-serif'],
-        headline: ['Montserrat', 'sans-serif'],
+        headline: ['Lexend Deca', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {

@@ -41,6 +41,7 @@ import {
   Heading1,
   Video,
   EyeOff,
+  Palette,
 } from 'lucide-react';
 import type { SVGProps } from 'react';
 
@@ -81,6 +82,7 @@ export const Icons = {
   Notification: Bell,
   Gallery: GalleryIcon,
   Proposals: Lightbulb,
+  Palette: Palette,
   Footer: Footprints,
   View: Eye,
   Hide: EyeOff,
