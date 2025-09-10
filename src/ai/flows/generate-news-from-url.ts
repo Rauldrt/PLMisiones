@@ -83,7 +83,8 @@ const generateNewsContentFlow = ai.defineFlow(
     outputSchema: GenerateNewsContentOutputSchema,
   },
   async (input) => {
-    const { output } = await newsGenerationPrompt(input);
+    const result = await newsGenerationPrompt(input);
+    const output = result.output;
     if (!output) {
         throw new Error("The AI model did not return the expected output.");
     }
