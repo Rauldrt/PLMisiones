@@ -221,7 +221,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                             {isEmbed ? (
                                 <CardContent className="responsive-video flex-grow p-0" dangerouslySetInnerHTML={{ __html: article.content }} />
                             ) : (
-                                <CardContent className="flex-1 min-h-0 px-6 py-4 pt-0 text-foreground/80 overflow-y-auto no-scrollbar">
+                                <CardContent className="flex-1 min-h-0 px-6 py-4 pt-0 text-foreground/80 overflow-y-auto">
                                     <div 
                                         dangerouslySetInnerHTML={{ __html: article.content }} 
                                     />
