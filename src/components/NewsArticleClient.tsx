@@ -26,36 +26,32 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
   const isEmbed = /<iframe|<blockquote/.test(article.content?.trim() || '');
 
   useEffect(() => {
+    // Only run this effect if the article content includes an Instagram embed
     if (isEmbed && article.content.includes('instagram-media')) {
-      const loadInstagramScript = () => {
+      // Function to process embeds
+      const processInstagram = () => {
         if (window.instgrm) {
           window.instgrm.Embeds.process();
-          return;
         }
+      };
 
+      // Check if the Instagram script already exists
+      if (!document.querySelector('script[src="//www.instagram.com/embed.js"]')) {
+        // If not, create and append it
         const script = document.createElement('script');
         script.async = true;
         script.src = '//www.instagram.com/embed.js';
         script.onload = () => {
-          if (window.instgrm) {
-            window.instgrm.Embeds.process();
-          }
+          processInstagram();
         };
         document.body.appendChild(script);
-      };
-      
-      loadInstagramScript();
-      
-      // Cleanup function to remove the script if the component unmounts
-      return () => {
-        const script = document.querySelector('script[src="//www.instagram.com/embed.js"]');
-        if (script) {
-          // It's generally safe to leave it, but for strict cleanup:
-          // script.remove();
-        }
-      };
+      } else {
+        // If the script exists, it might have been loaded on a previous page.
+        // We still need to tell it to process the new content on this page.
+        processInstagram();
+      }
     }
-  }, [isEmbed, article.content, article.id]);
+  }, [isEmbed, article.content, article.id]); // Rerun whenever the article ID changes
   
   return (
     <article className="container max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
