@@ -40,6 +40,12 @@ interface LightboxData {
     startIndex: number;
 }
 
+declare global {
+  interface Window {
+    instgrm?: any;
+  }
+}
+
 function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaMember[] }) {
     const [selectedMember, setSelectedMember] = useState(organigramaData[0]);
 
@@ -217,13 +223,13 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                             </CardHeader>
                             <CardContent className={cn(
                                 "flex-1 min-h-0",
-                                isEmbed ? "p-0" : "p-6 pt-0 text-foreground/80"
+                                isEmbed ? "p-0" : "p-6 pt-0 text-foreground/80 overflow-y-auto"
                             )}>
                                 {isEmbed ? (
                                     <div className="responsive-video h-full w-full" dangerouslySetInnerHTML={{ __html: article.content }} />
                                 ) : (
                                     <div 
-                                        className="h-full overflow-y-auto"
+                                        className="h-full overflow-y-auto no-scrollbar"
                                         dangerouslySetInnerHTML={{ __html: article.content }} 
                                     />
                                 )}
