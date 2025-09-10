@@ -227,12 +227,12 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                                     />
                                 </CardContent>
                             )}
-                            <div className="px-6 py-4 pt-0 mt-auto">
-                            <Button asChild variant="link" className="p-0 h-auto">
-                                <Link href={`/noticias/${article.slug}`}>
-                                Leer más
-                                </Link>
-                            </Button>
+                            <div className="px-6 py-4 pt-0">
+                                <Button asChild variant="link" className="p-0 h-auto">
+                                    <Link href={`/noticias/${article.slug}`}>
+                                    Leer más
+                                    </Link>
+                                </Button>
                             </div>
                         </Card>
                     </div>
@@ -288,6 +288,8 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
     </div>
   );
 }
+
+    
 
     
 
