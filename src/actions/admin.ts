@@ -3,7 +3,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { revalidatePath } from 'next/cache';
-import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate, Notification, Proposal, FooterContent, MapEmbed, PageHeader } from '@/lib/types';
+import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate, Notification, Proposal, FooterContent, MapEmbed, PageHeader, SocialLink } from '@/lib/types';
 import { getNews } from '@/lib/data';
 
 async function writeJsonFile(filePath: string, data: any) {
@@ -111,4 +111,10 @@ export async function savePageHeaders(items: PageHeader[]) {
     await writeJsonFile('src/data/page-headers.json', items);
     items.forEach(item => revalidatePath(item.path));
     return { success: true, message: 'Encabezados guardados con éxito.' };
+}
+
+export async function saveSocialLinks(items: SocialLink[]) {
+    await writeJsonFile('src/data/social-links.json', items);
+    revalidatePath('/*'); // Revalidate all pages since footer is global
+    return { success: true, message: 'Enlaces de redes sociales guardados con éxito.' };
 }

@@ -1,34 +1,41 @@
 
 'use client';
 import { useState, useEffect, useTransition } from 'react';
-import { getFooterContentAction } from '@/actions/data';
-import { saveFooterContent } from '@/actions/admin';
-import type { FooterContent } from '@/lib/types';
+import { getFooterContentAction, getSocialLinksAction } from '@/actions/data';
+import { saveFooterContent, saveSocialLinks } from '@/actions/admin';
+import type { FooterContent, SocialLink } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { Icons, IconName } from '@/components/icons';
 
 export default function ManageFooterPage() {
   const [content, setContent] = useState<FooterContent | null>(null);
+  const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, startSavingTransition] = useTransition();
+  const [isSavingContent, startSavingContentTransition] = useTransition();
+  const [isSavingLinks, startSavingLinksTransition] = useTransition();
   const { toast } = useToast();
 
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const data = await getFooterContentAction();
-      setContent(data);
+      const [footerData, socialData] = await Promise.all([
+        getFooterContentAction(),
+        getSocialLinksAction()
+      ]);
+      setContent(footerData);
+      setSocialLinks(socialData);
       setIsLoading(false);
     }
     fetchData();
   }, []);
 
-  const handleSave = () => {
+  const handleSaveContent = () => {
     if (!content) return;
-    startSavingTransition(async () => {
+    startSavingContentTransition(async () => {
       const result = await saveFooterContent(content);
       if (result.success) {
         toast({ title: 'Éxito', description: result.message });
@@ -37,26 +44,49 @@ export default function ManageFooterPage() {
       }
     });
   };
+  
+  const handleSaveLinks = () => {
+    if (!socialLinks) return;
+    startSavingLinksTransition(async () => {
+      const result = await saveSocialLinks(socialLinks);
+      if (result.success) {
+        toast({ title: 'Éxito', description: result.message });
+      } else {
+        toast({ variant: 'destructive', title: 'Error', description: 'No se pudieron guardar los enlaces.' });
+      }
+    });
+  };
 
   const handleFieldChange = (field: keyof FooterContent, value: string) => {
     if (!content) return;
     setContent({ ...content, [field]: value });
   };
+  
+  const handleLinkChange = (index: number, value: string) => {
+    const newLinks = [...socialLinks];
+    newLinks[index].url = value;
+    setSocialLinks(newLinks);
+  };
+  
+  const getSocialIcon = (name: string) => {
+    const Icon = Icons[name as IconName];
+    return Icon ? <Icon className="h-6 w-6" /> : null;
+  };
 
   if (isLoading) return <p>Cargando...</p>;
-  if (!content) return <p>No se pudo cargar el contenido del footer.</p>;
+  if (!content || !socialLinks) return <p>No se pudo cargar el contenido del footer.</p>;
 
   return (
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold font-headline">Gestionar Pie de Página</h1>
-        <p className="text-muted-foreground">Administra los textos del pie de página del sitio.</p>
+        <p className="text-muted-foreground">Administra los textos y enlaces del pie de página del sitio.</p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Contenido del Pie de Página</CardTitle>
-          <CardDescription>Edita los campos y guarda los cambios.</CardDescription>
+          <CardTitle>Contenido de Texto</CardTitle>
+          <CardDescription>Edita los campos de texto y guarda los cambios.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -117,8 +147,33 @@ export default function ManageFooterPage() {
             </div>
 
             <div className="flex justify-end pt-4">
-                <Button onClick={handleSave} disabled={isSaving}>
-                    {isSaving ? 'Guardando...' : 'Guardar Cambios'}
+                <Button onClick={handleSaveContent} disabled={isSavingContent}>
+                    {isSavingContent ? 'Guardando...' : 'Guardar Textos'}
+                </Button>
+            </div>
+        </CardContent>
+      </Card>
+      
+       <Card>
+        <CardHeader>
+          <CardTitle>Redes Sociales</CardTitle>
+          <CardDescription>Edita las URLs de los perfiles de redes sociales.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+            {socialLinks.map((link, index) => (
+                <div key={link.id} className="flex items-center gap-4">
+                    <div className="text-muted-foreground">
+                        {getSocialIcon(link.name)}
+                    </div>
+                    <div className="flex-1 space-y-1">
+                        <Label htmlFor={`social-url-${index}`}>{link.name}</Label>
+                        <Input id={`social-url-${index}`} value={link.url} onChange={(e) => handleLinkChange(index, e.target.value)} />
+                    </div>
+                </div>
+            ))}
+             <div className="flex justify-end pt-4">
+                <Button onClick={handleSaveLinks} disabled={isSavingLinks}>
+                    {isSavingLinks ? 'Guardando...' : 'Guardar Enlaces'}
                 </Button>
             </div>
         </CardContent>
