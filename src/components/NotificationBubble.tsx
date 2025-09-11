@@ -17,6 +17,7 @@ export function NotificationBubble({ notification }: NotificationBubbleProps) {
     }
     
     const hasLink = notification.link && notification.link.trim() !== '';
+    const isImageOnly = notification.imageUrl && !notification.title && !notification.content;
 
     const BubbleContent = () => (
         <div className={cn(
@@ -46,28 +47,42 @@ export function NotificationBubble({ notification }: NotificationBubbleProps) {
                      <BubbleContent />
                 </button>
             </DialogTrigger>
-            <DialogContent className="max-w-xl">
-                 <DialogHeader>
-                    {notification.imageUrl && (
-                        <div className="relative h-48 w-full -mx-6 -mt-6 mb-6">
-                            <Image
-                                src={notification.imageUrl}
-                                alt={notification.title}
-                                fill
-                                className="rounded-t-lg object-cover"
-                                data-ai-hint={notification.imageHint}
-                            />
-                        </div>
-                    )}
-                    <DialogTitle className="font-headline text-2xl text-accent">{notification.title || 'Notificación'}</DialogTitle>
-                </DialogHeader>
-                <div 
-                    className="mt-4 prose prose-sm prose-invert max-w-full"
-                    dangerouslySetInnerHTML={{ __html: notification.content }}
-                />
-                 <Button asChild className="mt-4">
-                    <Link href="/notificaciones">Ver todas las notificaciones</Link>
-                </Button>
+            <DialogContent className={cn(isImageOnly ? "p-0 border-0 max-w-3xl" : "max-w-xl")}>
+                {isImageOnly && notification.imageUrl ? (
+                    <div className="relative aspect-video w-full">
+                        <Image
+                            src={notification.imageUrl}
+                            alt={notification.title || "Notificación"}
+                            fill
+                            className="rounded-lg object-cover"
+                            data-ai-hint={notification.imageHint}
+                        />
+                    </div>
+                ) : (
+                    <>
+                        <DialogHeader>
+                            {notification.imageUrl && (
+                                <div className="relative h-48 w-full -mx-6 -mt-6 mb-6">
+                                    <Image
+                                        src={notification.imageUrl}
+                                        alt={notification.title}
+                                        fill
+                                        className="rounded-t-lg object-cover"
+                                        data-ai-hint={notification.imageHint}
+                                    />
+                                </div>
+                            )}
+                            <DialogTitle className="font-headline text-2xl text-accent">{notification.title || 'Notificación'}</DialogTitle>
+                        </DialogHeader>
+                        <div 
+                            className="mt-4 prose prose-sm prose-invert max-w-full"
+                            dangerouslySetInnerHTML={{ __html: notification.content }}
+                        />
+                        <Button asChild className="mt-4">
+                            <Link href="/notificaciones">Ver todas las notificaciones</Link>
+                        </Button>
+                    </>
+                )}
             </DialogContent>
         </Dialog>
     )
