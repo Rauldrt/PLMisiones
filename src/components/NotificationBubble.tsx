@@ -47,17 +47,16 @@ export function NotificationBubble({ notification }: NotificationBubbleProps) {
                      <BubbleContent />
                 </button>
             </DialogTrigger>
-            <DialogContent className={cn(isImageOnly ? "p-0 border-0 max-w-3xl" : "max-w-xl")}>
+            <DialogContent className={cn(isImageOnly ? "p-2 border-0 bg-transparent shadow-none w-auto max-w-5xl" : "max-w-xl")}>
                 {isImageOnly && notification.imageUrl ? (
-                    <div className="relative aspect-video w-full">
-                        <Image
-                            src={notification.imageUrl}
-                            alt={notification.title || "Notificación"}
-                            fill
-                            className="rounded-lg object-cover"
-                            data-ai-hint={notification.imageHint}
-                        />
-                    </div>
+                     <Image
+                        src={notification.imageUrl}
+                        alt={notification.title || "Notificación"}
+                        width={1200}
+                        height={1200}
+                        className="rounded-lg object-contain h-auto w-auto max-h-[85vh] max-w-full"
+                        data-ai-hint={notification.imageHint}
+                    />
                 ) : (
                     <>
                         <DialogHeader>
