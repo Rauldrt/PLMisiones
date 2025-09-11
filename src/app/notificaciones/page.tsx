@@ -1,6 +1,6 @@
 
-import { getPublicNotifications } from '@/lib/data';
-import { PageHeader } from '@/components/PageHeader';
+import { getPublicNotifications, getPageHeaderByPath } from '@/lib/data';
+import { PageHeader } from '@/components/ui/page-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 
@@ -10,6 +10,7 @@ export const metadata = {
 
 export default async function NotificacionesPage() {
   const notifications = (await getPublicNotifications()).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const pageHeader = await getPageHeaderByPath('/notificaciones');
 
   return (
     <div>
