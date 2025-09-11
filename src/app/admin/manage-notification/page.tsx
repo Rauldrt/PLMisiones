@@ -84,6 +84,7 @@ export default function ManageNotificationPage() {
              <div className="space-y-1">
                 <Label htmlFor="notification-link">Enlace de la Notificación</Label>
                 <Input id="notification-link" value={item.link} onChange={e => handleFieldChange('link', e.target.value)} placeholder="/noticias/evento-nuevo"/>
+                <p className="text-xs text-muted-foreground">Si dejas este campo vacío, el enlace dirigirá a la página de notificaciones.</p>
             </div>
 
             <div className="flex justify-end pt-4">
