@@ -110,6 +110,8 @@ export interface NotificationItem {
   date: string;
   title: string;
   content: string;
+  imageUrl?: string;
+  imageHint?: string;
 }
 
 export interface Proposal {
