@@ -1,7 +1,9 @@
+
 'use client';
 import Link from 'next/link';
 import { Button } from './ui/button';
-import { Icons } from './icons';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
+import { cn } from '@/lib/utils';
 import type { Notification } from '@/lib/types';
 
 interface NotificationBubbleProps {
@@ -13,17 +15,48 @@ export function NotificationBubble({ notification }: NotificationBubbleProps) {
         return null;
     }
     
-    const targetLink = notification.link || '/notificaciones';
+    const hasLink = notification.link && notification.link.trim() !== '';
 
-    return (
-        <Button asChild variant="secondary" className="group absolute top-6 right-6 z-30 h-auto animate-pulse-slow hover:animate-none rounded-full py-1 px-3 shadow-lg border border-accent">
-            <Link href={targetLink}>
-                <span className="relative flex h-2 w-2 mr-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
-                </span>
-                <span className="text-xs font-semibold">{notification.text}</span>
+    const BubbleContent = () => (
+        <div className={cn(
+            "group flex items-center justify-center h-auto animate-pulse-slow hover:animate-none rounded-full py-1 px-3 shadow-lg border border-accent",
+             "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+        )}>
+            <span className="relative flex h-2 w-2 mr-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+            </span>
+            <span className="text-xs font-semibold">{notification.text}</span>
+        </div>
+    );
+
+    if (hasLink) {
+        return (
+            <Link href={notification.link} className="absolute top-6 right-6 z-30">
+                <BubbleContent />
             </Link>
-        </Button>
+        );
+    }
+    
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <button className="absolute top-6 right-6 z-30">
+                     <BubbleContent />
+                </button>
+            </DialogTrigger>
+            <DialogContent className="max-w-xl">
+                 <DialogHeader>
+                    <DialogTitle className="font-headline text-2xl text-accent">{notification.title || 'Notificación'}</DialogTitle>
+                </DialogHeader>
+                <div 
+                    className="mt-4 prose prose-sm prose-invert max-w-full"
+                    dangerouslySetInnerHTML={{ __html: notification.content }}
+                />
+                 <Button asChild className="mt-4">
+                    <Link href="/notificaciones">Ver todas las notificaciones</Link>
+                </Button>
+            </DialogContent>
+        </Dialog>
     )
 }

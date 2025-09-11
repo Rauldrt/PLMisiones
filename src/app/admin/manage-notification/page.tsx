@@ -6,6 +6,7 @@ import { saveNotification } from '@/actions/admin';
 import type { Notification } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -58,7 +59,7 @@ export default function ManageNotificationPage() {
       <Card>
         <CardHeader>
           <CardTitle>Configuración de la Notificación</CardTitle>
-          <CardDescription>Activa, desactiva y edita el contenido de la burbuja.</CardDescription>
+          <CardDescription>Activa, desactiva y edita el contenido de la burbuja y su comportamiento.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
             <div className="flex items-center space-x-4 rounded-md border p-4">
@@ -78,14 +79,22 @@ export default function ManageNotificationPage() {
             </div>
           
             <div className="space-y-1">
-                <Label htmlFor="notification-text">Texto de la Notificación</Label>
+                <Label htmlFor="notification-text">Texto de la Burbuja</Label>
                 <Input id="notification-text" value={item.text} onChange={e => handleFieldChange('text', e.target.value)} placeholder="¡Nuevo Evento!"/>
+            </div>
+            <div className="space-y-1">
+                <Label htmlFor="notification-title">Título del Modal</Label>
+                <Input id="notification-title" value={item.title || ''} onChange={e => handleFieldChange('title', e.target.value)} placeholder="Título de la notificación"/>
+            </div>
+            <div className="space-y-1">
+                <Label htmlFor="notification-content">Contenido del Modal (HTML permitido)</Label>
+                <Textarea id="notification-content" value={item.content || ''} onChange={e => handleFieldChange('content', e.target.value)} placeholder="Contenido detallado de la notificación..." rows={5}/>
             </div>
 
              <div className="space-y-1">
-                <Label htmlFor="notification-link">Enlace de la Notificación</Label>
+                <Label htmlFor="notification-link">Enlace de la Burbuja (Opcional)</Label>
                 <Input id="notification-link" value={item.link} onChange={e => handleFieldChange('link', e.target.value)} placeholder="/noticias/evento-nuevo"/>
-                <p className="text-xs text-muted-foreground">Si dejas este campo vacío, el enlace dirigirá a la página de notificaciones (/notificaciones).</p>
+                <p className="text-xs text-muted-foreground">Si dejas este campo vacío, la burbuja abrirá un modal. Si no, redirigirá al enlace.</p>
             </div>
 
             <div className="flex justify-end pt-4">

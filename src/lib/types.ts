@@ -102,6 +102,8 @@ export interface OrganigramaMember {
 export interface Notification {
   enabled: boolean;
   text: string;
+  title: string;
+  content: string;
   link: string;
 }
 
