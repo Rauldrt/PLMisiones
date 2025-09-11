@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { cn } from '@/lib/utils';
 import type { Notification } from '@/lib/types';
+import Image from 'next/image';
 
 interface NotificationBubbleProps {
     notification: Notification;
@@ -47,6 +48,17 @@ export function NotificationBubble({ notification }: NotificationBubbleProps) {
             </DialogTrigger>
             <DialogContent className="max-w-xl">
                  <DialogHeader>
+                    {notification.imageUrl && (
+                        <div className="relative h-48 w-full -mx-6 -mt-6 mb-6">
+                            <Image
+                                src={notification.imageUrl}
+                                alt={notification.title}
+                                fill
+                                className="rounded-t-lg object-cover"
+                                data-ai-hint={notification.imageHint}
+                            />
+                        </div>
+                    )}
                     <DialogTitle className="font-headline text-2xl text-accent">{notification.title || 'Notificación'}</DialogTitle>
                 </DialogHeader>
                 <div 

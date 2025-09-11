@@ -105,6 +105,8 @@ export interface Notification {
   title: string;
   content: string;
   link: string;
+  imageUrl?: string;
+  imageHint?: string;
 }
 
 export interface NotificationItem {
