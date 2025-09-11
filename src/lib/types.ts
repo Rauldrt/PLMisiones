@@ -105,6 +105,13 @@ export interface Notification {
   link: string;
 }
 
+export interface NotificationItem {
+  id: string;
+  date: string;
+  title: string;
+  content: string;
+}
+
 export interface Proposal {
   id: string;
   title: string;

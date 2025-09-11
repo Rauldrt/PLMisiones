@@ -3,7 +3,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { revalidatePath } from 'next/cache';
-import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate, Notification, Proposal, FooterContent, MapEmbed, PageHeader, SocialLink } from '@/lib/types';
+import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate, Notification, Proposal, FooterContent, MapEmbed, PageHeader, SocialLink, NotificationItem } from '@/lib/types';
 import { getNews } from '@/lib/data';
 
 async function writeJsonFile(filePath: string, data: any) {
@@ -93,6 +93,12 @@ export async function saveNotification(item: Notification) {
     await writeJsonFile('src/data/notification.json', item);
     revalidatePath('/');
     return { success: true, message: 'Notificación guardada con éxito.' };
+}
+
+export async function saveNotificationsPage(items: NotificationItem[]) {
+    await writeJsonFile('src/data/notifications.json', items);
+    revalidatePath('/notificaciones');
+    return { success: true, message: 'Página de notificaciones guardada con éxito.' };
 }
 
 export async function saveFooterContent(item: FooterContent) {

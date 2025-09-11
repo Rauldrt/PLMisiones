@@ -1,3 +1,4 @@
+
 'use client';
 import { useState, useEffect, useTransition } from 'react';
 import { getNotificationAction } from '@/actions/data';
@@ -50,14 +51,14 @@ export default function ManageNotificationPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold font-headline">Gestionar Notificación</h1>
+        <h1 className="text-3xl font-bold font-headline">Gestionar Burbuja de Notificación</h1>
         <p className="text-muted-foreground">Controla la burbuja de notificación que aparece en la esquina superior derecha de la página de inicio.</p>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle>Configuración de la Notificación</CardTitle>
-          <CardDescription>Activa, desactiva y edita el contenido de la notificación.</CardDescription>
+          <CardDescription>Activa, desactiva y edita el contenido de la burbuja.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
             <div className="flex items-center space-x-4 rounded-md border p-4">
@@ -84,7 +85,7 @@ export default function ManageNotificationPage() {
              <div className="space-y-1">
                 <Label htmlFor="notification-link">Enlace de la Notificación</Label>
                 <Input id="notification-link" value={item.link} onChange={e => handleFieldChange('link', e.target.value)} placeholder="/noticias/evento-nuevo"/>
-                <p className="text-xs text-muted-foreground">Si dejas este campo vacío, el enlace dirigirá a la página de notificaciones.</p>
+                <p className="text-xs text-muted-foreground">Si dejas este campo vacío, el enlace dirigirá a la página de notificaciones (/notificaciones).</p>
             </div>
 
             <div className="flex justify-end pt-4">

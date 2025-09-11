@@ -1,14 +1,15 @@
-import { getNotification } from '@/lib/data';
+
+import { getNotifications } from '@/lib/data';
 import { PageHeader } from '@/components/PageHeader';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 export const metadata = {
   title: 'Notificaciones',
 };
 
-// This is a simple implementation. In the future, this could read a list of notifications.
 export default async function NotificacionesPage() {
-  const notification = await getNotification();
+  const notifications = (await getNotifications()).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <div>
@@ -17,19 +18,43 @@ export default async function NotificacionesPage() {
             title="Notificaciones"
             description="Aquí encontrarás las últimas novedades y anuncios importantes."
         />
-      <div className="container max-w-2xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-        <Card>
+      <div className="container max-w-3xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+        {notifications.length > 0 ? (
+          <Card>
             <CardHeader>
-                <CardTitle>Anuncio Reciente</CardTitle>
+                <CardTitle>Historial de Anuncios</CardTitle>
+                 <CardDescription>Todos los anuncios importantes, del más reciente al más antiguo.</CardDescription>
             </CardHeader>
             <CardContent>
-                {notification && notification.enabled ? (
-                    <p className="text-lg">{notification.text}</p>
-                ) : (
-                    <p className="text-muted-foreground">No hay notificaciones activas en este momento.</p>
-                )}
+                <Accordion type="single" collapsible className="w-full">
+                    {notifications.map((item) => (
+                        <AccordionItem key={item.id} value={item.id}>
+                            <AccordionTrigger className="hover:no-underline text-left">
+                                <div className="flex flex-col gap-1">
+                                    <span className="font-semibold">{item.title}</span>
+                                    <span className="text-sm text-muted-foreground font-normal">
+                                        {new Date(item.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                    </span>
+                                </div>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <div className="prose prose-sm prose-invert max-w-full" dangerouslySetInnerHTML={{ __html: item.content }} />
+                            </AccordionContent>
+                        </AccordionItem>
+                    ))}
+                </Accordion>
             </CardContent>
-        </Card>
+          </Card>
+        ) : (
+             <Card>
+                <CardHeader>
+                    <CardTitle>No hay anuncios</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-muted-foreground">No hay notificaciones para mostrar en este momento.</p>
+                </CardContent>
+            </Card>
+        )}
       </div>
     </div>
   );

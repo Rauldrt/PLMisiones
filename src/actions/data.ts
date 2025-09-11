@@ -14,6 +14,7 @@ import {
     getFormSubmissions,
     getCandidates,
     getNotification,
+    getNotifications,
     getProposals,
     getFooterContent,
     getMaps,
@@ -72,6 +73,10 @@ export async function getFormSubmissionsAction(formName: string) {
 
 export async function getNotificationAction() {
     return getNotification();
+}
+
+export async function getNotificationsAction() {
+    return getNotifications();
 }
 
 export async function getFooterContentAction() {
