@@ -1,5 +1,5 @@
 
-import { getNotifications } from '@/lib/data';
+import { getPublicNotifications } from '@/lib/data';
 import { PageHeader } from '@/components/PageHeader';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default async function NotificacionesPage() {
-  const notifications = (await getNotifications()).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const notifications = (await getPublicNotifications()).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <div>

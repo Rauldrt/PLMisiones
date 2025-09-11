@@ -54,6 +54,10 @@ export const getCandidates = () => readJsonFile<Candidate[]>('src/data/candidate
 export const getSocialLinks = () => readJsonFile<SocialLink[]>('src/data/social-links.json');
 export const getNotification = () => readJsonFile<Notification>('src/data/notification.json');
 export const getNotifications = () => readJsonFile<NotificationItem[]>('src/data/notifications.json');
+export const getPublicNotifications = async () => {
+    const allNotifications = await getNotifications();
+    return allNotifications.filter(notification => !notification.hidden);
+}
 export const getOrganigrama = () => readJsonFile<OrganigramaMember[]>('src/data/organigrama.json');
 export const getProposals = () => readJsonFile<Proposal[]>('src/data/proposals.json');
 export const getFooterContent = () => readJsonFile<FooterContent>('src/data/footer.json');

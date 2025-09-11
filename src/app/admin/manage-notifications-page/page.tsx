@@ -14,6 +14,8 @@ import { useToast } from '@/hooks/use-toast';
 import { Accordion, AccordionContent, AccordionItem as UiAccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { ImageGallery } from '@/components/ImageGallery';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Switch } from '@/components/ui/switch';
+import { cn } from '@/lib/utils';
 
 export default function ManageNotificationsPage() {
   const [items, setItems] = useState<NotificationItem[]>([]);
@@ -34,9 +36,9 @@ export default function ManageNotificationsPage() {
     fetchData();
   }, []);
 
-  const handleSave = () => {
+  const handleSave = (itemsToSave: NotificationItem[]) => {
     startSavingTransition(async () => {
-      const result = await saveNotificationsPage(items);
+      const result = await saveNotificationsPage(itemsToSave);
       if (result.success) {
         toast({ title: 'Éxito', description: result.message });
       } else {
@@ -45,9 +47,9 @@ export default function ManageNotificationsPage() {
     });
   };
 
-  const handleFieldChange = (index: number, field: keyof NotificationItem, value: string) => {
+  const handleFieldChange = (index: number, field: keyof NotificationItem, value: string | boolean) => {
     const newItems = [...items];
-    newItems[index] = { ...newItems[index], [field]: value };
+    (newItems[index] as any)[field] = value;
     setItems(newItems);
   };
   
@@ -57,6 +59,14 @@ export default function ManageNotificationsPage() {
     }
     setGalleryOpen(false);
   };
+
+   const handleToggleHidden = (id: string, isHidden: boolean) => {
+      const updatedItems = items.map(item => 
+        item.id === id ? { ...item, hidden: isHidden } : item
+      );
+      setItems(updatedItems);
+      handleSave(updatedItems);
+  };
   
   const addItem = () => {
     const newItem: NotificationItem = { 
@@ -65,13 +75,16 @@ export default function ManageNotificationsPage() {
         content: 'Contenido de la notificación...',
         date: new Date().toISOString().split('T')[0],
         imageUrl: '',
-        imageHint: ''
+        imageHint: '',
+        hidden: false
     };
     setItems([newItem, ...items]);
   }
   
   const removeItem = (id: string) => {
-    setItems(items.filter(item => item.id !== id));
+    const newItems = items.filter(item => item.id !== id);
+    setItems(newItems);
+    handleSave(newItems);
   }
 
   const moveItem = (index: number, direction: 'up' | 'down') => {
@@ -102,10 +115,10 @@ export default function ManageNotificationsPage() {
             {isLoading ? <p>Cargando...</p> : (
               <Accordion type="single" collapsible className="w-full">
                 {items.map((item, index) => (
-                  <UiAccordionItem key={item.id} value={item.id}>
+                  <UiAccordionItem key={item.id} value={item.id} className={cn(item.hidden && "bg-muted/30")}>
                       <div className="flex justify-between items-center w-full pr-4">
                         <AccordionTrigger className="hover:no-underline flex-1 text-left">
-                            <span>{item.title || `Notificación ${index + 1}`}</span>
+                            <span className={cn(item.hidden && "text-muted-foreground line-through")}>{item.title || `Notificación ${index + 1}`}</span>
                         </AccordionTrigger>
                         <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
                             <Button variant="ghost" size="icon" onClick={() => moveItem(index, 'up')} disabled={index === 0}>
@@ -114,6 +127,11 @@ export default function ManageNotificationsPage() {
                             <Button variant="ghost" size="icon" onClick={() => moveItem(index, 'down')} disabled={index === items.length - 1}>
                                 <Icons.ChevronDown className="w-4 h-4"/>
                             </Button>
+                            <Switch
+                                checked={!item.hidden}
+                                onCheckedChange={(checked) => handleToggleHidden(item.id, !checked)}
+                                aria-label={item.hidden ? 'Mostrar notificación' : 'Ocultar notificación'}
+                            />
                             <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
                         </div>
                       </div>
@@ -154,7 +172,7 @@ export default function ManageNotificationsPage() {
             )}
             <div className="flex justify-between items-center pt-4">
               <Button variant="outline" onClick={addItem}><Icons.Plus className="mr-2 h-4 w-4"/> Agregar Notificación</Button>
-              <Button onClick={handleSave} disabled={isSaving}>
+              <Button onClick={() => handleSave(items)} disabled={isSaving}>
                   {isSaving ? 'Guardando...' : 'Guardar Cambios'}
               </Button>
             </div>

@@ -112,6 +112,7 @@ export interface NotificationItem {
   content: string;
   imageUrl?: string;
   imageHint?: string;
+  hidden?: boolean;
 }
 
 export interface Proposal {
