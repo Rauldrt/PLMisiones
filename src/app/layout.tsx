@@ -18,6 +18,7 @@ export default function RootLayout({
       <head>
         <title>Libertario Misiones</title>
         <meta name="description" content="Sitio web oficial del Partido Libertario de Misiones." />
+        <link rel="icon" href="/logo.png" sizes="any" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
