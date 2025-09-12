@@ -1,3 +1,4 @@
+
 'use client';
 
 import './globals.css';
@@ -16,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
-        <title>Libertario Misiones</title>
+        <title>Partido Libertario Misiones</title>
         <meta name="description" content="Sitio web oficial del Partido Libertario de Misiones." />
         <link rel="icon" href="/logo.png" sizes="any" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
