@@ -11,11 +11,9 @@ interface NewsArticleClientProps {
   article: NewsArticle;
 }
 
-declare global {
-  interface Window {
-    instgrm?: any;
-  }
-}
+// Note: The InstagramEmbedProcessor component is now used in the parent page ([slug]/page.tsx)
+// to handle the script loading and processing. This component is now only responsible
+// for rendering the article content.
 
 export function NewsArticleClient({ article }: NewsArticleClientProps) {
   
@@ -24,31 +22,6 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
   }
 
   const isEmbed = /<iframe|<blockquote/.test(article.content?.trim() || '');
-  const isInstagramEmbed = isEmbed && article.content.includes('instagram-media');
-
-  useEffect(() => {
-    if (isInstagramEmbed) {
-      const scriptId = 'instagram-embed-script';
-      
-      const processInstagram = () => {
-        if (window.instgrm) {
-          window.instgrm.Embeds.process();
-        }
-      };
-
-      const script = document.getElementById(scriptId);
-      if (!script) {
-        const newScript = document.createElement('script');
-        newScript.id = scriptId;
-        newScript.src = '//www.instagram.com/embed.js';
-        newScript.async = true;
-        newScript.onload = processInstagram;
-        document.body.appendChild(newScript);
-      } else {
-        processInstagram();
-      }
-    }
-  }, [isInstagramEmbed, article.id, article.content]);
   
   return (
     <article className="py-16">
@@ -77,7 +50,7 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
 
       <div className="w-full mt-8">
         {isEmbed ? (
-          <div className="responsive-video" dangerouslySetInnerHTML={{ __html: article.content }} />
+          <div className="flex justify-center" dangerouslySetInnerHTML={{ __html: article.content }} />
         ) : (
           <div className="prose prose-invert mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 prose-headings:font-headline prose-a:text-foreground/80 prose-strong:text-foreground" dangerouslySetInnerHTML={{ __html: article.content }} />
         )}

@@ -2,6 +2,7 @@
 import { getNewsArticleBySlugAction, getNewsAction } from '@/lib/server/data';
 import { notFound } from 'next/navigation';
 import { NewsArticleClient } from '@/components/NewsArticleClient';
+import { InstagramEmbedProcessor } from '@/components/InstagramEmbedProcessor';
 
 // This is a Server Component. It can fetch data and generate static pages.
 
@@ -35,5 +36,10 @@ export default async function NewsArticlePage({ params }: { params: { slug: stri
 
   // We render a Client Component and pass the article data to it as props.
   // The client component will handle the interactive parts, like the Instagram embed.
-  return <NewsArticleClient article={article} />;
+  return (
+    <>
+      <NewsArticleClient article={article} />
+      <InstagramEmbedProcessor />
+    </>
+  );
 }

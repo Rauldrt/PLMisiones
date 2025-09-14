@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/PageHeader';
 import { cn } from '@/lib/utils';
+import { InstagramEmbedProcessor } from '@/components/InstagramEmbedProcessor';
 
 export const metadata = {
   title: 'Noticias',
@@ -70,6 +71,7 @@ export default async function NoticiasPage() {
           })}
         </div>
       </div>
+      <InstagramEmbedProcessor />
     </div>
   );
 }
