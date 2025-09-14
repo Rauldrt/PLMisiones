@@ -1,36 +1,19 @@
 
-'use client';
 import Link from 'next/link';
-import { getSocialLinksAction, getFormDefinitionAction, getFooterContentAction } from '@/actions/data';
+import { getSocialLinks, getFormDefinition, getFooterContent } from '@/lib/data';
 import { Icons } from '@/components/icons';
 import { Card, CardContent } from '@/components/ui/card';
 import { DynamicForm } from './DynamicForm';
 import type { SocialLink, FormDefinition, FooterContent } from '@/lib/types';
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Button } from './ui/button';
 
-export function Footer() {
-  const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
-  const [contactFormDefinition, setContactFormDefinition] = useState<FormDefinition | null>(null);
-  const [footerContent, setFooterContent] = useState<FooterContent | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function loadData() {
-      setIsLoading(true);
-      const [socials, formDef, footerData] = await Promise.all([
-        getSocialLinksAction(),
-        getFormDefinitionAction('contacto'),
-        getFooterContentAction()
-      ]);
-      setSocialLinks(socials);
-      setContactFormDefinition(formDef);
-      setFooterContent(footerData);
-      setIsLoading(false);
-    }
-    loadData();
-  }, []);
+export async function Footer() {
+  const [socialLinks, contactFormDefinition, footerContent] = await Promise.all([
+    getSocialLinks(),
+    getFormDefinition('contacto'),
+    getFooterContent()
+  ]);
 
   const getSocialIcon = (name: 'Facebook' | 'Twitter' | 'Instagram' | 'YouTube') => {
     switch (name) {
@@ -42,7 +25,7 @@ export function Footer() {
     }
   };
   
-  if (isLoading || !contactFormDefinition || !footerContent) {
+  if (!contactFormDefinition || !footerContent) {
     return null; // or a loading state
   }
 
@@ -99,7 +82,7 @@ export function Footer() {
                     </div>
                 </div>
                 <div>
-                    <DynamicForm formDefinition={contactFormDefinition} />
+                    {contactFormDefinition && <DynamicForm formDefinition={contactFormDefinition} />}
                 </div>
             </div>
         </Card>

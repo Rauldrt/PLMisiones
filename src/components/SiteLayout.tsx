@@ -4,11 +4,12 @@
 import { usePathname } from 'next/navigation';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import type { ReactNode } from 'react';
 
 export function SiteLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   const pathname = usePathname();
   const isAdminRoute = pathname.startsWith('/admin');
