@@ -3,7 +3,7 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { onAuthStateChanged, getAuth, signInWithEmailAndPassword, signOut, User } from 'firebase/auth';
-import { app } from '@/lib/firebase/client';
+import { getFirebaseApp } from '@/lib/firebase/client';
 import { useRouter, usePathname } from 'next/navigation';
 
 interface AuthContextType {
@@ -18,7 +18,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const auth = getAuth(app);
+  const auth = getAuth(getFirebaseApp());
   const router = useRouter();
   const pathname = usePathname();
 

@@ -1,5 +1,5 @@
 
-import { initializeApp, getApps, getApp } from 'firebase/app';
+import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBX-buF-ifwTiMD64tOfQwi7PIw5IjnFyQ",
@@ -10,5 +10,12 @@ const firebaseConfig = {
   appId: "1:1013928033094:web:1420849b97f6b54a5b8347"
 };
 
-// Initialize Firebase
-export const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+// Use a function to safely initialize and get the app instance.
+// This prevents issues with Server-Side Rendering (SSR) and hot-reloading.
+let app: FirebaseApp;
+export function getFirebaseApp(): FirebaseApp {
+    if (!app) {
+        app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+    }
+    return app;
+}
