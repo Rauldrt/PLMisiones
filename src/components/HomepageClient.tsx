@@ -12,12 +12,11 @@ import {
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, NewsArticle, Candidate, Notification, OrganigramaMember, Proposal } from '@/lib/types';
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
-import { Icons } from './icons';
 import { cn } from '@/lib/utils';
 
 
@@ -134,25 +133,8 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
 
     useEffect(() => {
         const hasInstagramEmbed = newsArticles.some(article => article.content?.includes('instagram-media'));
-        if (hasInstagramEmbed) {
-            const scriptId = 'instagram-embed-script';
-
-            const processInstagram = () => {
-                if (window.instgrm) {
-                    window.instgrm.Embeds.process();
-                }
-            };
-
-            if (document.getElementById(scriptId)) {
-                processInstagram();
-            } else {
-                const script = document.createElement('script');
-                script.id = scriptId;
-                script.src = '//www.instagram.com/embed.js';
-                script.async = true;
-                script.onload = processInstagram;
-                document.body.appendChild(script);
-            }
+        if (hasInstagramEmbed && window.instgrm) {
+            window.instgrm.Embeds.process();
         }
     }, [newsArticles]);
 
@@ -299,12 +281,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                       </CarouselItem>
                   ))}
               </CarouselContent>
-              {lightboxData.images.length > 1 && (
-                  <>
-                      <CarouselPrevious className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 text-white bg-white/10 hover:bg-white/20 border-none" />
-                      <CarouselNext className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-white bg-white/10 hover:bg-white/20 border-none" />
-                  </>
-              )}
+              
             </Carousel>
           )}
         </DialogContent>
@@ -312,3 +289,4 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
     </div>
   );
 }
+
