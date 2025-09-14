@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Icons, IconName } from '@/components/icons';
+import { getIcon } from '@/components/icons';
 import { cn } from '@/lib/utils';
 
 interface PageHeaderProps {
@@ -15,7 +15,7 @@ interface PageHeaderProps {
 }
 
 export function PageHeader({ icon, title, description, imageUrl, imageHint }: PageHeaderProps) {
-  const IconComponent = Icons[icon as IconName] || null;
+  const IconComponent = getIcon(icon);
   const [offsetY, setOffsetY] = useState(0);
 
   const handleScroll = () => setOffsetY(window.scrollY);
