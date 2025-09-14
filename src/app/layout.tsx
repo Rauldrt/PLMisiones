@@ -1,19 +1,18 @@
-
-'use client';
-
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { SiteLayout } from '@/components/SiteLayout';
-import { usePathname } from 'next/navigation';
 import { AuthProvider } from '@/context/AuthContext';
 
+// Este ahora es un Componente de Servidor, lo cual es la práctica recomendada.
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
-  const isAdminRoute = pathname.startsWith('/admin');
+
+  // La lógica de la ruta ahora puede vivir en el componente cliente que la necesite,
+  // pero para el layout, podemos simplemente renderizar el children.
+  // El AuthProvider envolverá a los children para que esté disponible en todas las páginas.
 
   return (
     <html lang="es">
@@ -31,13 +30,10 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
           <AuthProvider>
-            {isAdminRoute ? (
-              <div className="flex min-h-screen flex-col">{children}</div>
-            ) : (
-              <SiteLayout>
-                {children}
-              </SiteLayout>
-            )}
+            {/* El AuthProvider envuelve a los children, permitiendo que las páginas
+                sean componentes de cliente y usen el contexto si es necesario,
+                mientras que este layout y el SiteLayout pueden ser del servidor. */}
+            {children}
           </AuthProvider>
           <Toaster />
       </body>

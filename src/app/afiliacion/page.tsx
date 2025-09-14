@@ -1,4 +1,5 @@
-import { getFormDefinition, getPageHeaderByPath } from '@/lib/server/data';
+
+import { getFormDefinitionAction, getPageHeaderByPathAction } from '@/actions/data';
 import { DynamicForm } from '@/components/DynamicForm';
 import { PageHeader } from '@/components/PageHeader';
 
@@ -7,8 +8,8 @@ export const metadata = {
 };
 
 export default async function AfiliacionPage() {
-  const formDefinition = await getFormDefinition('afiliacion');
-  const pageHeader = await getPageHeaderByPath('/afiliacion');
+  const formDefinition = await getFormDefinitionAction('afiliacion');
+  const pageHeader = await getPageHeaderByPathAction('/afiliacion');
 
   return (
     <div>

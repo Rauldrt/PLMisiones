@@ -1,4 +1,5 @@
-import { getFormDefinition, getPageHeaderByPath } from '@/lib/server/data';
+
+import { getFormDefinitionAction, getPageHeaderByPathAction } from '@/actions/data';
 import { DynamicForm } from '@/components/DynamicForm';
 import { PageHeader } from '@/components/PageHeader';
 
@@ -7,8 +8,8 @@ export const metadata = {
 };
 
 export default async function FiscalesPage() {
-  const formDefinition = await getFormDefinition('fiscales');
-  const pageHeader = await getPageHeaderByPath('/fiscales');
+  const formDefinition = await getFormDefinitionAction('fiscales');
+  const pageHeader = await getPageHeaderByPathAction('/fiscales');
 
   return (
     <div>

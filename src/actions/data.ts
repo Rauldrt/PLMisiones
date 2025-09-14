@@ -32,6 +32,14 @@ async function readJsonFile<T>(filePath: string): Promise<T> {
 export async function getNewsAction() {
     return readJsonFile<NewsArticle[]>('src/data/news.json');
 }
+export async function getPublicNewsAction() {
+    const allNews = await getNewsAction();
+    return allNews.filter(article => !article.hidden);
+}
+export async function getNewsArticleBySlugAction(slug: string): Promise<NewsArticle | undefined> {
+  const news = await getNewsAction();
+  return news.find(article => article.slug === slug);
+}
 export async function getSocialLinksAction() {
     return readJsonFile<SocialLink[]>('src/data/social-links.json');
 }
@@ -84,6 +92,11 @@ export async function getNotificationsAction() {
     return readJsonFile<NotificationItem[]>('src/data/notifications.json');
 }
 
+export async function getPublicNotificationsAction() {
+    const allNotifications = await getNotificationsAction();
+    return allNotifications.filter(notification => !notification.hidden);
+}
+
 export async function getFooterContentAction() {
     return readJsonFile<FooterContent>('src/data/footer.json');
 }
@@ -94,4 +107,8 @@ export async function getMapsAction() {
 
 export async function getPageHeadersAction() {
     return readJsonFile<PageHeader[]>('src/data/page-headers.json');
+}
+export async function getPageHeaderByPathAction(path: string): Promise<PageHeader | undefined> {
+  const headers = await getPageHeadersAction();
+  return headers.find(header => header.path === path);
 }

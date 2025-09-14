@@ -1,10 +1,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { getPublicNews, getPageHeaderByPath } from '@/lib/server/data';
+import { getPublicNewsAction, getPageHeaderByPathAction } from '@/actions/data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageHeader } from '@/components/PageHeader';
 import { cn } from '@/lib/utils';
 
 export const metadata = {
@@ -12,15 +12,19 @@ export const metadata = {
 };
 
 export default async function NoticiasPage() {
-  const news = (await getPublicNews()).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  const pageHeader = await getPageHeaderByPath('/noticias');
+  const [news, pageHeader] = await Promise.all([
+    getPublicNewsAction(),
+    getPageHeaderByPathAction('/noticias'),
+  ]);
+
+  const sortedNews = news.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <div>
       {pageHeader && <PageHeader {...pageHeader} />}
       <div className="container max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {news.map((article) => {
+          {sortedNews.map((article) => {
             const isEmbed = /<iframe|<blockquote/.test(article.content?.trim() || '');
             return (
               <Card key={article.id} className="flex flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2 min-h-[500px]">

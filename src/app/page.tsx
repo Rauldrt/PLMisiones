@@ -1,17 +1,29 @@
 
 import { HomepageClient } from '@/components/HomepageClient';
-import { getBannerTextSlides, getBannerBackgroundSlides, getMosaicItems, getAccordionItems, getPublicNews, getCandidates, getNotification, getOrganigrama, getProposals } from '@/lib/server/data';
+import { getBannerTextSlidesAction, getBannerBackgroundSlidesAction, getMosaicItemsAction, getAccordionItemsAction, getPublicNewsAction, getCandidatesAction, getNotificationAction, getOrganigramaAction, getProposalsAction } from '@/actions/data';
 
 export default async function Home() {
-  const bannerTextSlides = await getBannerTextSlides();
-  const bannerBackgroundSlides = await getBannerBackgroundSlides();
-  const mosaicItems = await getMosaicItems();
-  const accordionItems = await getAccordionItems();
-  const newsArticles = await getPublicNews();
-  const candidates = await getCandidates();
-  const notification = await getNotification();
-  const organigrama = await getOrganigrama();
-  const proposals = await getProposals();
+  const [
+    bannerTextSlides,
+    bannerBackgroundSlides,
+    mosaicItems,
+    accordionItems,
+    newsArticles,
+    candidates,
+    notification,
+    organigrama,
+    proposals,
+  ] = await Promise.all([
+    getBannerTextSlidesAction(),
+    getBannerBackgroundSlidesAction(),
+    getMosaicItemsAction(),
+    getAccordionItemsAction(),
+    getPublicNewsAction(),
+    getCandidatesAction(),
+    getNotificationAction(),
+    getOrganigramaAction(),
+    getProposalsAction(),
+  ]);
 
   return (
     <HomepageClient

@@ -1,18 +1,17 @@
 
 import Link from 'next/link';
-import { getSocialLinks, getFormDefinition, getFooterContent } from '@/lib/server/data';
+import { getSocialLinksAction, getFormDefinitionAction, getFooterContentAction } from '@/actions/data';
 import { Icons } from '@/components/icons';
 import { Card, CardContent } from '@/components/ui/card';
 import { DynamicForm } from './DynamicForm';
-import type { SocialLink, FormDefinition, FooterContent } from '@/lib/types';
 import Image from 'next/image';
 import { Button } from './ui/button';
 
 export async function Footer() {
   const [socialLinks, contactFormDefinition, footerContent] = await Promise.all([
-    getSocialLinks(),
-    getFormDefinition('contacto'),
-    getFooterContent()
+    getSocialLinksAction(),
+    getFormDefinitionAction('contacto'),
+    getFooterContentAction()
   ]);
 
   const getSocialIcon = (name: 'Facebook' | 'Twitter' | 'Instagram' | 'YouTube') => {
@@ -29,8 +28,8 @@ export async function Footer() {
     return null; // or a loading state
   }
 
-  const copyrightText = footerContent.copyright.replace('{year}', new Date().getFullYear().toString());
-  const creditsParts = footerContent.credits.split('♥');
+  const copyrightText = (footerContent.copyright || '').replace('{year}', new Date().getFullYear().toString());
+  const creditsParts = (footerContent.credits || '').split('♥');
 
   return (
     <footer className="bg-card" id="contacto">

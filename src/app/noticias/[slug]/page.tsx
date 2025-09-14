@@ -1,4 +1,5 @@
-import { getNews, getNewsArticleBySlug } from '@/lib/server/data';
+
+import { getNewsAction, getNewsArticleBySlugAction } from '@/actions/data';
 import { notFound } from 'next/navigation';
 import { NewsArticleClient } from '@/components/NewsArticleClient';
 
@@ -6,7 +7,7 @@ import { NewsArticleClient } from '@/components/NewsArticleClient';
 
 // This function runs at build time to generate static pages for each news article
 export async function generateStaticParams() {
-  const news = await getNews();
+  const news = await getNewsAction();
   return news.map((article) => ({
     slug: article.slug,
   }));
@@ -14,7 +15,7 @@ export async function generateStaticParams() {
 
 // This function runs at build time to generate metadata for each page
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const article = await getNewsArticleBySlug(params.slug);
+  const article = await getNewsArticleBySlugAction(params.slug);
   if (!article) {
     return { title: 'Noticia no encontrada' };
   }
@@ -26,9 +27,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
 // This is the page component itself
 export default async function NewsArticlePage({ params }: { params: { slug: string } }) {
-  const article = await getNewsArticleBySlug(params.slug);
+  const article = await getNewsArticleBySlugAction(params.slug);
 
-  if (!article) {
+  if (!article || article.hidden) {
     notFound();
   }
 
