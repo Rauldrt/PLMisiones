@@ -11,6 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import Image from 'next/image';
+import { useAuth } from '@/context/AuthContext';
 
 const adminNavLinks = [
   { href: '/admin/manage-news', label: 'Noticias', icon: 'News' },
@@ -34,6 +35,7 @@ const adminNavLinks = [
 
 function NavContent() {
   const pathname = usePathname();
+  const { logout } = useAuth();
 
   return (
     <div className="flex h-full flex-col">
@@ -61,12 +63,16 @@ function NavContent() {
           );
         })}
       </nav>
-      <div className="mt-auto border-t p-4">
+      <div className="mt-auto border-t p-4 space-y-2">
          <Button variant="ghost" className="w-full justify-start gap-3" asChild>
             <Link href="/">
              <Icons.Close className="h-5 w-5" />
              Volver al Sitio
             </Link>
+        </Button>
+         <Button variant="destructive" className="w-full justify-start gap-3" onClick={() => logout()}>
+            <Icons.Logout className="h-5 w-5" />
+            Cerrar Sesión
         </Button>
       </div>
     </div>
