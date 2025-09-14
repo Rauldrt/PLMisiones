@@ -1,6 +1,6 @@
 
 import Link from 'next/link';
-import { getSocialLinksAction, getFormDefinitionAction, getFooterContentAction } from '@/actions/data';
+import { getSocialLinksAction, getFormDefinitionAction, getFooterContentAction } from '@/lib/server/data';
 import { Icons, IconName } from '@/components/icons';
 import { Card, CardContent } from '@/components/ui/card';
 import { DynamicForm } from './DynamicForm';
@@ -52,7 +52,7 @@ export async function Footer() {
                                   {footerContent.whatsapp && (
                                       <Button asChild variant="outline" className="bg-green-500/10 border-green-500/30 hover:bg-green-500/20 text-green-400 hover:text-green-300">
                                           <Link href={`https://wa.me/${footerContent.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer">
-                                              {getSocialIcon('Whatsapp')}
+                                              {getSocialIcon('Whatsapp' as IconName)}
                                               Contactar por WhatsApp
                                           </Link>
                                       </Button>

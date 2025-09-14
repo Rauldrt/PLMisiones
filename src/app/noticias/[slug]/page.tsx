@@ -1,5 +1,5 @@
 
-import { getNewsAction, getNewsArticleBySlugAction } from '@/actions/data';
+import { getNewsArticleBySlugAction, getNewsAction } from '@/lib/server/data';
 import { notFound } from 'next/navigation';
 import { NewsArticleClient } from '@/components/NewsArticleClient';
 

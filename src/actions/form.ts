@@ -19,7 +19,9 @@ export async function handleFormSubmission(formName: string, formData: unknown) 
     let submissions: any[] = [];
     try {
         const fileContent = await fs.readFile(filePath, 'utf-8');
-        submissions = JSON.parse(fileContent);
+        if (fileContent) {
+          submissions = JSON.parse(fileContent);
+        }
     } catch (e) {
         if ((e as NodeJS.ErrnoException).code !== 'ENOENT') throw e;
     }

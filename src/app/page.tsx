@@ -1,6 +1,16 @@
 
 import { HomepageClient } from '@/components/HomepageClient';
-import { getBannerTextSlidesAction, getBannerBackgroundSlidesAction, getMosaicItemsAction, getAccordionItemsAction, getPublicNewsAction, getCandidatesAction, getNotificationAction, getOrganigramaAction, getProposalsAction } from '@/actions/data';
+import { 
+    getBannerTextSlidesAction, 
+    getBannerBackgroundSlidesAction, 
+    getMosaicItemsAction, 
+    getAccordionItemsAction, 
+    getPublicNewsAction, 
+    getCandidatesAction, 
+    getNotificationAction, 
+    getOrganigramaAction, 
+    getProposalsAction 
+} from '@/lib/server/data';
 
 export default async function Home() {
   const [
