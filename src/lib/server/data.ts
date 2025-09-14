@@ -1,7 +1,7 @@
 
 import { promises as fs } from 'fs';
 import path from 'path';
-import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, PageHeader, Referente, SocialLink, FormDefinition, FormSubmission, Notification, OrganigramaMember, Candidate, Proposal, FooterContent, MapEmbed, NotificationItem } from './types';
+import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, PageHeader, Referente, SocialLink, FormDefinition, FormSubmission, Notification, OrganigramaMember, Candidate, Proposal, FooterContent, MapEmbed, NotificationItem } from '../types';
 
 // Helper function to read and parse a JSON file
 async function readJsonFile<T>(filePath: string): Promise<T> {

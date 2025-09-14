@@ -1,4 +1,4 @@
-import { getNews, getNewsArticleBySlug } from '@/lib/data';
+import { getNews, getNewsArticleBySlug } from '@/lib/server/data';
 import { notFound } from 'next/navigation';
 import { NewsArticleClient } from '@/components/NewsArticleClient';
 

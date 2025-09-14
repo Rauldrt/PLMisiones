@@ -1,6 +1,6 @@
 
 import { HomepageClient } from '@/components/HomepageClient';
-import { getBannerTextSlides, getBannerBackgroundSlides, getMosaicItems, getAccordionItems, getPublicNews, getCandidates, getNotification, getOrganigrama, getProposals } from '@/lib/data';
+import { getBannerTextSlides, getBannerBackgroundSlides, getMosaicItems, getAccordionItems, getPublicNews, getCandidates, getNotification, getOrganigrama, getProposals } from '@/lib/server/data';
 
 export default async function Home() {
   const bannerTextSlides = await getBannerTextSlides();

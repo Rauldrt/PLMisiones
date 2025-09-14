@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import type { NotificationItem } from '@/lib/types';
-import { getNotificationsAction, getPageHeadersAction } from '@/actions/data';
+import { getNotificationsAction } from '@/actions/data';
 import { PageHeader } from '@/components/ui/page-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';

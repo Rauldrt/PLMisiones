@@ -5,7 +5,7 @@ import path from 'path';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { buildZodSchema } from '@/lib/zod-schema-builder';
-import { getFormDefinition } from '@/lib/data';
+import { getFormDefinition } from '@/lib/server/data';
 
 export async function handleFormSubmission(formName: string, formData: unknown) {
   try {

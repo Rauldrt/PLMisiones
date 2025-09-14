@@ -1,6 +1,6 @@
 
 import Link from 'next/link';
-import { getSocialLinks, getFormDefinition, getFooterContent } from '@/lib/data';
+import { getSocialLinks, getFormDefinition, getFooterContent } from '@/lib/server/data';
 import { Icons } from '@/components/icons';
 import { Card, CardContent } from '@/components/ui/card';
 import { DynamicForm } from './DynamicForm';

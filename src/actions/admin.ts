@@ -4,7 +4,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { revalidatePath } from 'next/cache';
 import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate, Notification, Proposal, FooterContent, MapEmbed, PageHeader, SocialLink, NotificationItem } from '@/lib/types';
-import { getNews } from '@/lib/data';
+import { getNewsAction } from '@/actions/data';
 
 async function writeJsonFile(filePath: string, data: any) {
   const fullPath = path.join(process.cwd(), filePath);
@@ -72,7 +72,7 @@ export async function saveFormDefinition(formName: string, definition: FormDefin
 }
 
 export async function addNewsArticle(article: Omit<NewsArticle, 'id' | 'slug'>) {
-    const articles = await getNews();
+    const articles = await getNewsAction();
     const newArticle: NewsArticle = {
         ...article,
         id: new Date().getTime().toString(),
