@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -124,6 +125,9 @@ export function Header() {
                   </Button>
                   <Button asChild onClick={() => setIsMobileMenuOpen(false)}>
                       <Link href="/afiliacion">Afiliarse</Link>
+                  </Button>
+                   <Button asChild variant="ghost" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Link href="/admin">Admin</Link>
                   </Button>
               </div>
             </div>
