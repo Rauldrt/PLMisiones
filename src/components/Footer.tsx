@@ -1,7 +1,7 @@
 
 import Link from 'next/link';
 import { getSocialLinksAction, getFormDefinitionAction, getFooterContentAction } from '@/actions/data';
-import { Icons } from '@/components/icons';
+import { Icons, IconName } from '@/components/icons';
 import { Card, CardContent } from '@/components/ui/card';
 import { DynamicForm } from './DynamicForm';
 import Image from 'next/image';
@@ -14,14 +14,9 @@ export async function Footer() {
     getFooterContentAction()
   ]);
 
-  const getSocialIcon = (name: 'Facebook' | 'Twitter' | 'Instagram' | 'YouTube') => {
-    switch (name) {
-      case 'Facebook': return <Icons.Facebook className="h-6 w-6" />;
-      case 'Twitter': return <Icons.Twitter className="h-6 w-6" />;
-      case 'Instagram': return <Icons.Instagram className="h-6 w-6" />;
-      case 'YouTube': return <Icons.Youtube className="h-6 w-6" />;
-      default: return null;
-    }
+  const getSocialIcon = (name: IconName) => {
+    const Icon = Icons[name];
+    return Icon ? <Icon className="h-6 w-6" /> : null;
   };
   
   if (!contactFormDefinition || !footerContent) {
@@ -57,7 +52,7 @@ export async function Footer() {
                                   {footerContent.whatsapp && (
                                       <Button asChild variant="outline" className="bg-green-500/10 border-green-500/30 hover:bg-green-500/20 text-green-400 hover:text-green-300">
                                           <Link href={`https://wa.me/${footerContent.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer">
-                                              <Icons.Whatsapp className="mr-2" />
+                                              {getSocialIcon('Whatsapp')}
                                               Contactar por WhatsApp
                                           </Link>
                                       </Button>
@@ -71,7 +66,7 @@ export async function Footer() {
                                 <div className="flex items-center gap-4 mt-2">
                                      {socialLinks.map((link) => (
                                         <Link key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-accent transition-colors">
-                                            {getSocialIcon(link.name)}
+                                            {getSocialIcon(link.name as IconName)}
                                             <span className="sr-only">{link.name}</span>
                                         </Link>
                                     ))}
