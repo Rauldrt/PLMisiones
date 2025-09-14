@@ -1,4 +1,3 @@
-
 'use server';
 
 import { promises as fs } from 'fs';
@@ -13,31 +12,24 @@ async function readJsonFile<T>(filePath: string): Promise<T> {
 
   try {
     const jsonData = await fs.readFile(fullPath, 'utf-8');
-    // If the file is empty, return the default content
+    
     if (jsonData.trim() === '') {
-        return JSON.parse(defaultContent);
+      return JSON.parse(defaultContent);
     }
-    // Try to parse the JSON data
-    try {
-        return JSON.parse(jsonData) as T;
-    } catch (parseError) {
-        console.error(`Error parsing JSON from ${filePath}:`, parseError);
-        // If parsing fails, return the default content
-        return JSON.parse(defaultContent);
-    }
+    
+    return JSON.parse(jsonData) as T;
+
   } catch (error) {
-    // If the file doesn't exist, create it with default content
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-        try {
-            await fs.writeFile(fullPath, defaultContent);
-            return JSON.parse(defaultContent);
-        } catch (writeError) {
-            console.error(`Failed to create empty file ${filePath}:`, writeError);
-        }
+      try {
+        await fs.writeFile(fullPath, defaultContent);
+      } catch (writeError) {
+        console.error(`Failed to create empty file ${filePath}:`, writeError);
+      }
     } else {
-        console.error(`Error reading file ${filePath}:`, error);
+        // This will catch parsing errors for malformed JSON
+        console.error(`Error reading or parsing file ${filePath}:`, error);
     }
-    // Fallback for any other errors
     return JSON.parse(defaultContent);
   }
 }
