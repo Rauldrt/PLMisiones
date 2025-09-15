@@ -1,5 +1,6 @@
 
-import { getPublicNotificationsAction, getPageHeaderByPathAction } from '@/lib/server/data';
+import { getPublicNotificationsAction } from '@/actions/data';
+import { getPageHeaderByPathAction } from '@/lib/server/data';
 import { NotificacionesClient } from '@/components/NotificacionesClient';
 import { PageHeader } from '@/components/PageHeader';
 
@@ -28,4 +29,3 @@ export default async function NotificacionesPage() {
     </div>
   );
 }
-

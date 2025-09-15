@@ -1,7 +1,8 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { getPublicNewsAction, getPageHeaderByPathAction } from '@/lib/server/data';
+import { getPublicNewsAction } from '@/actions/data';
+import { getPageHeaderByPathAction } from '@/lib/server/data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/PageHeader';
