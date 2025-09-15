@@ -15,9 +15,9 @@ const pwaConfig = withPWA({
 
 const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://www.youtube.com https://s.ytimg.com https://www.instagram.com https://*.cdninstagram.com;
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://www.youtube.com https://s.ytimg.com https://www.instagram.com *.cdninstagram.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    img-src 'self' blob: data: https://picsum.photos https://*.cdninstagram.com https://*.fbcdn.net;
+    img-src 'self' blob: data: https://picsum.photos *.cdninstagram.com *.fbcdn.net;
     font-src 'self' https://fonts.gstatic.com;
     frame-src 'self' https://www.youtube.com https://www.instagram.com;
     connect-src 'self' https://vitals.vercel-insights.com https://identitytoolkit.googleapis.com;
