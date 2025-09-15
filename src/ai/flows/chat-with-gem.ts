@@ -31,11 +31,9 @@ const chatWithGemFlow = ai.defineFlow(
     outputSchema: ChatWithGemOutputSchema,
   },
   async (input) => {
-    // IMPORTANTE: Este es el ID de tu Gem.
-    const expertGem = ai.model("gems/ia-partido-libertario-misiones");
-
     const result = await ai.generate({
-      model: expertGem,
+      // IMPORTANTE: Este es el ID de tu Gem. Se pasa directamente como string.
+      model: 'gems/ia-partido-libertario-misiones',
       prompt: input.prompt,
     });
 
