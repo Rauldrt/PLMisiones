@@ -17,7 +17,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, NewsArticle, Candidate, Notification, OrganigramaMember, Proposal } from '@/lib/types';
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
-import { cn } from '@/lib/utils';
+import { NewsCard } from './NewsCard';
 
 
 interface HomepageClientProps {
@@ -118,18 +118,6 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
     )
 }
 
-function formatDate(dateString: string) {
-    const [year, month, day] = dateString.split('-');
-    const date = new Date(Number(year), Number(month) - 1, Number(day));
-    return date.toLocaleDateString('es-AR', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        timeZone: 'UTC', // Use UTC to avoid timezone shifts
-    });
-}
-
-
 export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notification, organigramaData, proposals }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
 
@@ -207,54 +195,9 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                 Mantenete al tanto de nuestras últimas actividades y comunicados.
             </p>
             <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {newsArticles.map((article) => {
-                  const isEmbed = /<iframe|<blockquote/.test(article.content?.trim() || '');
-                  return (
-                    <div key={article.id} className="flex justify-center">
-                        <Card className="flex w-full min-h-[500px] flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
-                            <CardHeader className="p-0">
-                            {article.imageUrl && !isEmbed && (
-                              <div className="relative h-48 w-full bg-muted">
-                                  <Image
-                                  src={article.imageUrl}
-                                  alt={article.title}
-                                  fill
-                                  className="object-cover"
-                                  data-ai-hint={article.imageHint}
-                                  />
-                              </div>
-                            )}
-                            <div className="px-6 py-4">
-                                <CardTitle className="font-headline text-xl leading-tight">
-                                    <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
-                                </CardTitle>
-                                <p className="text-sm text-foreground/60 mt-2">{formatDate(article.date)}</p>
-                            </div>
-                            </CardHeader>
-                            <CardContent className={cn(
-                                "flex-1 min-h-0",
-                                isEmbed ? "p-0" : "p-6 pt-0 text-foreground/80"
-                            )}>
-                                {isEmbed ? (
-                                    <div className="responsive-video h-full w-full" dangerouslySetInnerHTML={{ __html: article.content }} />
-                                ) : (
-                                     <div 
-                                        className="h-full overflow-y-auto no-scrollbar"
-                                        dangerouslySetInnerHTML={{ __html: article.content }} 
-                                    />
-                                )}
-                            </CardContent>
-                            <div className="px-6 py-4 pt-0">
-                                <Button asChild variant="link" className="p-0 h-auto">
-                                    <Link href={`/noticias/${article.slug}`}>
-                                    Leer más
-                                    </Link>
-                                </Button>
-                            </div>
-                        </Card>
-                    </div>
-                  )
-                })}
+                {newsArticles.map((article) => (
+                    <NewsCard key={article.id} article={article} />
+                ))}
             </div>
             <div className="mt-12 text-center">
                 <Button asChild size="lg" variant="outline">
