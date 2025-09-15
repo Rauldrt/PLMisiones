@@ -18,6 +18,7 @@ import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem,
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
 import { NewsCard } from './NewsCard';
+import { InstagramEmbedProcessor } from './InstagramEmbedProcessor';
 
 
 interface HomepageClientProps {
@@ -37,12 +38,6 @@ interface LightboxData {
     imageHints?: string[];
     title: string;
     startIndex: number;
-}
-
-declare global {
-  interface Window {
-    instgrm?: any;
-  }
 }
 
 function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaMember[] }) {
@@ -129,14 +124,6 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
             startIndex,
         });
     };
-
-    useEffect(() => {
-        const hasInstagramEmbed = newsArticles.some(article => article.content?.includes('instagram-media'));
-        if (hasInstagramEmbed && window.instgrm) {
-            window.instgrm.Embeds.process();
-        }
-    }, [newsArticles]);
-
 
   return (
     <div className="flex flex-col overflow-x-hidden">
@@ -240,7 +227,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
           )}
         </DialogContent>
       </Dialog>
+      <InstagramEmbedProcessor />
     </div>
   );
 }
-
