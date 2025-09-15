@@ -1,4 +1,3 @@
-
 import { headers } from 'next/headers';
 import { Toaster } from '@/components/ui/toaster';
 import { SiteLayout } from '@/components/SiteLayout';
@@ -7,14 +6,11 @@ import './globals.css';
 
 
 // Este ahora es un Componente de Servidor, lo cual es la práctica recomendada.
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const heads = headers();
-  const pathname = heads.get('next-url') || '';
-  const isAdminRoute = pathname.startsWith('/admin') || pathname === '/login';
 
   return (
     <html lang="es">
@@ -32,11 +28,9 @@ export default async function RootLayout({
       </head>
       <body className="font-body antialiased">
           <AuthProvider>
-            {isAdminRoute ? (
-              <>{children}</>
-            ) : (
-              <SiteLayout>{children}</SiteLayout>
-            )}
+            <SiteLayout>
+              {children}
+            </SiteLayout>
           </AuthProvider>
           <Toaster />
       </body>
