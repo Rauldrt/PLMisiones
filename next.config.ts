@@ -6,13 +6,23 @@ import withPWA from 'next-pwa';
 import { config } from 'dotenv';
 config();
 
-
 const pwaConfig = withPWA({
     dest: 'public',
     register: true,
     skipWaiting: true,
     disable: process.env.NODE_ENV === 'development',
 });
+
+const cspHeader = `
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.youtube.com https://s.ytimg.com https://www.instagram.com https://*.cdninstagram.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    img-src 'self' blob: data: https://picsum.photos https://*.cdninstagram.com https://*.fbcdn.net;
+    font-src 'self' https://fonts.gstatic.com;
+    frame-src 'self' https://www.youtube.com https://www.instagram.com;
+    connect-src 'self' https://vitals.vercel-insights.com;
+`;
+
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -37,6 +47,19 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
+  },
+    async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: cspHeader.replace(/\s{2,}/g, ' ').trim(),
+          },
+        ],
+      },
+    ]
   },
 };
 

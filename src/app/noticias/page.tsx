@@ -12,6 +12,17 @@ export const metadata = {
   title: 'Noticias',
 };
 
+function formatDate(dateString: string) {
+    const [year, month, day] = dateString.split('-');
+    const date = new Date(Number(year), Number(month) - 1, Number(day));
+    return date.toLocaleDateString('es-AR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'UTC', // Use UTC to avoid timezone shifts
+    });
+}
+
 export default async function NoticiasPage() {
   const [news, pageHeader] = await Promise.all([
     getPublicNewsAction(),
@@ -43,7 +54,7 @@ export default async function NoticiasPage() {
                     </div>
                   )}
                   <div className="p-6">
-                    <p className="text-sm text-foreground/60 mb-2">{new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                    <p className="text-sm text-foreground/60 mb-2">{formatDate(article.date)}</p>
                     <CardTitle className="font-headline text-xl leading-tight">
                       <Link href={`/noticias/${article.slug}`} className="hover:text-accent transition-colors">{article.title}</Link>
                     </CardTitle>

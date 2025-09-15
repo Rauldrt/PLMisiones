@@ -9,13 +9,14 @@ import { notFound } from 'next/navigation';
 
 interface NewsArticleClientProps {
   article: NewsArticle;
+  formattedDate: string;
 }
 
 // Note: The InstagramEmbedProcessor component is now used in the parent page ([slug]/page.tsx)
 // to handle the script loading and processing. This component is now only responsible
 // for rendering the article content.
 
-export function NewsArticleClient({ article }: NewsArticleClientProps) {
+export function NewsArticleClient({ article, formattedDate }: NewsArticleClientProps) {
   
   if (!article) {
     notFound();
@@ -28,7 +29,7 @@ export function NewsArticleClient({ article }: NewsArticleClientProps) {
       <div className="container max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
         <h1 className="font-headline text-4xl font-bold md:text-5xl">{article.title}</h1>
         <p className="mt-4 text-lg text-foreground/60">
-          Publicado el {new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}
+          Publicado el {formattedDate}
         </p>
       </div>
       

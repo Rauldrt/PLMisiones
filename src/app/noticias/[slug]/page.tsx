@@ -26,6 +26,18 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
+export function formatDate(dateString: string) {
+    const [year, month, day] = dateString.split('-');
+    const date = new Date(Number(year), Number(month) - 1, Number(day));
+    return date.toLocaleDateString('es-AR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'UTC', // Use UTC to avoid timezone shifts
+    });
+}
+
+
 // This is the page component itself
 export default async function NewsArticlePage({ params }: { params: { slug: string } }) {
   const article = await getNewsArticleBySlugAction(params.slug);
@@ -33,12 +45,14 @@ export default async function NewsArticlePage({ params }: { params: { slug: stri
   if (!article || article.hidden) {
     notFound();
   }
+  
+  const formattedDate = formatDate(article.date);
 
   // We render a Client Component and pass the article data to it as props.
   // The client component will handle the interactive parts, like the Instagram embed.
   return (
     <>
-      <NewsArticleClient article={article} />
+      <NewsArticleClient article={article} formattedDate={formattedDate} />
       <InstagramEmbedProcessor />
     </>
   );

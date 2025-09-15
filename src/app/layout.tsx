@@ -7,7 +7,7 @@ import './globals.css';
 
 
 // Este ahora es un Componente de Servidor, lo cual es la práctica recomendada.
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

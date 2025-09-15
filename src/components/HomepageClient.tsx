@@ -118,6 +118,17 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
     )
 }
 
+function formatDate(dateString: string) {
+    const [year, month, day] = dateString.split('-');
+    const date = new Date(Number(year), Number(month) - 1, Number(day));
+    return date.toLocaleDateString('es-AR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'UTC', // Use UTC to avoid timezone shifts
+    });
+}
+
 
 export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notification, organigramaData, proposals }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
@@ -217,7 +228,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                                 <CardTitle className="font-headline text-xl leading-tight">
                                     <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
                                 </CardTitle>
-                                <p className="text-sm text-foreground/60 mt-2">{new Date(article.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                                <p className="text-sm text-foreground/60 mt-2">{formatDate(article.date)}</p>
                             </div>
                             </CardHeader>
                             <CardContent className={cn(
