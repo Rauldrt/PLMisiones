@@ -14,6 +14,7 @@ import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 
 const adminNavLinks = [
+  { href: '/admin/expert-chat', label: 'Chat Experto', icon: 'AI' },
   { href: '/admin/manage-news', label: 'Noticias', icon: 'News' },
   { href: '/admin/manage-page-headers', label: 'Encabezados', icon: 'Header' },
   { href: '/admin/manage-banner', label: 'Texto Banner', icon: 'FileText' },
