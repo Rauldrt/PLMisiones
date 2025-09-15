@@ -20,7 +20,7 @@ const cspHeader = `
     img-src 'self' blob: data: https://picsum.photos https://*.cdninstagram.com https://*.fbcdn.net;
     font-src 'self' https://fonts.gstatic.com;
     frame-src 'self' https://www.youtube.com https://www.instagram.com;
-    connect-src 'self' https://vitals.vercel-insights.com;
+    connect-src 'self' https://vitals.vercel-insights.com https://identitytoolkit.googleapis.com;
 `;
 
 
