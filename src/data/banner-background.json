@@ -45,17 +45,17 @@
     "objectPosition": "center"
   },
   {
-    "id": "1756847286634",
-    "imageUrl": "/IMG-20240119-WA0585.jpg",
+    "id": "1756847329602",
+    "imageUrl": "/IMG-20240512-WA0375.jpg",
     "imageHint": "",
     "animationType": "zoom-in",
     "animationDuration": 10,
     "overlayOpacity": 0.7,
-    "objectPosition": "bottom"
+    "objectPosition": "center"
   },
   {
-    "id": "1756847329602",
-    "imageUrl": "/IMG-20240512-WA0375.jpg",
+    "id": "1756847286634",
+    "imageUrl": "/IMG-20240119-WA0585.jpg",
     "imageHint": "",
     "animationType": "zoom-in",
     "animationDuration": 10,
@@ -72,17 +72,17 @@
     "objectPosition": "center"
   },
   {
-    "id": "1756847359937",
-    "imageUrl": "/IMG-20240929-WA0567.jpg",
+    "id": "1756847372505",
+    "imageUrl": "/IMG-20241017-WA0305.jpg",
     "imageHint": "",
     "animationType": "zoom-in",
     "animationDuration": 10,
     "overlayOpacity": 0.7,
-    "objectPosition": "top"
+    "objectPosition": "center"
   },
   {
-    "id": "1756847372505",
-    "imageUrl": "/IMG-20241017-WA0305.jpg",
+    "id": "1756847359937",
+    "imageUrl": "/IMG-20240929-WA0567.jpg",
     "imageHint": "",
     "animationType": "zoom-in",
     "animationDuration": 10,
