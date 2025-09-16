@@ -103,7 +103,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                 >
                     <div
                         className={cn(
-                            'absolute transition-all duration-500 ease-in-out',
+                            'absolute transition-all duration-500',
                             isAnimating 
                                 ? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[16rem]'
                                 : 'top-[var(--top)] left-[var(--left)] w-[var(--width)] h-[var(--height)]'
@@ -113,6 +113,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                             '--left': `${cardPosition.left}px`,
                             '--width': `${cardPosition.width}px`,
                             '--height': `${cardPosition.height}px`,
+                            transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
                         } as React.CSSProperties}
                         onClick={(e) => e.stopPropagation()} 
                     >

@@ -12,11 +12,16 @@ interface ExpandingCandidateCardProps {
 }
 
 export function ExpandingCandidateCard({ candidate, isExpanded, onClick }: ExpandingCandidateCardProps) {
+  const transitionClass = 'transition-all duration-500';
+  const easeClass = '[transition-timing-function:cubic-bezier(0.4,0,0.2,1)]';
+
   return (
     <div
       onClick={onClick}
       className={cn(
-        'group relative w-full cursor-pointer overflow-hidden rounded-lg transition-all duration-500 ease-in-out',
+        'group relative w-full cursor-pointer overflow-hidden rounded-lg',
+        transitionClass,
+        easeClass,
         isExpanded 
           ? 'h-[480px] bg-card border border-border' 
           : 'h-[280px] bg-transparent border-none'
@@ -24,7 +29,9 @@ export function ExpandingCandidateCard({ candidate, isExpanded, onClick }: Expan
     >
       <div
         className={cn(
-          'absolute transition-all duration-500 ease-in-out overflow-hidden',
+          'absolute overflow-hidden',
+          transitionClass,
+          easeClass,
           isExpanded
             ? 'w-full h-80 top-0 left-0 rounded-b-none rounded-t-lg'
             : 'w-36 h-36 top-[60px] left-1/2 -translate-x-1/2 rounded-full group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-black/50'
@@ -34,10 +41,7 @@ export function ExpandingCandidateCard({ candidate, isExpanded, onClick }: Expan
           src={candidate.imageUrl}
           alt={candidate.name}
           fill
-          className={cn(
-              "object-cover transition-transform duration-500",
-              isExpanded && "object-contain"
-          )}
+          className="object-cover"
           sizes="(max-width: 768px) 50vw, 33vw"
           data-ai-hint={candidate.imageHint}
         />
@@ -45,7 +49,8 @@ export function ExpandingCandidateCard({ candidate, isExpanded, onClick }: Expan
       
       <div 
         className={cn(
-          "absolute bottom-4 left-0 right-0 p-4 text-center text-white transition-opacity duration-300 ease-in-out",
+          "absolute bottom-4 left-0 right-0 p-4 text-center text-white transition-opacity duration-300",
+          easeClass,
           isExpanded ? "opacity-0" : "opacity-100 delay-200"
         )}
       >
@@ -57,7 +62,8 @@ export function ExpandingCandidateCard({ candidate, isExpanded, onClick }: Expan
       
       <div 
         className={cn(
-          "absolute top-80 left-0 right-0 p-6 transition-opacity duration-300 ease-in-out",
+          "absolute top-80 left-0 right-0 p-6 transition-opacity duration-300",
+          easeClass,
           isExpanded ? "opacity-100 delay-200" : "opacity-0 pointer-events-none"
         )}
       >
