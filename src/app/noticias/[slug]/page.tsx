@@ -1,8 +1,8 @@
-
 import { getNewsArticleBySlugAction, getNewsAction } from '@/lib/server/data';
 import { notFound } from 'next/navigation';
 import { NewsArticleClient } from '@/components/NewsArticleClient';
 import { InstagramEmbedProcessor } from '@/components/InstagramEmbedProcessor';
+import type { Metadata } from 'next';
 
 // This is a Server Component. It can fetch data and generate static pages.
 
@@ -15,14 +15,42 @@ export async function generateStaticParams() {
 }
 
 // This function runs at build time to generate metadata for each page
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const article = await getNewsArticleBySlugAction(params.slug);
   if (!article) {
     return { title: 'Noticia no encontrada' };
   }
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://partidolibertariomisiones.com.ar';
+  const articleUrl = `${siteUrl}/noticias/${article.slug}`;
+  const articleDescription = article.content.replace(/<[^>]*>?/gm, '').substring(0, 155);
+  const imageUrl = article.imageUrl ? `${siteUrl}${article.imageUrl}` : `${siteUrl}/logo-banner.png`;
+
   return {
     title: article.title,
-    description: article.content.substring(0, 150),
+    description: articleDescription,
+    alternates: {
+      canonical: articleUrl,
+    },
+    openGraph: {
+      title: article.title,
+      description: articleDescription,
+      url: articleUrl,
+      type: 'article',
+      publishedTime: new Date(article.date).toISOString(),
+      images: [
+        {
+          url: imageUrl,
+          alt: article.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: articleDescription,
+      images: [imageUrl],
+    },
   };
 }
 

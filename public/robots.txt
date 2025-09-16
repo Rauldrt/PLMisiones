@@ -1,0 +1,9 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+Sitemap: https://partidolibertariomisiones.com.ar/sitemap.xml
+
+# Disallow admin section from being indexed
+User-agent: *
+Disallow: /admin

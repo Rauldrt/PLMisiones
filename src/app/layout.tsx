@@ -1,8 +1,41 @@
-import { headers } from 'next/headers';
 import { Toaster } from '@/components/ui/toaster';
 import { SiteLayout } from '@/components/SiteLayout';
 import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
+import type { Metadata } from 'next'
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://partidolibertariomisiones.com.ar';
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'Partido Libertario Misiones',
+    template: '%s | Partido Libertario Misiones',
+  },
+  description: 'Sitio web oficial del Partido Libertario de Misiones. Sumate a las ideas de la libertad.',
+  openGraph: {
+    title: 'Partido Libertario Misiones',
+    description: 'Sitio web oficial del Partido Libertario de Misiones. Sumate a las ideas de la libertad.',
+    url: siteUrl,
+    siteName: 'Partido Libertario Misiones',
+    images: [
+      {
+        url: '/logo-banner.png',
+        width: 1200,
+        height: 630,
+        alt: 'Logo del Partido Libertario Misiones',
+      },
+    ],
+    locale: 'es_AR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Partido Libertario Misiones',
+    description: 'Sitio web oficial del Partido Libertario de Misiones. Sumate a las ideas de la libertad.',
+    images: ['/logo-banner.png'],
+  },
+}
 
 
 // Este ahora es un Componente de Servidor, lo cual es la práctica recomendada.
@@ -15,8 +48,6 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
-        <title>Partido Libertario Misiones</title>
-        <meta name="description" content="Sitio web oficial del Partido Libertario de Misiones." />
         <link rel="icon" href="/logo.png" sizes="any" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#4d1a66" />
