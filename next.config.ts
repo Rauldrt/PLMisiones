@@ -15,11 +15,11 @@ const pwaConfig = withPWA({
 
 const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://www.youtube.com https://s.ytimg.com https://www.instagram.com *.cdninstagram.com;
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://www.youtube.com https://s.ytimg.com https://www.instagram.com *.cdninstagram.com datawrapper.dwcdn.net;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     img-src 'self' blob: data: https://picsum.photos *.cdninstagram.com *.fbcdn.net;
     font-src 'self' https://fonts.gstatic.com;
-    frame-src 'self' https://www.youtube.com https://www.instagram.com;
+    frame-src 'self' https://www.youtube.com https://www.instagram.com datawrapper.dwcdn.net;
     connect-src 'self' https://vitals.vercel-insights.com https://identitytoolkit.googleapis.com;
 `;
 
