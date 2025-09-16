@@ -1,7 +1,7 @@
 [
   {
     "id": "bg-1",
-    "imageUrl": "/IMG-20230903-WA0002.jpg",
+    "imageUrl": "/costanera 140925 (11).jpeg",
     "imageHint": "landscape sunrise",
     "animationType": "zoom-in",
     "animationDuration": 10,
@@ -10,7 +10,7 @@
   },
   {
     "id": "bg-2",
-    "imageUrl": "/20231016_185842.jpg",
+    "imageUrl": "/costanera 140925 (3).jpeg",
     "imageHint": "people volunteering",
     "animationType": "fade",
     "animationDuration": 8,
@@ -19,7 +19,7 @@
   },
   {
     "id": "bg-4",
-    "imageUrl": "/20231022_123119_HDR.jpg",
+    "imageUrl": "/costanera 140925 (14).jpeg",
     "imageHint": "voting ballot",
     "animationType": "zoom-in",
     "animationDuration": 10,
@@ -33,15 +33,6 @@
     "animationType": "fade",
     "animationDuration": 9,
     "overlayOpacity": 0.65,
-    "objectPosition": "center"
-  },
-  {
-    "id": "bg-6",
-    "imageUrl": "/IMG-20240812-WA0626.jpg",
-    "imageHint": "handshake deal",
-    "animationType": "slide-from-right",
-    "animationDuration": 10,
-    "overlayOpacity": 0.7,
     "objectPosition": "center"
   },
   {

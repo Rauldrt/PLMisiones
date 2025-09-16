@@ -77,6 +77,18 @@ export default function ManageMosaicPage() {
     handleFieldChange(itemIndex, 'imageUrls', newImageUrls);
   };
 
+  const moveImage = (itemIndex: number, imageIndex: number, direction: 'up' | 'down') => {
+    const newItems = [...items];
+    const newImageUrls = [...newItems[itemIndex].imageUrls];
+    if ((direction === 'up' && imageIndex === 0) || (direction === 'down' && imageIndex === newImageUrls.length - 1)) {
+        return;
+    }
+    const image = newImageUrls.splice(imageIndex, 1)[0];
+    const newIndex = direction === 'up' ? imageIndex - 1 : imageIndex + 1;
+    newImageUrls.splice(newIndex, 0, image);
+    handleFieldChange(itemIndex, 'imageUrls', newImageUrls);
+  }
+
   const addItem = () => {
     setItems([...items, { id: new Date().getTime().toString(), title: 'Nuevo Mosaico', imageUrls: ['/placeholder.png'], imageHints: [], colSpan: 1, rowSpan: 1, animationType: 'fade', animationDuration: 7000 }]);
   };
@@ -176,6 +188,14 @@ export default function ManageMosaicPage() {
                                         <Icons.Gallery className="w-4 h-4" />
                                     </Button>
                                   </DialogTrigger>
+                                  <div className="flex flex-col">
+                                    <Button variant="ghost" size="icon" className="h-5" onClick={() => moveImage(index, imgIndex, 'up')} disabled={imgIndex === 0}>
+                                        <Icons.ChevronUp className="w-4 h-4"/>
+                                    </Button>
+                                    <Button variant="ghost" size="icon" className="h-5" onClick={() => moveImage(index, imgIndex, 'down')} disabled={imgIndex === item.imageUrls.length - 1}>
+                                        <Icons.ChevronDown className="w-4 h-4"/>
+                                    </Button>
+                                  </div>
                                   <Button variant="ghost" size="icon" onClick={() => removeImage(index, imgIndex)}>
                                       <Icons.Trash className="w-4 h-4 text-destructive"/>
                                   </Button>

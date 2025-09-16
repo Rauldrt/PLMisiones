@@ -75,6 +75,17 @@ export default function ManageBannerBackgroundPage() {
     setSlides(slides.filter(slide => slide.id !== id));
   }
 
+  const moveSlide = (index: number, direction: 'up' | 'down') => {
+    if ((direction === 'up' && index === 0) || (direction === 'down' && index === slides.length - 1)) {
+      return;
+    }
+    const newSlides = [...slides];
+    const item = newSlides.splice(index, 1)[0];
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+    newSlides.splice(newIndex, 0, item);
+    setSlides(newSlides);
+  };
+
   return (
     <Dialog open={galleryOpen} onOpenChange={setGalleryOpen}>
         <div className="space-y-8">
@@ -101,6 +112,12 @@ export default function ManageBannerBackgroundPage() {
                             </div>
                         </AccordionTrigger>
                         <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
+                            <Button variant="ghost" size="icon" onClick={() => moveSlide(index, 'up')} disabled={index === 0}>
+                                <Icons.ChevronUp className="w-4 h-4"/>
+                            </Button>
+                            <Button variant="ghost" size="icon" onClick={() => moveSlide(index, 'down')} disabled={index === slides.length - 1}>
+                                <Icons.ChevronDown className="w-4 h-4"/>
+                            </Button>
                             <Button variant="destructive" size="icon" onClick={() => removeSlide(slide.id)}><Icons.Trash className="w-4 h-4"/></Button>
                         </div>
                         </div>
