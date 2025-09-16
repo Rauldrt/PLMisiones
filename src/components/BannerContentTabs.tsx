@@ -71,8 +71,9 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                 <Carousel 
                     setApi={setApi}
                     opts={{ 
-                        align: "center", 
-                        loop: false,
+                        align: "start", 
+                        loop: true,
+                        dragFree: true,
                     }}
                     className="w-full"
                 >
