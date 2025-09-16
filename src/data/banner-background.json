@@ -51,7 +51,7 @@
     "animationType": "zoom-in",
     "animationDuration": 10,
     "overlayOpacity": 0.7,
-    "objectPosition": "center"
+    "objectPosition": "bottom"
   },
   {
     "id": "1756847286634",
@@ -60,7 +60,7 @@
     "animationType": "zoom-in",
     "animationDuration": 10,
     "overlayOpacity": 0.7,
-    "objectPosition": "center"
+    "objectPosition": "bottom"
   },
   {
     "id": "1756847344801",
