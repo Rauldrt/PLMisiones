@@ -18,6 +18,7 @@ export async function handleFormSubmission(formName: string, formData: unknown) 
     await saveSubmission(collectionName, validatedData);
 
     revalidatePath(`/admin/view-submissions`);
+    revalidatePath(`/admin/firestore-data`);
 
     return { success: true, message: 'Formulario enviado con éxito.' };
   } catch (error) {
