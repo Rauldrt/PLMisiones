@@ -20,7 +20,7 @@ import {
     readPageHeadersFile
 } from '@/lib/server/data';
 import type { FormSubmission } from '@/lib/types';
-import { getAdminApp } from '@/lib/firebase/admin';
+import { initializeApp, getApps, cert, type App } from 'firebase-admin/app';
 import { getFirestore, collection, query, orderBy, getDocs } from 'firebase-admin/firestore';
 
 // These actions are safe to call from client components.
@@ -74,6 +74,37 @@ export async function getCandidatesAction() {
 export async function getOrganigramaAction() {
     return readOrganigramaFile();
 }
+
+function getAdminApp(): App | null {
+    const serviceAccountB64 = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64;
+    if (!serviceAccountB64) {
+        if (process.env.NODE_ENV === 'production') {
+            console.error('Firebase Admin service account is missing. Please set FIREBASE_SERVICE_ACCOUNT_BASE64 in your environment variables.');
+        } else {
+            console.warn("Firebase Admin service account is not set. This is expected for local development if not using admin features.");
+        }
+        return null;
+    }
+    
+    try {
+        const serviceAccount = JSON.parse(Buffer.from(serviceAccountB64, 'base64').toString('utf-8'));
+        const appName = 'firebase-admin-app-PLM-submissions';
+        const existingApp = getApps().find(app => app.name === appName);
+        
+        if (existingApp) {
+            return existingApp;
+        }
+
+        return initializeApp({
+            credential: cert(serviceAccount)
+        }, appName);
+
+    } catch (error) {
+        console.error("Failed to initialize Firebase Admin app:", error);
+        return null;
+    }
+}
+
 
 export async function getFormSubmissionsAction(formName: string): Promise<FormSubmission[]> {
   const adminApp = getAdminApp();
@@ -138,3 +169,4 @@ export async function getPageHeaderByPathAction(path: string) {
   const headers = await readPageHeadersFile();
   return headers.find(header => header.path === path);
 }
+
