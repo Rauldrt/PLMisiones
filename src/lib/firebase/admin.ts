@@ -1,3 +1,4 @@
+
 import { initializeApp, getApps, cert, type App } from 'firebase-admin/app';
 
 function getServiceAccount() {
