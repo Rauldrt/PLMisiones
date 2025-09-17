@@ -1,41 +1,35 @@
 
 'use server';
 
-import { initializeApp, getApps, getApp, cert, type App } from 'firebase-admin/app';
-
-// IMPORTANT: This file should only be imported on the server-side.
+import { initializeApp, getApps, cert, type App } from 'firebase-admin/app';
+import { getFirestore, collection, query, orderBy, getDocs } from 'firebase-admin/firestore';
+import type { FormSubmission } from '../types';
 
 function getServiceAccount() {
   const serviceAccountB64 = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64;
-
   if (!serviceAccountB64) {
     if (process.env.NODE_ENV === 'production') {
-      throw new Error(
-        'Firebase Admin SDK configuration error: FIREBASE_SERVICE_ACCOUNT_BASE64 is not set.'
-      );
+       throw new Error('Firebase Admin service account is missing. Please set FIREBASE_SERVICE_ACCOUNT_BASE64 in your environment variables.');
     }
-    console.warn(
-      'Firebase Admin SDK not configured. Server-side Firebase features will not work.'
-    );
     return null;
   }
-
   try {
     const decodedString = Buffer.from(serviceAccountB64, 'base64').toString('utf-8');
     return JSON.parse(decodedString);
   } catch (error) {
-    console.error("Failed to parse Firebase service account JSON.", error);
+    console.error("Failed to parse Firebase service account JSON from Base64.", error);
     throw new Error("Invalid FIREBASE_SERVICE_ACCOUNT_BASE64 content.");
   }
 }
 
 let adminApp: App | null = null;
-export function getFirebaseAdminApp(): App {
+
+// This function is not exported, making it invisible to the Next.js compiler as a "server action".
+function getFirebaseAdminApp(): App {
     if (adminApp) {
         return adminApp;
     }
     
-    // Use a unique app name to avoid conflicts
     const appName = 'firebase-admin-app-PLM';
     const existingApp = getApps().find(app => app.name === appName);
 
@@ -55,4 +49,33 @@ export function getFirebaseAdminApp(): App {
     }, appName);
 
     return adminApp;
+}
+
+// We export a function to get the DB instance, ensuring the app is initialized "lazily" or "just-in-time".
+const getDb = () => getFirestore(getFirebaseAdminApp());
+
+
+export async function getSubmissions(collectionName: string): Promise<FormSubmission[]> {
+  try {
+    const db = getDb();
+    const q = query(collection(db, collectionName), orderBy('submittedAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    
+    const submissions: FormSubmission[] = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const submittedAt = data.submittedAt?.toDate()?.toISOString() ?? new Date().toISOString();
+      
+      submissions.push({
+        id: doc.id,
+        ...data,
+        submittedAt,
+      });
+    });
+
+    return submissions;
+  } catch (error) {
+    console.error(`Error fetching submissions from collection ${collectionName}:`, error);
+    return [];
+  }
 }

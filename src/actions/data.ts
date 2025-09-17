@@ -19,7 +19,7 @@ import {
     readMapsFile,
     readPageHeadersFile
 } from '@/lib/server/data';
-import { getSubmissions } from '@/lib/firebase/firestore';
+import { getSubmissions } from '@/lib/firebase/admin';
 import type { NewsArticle } from '@/lib/types';
 
 
@@ -107,3 +107,4 @@ export async function getPageHeaderByPathAction(path: string) {
   const headers = await readPageHeadersFile();
   return headers.find(header => header.path === path);
 }
+
