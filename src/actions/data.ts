@@ -19,8 +19,43 @@ import {
     readMapsFile,
     readPageHeadersFile
 } from '@/lib/server/data';
-import { getSubmissions } from '@/lib/firebase/admin';
-import type { NewsArticle } from '@/lib/types';
+import type { FormSubmission } from '@/lib/types';
+import { initializeApp, getApps, cert, type App } from 'firebase-admin/app';
+import { getFirestore, collection, query, orderBy, getDocs } from 'firebase-admin/firestore';
+
+function getServiceAccount() {
+  const serviceAccountB64 = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64;
+  if (!serviceAccountB64) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('Firebase Admin service account is missing. Please set FIREBASE_SERVICE_ACCOUNT_BASE64 in your environment variables.');
+    }
+    return null;
+  }
+  try {
+    const decodedString = Buffer.from(serviceAccountB64, 'base64').toString('utf-8');
+    return JSON.parse(decodedString);
+  } catch (error) {
+    console.error("Failed to parse Firebase service account JSON from Base64.", error);
+    throw new Error("Invalid FIREBASE_SERVICE_ACCOUNT_BASE64 content.");
+  }
+}
+
+function getAdminApp(): App {
+    const appName = 'firebase-admin-app-PLM-submissions';
+    const existingApp = getApps().find(app => app.name === appName);
+    if (existingApp) {
+        return existingApp;
+    }
+
+    const serviceAccount = getServiceAccount();
+    if (!serviceAccount) {
+        throw new Error('Firebase Admin service account is missing or invalid. Cannot initialize app.');
+    }
+
+    return initializeApp({
+        credential: cert(serviceAccount)
+    }, appName);
+}
 
 
 // These actions are safe to call from client components.
@@ -75,8 +110,34 @@ export async function getOrganigramaAction() {
     return readOrganigramaFile();
 }
 
-export async function getFormSubmissionsAction(formName: string) {
-    return getSubmissions(`submissions-${formName}`);
+export async function getFormSubmissionsAction(formName: string): Promise<FormSubmission[]> {
+  try {
+    const adminApp = getAdminApp();
+    const db = getFirestore(adminApp);
+    const q = query(collection(db, `submissions-${formName}`), orderBy('submittedAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    
+    const submissions: FormSubmission[] = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const submittedAt = data.submittedAt?.toDate()?.toISOString() ?? new Date().toISOString();
+      
+      submissions.push({
+        id: doc.id,
+        ...data,
+        submittedAt,
+      });
+    });
+
+    return submissions;
+  } catch (error) {
+    console.error(`Error fetching submissions from collection ${formName}:`, error);
+    // In production, you might want to avoid leaking detailed errors.
+    if (error instanceof Error && error.message.includes('permission-denied')) {
+        console.error("Firestore permission denied. Check your Firestore rules.");
+    }
+    return [];
+  }
 }
 
 export async function getNotificationAction() {
@@ -107,4 +168,3 @@ export async function getPageHeaderByPathAction(path: string) {
   const headers = await readPageHeadersFile();
   return headers.find(header => header.path === path);
 }
-
