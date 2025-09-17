@@ -1,48 +1,58 @@
 
+'use server';
+
 import { initializeApp, getApps, getApp, cert, type App } from 'firebase-admin/app';
 
 // IMPORTANT: This file should only be imported on the server-side.
 
-// Check if the required environment variables are set.
-if (
-  !process.env.FIREBASE_PROJECT_ID ||
-  !process.env.FIREBASE_CLIENT_EMAIL ||
-  !process.env.FIREBASE_PRIVATE_KEY
-) {
-  if (process.env.NODE_ENV === 'production') {
+function getServiceAccount() {
+  const serviceAccountB64 = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64;
+
+  if (!serviceAccountB64) {
+    if (process.env.NODE_ENV === 'production') {
       throw new Error(
-        'Firebase Admin SDK configuration error: Make sure FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY are set in your Vercel environment variables.'
+        'Firebase Admin SDK configuration error: FIREBASE_SERVICE_ACCOUNT_BASE64 is not set.'
       );
+    }
+    console.warn(
+      'Firebase Admin SDK not configured. Server-side Firebase features will not work.'
+    );
+    return null;
   }
-   // In development, we can allow this to fail silently as it might not be needed immediately.
-  console.warn(
-    'Firebase Admin SDK not configured. This is normal for client-side development, but server-side Firebase features will not work. Add FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY to your .env.local file to enable them.'
-  );
+
+  try {
+    const decodedString = Buffer.from(serviceAccountB64, 'base64').toString('utf-8');
+    return JSON.parse(decodedString);
+  } catch (error) {
+    console.error("Failed to parse Firebase service account JSON.", error);
+    throw new Error("Invalid FIREBASE_SERVICE_ACCOUNT_BASE64 content.");
+  }
 }
 
-// The private key needs to be parsed correctly from the environment variable.
-// Vercel and other platforms sometimes escape newlines. This handles that.
-// It also removes potential surrounding quotes.
-const privateKey = (process.env.FIREBASE_PRIVATE_KEY || '')
-  .replace(/\\n/g, '\n')
-  .replace(/^"|"$/g, '');
-
-
-const serviceAccount = {
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-  privateKey: privateKey,
-};
-
-let adminApp: App;
+let adminApp: App | null = null;
 export function getFirebaseAdminApp(): App {
-    if (!adminApp) {
-        // Use a unique app name to avoid conflicts
-        const appName = 'firebase-admin-app-PLM';
-        const existingApp = getApps().find(app => app.name === appName);
-        adminApp = existingApp || initializeApp({
-            credential: cert(serviceAccount)
-        }, appName);
+    if (adminApp) {
+        return adminApp;
     }
+    
+    // Use a unique app name to avoid conflicts
+    const appName = 'firebase-admin-app-PLM';
+    const existingApp = getApps().find(app => app.name === appName);
+
+    if (existingApp) {
+        adminApp = existingApp;
+        return adminApp;
+    }
+
+    const serviceAccount = getServiceAccount();
+
+    if (!serviceAccount) {
+        throw new Error('Firebase Admin service account is missing. Cannot initialize app.');
+    }
+
+    adminApp = initializeApp({
+        credential: cert(serviceAccount)
+    }, appName);
+
     return adminApp;
 }
