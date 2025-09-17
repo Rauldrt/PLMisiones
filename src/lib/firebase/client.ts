@@ -11,18 +11,14 @@ const firebaseConfig = {
 };
 
 // This check will run on the server during the build process.
-if (!firebaseConfig.apiKey) {
-  throw new Error(
-    'Firebase configuration error: NEXT_PUBLIC_FIREBASE_API_KEY is not defined. Please add it to your environment variables.'
+if (process.env.NODE_ENV === 'production' && !firebaseConfig.apiKey) {
+  console.warn(
+    'Firebase configuration warning: NEXT_PUBLIC_FIREBASE_API_KEY is not defined. This may cause issues if not set in the production environment.'
   );
 }
 
 // Use a function to safely initialize and get the app instance.
 // This prevents issues with Server-Side Rendering (SSR) and hot-reloading.
-let app: FirebaseApp;
 export function getFirebaseApp(): FirebaseApp {
-    if (!app) {
-        app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-    }
-    return app;
+    return !getApps().length ? initializeApp(firebaseConfig) : getApp();
 }

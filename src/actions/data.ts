@@ -27,34 +27,41 @@ function getServiceAccount() {
   const serviceAccountB64 = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64;
   if (!serviceAccountB64) {
     if (process.env.NODE_ENV === 'production') {
-      throw new Error('Firebase Admin service account is missing. Please set FIREBASE_SERVICE_ACCOUNT_BASE64 in your environment variables.');
+      console.error('Firebase Admin service account is missing. Please set FIREBASE_SERVICE_ACCOUNT_BASE64 in your environment variables.');
     }
-    return null;
+    // Return null in development if the variable is not set, to avoid crashing the dev server.
+    return null; 
   }
   try {
     const decodedString = Buffer.from(serviceAccountB64, 'base64').toString('utf-8');
     return JSON.parse(decodedString);
   } catch (error) {
     console.error("Failed to parse Firebase service account JSON from Base64.", error);
-    throw new Error("Invalid FIREBASE_SERVICE_ACCOUNT_BASE64 content.");
+    return null; // Return null on parsing error
   }
 }
 
-function getAdminApp(): App {
+function getAdminApp(): App | null {
+    const serviceAccount = getServiceAccount();
+    if (!serviceAccount) {
+        console.log("Service account is not available.");
+        return null;
+    }
+
     const appName = 'firebase-admin-app-PLM-submissions';
     const existingApp = getApps().find(app => app.name === appName);
     if (existingApp) {
         return existingApp;
     }
 
-    const serviceAccount = getServiceAccount();
-    if (!serviceAccount) {
-        throw new Error('Firebase Admin service account is missing or invalid. Cannot initialize app.');
+    try {
+        return initializeApp({
+            credential: cert(serviceAccount)
+        }, appName);
+    } catch (error) {
+        console.error("Failed to initialize Firebase Admin app:", error);
+        return null;
     }
-
-    return initializeApp({
-        credential: cert(serviceAccount)
-    }, appName);
 }
 
 
@@ -111,8 +118,13 @@ export async function getOrganigramaAction() {
 }
 
 export async function getFormSubmissionsAction(formName: string): Promise<FormSubmission[]> {
+  const adminApp = getAdminApp();
+  if (!adminApp) {
+    console.error("Firebase Admin App is not initialized. Cannot fetch form submissions.");
+    return [];
+  }
+
   try {
-    const adminApp = getAdminApp();
     const db = getFirestore(adminApp);
     const q = query(collection(db, `submissions-${formName}`), orderBy('submittedAt', 'desc'));
     const querySnapshot = await getDocs(q);
@@ -120,7 +132,8 @@ export async function getFormSubmissionsAction(formName: string): Promise<FormSu
     const submissions: FormSubmission[] = [];
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      const submittedAt = data.submittedAt?.toDate()?.toISOString() ?? new Date().toISOString();
+      // Firestore Timestamps need to be converted to a serializable format (ISO string)
+      const submittedAt = data.submittedAt?.toDate ? data.submittedAt.toDate().toISOString() : new Date().toISOString();
       
       submissions.push({
         id: doc.id,
@@ -132,9 +145,8 @@ export async function getFormSubmissionsAction(formName: string): Promise<FormSu
     return submissions;
   } catch (error) {
     console.error(`Error fetching submissions from collection ${formName}:`, error);
-    // In production, you might want to avoid leaking detailed errors.
     if (error instanceof Error && error.message.includes('permission-denied')) {
-        console.error("Firestore permission denied. Check your Firestore rules.");
+        console.error("Firestore permission denied. Check your Firestore rules and admin SDK initialization.");
     }
     return [];
   }
