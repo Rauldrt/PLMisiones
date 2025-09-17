@@ -2,12 +2,12 @@
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBX-buF-ifwTiMD64tOfQwi7PIw5IjnFyQ",
+  authDomain: "libertario-misiones-web.firebaseapp.com",
+  projectId: "libertario-misiones-web",
+  storageBucket: "libertario-misiones-web.firebasestorage.app",
+  messagingSenderId: "1013928033094",
+  appId: "1:1013928033094:web:c4b837db41cace055b8347"
 };
 
 // This check will run on the server during the build process.
