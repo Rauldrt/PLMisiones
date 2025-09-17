@@ -117,10 +117,6 @@ export async function getOrganigramaAction(): Promise<OrganigramaMember[]> {
     return readOrganigramaFile();
 }
 
-export async function readFormSubmissionsFile(formName: string): Promise<FormSubmission[]> {
-    return readJsonFile<FormSubmission[]>(`src/data/form-submissions-${formName}.json`);
-}
-
 export async function readNotificationFile(): Promise<Notification> {
     return readJsonFile<Notification>('src/data/notification.json', true);
 }
