@@ -2,14 +2,21 @@
 'use server';
 
 import { getFirestore, collection, addDoc, getDocs, serverTimestamp, query, orderBy } from 'firebase/firestore';
-import { getFirebaseApp } from '@/lib/firebase/client';
+import { getFirebaseApp as getClientFirebaseApp } from '@/lib/firebase/client';
+import { getFirebaseAdminApp } from '@/lib/firebase/admin';
 import type { FormSubmission } from '../types';
 
-// Initialize Firestore
-const db = getFirestore(getFirebaseApp());
+// Use client app for writes from client-side actions if ever needed,
+// but for server actions, admin is better.
+const clientDb = getFirestore(getClientFirebaseApp());
+
+// Use Admin SDK for server-side reads/writes to bypass security rules
+const adminDb = getFirestore(getFirebaseAdminApp());
+
 
 /**
  * Saves a form submission to a specified Firestore collection.
+ * This function can be called from Server Actions.
  * @param collectionName The name of the collection (e.g., 'submissions-afiliacion').
  * @param data The form data to save.
  * @returns The ID of the newly created document.
@@ -20,7 +27,9 @@ export async function saveSubmission(collectionName: string, data: Record<string
       ...data,
       submittedAt: serverTimestamp(),
     };
-    const docRef = await addDoc(collection(db, collectionName), submissionData);
+    // Use the clientDb because this action is triggered by unauthenticated users.
+    // The Firestore rules allow this 'create' operation.
+    const docRef = await addDoc(collection(clientDb, collectionName), submissionData);
     return docRef.id;
   } catch (error) {
     console.error(`Error saving submission to collection ${collectionName}:`, error);
@@ -29,13 +38,16 @@ export async function saveSubmission(collectionName: string, data: Record<string
 }
 
 /**
- * Retrieves all submissions from a specified Firestore collection.
+ * Retrieves all submissions from a specified Firestore collection using the Admin SDK.
+ * This is meant to be called from secured server-side functions (e.g., in the admin panel).
  * @param collectionName The name of the collection.
  * @returns An array of form submissions.
  */
 export async function getSubmissions(collectionName: string): Promise<FormSubmission[]> {
   try {
-    const q = query(collection(db, collectionName), orderBy('submittedAt', 'desc'));
+    // Use the adminDb to read data, bypassing client-side security rules.
+    // This assumes this function is only called from trusted server environments.
+    const q = query(collection(adminDb, collectionName), orderBy('submittedAt', 'desc'));
     const querySnapshot = await getDocs(q);
     
     const submissions: FormSubmission[] = [];
