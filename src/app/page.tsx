@@ -10,7 +10,7 @@ import {
     getNotificationAction, 
     getOrganigramaAction, 
     getProposalsAction 
-} from '@/lib/server/data';
+} from '@/actions/data';
 
 export default async function Home() {
   const [

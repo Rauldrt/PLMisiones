@@ -3,6 +3,7 @@ import { SiteLayout } from '@/components/SiteLayout';
 import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
 import type { Metadata } from 'next'
+import { getSocialLinksAction, getFormDefinitionAction, getFooterContentAction } from '@/actions/data';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://partidolibertariomisiones.com.ar';
 
@@ -39,11 +40,17 @@ export const metadata: Metadata = {
 
 
 // Este ahora es un Componente de Servidor, lo cual es la práctica recomendada.
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const [socialLinks, contactFormDefinition, footerContent] = await Promise.all([
+    getSocialLinksAction(),
+    getFormDefinitionAction('contacto'),
+    getFooterContentAction()
+  ]);
 
   return (
     <html lang="es">
@@ -59,7 +66,11 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
           <AuthProvider>
-            <SiteLayout>
+            <SiteLayout 
+              footerContent={footerContent} 
+              socialLinks={socialLinks} 
+              contactFormDefinition={contactFormDefinition}
+            >
               {children}
             </SiteLayout>
           </AuthProvider>

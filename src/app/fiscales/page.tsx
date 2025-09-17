@@ -1,5 +1,5 @@
 
-import { getFormDefinitionAction, getPageHeaderByPathAction } from '@/lib/server/data';
+import { getFormDefinitionAction, getPageHeaderByPathAction } from '@/actions/data';
 import { DynamicForm } from '@/components/DynamicForm';
 import { PageHeader } from '@/components/PageHeader';
 

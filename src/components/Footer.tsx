@@ -1,19 +1,22 @@
 
+'use client';
 import Link from 'next/link';
-import { getSocialLinksAction, getFormDefinitionAction, getFooterContentAction } from '@/lib/server/data';
 import { Icons, IconName } from '@/components/icons';
 import { Card, CardContent } from '@/components/ui/card';
 import { DynamicForm } from './DynamicForm';
 import Image from 'next/image';
 import { Button } from './ui/button';
+import type { SocialLink, FormDefinition, FooterContent } from '@/lib/types';
 
-export async function Footer() {
-  const [socialLinks, contactFormDefinition, footerContent] = await Promise.all([
-    getSocialLinksAction(),
-    getFormDefinitionAction('contacto'),
-    getFooterContentAction()
-  ]);
 
+interface FooterProps {
+    socialLinks: SocialLink[];
+    contactFormDefinition: FormDefinition;
+    footerContent: FooterContent;
+}
+
+export function Footer({ socialLinks, contactFormDefinition, footerContent }: FooterProps) {
+  
   const getSocialIcon = (name: IconName) => {
     const Icon = Icons[name];
     return Icon ? <Icon className="h-6 w-6" /> : null;

@@ -1,4 +1,4 @@
-import { getNewsArticleBySlugAction, getNewsAction } from '@/lib/server/data';
+import { getNewsArticleBySlugAction, getNewsAction } from '@/actions/data';
 import { notFound } from 'next/navigation';
 import { NewsArticleClient } from '@/components/NewsArticleClient';
 import { InstagramEmbedProcessor } from '@/components/InstagramEmbedProcessor';
