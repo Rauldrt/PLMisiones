@@ -1,3 +1,4 @@
+
 'use server';
 
 import { 
@@ -12,13 +13,13 @@ import {
     readReferentesFile,
     readCandidatesFile,
     readOrganigramaFile,
-    readFormSubmissionsFile,
     readNotificationFile,
     readNotificationsFile,
     readFooterContentFile,
     readMapsFile,
     readPageHeadersFile
 } from '@/lib/server/data';
+import { getSubmissions } from '@/lib/firebase/firestore';
 import type { NewsArticle } from '@/lib/types';
 
 
@@ -75,7 +76,7 @@ export async function getOrganigramaAction() {
 }
 
 export async function getFormSubmissionsAction(formName: string) {
-    return readFormSubmissionsFile(formName);
+    return getSubmissions(`submissions-${formName}`);
 }
 
 export async function getNotificationAction() {

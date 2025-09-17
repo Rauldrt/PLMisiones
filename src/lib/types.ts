@@ -88,7 +88,11 @@ export interface FormDefinition {
   fields: FormFieldDefinition[];
 }
 
-export type FormSubmission = Record<string, string | number>;
+export interface FormSubmission extends Record<string, any> {
+  id: string;
+  submittedAt: string;
+}
+
 
 export interface OrganigramaMember {
     id: string;

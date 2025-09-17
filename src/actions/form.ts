@@ -1,12 +1,11 @@
 
 'use server';
 
-import { promises as fs } from 'fs';
-import path from 'path';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { buildZodSchema } from '@/lib/zod-schema-builder';
 import { getFormDefinitionAction } from '@/actions/data';
+import { saveSubmission } from '@/lib/firebase/firestore';
 
 export async function handleFormSubmission(formName: string, formData: unknown) {
   try {
@@ -14,25 +13,9 @@ export async function handleFormSubmission(formName: string, formData: unknown) 
     const schema = buildZodSchema(formDefinition);
 
     const validatedData = schema.parse(formData);
-
-    const filePath = path.join(process.cwd(), `src/data/form-submissions-${formName}.json`);
-    let submissions: any[] = [];
-    try {
-        const fileContent = await fs.readFile(filePath, 'utf-8');
-        if (fileContent) {
-          submissions = JSON.parse(fileContent);
-        }
-    } catch (e) {
-        if ((e as NodeJS.ErrnoException).code !== 'ENOENT') throw e;
-    }
-
-
-    submissions.push({
-      ...validatedData,
-      submittedAt: new Date().toISOString(),
-    });
-
-    await fs.writeFile(filePath, JSON.stringify(submissions, null, 2));
+    
+    const collectionName = `submissions-${formName}`;
+    await saveSubmission(collectionName, validatedData);
 
     revalidatePath(`/admin/view-submissions`);
 

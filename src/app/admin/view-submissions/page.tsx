@@ -5,7 +5,10 @@ import { getFormSubmissionsAction } from '@/actions/data';
 import type { FormSubmission } from '@/lib/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from '@/components/ui/skeleton';
+
+const formNames = ['afiliacion', 'contacto', 'fiscales'];
 
 export default function ViewSubmissionsPage() {
   const [submissions, setSubmissions] = useState<{afiliacion: FormSubmission[], contacto: FormSubmission[], fiscales: FormSubmission[]}>({ afiliacion: [], contacto: [], fiscales: [] });
@@ -14,33 +17,64 @@ export default function ViewSubmissionsPage() {
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const [afiliacionData, contactoData, fiscalesData] = await Promise.all([
-        getFormSubmissionsAction('afiliacion'),
-        getFormSubmissionsAction('contacto'),
-        getFormSubmissionsAction('fiscales'),
-      ]);
-      setSubmissions({ afiliacion: afiliacionData, contacto: contactoData, fiscales: fiscalesData });
-      setIsLoading(false);
+      try {
+        const [afiliacionData, contactoData, fiscalesData] = await Promise.all([
+          getFormSubmissionsAction('afiliacion'),
+          getFormSubmissionsAction('contacto'),
+          getFormSubmissionsAction('fiscales'),
+        ]);
+        setSubmissions({ afiliacion: afiliacionData, contacto: contactoData, fiscales: fiscalesData });
+      } catch (error) {
+        console.error("Failed to fetch submissions:", error);
+        // Handle error state if necessary
+      } finally {
+        setIsLoading(false);
+      }
     }
     fetchData();
   }, []);
 
   const renderTable = (data: FormSubmission[]) => {
-    if (data.length === 0) {
-      return <p>No hay envíos para este formulario.</p>;
+    if (isLoading) {
+      return (
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full" />
+        </div>
+      );
     }
-    const headers = Object.keys(data[0]);
+    if (data.length === 0) {
+      return <p className="text-muted-foreground">No hay envíos para este formulario todavía.</p>;
+    }
+    
+    // Get all unique headers from all submissions
+    const allHeaders = data.reduce((acc, curr) => {
+      Object.keys(curr).forEach(key => {
+        if (!acc.includes(key)) {
+          acc.push(key);
+        }
+      });
+      return acc;
+    }, [] as string[]);
+    
+    // Prioritize certain columns and hide 'id'
+    const orderedHeaders = ['submittedAt', 'nombreCompleto', 'email', 'telefono', 'dni', 'localidad', 'asunto', 'mensaje'].filter(h => allHeaders.includes(h));
+    const otherHeaders = allHeaders.filter(h => !orderedHeaders.includes(h) && h !== 'id');
+    const headers = [...orderedHeaders, ...otherHeaders];
+
+
     return (
       <Table>
         <TableHeader>
           <TableRow>
-            {headers.map(header => <TableHead key={header}>{header}</TableHead>)}
+            {headers.map(header => <TableHead key={header} className="capitalize">{header.replace(/([A-Z])/g, ' $1')}</TableHead>)}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((row, index) => (
-            <TableRow key={index}>
-              {headers.map(header => <TableCell key={header}>{String(row[header])}</TableCell>)}
+          {data.map((row) => (
+            <TableRow key={row.id}>
+              {headers.map(header => <TableCell key={header}>{String(row[header] ?? '')}</TableCell>)}
             </TableRow>
           ))}
         </TableBody>
@@ -52,22 +86,23 @@ export default function ViewSubmissionsPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold font-headline">Envíos de Formularios</h1>
-        <p className="text-muted-foreground">Revisa los datos enviados a través de los formularios del sitio.</p>
+        <p className="text-muted-foreground">Revisa los datos enviados a través de los formularios del sitio. Los datos se guardan en Firestore.</p>
       </div>
 
-       <Tabs defaultValue="afiliacion">
+       <Tabs defaultValue={formNames[0]}>
         <TabsList>
-            <TabsTrigger value="afiliacion">Afiliación</TabsTrigger>
-            <TabsTrigger value="contacto">Contacto</TabsTrigger>
-            <TabsTrigger value="fiscales">Fiscales</TabsTrigger>
+            {formNames.map(name => (
+                 <TabsTrigger key={name} value={name} className="capitalize">{name}</TabsTrigger>
+            ))}
         </TabsList>
         <TabsContent value="afiliacion">
              <Card>
                 <CardHeader>
                 <CardTitle>Envíos de Afiliación</CardTitle>
+                <CardDescription>Personas que completaron el formulario para afiliarse.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                {isLoading ? <p>Cargando...</p> : renderTable(submissions.afiliacion)}
+                  {renderTable(submissions.afiliacion)}
                 </CardContent>
             </Card>
         </TabsContent>
@@ -75,9 +110,10 @@ export default function ViewSubmissionsPage() {
              <Card>
                 <CardHeader>
                 <CardTitle>Envíos de Contacto</CardTitle>
+                <CardDescription>Mensajes y consultas enviadas desde el pie de página.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                {isLoading ? <p>Cargando...</p> : renderTable(submissions.contacto)}
+                  {renderTable(submissions.contacto)}
                 </CardContent>
             </Card>
         </TabsContent>
@@ -85,14 +121,14 @@ export default function ViewSubmissionsPage() {
              <Card>
                 <CardHeader>
                 <CardTitle>Inscripciones de Fiscales</CardTitle>
+                <CardDescription>Voluntarios que se inscribieron para fiscalizar.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                {isLoading ? <p>Cargando...</p> : renderTable(submissions.fiscales)}
+                  {renderTable(submissions.fiscales)}
                 </CardContent>
             </Card>
         </TabsContent>
         </Tabs>
-
     </div>
   );
 }
