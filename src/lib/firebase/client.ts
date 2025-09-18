@@ -2,12 +2,12 @@
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDFiIu41IeR0mveC3__GMA5SIs2w6T4beY",
-  authDomain: "partidolibertariomisiones-9351b.firebaseapp.com",
-  projectId: "partidolibertariomisiones-9351b",
-  storageBucket: "partidolibertariomisiones-9351b.appspot.com",
-  messagingSenderId: "956353982885",
-  appId: "1:956353982885:web:5317ac07b129731633a299",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 

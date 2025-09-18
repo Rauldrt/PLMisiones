@@ -2,10 +2,6 @@
 import type {NextConfig} from 'next';
 import withPWA from 'next-pwa';
 
-// Load environment variables from .env file
-import { config } from 'dotenv';
-config();
-
 const pwaConfig = withPWA({
     dest: 'public',
     register: true,
