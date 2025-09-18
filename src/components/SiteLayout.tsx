@@ -1,17 +1,16 @@
-
 'use client';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import type { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
-import type { SocialLink, FormDefinition, FooterContent } from '@/lib/types';
+import type { SocialLink, FooterContent, GoogleForm } from '@/lib/types';
 
 
 interface SiteLayoutProps {
   children: ReactNode;
   footerContent: FooterContent;
   socialLinks: SocialLink[];
-  contactFormDefinition: FormDefinition;
+  contactForm: GoogleForm;
 }
 
 
@@ -19,7 +18,7 @@ export function SiteLayout({
   children,
   footerContent,
   socialLinks,
-  contactFormDefinition
+  contactForm
 }: Readonly<SiteLayoutProps>) {
   const pathname = usePathname();
   const isAdminRoute = pathname.startsWith('/admin') || pathname === '/login';
@@ -35,7 +34,7 @@ export function SiteLayout({
       <Footer 
         footerContent={footerContent}
         socialLinks={socialLinks}
-        contactFormDefinition={contactFormDefinition}
+        contactForm={contactForm}
       />
     </div>
   );

@@ -73,24 +73,11 @@ export interface SocialLink {
   url: string;
 }
 
-export interface FormFieldDefinition {
-  name: string;
-  label: string;
-  type: 'text' | 'email' | 'tel' | 'textarea' | 'number';
-  placeholder?: string;
-  required: boolean;
-}
-
-export interface FormDefinition {
-  name: string;
-  title: string;
-  description: string;
-  fields: FormFieldDefinition[];
-}
-
-export interface FormSubmission extends Record<string, any> {
+export interface GoogleForm {
   id: string;
-  submittedAt: string;
+  title: string;
+  description?: string;
+  embedUrl: string;
 }
 
 

@@ -27,10 +27,8 @@ const adminNavLinks = [
   { href: '/admin/manage-mosaic', label: 'Mosaico', icon: 'Mosaic' },
   { href: '/admin/manage-accordion', label: 'Acordeón', icon: 'Accordion' },
   { href: '/admin/manage-maps', label: 'Mapas', icon: 'Location' },
-  { href: '/admin/manage-forms', label: 'Formularios', icon: 'Forms' },
+  { href: '/admin/manage-google-forms', label: 'Google Forms', icon: 'Forms' },
   { href: '/admin/manage-footer', label: 'Footer', icon: 'Footer' },
-  { href: '/admin/view-submissions', label: 'Envíos (Pre-configurado)', icon: 'Submissions' },
-  { href: '/admin/firestore-data', label: 'Datos Formularios Firestore', icon: 'Submissions' },
   { href: '/admin/gallery', label: 'Galería', icon: 'Gallery' },
 ];
 

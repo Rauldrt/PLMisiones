@@ -1,9 +1,8 @@
-
 'use server';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { revalidatePath } from 'next/cache';
-import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, FormDefinition, OrganigramaMember, Candidate, Notification, Proposal, FooterContent, MapEmbed, PageHeader, SocialLink, NotificationItem } from '@/lib/types';
+import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, OrganigramaMember, Candidate, Notification, Proposal, FooterContent, MapEmbed, PageHeader, SocialLink, NotificationItem, GoogleForm } from '@/lib/types';
 import { getNewsAction } from '@/actions/data';
 
 async function writeJsonFile(filePath: string, data: any) {
@@ -64,13 +63,6 @@ export async function saveCandidates(items: Candidate[]) {
     return { success: true, message: 'Candidatos guardados con éxito.' };
 }
 
-export async function saveFormDefinition(formName: string, definition: FormDefinition) {
-    await writeJsonFile(`src/data/form-def-${formName}.json`, definition);
-    revalidatePath(`/${formName}`);
-    revalidatePath('/contacto'); // Revalidate footer as well
-    return { success: true, message: 'Formulario guardado con éxito.' };
-}
-
 export async function addNewsArticle(article: Omit<NewsArticle, 'id' | 'slug'>) {
     const articles = await getNewsAction();
     const newArticle: NewsArticle = {
@@ -123,4 +115,12 @@ export async function saveSocialLinks(items: SocialLink[]) {
     await writeJsonFile('src/data/social-links.json', items);
     revalidatePath('/*'); // Revalidate all pages since footer is global
     return { success: true, message: 'Enlaces de redes sociales guardados con éxito.' };
+}
+
+export async function saveGoogleForms(items: GoogleForm[]) {
+    await writeJsonFile('src/data/google-forms.json', items);
+    revalidatePath('/afiliacion');
+    revalidatePath('/fiscales');
+    revalidatePath('/*'); // revalidate all for footer
+    return { success: true, message: 'Formularios de Google guardados con éxito.' };
 }

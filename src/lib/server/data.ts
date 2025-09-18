@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, PageHeader, Referente, SocialLink, FormDefinition, FormSubmission, Notification, OrganigramaMember, Candidate, Proposal, FooterContent, MapEmbed, NotificationItem } from '../types';
+import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, PageHeader, Referente, SocialLink, Notification, OrganigramaMember, Candidate, Proposal, FooterContent, MapEmbed, NotificationItem, GoogleForm } from '../types';
 
 async function readJsonFile<T>(filePath: string, isObjectLike: boolean = false): Promise<T> {
   const fullPath = path.join(process.cwd(), filePath);
@@ -52,13 +52,6 @@ export async function readSocialLinksFile(): Promise<SocialLink[]> {
 }
 export async function getSocialLinksAction(): Promise<SocialLink[]> {
     return readSocialLinksFile();
-}
-
-export async function readFormDefinitionFile(formName: string): Promise<FormDefinition> {
-    return readJsonFile<FormDefinition>(`src/data/form-def-${formName}.json`, true);
-}
-export async function getFormDefinitionAction(formName: string): Promise<FormDefinition> {
-    return readFormDefinitionFile(formName);
 }
 
 export async function readBannerTextSlidesFile(): Promise<BannerTextSlide[]> {
@@ -154,4 +147,16 @@ export async function getPageHeadersAction(): Promise<PageHeader[]> {
 export async function getPageHeaderByPathAction(path: string): Promise<PageHeader | undefined> {
   const headers = await readPageHeadersFile();
   return headers.find(header => header.path === path);
+}
+
+export async function readGoogleFormsFile(): Promise<GoogleForm[]> {
+    return readJsonFile<GoogleForm[]>('src/data/google-forms.json');
+}
+export async function getGoogleFormsAction(): Promise<GoogleForm[]> {
+    return readGoogleFormsFile();
+}
+
+export async function getGoogleFormAction(id: string): Promise<GoogleForm | undefined> {
+    const forms = await readGoogleFormsFile();
+    return forms.find(f => f.id === id);
 }

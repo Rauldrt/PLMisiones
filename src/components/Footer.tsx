@@ -1,28 +1,27 @@
-
 'use client';
 import Link from 'next/link';
 import { Icons, IconName } from '@/components/icons';
 import { Card, CardContent } from '@/components/ui/card';
-import { DynamicForm } from './DynamicForm';
 import Image from 'next/image';
 import { Button } from './ui/button';
-import type { SocialLink, FormDefinition, FooterContent } from '@/lib/types';
+import type { SocialLink, FooterContent, GoogleForm } from '@/lib/types';
+import { GoogleFormEmbed } from './GoogleFormEmbed';
 
 
 interface FooterProps {
     socialLinks: SocialLink[];
-    contactFormDefinition: FormDefinition;
+    contactForm: GoogleForm;
     footerContent: FooterContent;
 }
 
-export function Footer({ socialLinks, contactFormDefinition, footerContent }: FooterProps) {
+export function Footer({ socialLinks, contactForm, footerContent }: FooterProps) {
   
   const getSocialIcon = (name: IconName) => {
     const Icon = Icons[name];
     return Icon ? <Icon className="h-6 w-6" /> : null;
   };
   
-  if (!contactFormDefinition || !footerContent) {
+  if (!contactForm || !footerContent) {
     return null; // or a loading state
   }
 
@@ -79,7 +78,11 @@ export function Footer({ socialLinks, contactFormDefinition, footerContent }: Fo
                     </div>
                 </div>
                 <div>
-                    {contactFormDefinition && <DynamicForm formDefinition={contactFormDefinition} />}
+                    {contactForm && contactForm.embedUrl ? (
+                      <GoogleFormEmbed form={contactForm} />
+                    ) : (
+                      <p>El formulario de contacto no está disponible.</p>
+                    )}
                 </div>
             </div>
         </Card>

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "afiliacion",
+    "title": "Formulario de Afiliación",
+    "description": "Completa tus datos para formar parte del Partido Libertario de Misiones. Nos pondremos en contacto a la brevedad.",
+    "embedUrl": ""
+  },
+  {
+    "id": "fiscales",
+    "title": "Inscripción de Fiscales",
+    "description": "Tu rol es crucial para defender la voluntad del pueblo. Completá tus datos para ser fiscal.",
+    "embedUrl": ""
+  },
+  {
+    "id": "contacto",
+    "title": "Formulario de Contacto",
+    "description": "Envianos tu consulta, sugerencia o reclamo. Tu opinión es muy importante para nosotros.",
+    "embedUrl": ""
+  }
+]
