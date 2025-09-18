@@ -2,12 +2,12 @@
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 
 const firebaseConfig = {
-  apiKey: "API_KEY",
-  authDomain: "PROJECT_ID.firebaseapp.com",
-  projectId: "PROJECT_ID",
-  storageBucket: "PROJECT_ID.appspot.com",
-  messagingSenderId: "SENDER_ID",
-  appId: "APP_ID",
+  apiKey: "AIzaSyDFiIu41IeR0mveC3__GMA5SIs2w6T4beY",
+  authDomain: "partidolibertariomisiones-9351b.firebaseapp.com",
+  projectId: "partidolibertariomisiones-9351b",
+  storageBucket: "partidolibertariomisiones-9351b.appspot.com",
+  messagingSenderId: "956353982885",
+  appId: "1:956353982885:web:5317ac07b129731633a299",
 };
 
 
@@ -16,4 +16,3 @@ const firebaseConfig = {
 export function getFirebaseApp(): FirebaseApp {
     return !getApps().length ? initializeApp(firebaseConfig) : getApp();
 }
-
