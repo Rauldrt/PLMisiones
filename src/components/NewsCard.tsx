@@ -50,7 +50,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
     return (
         <Card className="flex w-full min-h-[500px] flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
             <CardHeader className="p-0">
-                <div className="relative h-48 w-full bg-muted">
+                <div className="relative h-48 w-full bg-muted overflow-hidden">
                     <Link href={`/noticias/${article.slug}`} className="block h-full w-full" aria-label={article.title}>
                         {article.imageUrl ? (
                             <Image
@@ -62,10 +62,10 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                                 data-ai-hint={article.imageHint}
                             />
                         ) : isEmbed ? (
-                            <div className="h-full w-full [&>div]:h-full">
+                            <div className="h-full w-full">
                                 <div className="pointer-events-none absolute inset-0 z-10" />
                                 <div 
-                                    className="absolute inset-0 transform scale-[0.5] origin-top-left"
+                                    className="absolute inset-0 h-full w-full transform scale-50 origin-top-left"
                                     dangerouslySetInnerHTML={{ __html: article.content }} 
                                 />
                             </div>
