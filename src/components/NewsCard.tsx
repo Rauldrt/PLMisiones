@@ -55,12 +55,9 @@ export function NewsCard({ article }: { article: NewsArticle }) {
         <Card className="flex w-full flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
             <CardHeader className="p-0">
                 <div className="relative w-full bg-muted overflow-hidden">
-                    <Link 
-                      href={`/noticias/${article.slug}`} 
-                      className={cn(
-                        "block w-full",
-                        "h-[500px]" // Consistent height for both images and embeds
-                      )} 
+                    <Link
+                      href={`/noticias/${article.slug}`}
+                      className="block w-full h-[500px]"
                       aria-label={article.title}
                     >
                         {article.imageUrl ? (
@@ -94,12 +91,12 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                     {isClient && <p className="text-sm text-foreground/60 mt-2">{formatDate(article.date)}</p>}
                 </div>
             </CardHeader>
-            <CardContent className="flex-1 min-h-0 p-6 pt-0">
+            <CardContent className="flex-1 min-h-0 p-4 pt-0">
                 <p className="text-foreground/80 line-clamp-4">
                     {cleanContent}
                 </p>
             </CardContent>
-            <div className="p-6 pt-0 mt-auto">
+            <div className="p-4 pt-0 mt-auto">
                 <Button asChild variant="link" className="p-0 h-auto">
                     <Link href={`/noticias/${article.slug}`}>
                         Leer más
