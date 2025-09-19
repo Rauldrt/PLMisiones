@@ -56,7 +56,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
         <Card className="flex w-full flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
             <CardHeader className="p-0">
                 <div className={cn(
-                    "relative w-full bg-muted overflow-hidden max-h-[500px]",
+                    "relative w-full bg-muted overflow-hidden max-h-[600px]",
                 )}>
                     <Link href={`/noticias/${article.slug}`} className="block h-full w-full aspect-video" aria-label={article.title}>
                         {article.imageUrl ? (
