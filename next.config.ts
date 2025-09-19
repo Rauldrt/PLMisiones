@@ -15,7 +15,7 @@ const cspHeader = `
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     img-src 'self' blob: data: https://picsum.photos *.cdninstagram.com *.fbcdn.net;
     font-src 'self' https://fonts.gstatic.com;
-    frame-src 'self' https://www.youtube.com https://www.instagram.com datawrapper.dwcdn.net https://docs.google.com;
+    frame-src 'self' https://www.youtube.com https://www.instagram.com datawrapper.dwcdn.net https://docs.google.com https://www.facebook.com;
     connect-src 'self' https://vitals.vercel-insights.com https://identitytoolkit.googleapis.com;
 `;
 
