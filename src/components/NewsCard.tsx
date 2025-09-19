@@ -6,13 +6,12 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import type { NewsArticle } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import { Icons } from './icons';
 
 function formatDate(dateString: string) {
-    // Handles cases where date might not be in YYYY-MM-DD format
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return dateString;
-
-    // Use UTC to prevent timezone shifts between server and client
     return date.toLocaleDateString('es-AR', {
         year: 'numeric',
         month: 'long',
@@ -23,17 +22,14 @@ function formatDate(dateString: string) {
 
 function getCleanContentPreview(htmlContent: string): string {
     if (typeof window === 'undefined') {
-        // Return a basic preview on the server
         return htmlContent.replace(/<[^>]*>/g, '').substring(0, 150) + '...';
     }
 
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = htmlContent;
 
-    // Remove elements that shouldn't be part of a text preview
     tempDiv.querySelectorAll('script, style, iframe, blockquote, figure').forEach(el => el.remove());
     
-    // Find the first paragraph with meaningful text
     const firstParagraph = Array.from(tempDiv.querySelectorAll('p')).find(p => p.textContent?.trim());
     
     return (firstParagraph?.textContent || tempDiv.textContent || '').trim();
@@ -42,34 +38,44 @@ function getCleanContentPreview(htmlContent: string): string {
 export function NewsCard({ article }: { article: NewsArticle }) {
     const [isClient, setIsClient] = useState(false);
     const [cleanContent, setCleanContent] = useState('');
+    const [isEmbed, setIsEmbed] = useState(false);
 
     useEffect(() => {
         setIsClient(true);
-        setCleanContent(getCleanContentPreview(article.content));
+        const contentIsEmbed = /<iframe|<blockquote/.test(article.content?.trim() || '');
+        setIsEmbed(contentIsEmbed);
+        setCleanContent(contentIsEmbed ? '' : getCleanContentPreview(article.content));
     }, [article.content]);
 
     return (
         <Card className="flex w-full min-h-[500px] flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
             <CardHeader className="p-0">
-                <Link href={`/noticias/${article.slug}`} className="block relative h-48 w-full bg-muted" aria-label={article.title}>
-                    {article.imageUrl ? (
-                        <Image
-                            src={article.imageUrl}
-                            alt={article.title}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                            data-ai-hint={article.imageHint}
-                        />
-                    ) : (
-                        // Placeholder when no image is available, especially for embeds
-                        <div className="flex items-center justify-center h-full w-full bg-secondary">
-                             {isClient && /youtube\.com|youtu\.be/.test(article.content) && <div className="text-red-500 w-12 h-12 i-logos-youtube-icon"></div>}
-                            {isClient && /instagram\.com/.test(article.content) && <div className="text-pink-500 w-12 h-12 i-logos-instagram-icon"></div>}
-                             {isClient && /facebook\.com/.test(article.content) && <div className="text-blue-600 w-12 h-12 i-logos-facebook"></div>}
-                        </div>
-                    )}
-                </Link>
+                <div className="relative h-48 w-full bg-muted">
+                    <Link href={`/noticias/${article.slug}`} className="block h-full w-full" aria-label={article.title}>
+                        {article.imageUrl ? (
+                            <Image
+                                src={article.imageUrl}
+                                alt={article.title}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                                data-ai-hint={article.imageHint}
+                            />
+                        ) : isEmbed ? (
+                            <div className="h-full w-full [&>div]:h-full">
+                                <div className="pointer-events-none absolute inset-0 z-10" />
+                                <div 
+                                    className="absolute inset-0 transform scale-[0.5] origin-top-left"
+                                    dangerouslySetInnerHTML={{ __html: article.content }} 
+                                />
+                            </div>
+                        ) : (
+                            <div className="flex items-center justify-center h-full w-full bg-secondary text-primary">
+                               <Icons.Media className="w-12 h-12" />
+                            </div>
+                        )}
+                    </Link>
+                </div>
                 <div className="p-6">
                     <CardTitle className="font-headline text-xl leading-tight">
                         <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
