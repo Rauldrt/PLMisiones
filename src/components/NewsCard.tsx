@@ -23,26 +23,45 @@ function formatDate(dateString: string) {
 
 export function NewsCard({ article }: { article: NewsArticle }) {
     const [isClient, setIsClient] = useState(false);
+    const [cleanContent, setCleanContent] = useState('');
 
     useEffect(() => {
         setIsClient(true);
-    }, []);
+        // On the client, create a clean version of the content without scripts or blockquotes for the preview
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = article.content;
+        
+        // Remove script tags
+        Array.from(tempDiv.getElementsByTagName('script')).forEach(script => script.remove());
+        
+        // Find the first paragraph or text content
+        let previewText = (tempDiv.querySelector('p')?.textContent || tempDiv.textContent || '').trim();
+        
+        setCleanContent(previewText);
+
+    }, [article.content]);
 
     const isEmbed = /<iframe|<blockquote/.test(article.content?.trim() || '');
 
     return (
         <Card className="flex w-full min-h-[500px] flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
             <CardHeader className="p-0">
-                {!isEmbed && article.imageUrl && (
-                    <div className="relative h-48 w-full bg-muted">
-                        <Image
-                            src={article.imageUrl}
-                            alt={article.title}
-                            fill
-                            className="object-cover"
-                            data-ai-hint={article.imageHint}
-                        />
+                {isEmbed && isClient ? (
+                     <div className="relative h-48 w-full bg-muted">
+                        <div className="responsive-video h-full w-full" dangerouslySetInnerHTML={{ __html: article.content }} />
                     </div>
+                ) : (
+                    article.imageUrl && (
+                        <div className="relative h-48 w-full bg-muted">
+                            <Image
+                                src={article.imageUrl}
+                                alt={article.title}
+                                fill
+                                className="object-cover"
+                                data-ai-hint={article.imageHint}
+                            />
+                        </div>
+                    )
                 )}
                 <div className="p-6">
                     <CardTitle className="font-headline text-xl leading-tight">
@@ -51,16 +70,10 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                     <p className="text-sm text-foreground/60 mt-2">{formatDate(article.date)}</p>
                 </div>
             </CardHeader>
-            <CardContent className={cn("flex-1 min-h-0", isEmbed ? "p-0" : "p-6 pt-0")}>
-                {isEmbed ? (
-                    // Only render the embed content on the client to avoid hydration mismatch
-                    isClient && <div className="responsive-video h-full w-full" dangerouslySetInnerHTML={{ __html: article.content }} />
-                ) : (
-                    <div 
-                        className="text-foreground/80 line-clamp-4"
-                        dangerouslySetInnerHTML={{ __html: article.content }} 
-                    />
-                )}
+            <CardContent className="flex-1 min-h-0 p-6 pt-0">
+                <p className="text-foreground/80 line-clamp-4">
+                    {cleanContent}
+                </p>
             </CardContent>
             <div className="p-6 pt-0 mt-auto">
                 <Button asChild variant="link" className="p-0 h-auto">
