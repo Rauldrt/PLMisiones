@@ -46,7 +46,8 @@ export function NewsCard({ article }: { article: NewsArticle }) {
 
     useEffect(() => {
         setIsClient(true);
-        const contentIsEmbed = /<iframe|<blockquote/.test(article.content?.trim() || '');
+        // Updated regex to be more inclusive
+        const contentIsEmbed = /<iframe|<blockquote|<div class="fb-video"|<div class="fb-post"/.test(article.content?.trim() || '');
         setIsEmbed(contentIsEmbed);
         setCleanContent(contentIsEmbed ? '' : getCleanContentPreview(article.content));
     }, [article.content]);
@@ -69,7 +70,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                             <div className="relative h-full w-full">
                                 <div className="pointer-events-none absolute inset-0 z-10" />
                                 <div 
-                                    className="absolute inset-0 h-full w-full [&>iframe]:w-full [&>iframe]:h-full [&>iframe]:object-cover"
+                                    className="absolute inset-0 h-full w-full [&>iframe]:h-full [&>iframe]:w-full [&>blockquote]:h-full [&>blockquote]:w-full"
                                     dangerouslySetInnerHTML={{ __html: article.content }} 
                                 />
                             </div>
