@@ -22,18 +22,22 @@ function formatDate(dateString: string) {
 
 function getCleanContentPreview(htmlContent: string): string {
     if (typeof window === 'undefined') {
+        // Provide a simple fallback for server-side rendering
         return htmlContent.replace(/<[^>]*>/g, '').substring(0, 150) + '...';
     }
 
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = htmlContent;
 
+    // Remove elements that are not part of the main text
     tempDiv.querySelectorAll('script, style, iframe, blockquote, figure').forEach(el => el.remove());
     
+    // Find the first paragraph with meaningful content
     const firstParagraph = Array.from(tempDiv.querySelectorAll('p')).find(p => p.textContent?.trim());
     
     return (firstParagraph?.textContent || tempDiv.textContent || '').trim();
 }
+
 
 export function NewsCard({ article }: { article: NewsArticle }) {
     const [isClient, setIsClient] = useState(false);
@@ -62,10 +66,10 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                                 data-ai-hint={article.imageHint}
                             />
                         ) : isEmbed ? (
-                            <div className="h-full w-full">
+                            <div className="relative h-full w-full">
                                 <div className="pointer-events-none absolute inset-0 z-10" />
                                 <div 
-                                    className="absolute inset-0 h-full w-full transform scale-50 origin-top-left"
+                                    className="absolute inset-0 h-full w-full [&>iframe]:w-full [&>iframe]:h-full [&>iframe]:object-cover"
                                     dangerouslySetInnerHTML={{ __html: article.content }} 
                                 />
                             </div>
