@@ -54,14 +54,12 @@ export function NewsCard({ article }: { article: NewsArticle }) {
     return (
         <Card className="flex w-full flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
             <CardHeader className="p-0">
-                <div className={cn(
-                    "relative w-full bg-muted overflow-hidden",
-                )}>
+                <div className="relative w-full bg-muted overflow-hidden">
                     <Link 
                       href={`/noticias/${article.slug}`} 
                       className={cn(
                         "block w-full",
-                        article.imageUrl && "h-[500px]" // Apply fixed height only for images
+                        "h-[500px]" // Consistent height for both images and embeds
                       )} 
                       aria-label={article.title}
                     >
@@ -78,7 +76,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                             <div className="relative h-full w-full">
                                 <div className="pointer-events-none absolute inset-0 z-10" />
                                 <div 
-                                    className="w-full [&_iframe]:!h-full [&_iframe]:!w-full [&_blockquote]:h-auto [&_blockquote]:w-full"
+                                    className="h-full w-full flex items-center justify-center [&_iframe]:!h-full [&_iframe]:!w-full [&_blockquote]:h-auto [&_blockquote]:w-full"
                                     dangerouslySetInnerHTML={{ __html: article.content }} 
                                 />
                             </div>
