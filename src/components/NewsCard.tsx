@@ -59,7 +59,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                       href={`/noticias/${article.slug}`}
                       className={cn(
                         "block w-full",
-                         article.imageUrl && "h-[500px]"
+                         (article.imageUrl || isEmbed) && "h-[500px]"
                       )}
                       aria-label={article.title}
                     >
@@ -76,7 +76,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                             <div className="relative h-full w-full">
                                 <div className="pointer-events-none absolute inset-0 z-10" />
                                 <div 
-                                    className="h-full w-full flex items-center justify-center [&_iframe]:!h-full [&_iframe]:!w-full [&_blockquote]:h-auto [&_blockquote]:w-full"
+                                    className="h-full w-full flex items-center justify-center [&_iframe]:h-full [&_iframe]:w-full [&_blockquote]:h-auto [&_blockquote]:w-full"
                                     dangerouslySetInnerHTML={{ __html: article.content }} 
                                 />
                             </div>
@@ -94,12 +94,12 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                     {isClient && <p className="text-sm text-foreground/60 mt-2">{formatDate(article.date)}</p>}
                 </div>
             </CardHeader>
-            <CardContent className="flex-1 min-h-0 px-6 pt-0 pb-2">
+            <CardContent className="flex-1 min-h-0 px-4 pt-0">
                 <p className="text-foreground/80 line-clamp-4">
                     {cleanContent}
                 </p>
             </CardContent>
-            <div className="px-6 pt-0 pb-4 mt-auto">
+            <div className="px-4 pt-0 pb-2 mt-auto">
                 <Button asChild variant="link" className="p-0 h-auto">
                     <Link href={`/noticias/${article.slug}`}>
                         Leer más
