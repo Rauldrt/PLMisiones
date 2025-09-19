@@ -56,7 +56,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
         <Card className="flex w-full flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
             <CardHeader className="p-0">
                 <div className={cn(
-                    "relative w-full bg-muted overflow-hidden",
+                    "relative w-full bg-muted overflow-hidden max-h-96",
                     article.imageUrl && "aspect-video" // Apply aspect ratio only for images
                 )}>
                     <Link href={`/noticias/${article.slug}`} className="block h-full w-full" aria-label={article.title}>
@@ -73,7 +73,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                             <div className="relative h-full w-full">
                                 <div className="pointer-events-none absolute inset-0 z-10" />
                                 <div 
-                                    className="h-full w-full [&_iframe]:!h-full [&_iframe]:!w-full [&_blockquote]:!h-full [&_blockquote]:!w-full"
+                                    className="h-full w-full [&_iframe]:!h-full [&_iframe]:!w-full [&_blockquote]:h-auto [&_blockquote]:w-full"
                                     dangerouslySetInnerHTML={{ __html: article.content }} 
                                 />
                             </div>
