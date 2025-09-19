@@ -57,7 +57,10 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                 <div className="relative w-full bg-muted overflow-hidden">
                     <Link
                       href={`/noticias/${article.slug}`}
-                      className="block w-full h-[500px]"
+                      className={cn(
+                        "block w-full",
+                         article.imageUrl && "h-[500px]"
+                      )}
                       aria-label={article.title}
                     >
                         {article.imageUrl ? (
@@ -84,19 +87,19 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                         )}
                     </Link>
                 </div>
-                <div className="p-6">
+                <div className="p-6 pb-2">
                     <CardTitle className="font-headline text-xl leading-tight">
                         <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
                     </CardTitle>
                     {isClient && <p className="text-sm text-foreground/60 mt-2">{formatDate(article.date)}</p>}
                 </div>
             </CardHeader>
-            <CardContent className="flex-1 min-h-0 p-4 pt-0">
+            <CardContent className="flex-1 min-h-0 px-6 pt-0 pb-2">
                 <p className="text-foreground/80 line-clamp-4">
                     {cleanContent}
                 </p>
             </CardContent>
-            <div className="p-4 pt-0 mt-auto">
+            <div className="px-6 pt-0 pb-4 mt-auto">
                 <Button asChild variant="link" className="p-0 h-auto">
                     <Link href={`/noticias/${article.slug}`}>
                         Leer más
