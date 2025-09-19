@@ -58,7 +58,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                 <div className={cn(
                     "relative w-full bg-muted overflow-hidden max-h-[500px]",
                 )}>
-                    <Link href={`/noticias/${article.slug}`} className="block h-full w-full" aria-label={article.title}>
+                    <Link href={`/noticias/${article.slug}`} className="block h-full w-full aspect-video" aria-label={article.title}>
                         {article.imageUrl ? (
                             <Image
                                 src={article.imageUrl}
