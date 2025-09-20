@@ -1,3 +1,4 @@
+
 'use client';
 import {
   Newspaper,
@@ -41,6 +42,7 @@ import {
   Video,
   EyeOff,
   Palette,
+  Music2,
 } from 'lucide-react';
 import type { SVGProps } from 'react';
 
@@ -103,12 +105,26 @@ export const Icons = {
   Hide: EyeOff,
   Header: Heading1,
   Media: Video,
+  Music2
 };
 
 export type IconName = keyof typeof Icons;
 
+/**
+ * Converts a kebab-case or regular string to PascalCase for icon lookup.
+ * @param name The string to convert (e.g., "youtube", "music-2").
+ * @returns The PascalCase string (e.g., "Youtube", "Music2").
+ */
+function toPascalCase(name: string): string {
+  return name
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join('');
+}
+
 export const getIcon = (name: string): React.ComponentType<{ className?: string }> => {
-  const IconComponent = Icons[name as IconName];
-  // Ensure we return a valid component, or a fallback that doesn't crash.
-  return IconComponent || (() => null);
+  if (!name) return Icons.Social; // Return a default icon if name is empty
+  const pascalCaseName = toPascalCase(name) as IconName;
+  const IconComponent = Icons[pascalCaseName];
+  return IconComponent || Icons.Social; // Fallback to a default icon
 };

@@ -1,6 +1,7 @@
+
 'use client';
 import Link from 'next/link';
-import { Icons, IconName } from '@/components/icons';
+import { Icons, IconName, getIcon } from '@/components/icons';
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import { Button } from './ui/button';
@@ -15,11 +16,6 @@ interface FooterProps {
 }
 
 export function Footer({ socialLinks, contactForm, footerContent }: FooterProps) {
-  
-  const getSocialIcon = (name: IconName) => {
-    const Icon = Icons[name];
-    return Icon ? <Icon className="h-6 w-6" /> : null;
-  };
   
   if (!contactForm || !footerContent) {
     return null; // or a loading state
@@ -54,7 +50,7 @@ export function Footer({ socialLinks, contactForm, footerContent }: FooterProps)
                                   {footerContent.whatsapp && (
                                       <Button asChild variant="outline" className="bg-green-500/10 border-green-500/30 hover:bg-green-500/20 text-green-400 hover:text-green-300">
                                           <Link href={`https://wa.me/${footerContent.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer">
-                                              {getSocialIcon('Whatsapp' as IconName)}
+                                              <Icons.Whatsapp className="h-6 w-6" />
                                               Contactar por WhatsApp
                                           </Link>
                                       </Button>
@@ -66,12 +62,15 @@ export function Footer({ socialLinks, contactForm, footerContent }: FooterProps)
                             <div>
                                 <h3 className="font-semibold">{footerContent.socialsTitle}</h3>
                                 <div className="flex items-center gap-4 mt-2">
-                                     {socialLinks.map((link) => (
-                                        <Link key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-accent transition-colors">
-                                            {getSocialIcon(link.name as IconName)}
-                                            <span className="sr-only">{link.name}</span>
-                                        </Link>
-                                    ))}
+                                     {socialLinks.map((link) => {
+                                        const IconComponent = getIcon(link.name);
+                                        return (
+                                            <Link key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-accent transition-colors">
+                                                {IconComponent ? <IconComponent className="h-6 w-6" /> : <Icons.Social className="h-6 w-6" />}
+                                                <span className="sr-only">{link.name}</span>
+                                            </Link>
+                                        )
+                                     })}
                                 </div>
                             </div>
                         </div>
