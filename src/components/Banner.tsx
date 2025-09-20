@@ -10,11 +10,11 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
-import type { BannerTextSlide, BannerBackgroundSlide, Notification, Candidate, Proposal } from '@/lib/types';
+import type { BannerTextSlide, BannerBackgroundSlide, NotificationItem, Candidate, Proposal } from '@/lib/types';
 import Autoplay from 'embla-carousel-autoplay';
 import { AnimatedBannerBackground } from './AnimatedBannerBackground';
 import { BannerContentTabs } from './BannerContentTabs';
-import { NotificationBubble } from './NotificationBubble';
+import { NotificationDropdown } from './NotificationDropdown';
 import { Icons } from './icons';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { Card } from './ui/card';
@@ -26,17 +26,17 @@ interface BannerProps {
     textSlides: BannerTextSlide[];
     backgroundSlides: BannerBackgroundSlide[];
     candidates: Candidate[];
-    notification: Notification;
+    notifications: NotificationItem[];
     proposals: Proposal[];
 }
 
-export function Banner({ textSlides, backgroundSlides, candidates, notification, proposals }: BannerProps) {
+export function Banner({ textSlides, backgroundSlides, candidates, notifications, proposals }: BannerProps) {
   return (
     <section className="relative w-full flex flex-col z-0 min-h-[600px] md:min-h-[720px]">
         <AnimatedBannerBackground slides={backgroundSlides} />
         
         <div className="relative z-20 h-full w-full flex flex-col justify-between flex-1 pt-16 md:pt-20">
-            {notification && <NotificationBubble notification={notification} />}
+            {notifications && notifications.length > 0 && <NotificationDropdown notifications={notifications} />}
             <Carousel
                 opts={{ loop: true }}
                 plugins={[Autoplay({ delay: 5000, stopOnInteraction: true })]}

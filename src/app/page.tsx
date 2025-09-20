@@ -7,7 +7,7 @@ import {
     getAccordionItemsAction, 
     getPublicNewsAction, 
     getCandidatesAction, 
-    getNotificationAction, 
+    getPublicNotificationsAction, 
     getOrganigramaAction, 
     getProposalsAction 
 } from '@/actions/data';
@@ -20,7 +20,7 @@ export default async function Home() {
     accordionItems,
     newsArticles,
     candidates,
-    notification,
+    notifications,
     organigrama,
     proposals,
   ] = await Promise.all([
@@ -30,10 +30,12 @@ export default async function Home() {
     getAccordionItemsAction(),
     getPublicNewsAction(),
     getCandidatesAction(),
-    getNotificationAction(),
+    getPublicNotificationsAction(),
     getOrganigramaAction(),
     getProposalsAction(),
   ]);
+
+  const sortedNotifications = notifications.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <HomepageClient
@@ -43,7 +45,7 @@ export default async function Home() {
       accordionItems={accordionItems}
       newsArticles={newsArticles.slice(0, 3)} // Show latest 3 articles on home
       candidates={candidates}
-      notification={notification}
+      notifications={sortedNotifications}
       organigramaData={organigrama}
       proposals={proposals}
     />

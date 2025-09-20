@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, NewsArticle, Candidate, Notification, OrganigramaMember, Proposal } from '@/lib/types';
+import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, NewsArticle, Candidate, NotificationItem, OrganigramaMember, Proposal } from '@/lib/types';
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
 import { NewsCard } from './NewsCard';
@@ -28,7 +28,7 @@ interface HomepageClientProps {
     accordionItems: AccordionItem[];
     newsArticles: NewsArticle[];
     candidates: Candidate[];
-    notification: Notification;
+    notifications: NotificationItem[];
     organigramaData: OrganigramaMember[];
     proposals: Proposal[];
 }
@@ -113,7 +113,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
     )
 }
 
-export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notification, organigramaData, proposals }: HomepageClientProps) {
+export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, organigramaData, proposals }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
 
     const handleTileClick = (item: MosaicItem, startIndex: number) => {
@@ -131,7 +131,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         textSlides={bannerTextSlides}
         backgroundSlides={bannerBackgroundSlides} 
         candidates={candidates} 
-        notification={notification}
+        notifications={notifications}
         proposals={proposals} />
 
       <div className="relative z-10">
