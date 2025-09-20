@@ -21,6 +21,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import Link from 'next/link';
 
 export default function ManageFooterPage() {
   const [content, setContent] = useState<FooterContent | null>(null);
@@ -175,7 +176,9 @@ export default function ManageFooterPage() {
        <Card>
         <CardHeader>
           <CardTitle>Redes Sociales</CardTitle>
-          <CardDescription>Edita, agrega o elimina las URLs de los perfiles de redes sociales. El nombre debe coincidir con un icono de Lucide (ej. Facebook, Twitter, Instagram).</CardDescription>
+          <CardDescription>
+            Administra los enlaces de tus redes. Para que el icono aparezca, el campo "Nombre del Icono" debe coincidir con un nombre de la librería de iconos Lucide (ej: Facebook, Twitter, Instagram, Youtube, Mail, etc.).
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
             {socialLinks.map((link, index) => (
@@ -186,6 +189,9 @@ export default function ManageFooterPage() {
                     <div className="flex-1 space-y-1">
                         <Label htmlFor={`social-name-${index}`}>Nombre del Icono</Label>
                         <Input id={`social-name-${index}`} value={link.name} onChange={(e) => handleLinkChange(index, 'name', e.target.value)} placeholder="Ej: Youtube"/>
+                        <p className="text-xs text-muted-foreground">
+                            Buscar iconos en <Link href="https://lucide.dev/icons/" target="_blank" className="text-primary underline">lucide.dev/icons</Link>. Usar el nombre exacto (ej: "Mail").
+                        </p>
                     </div>
                      <div className="flex-1 space-y-1">
                         <Label htmlFor={`social-url-${index}`}>URL</Label>
@@ -221,4 +227,3 @@ export default function ManageFooterPage() {
     </div>
   );
 }
-
