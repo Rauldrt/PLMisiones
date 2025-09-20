@@ -1,10 +1,19 @@
 [
   {
     "id": "1758107579000",
-    "date": "2025-09-21",
-    "title": "Vamos para Jardín",
-    "content": "Suspendido por condiciones climáticas\n",
-    "imageUrl": "/supende encuentro.jpeg",
+    "date": "2025-09-20",
+    "title": "Radio Ágora en vivo",
+    "content": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/sEVdSjBoYBg?si=g6xQmqIiCDSE_NoQ\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>\n",
+    "imageUrl": "",
     "imageHint": "event announcement"
+  },
+  {
+    "id": "1758375831316",
+    "title": "Nueva Notificación",
+    "content": "Contenido de la notificación...",
+    "date": "2025-09-20",
+    "imageUrl": "",
+    "imageHint": "",
+    "hidden": false
   }
 ]

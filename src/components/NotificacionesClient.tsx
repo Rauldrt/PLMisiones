@@ -32,6 +32,8 @@ export function NotificacionesClient({ initialNotifications }: NotificacionesCli
             <div className="space-y-8">
               {notifications.map((item) => {
                 const hasTextContent = item.title || item.content;
+                const isEmbed = item.content?.includes('<iframe');
+
                 return (
                   <Card key={item.id} className="overflow-hidden">
                     {item.imageUrl && (
@@ -61,7 +63,13 @@ export function NotificacionesClient({ initialNotifications }: NotificacionesCli
                           </CardDescription>
                         </CardHeader>
                         <CardContent className="p-4 pt-0">
-                          <div className="prose prose-sm prose-invert max-w-full" dangerouslySetInnerHTML={{ __html: item.content }} />
+                          {isEmbed ? (
+                              <div className="responsive-video rounded-md overflow-hidden">
+                                  <div dangerouslySetInnerHTML={{ __html: item.content }} />
+                              </div>
+                          ) : (
+                              <div className="prose prose-sm prose-invert max-w-full" dangerouslySetInnerHTML={{ __html: item.content }} />
+                          )}
                         </CardContent>
                       </>
                     )}
