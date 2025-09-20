@@ -1,4 +1,5 @@
 
+
 export interface NewsArticle {
   id: string;
   slug: string;
@@ -69,7 +70,7 @@ export interface Candidate extends Referente {}
 
 export interface SocialLink {
   id: string;
-  name: 'Facebook' | 'Twitter' | 'Instagram' | 'YouTube';
+  name: string;
   url: string;
 }
 

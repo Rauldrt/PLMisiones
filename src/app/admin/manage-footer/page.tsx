@@ -10,6 +10,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Icons, IconName } from '@/components/icons';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 export default function ManageFooterPage() {
   const [content, setContent] = useState<FooterContent | null>(null);
@@ -46,7 +57,6 @@ export default function ManageFooterPage() {
   };
   
   const handleSaveLinks = () => {
-    if (!socialLinks) return;
     startSavingLinksTransition(async () => {
       const result = await saveSocialLinks(socialLinks);
       if (result.success) {
@@ -62,19 +72,27 @@ export default function ManageFooterPage() {
     setContent({ ...content, [field]: value });
   };
   
-  const handleLinkChange = (index: number, value: string) => {
+  const handleLinkChange = (index: number, field: keyof SocialLink, value: string) => {
     const newLinks = [...socialLinks];
-    newLinks[index].url = value;
+    (newLinks[index] as any)[field] = value;
     setSocialLinks(newLinks);
+  };
+  
+  const addSocialLink = () => {
+    setSocialLinks([...socialLinks, { id: new Date().getTime().toString(), name: 'Facebook', url: 'https://' }]);
+  };
+  
+  const removeSocialLink = (id: string) => {
+    setSocialLinks(socialLinks.filter(link => link.id !== id));
   };
   
   const getSocialIcon = (name: string) => {
     const Icon = Icons[name as IconName];
-    return Icon ? <Icon className="h-6 w-6" /> : null;
+    return Icon ? <Icon className="h-6 w-6" /> : <Icons.Social className="h-6 w-6" />;
   };
 
   if (isLoading) return <p>Cargando...</p>;
-  if (!content || !socialLinks) return <p>No se pudo cargar el contenido del footer.</p>;
+  if (!content) return <p>No se pudo cargar el contenido del footer.</p>;
 
   return (
     <div className="space-y-8">
@@ -157,21 +175,43 @@ export default function ManageFooterPage() {
        <Card>
         <CardHeader>
           <CardTitle>Redes Sociales</CardTitle>
-          <CardDescription>Edita las URLs de los perfiles de redes sociales.</CardDescription>
+          <CardDescription>Edita, agrega o elimina las URLs de los perfiles de redes sociales. El nombre debe coincidir con un icono de Lucide (ej. Facebook, Twitter, Instagram).</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
             {socialLinks.map((link, index) => (
-                <div key={link.id} className="flex items-center gap-4">
-                    <div className="text-muted-foreground">
+                <div key={link.id} className="flex items-end gap-4 p-4 border rounded-lg">
+                    <div className="flex items-center gap-2 text-muted-foreground pt-6">
                         {getSocialIcon(link.name)}
                     </div>
                     <div className="flex-1 space-y-1">
-                        <Label htmlFor={`social-url-${index}`}>{link.name}</Label>
-                        <Input id={`social-url-${index}`} value={link.url} onChange={(e) => handleLinkChange(index, e.target.value)} />
+                        <Label htmlFor={`social-name-${index}`}>Nombre del Icono</Label>
+                        <Input id={`social-name-${index}`} value={link.name} onChange={(e) => handleLinkChange(index, 'name', e.target.value)} placeholder="Ej: Youtube"/>
                     </div>
+                     <div className="flex-1 space-y-1">
+                        <Label htmlFor={`social-url-${index}`}>URL</Label>
+                        <Input id={`social-url-${index}`} value={link.url} onChange={(e) => handleLinkChange(index, 'url', e.target.value)} />
+                    </div>
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button variant="destructive" size="icon"><Icons.Trash className="w-4 h-4" /></Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                            <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                Esta acción no se puede deshacer. Esto eliminará permanentemente el enlace social.
+                            </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => removeSocialLink(link.id)}>Eliminar</AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                 </div>
             ))}
-             <div className="flex justify-end pt-4">
+            <div className="flex justify-between items-center pt-4">
+                <Button variant="outline" onClick={addSocialLink}><Icons.Plus className="mr-2 h-4 w-4"/> Agregar Enlace</Button>
                 <Button onClick={handleSaveLinks} disabled={isSavingLinks}>
                     {isSavingLinks ? 'Guardando...' : 'Guardar Enlaces'}
                 </Button>
@@ -181,3 +221,4 @@ export default function ManageFooterPage() {
     </div>
   );
 }
+
