@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import Image from 'next/image';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
 
 interface NotificacionesClientProps {
   initialNotifications: NotificationItem[];
@@ -29,33 +30,44 @@ export function NotificacionesClient({ initialNotifications }: NotificacionesCli
         <div className="container max-w-3xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
           {notifications.length > 0 ? (
             <div className="space-y-8">
-              {notifications.map((item) => (
-                <Card key={item.id}>
-                  {item.imageUrl && (
-                    <DialogTrigger asChild>
-                       <button className="relative h-64 w-full cursor-pointer" onClick={() => handleImageClick(item.imageUrl!)}>
-                          <Image
-                              src={item.imageUrl}
-                              alt={item.title}
-                              fill
-                              className="rounded-t-lg object-cover"
-                              sizes="(max-width: 768px) 100vw, 33vw"
-                              data-ai-hint={item.imageHint}
-                          />
-                       </button>
-                    </DialogTrigger>
-                  )}
-                  <CardHeader>
-                    <CardTitle>{item.title}</CardTitle>
-                    <CardDescription>
-                      {new Date(item.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="prose prose-sm prose-invert max-w-full" dangerouslySetInnerHTML={{ __html: item.content }} />
-                  </CardContent>
-                </Card>
-              ))}
+              {notifications.map((item) => {
+                const hasTextContent = item.title || item.content;
+                return (
+                  <Card key={item.id} className="overflow-hidden">
+                    {item.imageUrl && (
+                      <DialogTrigger asChild>
+                         <button className="relative h-96 w-full cursor-pointer" onClick={() => handleImageClick(item.imageUrl!)}>
+                            <Image
+                                src={item.imageUrl}
+                                alt={item.title}
+                                fill
+                                className={cn(
+                                  "object-cover",
+                                  hasTextContent ? "rounded-t-lg" : "rounded-lg"
+                                )}
+                                sizes="(max-width: 768px) 100vw, 33vw"
+                                data-ai-hint={item.imageHint}
+                            />
+                         </button>
+                      </DialogTrigger>
+                    )}
+                    
+                    {hasTextContent && (
+                      <>
+                        <CardHeader className="p-4">
+                          <CardTitle>{item.title}</CardTitle>
+                          <CardDescription>
+                            {new Date(item.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="p-4 pt-0">
+                          <div className="prose prose-sm prose-invert max-w-full" dangerouslySetInnerHTML={{ __html: item.content }} />
+                        </CardContent>
+                      </>
+                    )}
+                  </Card>
+                )
+              })}
             </div>
           ) : (
                <Card>
@@ -83,4 +95,3 @@ export function NotificacionesClient({ initialNotifications }: NotificacionesCli
     </Dialog>
   );
 }
-
