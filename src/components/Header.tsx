@@ -89,7 +89,7 @@ export function Header({ socialLinks }: HeaderProps) {
               <Button
                 variant="default"
                 size="icon"
-                className="fixed bottom-6 right-6 z-50 h-16 w-16 rounded-full shadow-lg"
+                className="fixed bottom-6 right-8 z-50 h-16 w-16 rounded-full shadow-lg"
               >
                   <div className={cn("absolute transition-transform duration-300 ease-in-out", isMobileMenuOpen ? "rotate-45" : "rotate-0")}>
                     <Icons.Close className="h-6 w-6" />
