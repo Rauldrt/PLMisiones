@@ -2,7 +2,7 @@
   {
     "id": "1758375831316",
     "title": "Radio Ágora en vivo",
-    "content": "Contenido de la notifica<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/sEVdSjBoYBg?si=g6xQmqIiCDSE_NoQ\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>ción...",
+    "content": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/sEVdSjBoYBg?si=g6xQmqIiCDSE_NoQ\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
     "date": "2025-09-20",
     "imageUrl": "",
     "imageHint": "",
@@ -11,7 +11,7 @@
   {
     "id": "1758376633363",
     "title": "Vamos para Jardín",
-    "content": "Contenido de la notificación...",
+    "content": "",
     "date": "2025-09-19",
     "imageUrl": "/supende encuentro.jpeg",
     "imageHint": "",

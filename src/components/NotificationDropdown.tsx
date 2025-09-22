@@ -40,7 +40,8 @@ function NotificationDialog({
         className={cn(
           isImageOnly
             ? 'w-auto max-w-5xl border-0 bg-transparent p-2 shadow-none'
-            : 'max-w-xl p-0'
+            : 'max-w-xl',
+           !hasTextContent ? 'p-0' : 'p-6'
         )}
       >
         {isImageOnly && item.imageUrl ? (
@@ -55,7 +56,7 @@ function NotificationDialog({
         ) : (
           <>
             {item.imageUrl && !isEmbed && (
-                <div className="relative h-64 w-full overflow-hidden rounded-t-lg">
+                <div className={cn("relative h-64 w-full overflow-hidden", hasTextContent ? "rounded-t-lg" : "rounded-lg")}>
                   <Image
                     src={item.imageUrl}
                     alt={item.title || 'Notificación'}
@@ -67,7 +68,7 @@ function NotificationDialog({
               )}
               
             {hasTextContent && (
-                <DialogHeader className="p-6 pb-2">
+                <DialogHeader className={cn(!item.imageUrl && 'pt-6')}>
                 <DialogTitle className="font-headline text-2xl text-accent">
                     {item.title || 'Notificación'}
                 </DialogTitle>
@@ -78,11 +79,11 @@ function NotificationDialog({
             )}
 
              {isEmbed ? (
-                <div className={cn("responsive-video w-full", !hasTextContent && "rounded-lg overflow-hidden")}>
-                    <div dangerouslySetInnerHTML={{ __html: item.content }} />
+                <div className={cn("w-full overflow-hidden", !hasTextContent && "rounded-lg")}>
+                    <div className="responsive-video" dangerouslySetInnerHTML={{ __html: item.content }} />
                 </div>
             ) : (
-                <div className="px-6 pb-6">
+                <div className="pb-6 px-6">
                   <div
                     className="prose prose-sm prose-invert mt-4 max-w-full"
                     dangerouslySetInnerHTML={{ __html: item.content }}
@@ -130,7 +131,7 @@ export function NotificationDropdown({
             {notifications.map((item, index) => (
               <NotificationDialog item={item} key={item.id}>
                 <button className="w-full text-left">
-                  <div className={cn("space-y-1 rounded-md p-2 hover:bg-muted", index === 0 && notifications.length > 1 && "border-b border-border")}>
+                  <div className={cn("space-y-1 rounded-md p-2 hover:bg-muted", index > 0 && "border-t border-border")}>
                     <p className={cn("truncate", index === 0 ? "font-semibold" : "text-sm")}>{item.title}</p>
                     <p className="text-xs text-muted-foreground">
                       {new Date(item.date).toLocaleDateString(
