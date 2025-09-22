@@ -38,8 +38,6 @@ export default async function Home() {
     getStreamingAction(),
   ]);
 
-  const sortedNotifications = notifications.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
   return (
     <HomepageClient
       bannerTextSlides={bannerTextSlides}
@@ -48,7 +46,7 @@ export default async function Home() {
       accordionItems={accordionItems}
       newsArticles={newsArticles.slice(0, 3)} // Show latest 3 articles on home
       candidates={candidates}
-      notifications={sortedNotifications}
+      notifications={notifications}
       organigramaData={organigrama}
       proposals={proposals}
       streamingItems={streamingItems}

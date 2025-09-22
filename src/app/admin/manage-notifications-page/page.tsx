@@ -29,7 +29,6 @@ export default function ManageNotificationsPage() {
     async function fetchData() {
       setIsLoading(true);
       const data = await getNotificationsAction();
-      data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
       setItems(data);
       setIsLoading(false);
     }
@@ -109,7 +108,7 @@ export default function ManageNotificationsPage() {
         <Card>
           <CardHeader>
             <CardTitle>Notificaciones</CardTitle>
-            <CardDescription>Crea, edita y elimina las notificaciones. Se ordenarán por fecha en la página pública.</CardDescription>
+            <CardDescription>Crea, edita y elimina las notificaciones. El orden manual se respeta en la página pública.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             {isLoading ? <p>Cargando...</p> : (

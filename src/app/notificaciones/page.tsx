@@ -11,8 +11,6 @@ export default async function NotificacionesPage() {
     getPageHeaderByPathAction('/notificaciones')
   ]);
   
-  const sortedNotifications = notifications.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
   return (
     <div>
         {pageHeader ? (
@@ -25,7 +23,7 @@ export default async function NotificacionesPage() {
                 </div>
             </div>
         )}
-        <NotificacionesClient initialNotifications={sortedNotifications} />
+        <NotificacionesClient initialNotifications={notifications} />
     </div>
   );
 }
