@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Icons, getIcon } from '@/components/icons';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { Separator } from './ui/separator';
 import Image from 'next/image';
@@ -84,23 +84,23 @@ export function Header({ socialLinks }: HeaderProps) {
       </header>
 
       <div className="md:hidden">
-        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-          <SheetTrigger asChild>
+        <Popover open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+          <PopoverTrigger asChild>
               <Button
                 variant="default"
                 size="icon"
-                className="fixed bottom-12 right-6 z-50 h-14 w-14 rounded-full shadow-lg"
+                className="fixed bottom-6 right-6 z-50 h-16 w-16 rounded-full shadow-lg"
               >
                   <div className={cn("absolute transition-transform duration-300 ease-in-out", isMobileMenuOpen ? "rotate-45" : "rotate-0")}>
-                    <Icons.Plus className={cn("h-6 w-6 transition-opacity duration-300", isMobileMenuOpen ? "opacity-100" : "opacity-0")} />
+                    <Icons.Close className="h-6 w-6" />
                   </div>
-                   <div className={cn("absolute transition-transform duration-300 ease-in-out", isMobileMenuOpen ? "rotate-45 opacity-0" : "rotate-0 opacity-100")}>
+                   <div className={cn("absolute transition-transform duration-300 ease-in-out", isMobileMenuOpen ? "rotate-0 opacity-0" : "rotate-0 opacity-100")}>
                      <Icons.Menu className="h-6 w-6" />
                   </div>
                 <span className="sr-only">Abrir menú</span>
               </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="w-[240px]">
+          </PopoverTrigger>
+          <PopoverContent side="top" align="end" className="w-64 p-0 mb-2" sideOffset={12}>
             <div className="flex flex-col h-full">
               <div className="p-4 border-b">
                   <Link href="/" className="flex items-center gap-3" onClick={(e) => handleLinkClick(e, '/')}>
@@ -108,7 +108,7 @@ export function Header({ socialLinks }: HeaderProps) {
                       <span className="font-headline text-lg font-bold">Libertario Misiones</span>
                   </Link>
               </div>
-              <nav className="flex flex-col gap-4 p-4">
+              <nav className="flex flex-col gap-1 p-2">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
@@ -124,7 +124,7 @@ export function Header({ socialLinks }: HeaderProps) {
                 ))}
               </nav>
               <Separator/>
-              <div className="p-4 flex flex-col gap-4">
+              <div className="p-2 flex flex-col gap-2">
                   <Button asChild variant="outline" onClick={() => setIsMobileMenuOpen(false)}>
                       <Link href="/fiscales">Fiscalizá</Link>
                   </Button>
@@ -136,7 +136,7 @@ export function Header({ socialLinks }: HeaderProps) {
                   </Button>
               </div>
               <Separator />
-               <div className="p-4 mt-auto">
+               <div className="p-4">
                     <div className="flex justify-center gap-6">
                         {socialLinks.map((link) => {
                             const IconComponent = getIcon(link.name);
@@ -157,8 +157,8 @@ export function Header({ socialLinks }: HeaderProps) {
                     </div>
                 </div>
             </div>
-          </SheetContent>
-        </Sheet>
+          </PopoverContent>
+        </Popover>
       </div>
     </>
   );
