@@ -30,6 +30,8 @@ function NotificationDialog({
 }) {
   const isImageOnly = item.imageUrl && !item.title && !item.content;
   const isEmbed = item.content?.includes('<iframe');
+  const hasTextContent = item.title || item.content;
+
 
   return (
     <Dialog>
@@ -52,9 +54,8 @@ function NotificationDialog({
           />
         ) : (
           <>
-            <DialogHeader className="p-6 pb-2">
-              {item.imageUrl && (
-                <div className="relative mb-6 h-64 w-full overflow-hidden rounded-lg">
+            {item.imageUrl && !isEmbed && (
+                <div className="relative h-64 w-full overflow-hidden rounded-t-lg">
                   <Image
                     src={item.imageUrl}
                     alt={item.title || 'Notificación'}
@@ -64,15 +65,20 @@ function NotificationDialog({
                   />
                 </div>
               )}
-              <DialogTitle className="font-headline text-2xl text-accent">
-                {item.title || 'Notificación'}
-              </DialogTitle>
-              <p className="text-sm text-muted-foreground pt-1">
-                 {new Date(item.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
-              </p>
-            </DialogHeader>
+              
+            {hasTextContent && (
+                <DialogHeader className="p-6 pb-2">
+                <DialogTitle className="font-headline text-2xl text-accent">
+                    {item.title || 'Notificación'}
+                </DialogTitle>
+                <p className="text-sm text-muted-foreground pt-1">
+                    {new Date(item.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
+                </p>
+                </DialogHeader>
+            )}
+
              {isEmbed ? (
-                <div className="responsive-video mt-4 rounded-b-lg overflow-hidden">
+                <div className={cn("responsive-video w-full", !hasTextContent && "rounded-lg overflow-hidden")}>
                     <div dangerouslySetInnerHTML={{ __html: item.content }} />
                 </div>
             ) : (
@@ -97,8 +103,6 @@ export function NotificationDropdown({
     return null;
   }
 
-  const latestNotification = notifications[0];
-
   const TriggerButton = () => (
     <div
       className={cn(
@@ -109,7 +113,7 @@ export function NotificationDropdown({
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75"></span>
         <span className="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
       </span>
-      <span className="text-xs font-semibold">{latestNotification.title}</span>
+      <span className="text-xs font-semibold">{notifications[0].title}</span>
     </div>
   );
 
@@ -126,7 +130,7 @@ export function NotificationDropdown({
             {notifications.map((item, index) => (
               <NotificationDialog item={item} key={item.id}>
                 <button className="w-full text-left">
-                  <div className={cn("space-y-1 rounded-md p-2 hover:bg-muted", index === 0 && "border-b border-border")}>
+                  <div className={cn("space-y-1 rounded-md p-2 hover:bg-muted", index === 0 && notifications.length > 1 && "border-b border-border")}>
                     <p className={cn("truncate", index === 0 ? "font-semibold" : "text-sm")}>{item.title}</p>
                     <p className="text-xs text-muted-foreground">
                       {new Date(item.date).toLocaleDateString(
