@@ -2,7 +2,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { revalidatePath } from 'next/cache';
-import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, OrganigramaMember, Candidate, Notification, Proposal, FooterContent, MapEmbed, PageHeader, SocialLink, NotificationItem, GoogleForm } from '@/lib/types';
+import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, OrganigramaMember, Candidate, Notification, Proposal, FooterContent, MapEmbed, PageHeader, SocialLink, NotificationItem, GoogleForm, StreamingItem } from '@/lib/types';
 import { getNewsAction } from '@/actions/data';
 
 async function writeJsonFile(filePath: string, data: any) {
@@ -123,4 +123,10 @@ export async function saveGoogleForms(items: GoogleForm[]) {
     revalidatePath('/fiscales');
     revalidatePath('/*'); // revalidate all for footer
     return { success: true, message: 'Formularios de Google guardados con éxito.' };
+}
+
+export async function saveStreaming(items: StreamingItem[]) {
+    await writeJsonFile('src/data/streaming.json', items);
+    revalidatePath('/');
+    return { success: true, message: 'Sección de Streaming guardada con éxito.' };
 }

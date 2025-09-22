@@ -14,11 +14,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, NewsArticle, Candidate, NotificationItem, OrganigramaMember, Proposal } from '@/lib/types';
+import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, NewsArticle, Candidate, NotificationItem, OrganigramaMember, Proposal, StreamingItem } from '@/lib/types';
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
 import { NewsCard } from './NewsCard';
 import { InstagramEmbedProcessor } from './InstagramEmbedProcessor';
+import { StreamingSection } from './StreamingSection';
 
 
 interface HomepageClientProps {
@@ -31,6 +32,7 @@ interface HomepageClientProps {
     notifications: NotificationItem[];
     organigramaData: OrganigramaMember[];
     proposals: Proposal[];
+    streamingItems: StreamingItem[];
 }
 
 interface LightboxData {
@@ -113,7 +115,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
     )
 }
 
-export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, organigramaData, proposals }: HomepageClientProps) {
+export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, organigramaData, proposals, streamingItems }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
 
     const handleTileClick = (item: MosaicItem, startIndex: number) => {
@@ -171,6 +173,9 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
             </UiAccordion>
             </div>
         </section>
+
+        {/* Streaming Section */}
+        <StreamingSection items={streamingItems} />
 
         {/* News Section */}
         <section className="py-16 lg:py-24">

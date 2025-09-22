@@ -137,3 +137,9 @@ export interface MapEmbed {
   embedCode: string;
   enabled: boolean;
 }
+
+export interface StreamingItem {
+  id: string;
+  title: string;
+  embedCode: string;
+}

@@ -17,6 +17,7 @@ import {
     readMapsFile,
     readPageHeadersFile,
     readGoogleFormsFile,
+    readStreamingFile
 } from '@/lib/server/data';
 
 // These actions are safe to call from client components.
@@ -103,4 +104,8 @@ export async function getGoogleFormsAction() {
 export async function getGoogleFormAction(id: string) {
     const forms = await readGoogleFormsFile();
     return forms.find(form => form.id === id);
+}
+
+export async function getStreamingAction() {
+    return readStreamingFile();
 }

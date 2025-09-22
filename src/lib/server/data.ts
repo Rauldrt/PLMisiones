@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, PageHeader, Referente, SocialLink, Notification, OrganigramaMember, Candidate, Proposal, FooterContent, MapEmbed, NotificationItem, GoogleForm } from '../types';
+import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, PageHeader, Referente, SocialLink, Notification, OrganigramaMember, Candidate, Proposal, FooterContent, MapEmbed, NotificationItem, GoogleForm, StreamingItem } from '../types';
 
 async function readJsonFile<T>(filePath: string, isObjectLike: boolean = false): Promise<T> {
   const fullPath = path.join(process.cwd(), filePath);
@@ -159,4 +159,8 @@ export async function getGoogleFormsAction(): Promise<GoogleForm[]> {
 export async function getGoogleFormAction(id: string): Promise<GoogleForm | undefined> {
     const forms = await readGoogleFormsFile();
     return forms.find(f => f.id === id);
+}
+
+export async function readStreamingFile(): Promise<StreamingItem[]> {
+    return readJsonFile<StreamingItem[]>('src/data/streaming.json');
 }

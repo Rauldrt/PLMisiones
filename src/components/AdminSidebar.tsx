@@ -26,6 +26,7 @@ const adminNavLinks = [
   { href: '/admin/manage-organigrama', label: 'Organigrama', icon: 'Team' },
   { href: '/admin/manage-mosaic', label: 'Mosaico', icon: 'Mosaic' },
   { href: '/admin/manage-accordion', label: 'Acordeón', icon: 'Accordion' },
+  { href: '/admin/manage-streaming', label: 'Streaming Ágora', icon: 'Youtube' },
   { href: '/admin/manage-maps', label: 'Mapas', icon: 'Location' },
   { href: '/admin/manage-google-forms', label: 'Google Forms', icon: 'Forms' },
   { href: '/admin/manage-footer', label: 'Footer', icon: 'Footer' },

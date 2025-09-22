@@ -9,7 +9,8 @@ import {
     getCandidatesAction, 
     getPublicNotificationsAction, 
     getOrganigramaAction, 
-    getProposalsAction 
+    getProposalsAction,
+    getStreamingAction
 } from '@/actions/data';
 
 export default async function Home() {
@@ -23,6 +24,7 @@ export default async function Home() {
     notifications,
     organigrama,
     proposals,
+    streamingItems,
   ] = await Promise.all([
     getBannerTextSlidesAction(),
     getBannerBackgroundSlidesAction(),
@@ -33,6 +35,7 @@ export default async function Home() {
     getPublicNotificationsAction(),
     getOrganigramaAction(),
     getProposalsAction(),
+    getStreamingAction(),
   ]);
 
   const sortedNotifications = notifications.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -48,6 +51,7 @@ export default async function Home() {
       notifications={sortedNotifications}
       organigramaData={organigrama}
       proposals={proposals}
+      streamingItems={streamingItems}
     />
   );
 }
