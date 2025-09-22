@@ -91,12 +91,8 @@ export function Header({ socialLinks }: HeaderProps) {
                 size="icon"
                 className="fixed bottom-6 right-4 z-50 h-16 w-16 rounded-full shadow-lg"
               >
-                  <div className={cn("absolute transition-transform duration-300 ease-in-out", isMobileMenuOpen ? "rotate-45" : "rotate-0")}>
-                    <Icons.Close className="h-6 w-6" />
-                  </div>
-                   <div className={cn("absolute transition-transform duration-300 ease-in-out", isMobileMenuOpen ? "rotate-0 scale-0" : "rotate-0 scale-100")}>
-                     <Icons.Menu className="h-6 w-6" />
-                  </div>
+                  <Icons.Menu className={cn("absolute h-6 w-6 transition-all duration-300", isMobileMenuOpen && "opacity-0 rotate-90")} />
+                  <Icons.Close className={cn("absolute h-6 w-6 transition-all duration-300", !isMobileMenuOpen && "opacity-0 rotate-90")} />
                 <span className="sr-only">Abrir menú</span>
               </Button>
           </PopoverTrigger>
