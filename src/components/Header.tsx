@@ -94,7 +94,7 @@ export function Header({ socialLinks }: HeaderProps) {
                   <div className={cn("absolute transition-transform duration-300 ease-in-out", isMobileMenuOpen ? "rotate-45" : "rotate-0")}>
                     <Icons.Close className="h-6 w-6" />
                   </div>
-                   <div className={cn("absolute transition-transform duration-300 ease-in-out", isMobileMenuOpen ? "rotate-0 opacity-0" : "rotate-0 opacity-100")}>
+                   <div className={cn("absolute transition-transform duration-300 ease-in-out", isMobileMenuOpen ? "rotate-0 scale-0" : "rotate-0 scale-100")}>
                      <Icons.Menu className="h-6 w-6" />
                   </div>
                 <span className="sr-only">Abrir menú</span>
