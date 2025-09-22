@@ -4,12 +4,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { Icons } from '@/components/icons';
+import { Icons, getIcon } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { Separator } from './ui/separator';
 import Image from 'next/image';
+import type { SocialLink } from '@/lib/types';
 
 const navLinks = [
   { href: '/', label: 'Inicio' },
@@ -18,7 +19,11 @@ const navLinks = [
   { href: '#contacto', label: 'Contacto' },
 ];
 
-export function Header() {
+interface HeaderProps {
+    socialLinks: SocialLink[];
+}
+
+export function Header({ socialLinks }: HeaderProps) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -130,6 +135,27 @@ export function Header() {
                       <Link href="/admin">Admin</Link>
                   </Button>
               </div>
+              <Separator />
+               <div className="p-4 mt-auto">
+                    <div className="flex justify-center gap-6">
+                        {socialLinks.map((link) => {
+                            const IconComponent = getIcon(link.name);
+                            return (
+                                <Link
+                                    key={link.id}
+                                    href={link.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-foreground/60 hover:text-foreground transition-colors"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                    {IconComponent ? <IconComponent className="h-6 w-6" /> : <Icons.Social className="h-6 w-6" />}
+                                    <span className="sr-only">{link.name}</span>
+                                </Link>
+                            )
+                        })}
+                    </div>
+                </div>
             </div>
           </SheetContent>
         </Sheet>
