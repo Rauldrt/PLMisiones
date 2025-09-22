@@ -38,7 +38,7 @@ function NotificationDialog({
         className={cn(
           isImageOnly
             ? 'w-auto max-w-5xl border-0 bg-transparent p-2 shadow-none'
-            : 'max-w-xl'
+            : 'max-w-xl p-0'
         )}
       >
         {isImageOnly && item.imageUrl ? (
@@ -52,14 +52,14 @@ function NotificationDialog({
           />
         ) : (
           <>
-            <DialogHeader>
+            <DialogHeader className="p-6 pb-2">
               {item.imageUrl && (
-                <div className="relative -mx-6 -mt-6 mb-6 h-64 w-full overflow-hidden">
+                <div className="relative mb-6 h-64 w-full overflow-hidden rounded-lg">
                   <Image
                     src={item.imageUrl}
                     alt={item.title || 'Notificación'}
                     fill
-                    className="rounded-t-lg object-cover"
+                    className="object-cover"
                     data-ai-hint={item.imageHint}
                   />
                 </div>
@@ -72,14 +72,16 @@ function NotificationDialog({
               </p>
             </DialogHeader>
              {isEmbed ? (
-                <div className="responsive-video -mx-6 mt-4 rounded-lg overflow-hidden">
+                <div className="responsive-video mt-4 rounded-b-lg overflow-hidden">
                     <div dangerouslySetInnerHTML={{ __html: item.content }} />
                 </div>
             ) : (
-                <div
-                  className="prose prose-sm prose-invert mt-4 max-w-full"
-                  dangerouslySetInnerHTML={{ __html: item.content }}
-                />
+                <div className="px-6 pb-6">
+                  <div
+                    className="prose prose-sm prose-invert mt-4 max-w-full"
+                    dangerouslySetInnerHTML={{ __html: item.content }}
+                  />
+                </div>
             )}
           </>
         )}
