@@ -1,8 +1,9 @@
+
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Icons, IconName } from '@/components/icons';
+import { Icons, IconName, getIcon } from '@/components/icons';
 import { cn } from '@/lib/utils';
 import {
   Sheet,
@@ -11,6 +12,8 @@ import {
 } from "@/components/ui/sheet"
 import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
+import type { SocialLink } from '@/lib/types';
+import { Separator } from './ui/separator';
 
 const adminNavLinks = [
   { href: '/admin/expert-chat', label: 'Chat Experto', icon: 'AI' },
@@ -33,7 +36,11 @@ const adminNavLinks = [
   { href: '/admin/gallery', label: 'Galería', icon: 'Gallery' },
 ];
 
-function NavContent() {
+interface NavContentProps {
+  socialLinks: SocialLink[];
+}
+
+function NavContent({ socialLinks }: NavContentProps) {
   const pathname = usePathname();
   const { logout } = useAuth();
 
@@ -64,6 +71,29 @@ function NavContent() {
         })}
       </nav>
       <div className="mt-auto border-t p-4 space-y-2">
+        {socialLinks && socialLinks.length > 0 && (
+          <>
+            <Separator className="my-2" />
+            <div className="flex justify-center gap-6 py-2">
+              {socialLinks.map((link) => {
+                const IconComponent = getIcon(link.name);
+                return (
+                  <Link
+                    key={link.id}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-foreground/60 hover:text-foreground transition-colors"
+                  >
+                    {IconComponent ? <IconComponent className="h-5 w-5" /> : <Icons.Social className="h-5 w-5" />}
+                    <span className="sr-only">{link.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
+            <Separator className="my-2" />
+          </>
+        )}
          <Button variant="ghost" className="w-full justify-start gap-3" asChild>
             <Link href="/">
              <Icons.Close className="h-5 w-5" />
@@ -79,11 +109,15 @@ function NavContent() {
   )
 }
 
-export function AdminSidebar() {
+interface AdminSidebarProps {
+  socialLinks: SocialLink[];
+}
+
+export function AdminSidebar({ socialLinks }: AdminSidebarProps) {
   return (
     <>
       <div className="hidden border-r bg-card md:block md:w-64">
-        <NavContent/>
+        <NavContent socialLinks={socialLinks} />
       </div>
       <div className="md:hidden absolute top-4 left-4 z-50">
          <Sheet>
@@ -94,7 +128,7 @@ export function AdminSidebar() {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-[240px] p-0">
-               <NavContent/>
+               <NavContent socialLinks={socialLinks} />
             </SheetContent>
           </Sheet>
       </div>
