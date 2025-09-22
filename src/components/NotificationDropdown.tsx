@@ -1,4 +1,3 @@
-
 'use client';
 import Link from 'next/link';
 import { Button } from './ui/button';
@@ -30,6 +29,8 @@ function NotificationDialog({
   children: React.ReactNode;
 }) {
   const isImageOnly = item.imageUrl && !item.title && !item.content;
+  const isEmbed = item.content?.includes('<iframe');
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -53,10 +54,10 @@ function NotificationDialog({
           <>
             <DialogHeader>
               {item.imageUrl && (
-                <div className="relative -mx-6 -mt-6 mb-6 h-48 w-full">
+                <div className="relative -mx-6 -mt-6 mb-6 h-64 w-full overflow-hidden">
                   <Image
                     src={item.imageUrl}
-                    alt={item.title}
+                    alt={item.title || 'Notificación'}
                     fill
                     className="rounded-t-lg object-cover"
                     data-ai-hint={item.imageHint}
@@ -70,10 +71,16 @@ function NotificationDialog({
                  {new Date(item.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
               </p>
             </DialogHeader>
-            <div
-              className="prose prose-sm prose-invert mt-4 max-w-full"
-              dangerouslySetInnerHTML={{ __html: item.content }}
-            />
+             {isEmbed ? (
+                <div className="responsive-video -mx-6 mt-4 rounded-lg overflow-hidden">
+                    <div dangerouslySetInnerHTML={{ __html: item.content }} />
+                </div>
+            ) : (
+                <div
+                  className="prose prose-sm prose-invert mt-4 max-w-full"
+                  dangerouslySetInnerHTML={{ __html: item.content }}
+                />
+            )}
           </>
         )}
       </DialogContent>
