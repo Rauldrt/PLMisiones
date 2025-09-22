@@ -67,7 +67,7 @@ export default function ManageMosaicPage() {
 
   const addImage = (itemIndex: number) => {
     const newItems = [...items];
-    const newImageUrls = [...newItems[itemIndex].imageUrls, `/placeholder.png`];
+    const newImageUrls = [...newItems[itemIndex].imageUrls, `https://placehold.co/600x400`];
     handleFieldChange(itemIndex, 'imageUrls', newImageUrls);
   };
 
@@ -90,7 +90,7 @@ export default function ManageMosaicPage() {
   }
 
   const addItem = () => {
-    setItems([...items, { id: new Date().getTime().toString(), title: 'Nuevo Mosaico', imageUrls: ['/placeholder.png'], imageHints: [], colSpan: 1, rowSpan: 1, animationType: 'fade', animationDuration: 7000 }]);
+    setItems([...items, { id: new Date().getTime().toString(), title: 'Nuevo Mosaico', imageUrls: ['https://placehold.co/600x400'], imageHints: [], colSpan: 1, rowSpan: 1, animationType: 'fade', animationDuration: 7000 }]);
   };
   
   const removeItem = (id: string) => {

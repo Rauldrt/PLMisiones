@@ -59,7 +59,7 @@ export default function ManageCandidatesPage() {
   };
   
   const addItem = () => {
-    setItems([...items, { id: new Date().getTime().toString(), name: 'Nuevo Candidato', role: 'Cargo al que postula', imageUrl: '/placeholder.png', imageHint: 'person portrait', bio: 'Biografía del candidato...' }]);
+    setItems([...items, { id: new Date().getTime().toString(), name: 'Nuevo Candidato', role: 'Cargo al que postula', imageUrl: 'https://placehold.co/600x400', imageHint: 'person portrait', bio: 'Biografía del candidato...' }]);
   }
   
   const removeItem = (id: string) => {

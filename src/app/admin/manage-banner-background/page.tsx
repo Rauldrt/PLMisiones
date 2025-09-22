@@ -62,7 +62,7 @@ export default function ManageBannerBackgroundPage() {
   const addSlide = () => {
     setSlides([...slides, { 
         id: new Date().getTime().toString(), 
-        imageUrl: '/placeholder.png', 
+        imageUrl: 'https://placehold.co/600x400', 
         imageHint: '', 
         animationType: 'zoom-in',
         animationDuration: 10,

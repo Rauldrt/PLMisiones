@@ -59,7 +59,7 @@ export default function ManageReferentesPage() {
   };
   
   const addItem = () => {
-    setItems([...items, { id: new Date().getTime().toString(), name: 'Nuevo Referente', role: 'Cargo', imageUrl: '/placeholder.png', imageHint: 'person portrait', bio: 'Biografía...', locality: 'Localidad' }]);
+    setItems([...items, { id: new Date().getTime().toString(), name: 'Nuevo Referente', role: 'Cargo', imageUrl: 'https://placehold.co/600x400', imageHint: 'person portrait', bio: 'Biografía...', locality: 'Localidad' }]);
   }
   
   const removeItem = (id: string) => {

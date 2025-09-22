@@ -132,7 +132,7 @@ export default function ManageNewsPage() {
                     <div className="flex justify-between items-center w-full">
                         <AccordionTrigger className="hover:no-underline py-2 flex-1">
                         <div className="flex items-center gap-4 text-left">
-                            <Image src={article.imageUrl || '/placeholder.png'} alt={article.title} width={40} height={40} className="rounded-md object-cover h-10 w-10" data-ai-hint={article.imageHint} />
+                            <Image src={article.imageUrl || 'https://placehold.co/600x400'} alt={article.title} width={40} height={40} className="rounded-md object-cover h-10 w-10" data-ai-hint={article.imageHint} />
                             <div>
                                 <h3 className={cn("font-semibold", article.hidden && "text-muted-foreground line-through")}>{article.title}</h3>
                                 <p className="text-sm text-muted-foreground">{new Date(article.date).toLocaleDateString('es-AR')}</p>

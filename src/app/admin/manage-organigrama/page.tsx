@@ -60,7 +60,7 @@ export default function ManageOrganigramaPage() {
   };
 
   const addItem = () => {
-    setItems([...items, { id: new Date().getTime().toString(), name: 'Nuevo Miembro', role: 'Cargo', imageUrl: '/placeholder.png', imageHint: 'person portrait', description: 'Descripción del miembro...' }]);
+    setItems([...items, { id: new Date().getTime().toString(), name: 'Nuevo Miembro', role: 'Cargo', imageUrl: 'https://placehold.co/600x400', imageHint: 'person portrait', description: 'Descripción del miembro...' }]);
   }
   
   const removeItem = (id: string) => {
