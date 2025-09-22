@@ -6,6 +6,7 @@ import Image from "next/image";
 import { getPublicImagesAction } from "@/actions/gallery";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "./ui/skeleton";
 
 interface ImageGalleryProps {
     onImageSelect: (url: string) => void;
@@ -19,18 +20,26 @@ export function ImageGallery({ onImageSelect }: ImageGalleryProps) {
         async function loadImages() {
             setIsLoading(true);
             const images = await getPublicImagesAction();
-            setImageUrls(images);
+            // Sort images to show newest first, assuming they might have date-like names
+            const sortedImages = images.sort((a, b) => b.localeCompare(a));
+            setImageUrls(sortedImages);
             setIsLoading(false);
         }
         loadImages();
     }, []);
 
     if (isLoading) {
-        return <div className="flex items-center justify-center h-full"><p>Cargando galería...</p></div>
+        return (
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 p-4">
+                {Array.from({ length: 18 }).map((_, i) => (
+                    <Skeleton key={i} className="aspect-square w-full" />
+                ))}
+            </div>
+        )
     }
 
     if (imageUrls.length === 0) {
-        return <div className="flex items-center justify-center h-full"><p>No se encontraron imágenes en la carpeta /public.</p></div>
+        return <div className="flex items-center justify-center h-full min-h-48"><p>No se encontraron imágenes en la carpeta /public.</p></div>
     }
 
     return (
@@ -38,7 +47,7 @@ export function ImageGallery({ onImageSelect }: ImageGalleryProps) {
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 p-4">
                 {imageUrls.map((url, index) => (
                     <button
-                        key={index}
+                        key={url}
                         onClick={() => onImageSelect(url)}
                         className="relative aspect-square w-full rounded-md overflow-hidden group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                     >

@@ -43,6 +43,7 @@ import {
   EyeOff,
   Palette,
   Music2,
+  Upload,
 } from 'lucide-react';
 import type { SVGProps } from 'react';
 
@@ -105,7 +106,8 @@ export const Icons = {
   Hide: EyeOff,
   Header: Heading1,
   Media: Video,
-  Music2
+  Music2,
+  Upload,
 };
 
 export type IconName = keyof typeof Icons;
