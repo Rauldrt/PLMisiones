@@ -107,12 +107,14 @@ export function NotificationDropdown({
   const TriggerButton = () => (
     <div
       className={cn(
-        'group flex h-auto animate-pulse-slow cursor-pointer items-center justify-center rounded-full border border-accent bg-secondary py-1 px-3 text-secondary-foreground shadow-lg hover:animate-none hover:bg-secondary/80'
+        'group flex h-auto cursor-pointer items-center justify-center rounded-full border border-orange-500/50 bg-secondary py-1 px-3 text-secondary-foreground shadow-lg transition-all duration-300',
+        'hover:border-orange-400 hover:shadow-orange-500/40',
+        'animate-pulse-slow ring-4 ring-orange-500/30 ring-opacity-70'
       )}
     >
       <span className="relative mr-2 flex h-2 w-2">
-        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75"></span>
-        <span className="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75"></span>
+        <span className="relative inline-flex h-2 w-2 rounded-full bg-orange-500"></span>
       </span>
       <span className="text-xs font-semibold">{notifications[0].title}</span>
     </div>
