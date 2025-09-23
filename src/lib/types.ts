@@ -79,6 +79,7 @@ export interface GoogleForm {
   title: string;
   description?: string;
   embedUrl: string;
+  sheetUrl?: string;
 }
 
 

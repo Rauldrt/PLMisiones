@@ -1,20 +1,24 @@
+
 [
   {
     "id": "afiliacion",
     "title": "Formulario de Afiliación",
     "description": "Completa tus datos para formar parte del Partido Libertario de Misiones. Nos pondremos en contacto a la brevedad.",
-    "embedUrl": "https://docs.google.com/forms/d/e/1FAIpQLSfSteLLaewaRYoksyt2rqjgN4pyvyPxv5jqtnhC7-Mk-ansrQ/viewform?usp=header"
+    "embedUrl": "https://docs.google.com/forms/d/e/1FAIpQLSfSteLLaewaRYoksyt2rqjgN4pyvyPxv5jqtnhC7-Mk-ansrQ/viewform?usp=header",
+    "sheetUrl": ""
   },
   {
     "id": "fiscales",
     "title": "Inscripción de Fiscales",
     "description": "Tu rol es crucial para defender la voluntad del pueblo. Completá tus datos para ser fiscal.",
-    "embedUrl": "https://docs.google.com/forms/d/e/1FAIpQLScxIqhASwI1viRWTVEyN3MJ6Hjj6GTUlv1NeI1dX5ZtuLPrng/viewform?usp=header"
+    "embedUrl": "https://docs.google.com/forms/d/e/1FAIpQLScxIqhASwI1viRWTVEyN3MJ6Hjj6GTUlv1NeI1dX5ZtuLPrng/viewform?usp=header",
+    "sheetUrl": ""
   },
   {
     "id": "contacto",
     "title": "Formulario de Contacto",
     "description": "Envianos tu consulta, sugerencia o reclamo. Tu opinión es muy importante para nosotros.",
-    "embedUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdjoTz6PAb3PeB_o65DLKX00SrJCHyhrQA3rZrlczXznm7Bew/viewform?usp=header"
+    "embedUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdjoTz6PAb3PeB_o65DLKX00SrJCHyhrQA3rZrlczXznm7Bew/viewform?usp=header",
+    "sheetUrl": ""
   }
 ]

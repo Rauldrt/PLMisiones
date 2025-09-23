@@ -1,5 +1,7 @@
+
 'use client';
 import { useState, useEffect, useTransition } from 'react';
+import Link from 'next/link';
 import { getGoogleFormsAction } from '@/actions/data';
 import { saveGoogleForms } from '@/actions/admin';
 import type { GoogleForm } from '@/lib/types';
@@ -9,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Icons } from '@/components/icons';
 
 export default function ManageGoogleFormsPage() {
   const [forms, setForms] = useState<GoogleForm[]>([]);
@@ -53,7 +56,7 @@ export default function ManageGoogleFormsPage() {
       <Card>
         <CardHeader>
           <CardTitle>Configuración de Formularios</CardTitle>
-          <CardDescription>Pega aquí los enlaces para incrustar tus formularios de Google.</CardDescription>
+          <CardDescription>Pega aquí los enlaces para incrustar tus formularios y acceder a las planillas de respuestas.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
           {isLoading ? <p>Cargando...</p> : (
@@ -82,6 +85,28 @@ export default function ManageGoogleFormsPage() {
                         />
                         <p className="text-xs text-muted-foreground">
                           En Google Forms, ve a "Enviar", selecciona la pestaña "&lt; &gt;", copia el "src" del iframe y pégalo aquí.
+                        </p>
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor={`sheetUrl-${index}`}>URL de la Planilla de Respuestas (Google Sheet)</Label>
+                        <div className="flex gap-2">
+                          <Input 
+                            id={`sheetUrl-${index}`} 
+                            value={form.sheetUrl || ''} 
+                            onChange={e => handleFieldChange(index, 'sheetUrl', e.target.value)} 
+                            placeholder='https://docs.google.com/spreadsheets/d/...'
+                          />
+                          {form.sheetUrl && (
+                            <Button variant="outline" asChild>
+                              <Link href={form.sheetUrl} target="_blank">
+                                <Icons.Submissions className="mr-2 h-4 w-4" />
+                                Ir a la Planilla
+                              </Link>
+                            </Button>
+                          )}
+                        </div>
+                         <p className="text-xs text-muted-foreground">
+                          Pega aquí el enlace a la hoja de cálculo donde se guardan las respuestas del formulario.
                         </p>
                       </div>
                   </AccordionContent>
