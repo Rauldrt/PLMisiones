@@ -93,20 +93,36 @@ export default function ManageNotificationPage() {
                   <Label htmlFor="notification-text">Texto de la Burbuja</Label>
                   <Input id="notification-text" value={item.text} onChange={e => handleFieldChange('text', e.target.value)} placeholder="¡Nuevo Evento!"/>
               </div>
-               <div className="space-y-1">
-                  <Label>Color del Destello (Glow)</Label>
-                   <Select value={item.glowColor || 'orange'} onValueChange={(v) => handleFieldChange('glowColor', v)}>
-                      <SelectTrigger>
-                          <SelectValue placeholder="Selecciona un color" />
-                      </SelectTrigger>
-                      <SelectContent>
-                          <SelectItem value="orange">Naranja (Alerta)</SelectItem>
-                          <SelectItem value="blue">Azul (Informativo)</SelectItem>
-                          <SelectItem value="green">Verde (Éxito)</SelectItem>
-                          <SelectItem value="red">Rojo (Urgente)</SelectItem>
-                      </SelectContent>
-                  </Select>
-                  <p className="text-xs text-muted-foreground">Elige el color para el resplandor animado de la burbuja.</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                    <Label>Color del Destello (Glow)</Label>
+                    <Select value={item.glowColor || 'orange'} onValueChange={(v) => handleFieldChange('glowColor', v)}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Selecciona un color" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="orange">Naranja (Alerta)</SelectItem>
+                            <SelectItem value="blue">Azul (Informativo)</SelectItem>
+                            <SelectItem value="green">Verde (Éxito)</SelectItem>
+                            <SelectItem value="red">Rojo (Urgente)</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground">Elige el color para el resplandor.</p>
+                </div>
+                <div className="space-y-1">
+                    <Label>Velocidad del Destello</Label>
+                    <Select value={item.glowSpeed || 'normal'} onValueChange={(v) => handleFieldChange('glowSpeed', v)}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Selecciona una velocidad" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="slow">Lento</SelectItem>
+                            <SelectItem value="normal">Normal</SelectItem>
+                            <SelectItem value="fast">Rápido</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground">Elige la velocidad de la animación.</p>
+                </div>
               </div>
               <div className="space-y-1">
                   <Label htmlFor="notification-title">Título del Modal</Label>

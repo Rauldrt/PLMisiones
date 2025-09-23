@@ -20,6 +20,7 @@ export default {
     'border-blue-500/50', 'hover:border-blue-400', 'hover:shadow-blue-500/20', 'ring-blue-500/20', 'bg-blue-400', 'bg-blue-500',
     'border-green-500/50', 'hover:border-green-400', 'hover:shadow-green-500/20', 'ring-green-500/20', 'bg-green-400', 'bg-green-500',
     'border-red-500/50', 'hover:border-red-400', 'hover:shadow-red-500/20', 'ring-red-500/20', 'bg-red-400', 'bg-red-500',
+    'animate-pulse-slow', 'animate-pulse', 'animate-pulse-fast',
   ],
   theme: {
     extend: {
@@ -168,7 +169,9 @@ export default {
         'slide-in-out-right': 'slide-in-out-right linear infinite',
         'fade-in-out': 'fade-in-out linear infinite',
         'background-zoom': 'background-zoom 20s ease-in-out infinite',
+        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'pulse-slow': 'pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'pulse-fast': 'pulse-slow 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'icon-glow': 'icon-glow 2s ease-in-out infinite',
       },
       transitionDuration: {

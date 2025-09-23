@@ -1,3 +1,4 @@
+
 'use client';
 import Link from 'next/link';
 import { Button } from './ui/button';
@@ -108,7 +109,7 @@ export function NotificationDropdown({
   }
   
   const glowVariants = cva(
-    'group flex h-auto cursor-pointer items-center justify-center rounded-full border bg-secondary py-1 px-3 text-secondary-foreground shadow-lg transition-all duration-300 animate-pulse-slow',
+    'group flex h-auto cursor-pointer items-center justify-center rounded-full border bg-secondary py-1 px-3 text-secondary-foreground shadow-lg transition-all duration-300',
     {
       variants: {
         glowColor: {
@@ -117,9 +118,15 @@ export function NotificationDropdown({
           green: 'border-green-500/50 hover:border-green-400 hover:shadow-green-500/20 ring-4 ring-green-500/20',
           red: 'border-red-500/50 hover:border-red-400 hover:shadow-red-500/20 ring-4 ring-red-500/20',
         },
+        glowSpeed: {
+            slow: 'animate-pulse-slow',
+            normal: 'animate-pulse',
+            fast: 'animate-pulse-fast'
+        }
       },
       defaultVariants: {
         glowColor: 'orange',
+        glowSpeed: 'normal'
       },
     }
   );
@@ -153,7 +160,7 @@ export function NotificationDropdown({
   });
 
   const TriggerButton = () => (
-    <div className={cn(glowVariants({ glowColor: notificationSettings.glowColor }))}>
+    <div className={cn(glowVariants({ glowColor: notificationSettings.glowColor, glowSpeed: notificationSettings.glowSpeed }))}>
       <span className="relative mr-2 flex h-2 w-2">
         <span className={cn(pingVariants({ glowColor: notificationSettings.glowColor }))}></span>
         <span className={cn(dotVariants({ glowColor: notificationSettings.glowColor }))}></span>
