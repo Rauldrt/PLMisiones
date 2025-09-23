@@ -109,39 +109,59 @@ export function NotificationDropdown({
   }
   
   const glowVariants = cva(
-    'group flex h-auto cursor-pointer items-center justify-center rounded-full border bg-secondary py-1 px-3 text-secondary-foreground shadow-lg transition-all duration-300',
+    'group relative flex h-auto cursor-pointer items-center justify-center rounded-full border bg-secondary py-1 px-3 text-secondary-foreground shadow-lg transition-all duration-300',
     {
       variants: {
         glowColor: {
-          orange: 'border-orange-500/50 hover:border-orange-400 hover:shadow-orange-500/20 ring-4 ring-orange-500/20',
-          blue: 'border-blue-500/50 hover:border-blue-400 hover:shadow-blue-500/20 ring-4 ring-blue-500/20',
-          green: 'border-green-500/50 hover:border-green-400 hover:shadow-green-500/20 ring-4 ring-green-500/20',
-          red: 'border-red-500/50 hover:border-red-400 hover:shadow-red-500/20 ring-4 ring-red-500/20',
+          orange: 'border-orange-500/50 hover:border-orange-400 hover:shadow-orange-500/20',
+          blue: 'border-blue-500/50 hover:border-blue-400 hover:shadow-blue-500/20',
+          green: 'border-green-500/50 hover:border-green-400 hover:shadow-green-500/20',
+          red: 'border-red-500/50 hover:border-red-400 hover:shadow-red-500/20',
         },
-        glowSpeed: {
-            slow: 'animate-pulse-slow',
-            normal: 'animate-pulse',
-            fast: 'animate-pulse-fast'
-        }
       },
       defaultVariants: {
         glowColor: 'orange',
-        glowSpeed: 'normal'
       },
     }
   );
-
-  const pingVariants = cva('absolute inline-flex h-full w-full animate-ping rounded-full opacity-75', {
+  
+  const ringVariants = cva('absolute inline-flex h-full w-full rounded-full opacity-75', {
       variants: {
           glowColor: {
               orange: 'bg-orange-400',
               blue: 'bg-blue-400',
               green: 'bg-green-400',
               red: 'bg-red-400',
+          },
+          glowSpeed: {
+            slow: 'animate-ping-slow',
+            normal: 'animate-ping',
+            fast: 'animate-ping-fast'
           }
       },
       defaultVariants: {
         glowColor: 'orange',
+        glowSpeed: 'normal'
+      },
+  });
+
+  const pingVariants = cva('absolute inline-flex h-full w-full rounded-full opacity-75', {
+      variants: {
+          glowColor: {
+              orange: 'bg-orange-400',
+              blue: 'bg-blue-400',
+              green: 'bg-green-400',
+              red: 'bg-red-400',
+          },
+          glowSpeed: {
+            slow: 'animate-ping-slow',
+            normal: 'animate-ping',
+            fast: 'animate-ping-fast'
+          }
+      },
+      defaultVariants: {
+        glowColor: 'orange',
+        glowSpeed: 'normal'
       },
   });
   
@@ -160,12 +180,13 @@ export function NotificationDropdown({
   });
 
   const TriggerButton = () => (
-    <div className={cn(glowVariants({ glowColor: notificationSettings.glowColor, glowSpeed: notificationSettings.glowSpeed }))}>
+    <div className={cn(glowVariants({ glowColor: notificationSettings.glowColor }))}>
+       <span className={cn(ringVariants({ glowColor: notificationSettings.glowColor, glowSpeed: notificationSettings.glowSpeed }))}></span>
       <span className="relative mr-2 flex h-2 w-2">
-        <span className={cn(pingVariants({ glowColor: notificationSettings.glowColor }))}></span>
+        <span className={cn(pingVariants({ glowColor: notificationSettings.glowColor, glowSpeed: notificationSettings.glowSpeed }))}></span>
         <span className={cn(dotVariants({ glowColor: notificationSettings.glowColor }))}></span>
       </span>
-      <span className="text-xs font-semibold">{notificationSettings.text}</span>
+      <span className="relative text-xs font-semibold">{notificationSettings.text}</span>
     </div>
   );
 

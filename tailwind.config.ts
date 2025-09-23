@@ -16,11 +16,11 @@ export default {
     'md:row-span-1',
     'md:row-span-2',
     // Dynamic glow colors for notification bubble
-    'border-orange-500/50', 'hover:border-orange-400', 'hover:shadow-orange-500/20', 'ring-orange-500/20', 'bg-orange-400', 'bg-orange-500',
-    'border-blue-500/50', 'hover:border-blue-400', 'hover:shadow-blue-500/20', 'ring-blue-500/20', 'bg-blue-400', 'bg-blue-500',
-    'border-green-500/50', 'hover:border-green-400', 'hover:shadow-green-500/20', 'ring-green-500/20', 'bg-green-400', 'bg-green-500',
-    'border-red-500/50', 'hover:border-red-400', 'hover:shadow-red-500/20', 'ring-red-500/20', 'bg-red-400', 'bg-red-500',
-    'animate-pulse-slow', 'animate-pulse', 'animate-pulse-fast',
+    'border-orange-500/50', 'hover:border-orange-400', 'hover:shadow-orange-500/20', 'bg-orange-400', 'bg-orange-500',
+    'border-blue-500/50', 'hover:border-blue-400', 'hover:shadow-blue-500/20', 'bg-blue-400', 'bg-blue-500',
+    'border-green-500/50', 'hover:border-green-400', 'hover:shadow-green-500/20', 'bg-green-400', 'bg-green-500',
+    'border-red-500/50', 'hover:border-red-400', 'hover:shadow-red-500/20', 'bg-red-400', 'bg-red-500',
+    'animate-ping-slow', 'animate-ping', 'animate-ping-fast',
   ],
   theme: {
     extend: {
@@ -139,14 +139,16 @@ export default {
           '0%, 100%': { transform: 'scale(1)' },
           '50%': { transform: 'scale(1.05)' },
         },
-        'pulse-slow': {
-          '0%, 100%': {
-            transform: 'scale(1)',
-            opacity: '1',
+        'ping-slow': {
+          '75%, 100%': {
+            transform: 'scale(2)',
+            opacity: '0',
           },
-          '50%': {
-            transform: 'scale(1.05)',
-            opacity: '0.9',
+        },
+         'ping-fast': {
+          '75%, 100%': {
+            transform: 'scale(2)',
+            opacity: '0',
           },
         },
         'icon-glow': {
@@ -169,9 +171,9 @@ export default {
         'slide-in-out-right': 'slide-in-out-right linear infinite',
         'fade-in-out': 'fade-in-out linear infinite',
         'background-zoom': 'background-zoom 20s ease-in-out infinite',
-        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'pulse-slow': 'pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'pulse-fast': 'pulse-slow 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'ping': 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite',
+        'ping-slow': 'ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+        'ping-fast': 'ping-fast 0.7s cubic-bezier(0, 0, 0.2, 1) infinite',
         'icon-glow': 'icon-glow 2s ease-in-out infinite',
       },
       transitionDuration: {
