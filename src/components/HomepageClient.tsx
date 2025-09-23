@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, NewsArticle, Candidate, NotificationItem, OrganigramaMember, Proposal, StreamingItem } from '@/lib/types';
+import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, NewsArticle, Candidate, NotificationItem, OrganigramaMember, Proposal, StreamingItem, Notification } from '@/lib/types';
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
 import { NewsCard } from './NewsCard';
@@ -30,6 +30,7 @@ interface HomepageClientProps {
     newsArticles: NewsArticle[];
     candidates: Candidate[];
     notifications: NotificationItem[];
+    notificationSettings: Notification;
     organigramaData: OrganigramaMember[];
     proposals: Proposal[];
     streamingItems: StreamingItem[];
@@ -115,7 +116,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
     )
 }
 
-export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, organigramaData, proposals, streamingItems }: HomepageClientProps) {
+export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
 
     const handleTileClick = (item: MosaicItem, startIndex: number) => {
@@ -134,6 +135,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         backgroundSlides={bannerBackgroundSlides} 
         candidates={candidates} 
         notifications={notifications}
+        notificationSettings={notificationSettings}
         proposals={proposals} />
 
       <div className="relative z-10">

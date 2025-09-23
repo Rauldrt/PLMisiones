@@ -10,7 +10,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
-import type { BannerTextSlide, BannerBackgroundSlide, NotificationItem, Candidate, Proposal } from '@/lib/types';
+import type { BannerTextSlide, BannerBackgroundSlide, NotificationItem, Candidate, Proposal, Notification } from '@/lib/types';
 import Autoplay from 'embla-carousel-autoplay';
 import { AnimatedBannerBackground } from './AnimatedBannerBackground';
 import { BannerContentTabs } from './BannerContentTabs';
@@ -27,16 +27,17 @@ interface BannerProps {
     backgroundSlides: BannerBackgroundSlide[];
     candidates: Candidate[];
     notifications: NotificationItem[];
+    notificationSettings: Notification;
     proposals: Proposal[];
 }
 
-export function Banner({ textSlides, backgroundSlides, candidates, notifications, proposals }: BannerProps) {
+export function Banner({ textSlides, backgroundSlides, candidates, notifications, notificationSettings, proposals }: BannerProps) {
   return (
     <section className="relative w-full flex flex-col z-0 min-h-[600px] md:min-h-[720px]">
         <AnimatedBannerBackground slides={backgroundSlides} />
         
         <div className="relative z-20 h-full w-full flex flex-col justify-between flex-1 pt-16 md:pt-20">
-            {notifications && notifications.length > 0 && <NotificationDropdown notifications={notifications} />}
+            <NotificationDropdown notifications={notifications} notificationSettings={notificationSettings} />
             <Carousel
                 opts={{ loop: true }}
                 plugins={[Autoplay({ delay: 5000, stopOnInteraction: true })]}

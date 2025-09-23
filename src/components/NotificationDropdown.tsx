@@ -9,16 +9,18 @@ import {
   DialogTrigger,
 } from './ui/dialog';
 import { cn } from '@/lib/utils';
-import type { NotificationItem } from '@/lib/types';
+import type { NotificationItem, Notification as TNotification } from '@/lib/types';
 import Image from 'next/image';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { cva } from 'class-variance-authority';
 
 interface NotificationDropdownProps {
   notifications: NotificationItem[];
+  notificationSettings: TNotification;
 }
 
 function NotificationDialog({
@@ -41,7 +43,7 @@ function NotificationDialog({
           isImageOnly
             ? 'w-auto max-w-5xl border-0 bg-transparent p-2 shadow-none'
             : 'max-w-xl',
-           !hasTextContent ? 'p-0' : 'p-6'
+           !hasTextContent && item.imageUrl ? 'p-0' : 'p-6'
         )}
       >
         {isImageOnly && item.imageUrl ? (
@@ -56,7 +58,7 @@ function NotificationDialog({
         ) : (
           <>
             {item.imageUrl && !isEmbed && (
-                <div className={cn("relative h-64 w-full overflow-hidden", hasTextContent ? "rounded-t-lg" : "rounded-lg")}>
+                <div className={cn("relative h-64 w-full overflow-hidden", hasTextContent ? "rounded-t-lg -mt-6 -mx-6" : "rounded-lg")}>
                   <Image
                     src={item.imageUrl}
                     alt={item.title || 'Notificación'}
@@ -78,12 +80,12 @@ function NotificationDialog({
                 </DialogHeader>
             )}
 
-             {isEmbed ? (
+             {item.content && isEmbed ? (
                 <div className={cn("w-full overflow-hidden", !hasTextContent && "rounded-lg")}>
                     <div className="responsive-video" dangerouslySetInnerHTML={{ __html: item.content }} />
                 </div>
-            ) : (
-                <div className="pb-6 px-6">
+            ) : item.content && (
+                <div className="pb-6 px-6 -mx-6">
                   <div
                     className="prose prose-sm prose-invert mt-4 max-w-full"
                     dangerouslySetInnerHTML={{ __html: item.content }}
@@ -99,24 +101,64 @@ function NotificationDialog({
 
 export function NotificationDropdown({
   notifications,
+  notificationSettings,
 }: NotificationDropdownProps) {
-  if (!notifications || notifications.length === 0) {
+  if (!notifications || notifications.length === 0 || !notificationSettings.enabled) {
     return null;
   }
+  
+  const glowVariants = cva(
+    'group flex h-auto cursor-pointer items-center justify-center rounded-full border bg-secondary py-1 px-3 text-secondary-foreground shadow-lg transition-all duration-300 animate-pulse-slow',
+    {
+      variants: {
+        glowColor: {
+          orange: 'border-orange-500/50 hover:border-orange-400 hover:shadow-orange-500/20 ring-4 ring-orange-500/20',
+          blue: 'border-blue-500/50 hover:border-blue-400 hover:shadow-blue-500/20 ring-4 ring-blue-500/20',
+          green: 'border-green-500/50 hover:border-green-400 hover:shadow-green-500/20 ring-4 ring-green-500/20',
+          red: 'border-red-500/50 hover:border-red-400 hover:shadow-red-500/20 ring-4 ring-red-500/20',
+        },
+      },
+      defaultVariants: {
+        glowColor: 'orange',
+      },
+    }
+  );
+
+  const pingVariants = cva('absolute inline-flex h-full w-full animate-ping rounded-full opacity-75', {
+      variants: {
+          glowColor: {
+              orange: 'bg-orange-400',
+              blue: 'bg-blue-400',
+              green: 'bg-green-400',
+              red: 'bg-red-400',
+          }
+      },
+      defaultVariants: {
+        glowColor: 'orange',
+      },
+  });
+  
+  const dotVariants = cva('relative inline-flex h-2 w-2 rounded-full', {
+      variants: {
+          glowColor: {
+              orange: 'bg-orange-500',
+              blue: 'bg-blue-500',
+              green: 'bg-green-500',
+              red: 'bg-red-500',
+          }
+      },
+      defaultVariants: {
+        glowColor: 'orange',
+      },
+  });
 
   const TriggerButton = () => (
-    <div
-      className={cn(
-        'group flex h-auto cursor-pointer items-center justify-center rounded-full border border-orange-500/50 bg-secondary py-1 px-3 text-secondary-foreground shadow-lg transition-all duration-300',
-        'hover:border-orange-400 hover:shadow-orange-500/40',
-        'animate-pulse-slow ring-4 ring-orange-500/30 ring-opacity-70'
-      )}
-    >
+    <div className={cn(glowVariants({ glowColor: notificationSettings.glowColor }))}>
       <span className="relative mr-2 flex h-2 w-2">
-        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75"></span>
-        <span className="relative inline-flex h-2 w-2 rounded-full bg-orange-500"></span>
+        <span className={cn(pingVariants({ glowColor: notificationSettings.glowColor }))}></span>
+        <span className={cn(dotVariants({ glowColor: notificationSettings.glowColor }))}></span>
       </span>
-      <span className="text-xs font-semibold">{notifications[0].title}</span>
+      <span className="text-xs font-semibold">{notificationSettings.text}</span>
     </div>
   );
 
@@ -145,6 +187,9 @@ export function NotificationDropdown({
                 </button>
               </NotificationDialog>
             ))}
+             <Button asChild variant="outline" size="sm" className="w-full mt-2">
+                <Link href="/notificaciones">Ver Todas</Link>
+             </Button>
           </div>
         </PopoverContent>
       </Popover>

@@ -10,10 +10,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Icons } from '@/components/icons';
+import { Icons } from '@/components/ui/icons';
 import { useToast } from '@/hooks/use-toast';
 import { ImageGallery } from '@/components/ImageGallery';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function ManageNotificationPage() {
   const [item, setItem] = useState<Notification | null>(null);
@@ -91,6 +92,21 @@ export default function ManageNotificationPage() {
               <div className="space-y-1">
                   <Label htmlFor="notification-text">Texto de la Burbuja</Label>
                   <Input id="notification-text" value={item.text} onChange={e => handleFieldChange('text', e.target.value)} placeholder="¡Nuevo Evento!"/>
+              </div>
+               <div className="space-y-1">
+                  <Label>Color del Destello (Glow)</Label>
+                   <Select value={item.glowColor || 'orange'} onValueChange={(v) => handleFieldChange('glowColor', v)}>
+                      <SelectTrigger>
+                          <SelectValue placeholder="Selecciona un color" />
+                      </SelectTrigger>
+                      <SelectContent>
+                          <SelectItem value="orange">Naranja (Alerta)</SelectItem>
+                          <SelectItem value="blue">Azul (Informativo)</SelectItem>
+                          <SelectItem value="green">Verde (Éxito)</SelectItem>
+                          <SelectItem value="red">Rojo (Urgente)</SelectItem>
+                      </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground">Elige el color para el resplandor animado de la burbuja.</p>
               </div>
               <div className="space-y-1">
                   <Label htmlFor="notification-title">Título del Modal</Label>

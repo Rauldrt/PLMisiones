@@ -7,7 +7,8 @@ import {
     getAccordionItemsAction, 
     getPublicNewsAction, 
     getCandidatesAction, 
-    getPublicNotificationsAction, 
+    getPublicNotificationsAction,
+    getNotificationAction,
     getOrganigramaAction, 
     getProposalsAction,
     getStreamingAction
@@ -22,6 +23,7 @@ export default async function Home() {
     newsArticles,
     candidates,
     notifications,
+    notificationSettings,
     organigrama,
     proposals,
     streamingItems,
@@ -33,6 +35,7 @@ export default async function Home() {
     getPublicNewsAction(),
     getCandidatesAction(),
     getPublicNotificationsAction(),
+    getNotificationAction(),
     getOrganigramaAction(),
     getProposalsAction(),
     getStreamingAction(),
@@ -47,6 +50,7 @@ export default async function Home() {
       newsArticles={newsArticles.slice(0, 3)} // Show latest 3 articles on home
       candidates={candidates}
       notifications={notifications}
+      notificationSettings={notificationSettings}
       organigramaData={organigrama}
       proposals={proposals}
       streamingItems={streamingItems}

@@ -100,6 +100,7 @@ export interface Notification {
   link: string;
   imageUrl?: string;
   imageHint?: string;
+  glowColor?: 'orange' | 'blue' | 'green' | 'red';
 }
 
 export interface NotificationItem {
