@@ -139,15 +139,21 @@ export default {
           '0%, 100%': { transform: 'scale(1)' },
           '50%': { transform: 'scale(1.05)' },
         },
+        'ping': {
+          '75%, 100%': {
+            transform: 'scale(1.4)',
+            opacity: '0',
+          },
+        },
         'ping-slow': {
           '75%, 100%': {
-            transform: 'scale(2)',
+            transform: 'scale(1.4)',
             opacity: '0',
           },
         },
          'ping-fast': {
           '75%, 100%': {
-            transform: 'scale(2)',
+            transform: 'scale(1.4)',
             opacity: '0',
           },
         },
