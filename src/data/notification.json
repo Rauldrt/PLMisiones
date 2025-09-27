@@ -1,9 +1,9 @@
 {
   "enabled": true,
-  "text": "Encuentro suspendido por cuestiones climáticas",
+  "text": "Radio Ágora emisión 27/09/25",
   "link": "",
   "title": "",
-  "content": "",
+  "content": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/BNwTsvFmJsE?si=CjWm5pHB-T5hwDys\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
   "imageUrl": "/supende encuentro.jpeg",
   "glowColor": "orange",
   "glowSpeed": "slow"
