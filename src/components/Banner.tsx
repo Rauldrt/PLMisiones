@@ -93,7 +93,7 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                         </button>
                     </DialogTrigger>
                     <DialogOverlay className="bg-black/50 backdrop-blur-sm" />
-                    <DialogContent className="bg-transparent border-none shadow-none max-w-6xl w-[calc(100%-2rem)] sm:w-full p-0">
+                    <DialogContent className="bg-transparent border-none shadow-none max-w-[16rem] sm:max-w-xl lg:max-w-4xl p-0">
                         <Carousel
                             opts={{ align: "start", loop: proposals.length > 3 }}
                             className="w-full"
