@@ -16,6 +16,9 @@ import { AnimatedBannerBackground } from './AnimatedBannerBackground';
 import { BannerContentTabs } from './BannerContentTabs';
 import { NotificationDropdown } from './NotificationDropdown';
 import { Icons } from './icons';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 interface BannerProps {
     textSlides: BannerTextSlide[];
@@ -28,13 +31,6 @@ interface BannerProps {
 
 export function Banner({ textSlides, backgroundSlides, candidates, notifications, notificationSettings, proposals }: BannerProps) {
   
-  const handleProposalsClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    document.getElementById('proposals-section')?.scrollIntoView({
-      behavior: 'smooth'
-    });
-  };
-
   return (
     <section className="relative w-full flex flex-col z-0 min-h-[600px] md:min-h-[720px] justify-between">
         <AnimatedBannerBackground slides={backgroundSlides} />
@@ -81,17 +77,54 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                 <BannerContentTabs candidates={candidates} />
             </div>
         </div>
-
+        
         {proposals && proposals.length > 0 && (
-            <div className="relative z-20 w-full flex flex-col items-center pb-20 md:pb-32 px-4">
-                <a href="#proposals-section" onClick={handleProposalsClick} className="flex items-center cursor-pointer group">
-                    <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm">
-                        <Icons.Proposals className="h-12 w-12 animate-icon-glow text-yellow-400" />
-                    </div>
-                    <div className="h-auto py-2 px-4 bg-black/20 border border-white/20 text-white group-hover:bg-black/40 backdrop-blur-sm rounded-r-md border-l-0">
-                        Ver Nuestras Propuestas
-                    </div>
-                </a>
+             <div className="relative z-20 w-full flex flex-col items-center pb-20 md:pb-32 px-4">
+                <Dialog>
+                    <DialogTrigger asChild>
+                         <button className="flex items-center cursor-pointer group">
+                            <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm">
+                                <Icons.Proposals className="h-12 w-12 animate-icon-glow text-yellow-400" />
+                            </div>
+                            <div className="h-auto py-2 px-4 bg-black/20 border border-white/20 text-white group-hover:bg-black/40 backdrop-blur-sm rounded-r-md border-l-0">
+                                Ver Nuestras Propuestas
+                            </div>
+                        </button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-transparent border-none shadow-none max-w-6xl w-full p-4">
+                        <Carousel
+                            opts={{ align: "start", loop: proposals.length > 2 }}
+                            className="w-full"
+                        >
+                            <CarouselContent className="-ml-4">
+                                {proposals.map((proposal) => (
+                                    <CarouselItem key={proposal.id} className="pl-4 basis-5/6 sm:basis-1/2 lg:basis-1/3">
+                                        <div className="h-full">
+                                            <Card className="flex flex-col h-[450px] bg-card/90 backdrop-blur-sm overflow-hidden">
+                                                <CardHeader>
+                                                    <CardTitle className="font-headline text-xl truncate">{proposal.title}</CardTitle>
+                                                </CardHeader>
+                                                <CardContent className="flex-1 flex flex-col justify-center overflow-y-auto">
+                                                    <div
+                                                        className={cn(
+                                                            "prose prose-sm prose-invert max-w-full",
+                                                            "[&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-md",
+                                                            "[&_img]:rounded-md [&_img]:max-h-64 [&_img]:mx-auto",
+                                                            "[&_audio]:w-full"
+                                                        )}
+                                                        dangerouslySetInnerHTML={{ __html: proposal.content }}
+                                                    />
+                                                </CardContent>
+                                            </Card>
+                                        </div>
+                                    </CarouselItem>
+                                ))}
+                            </CarouselContent>
+                            <CarouselPrevious className="-left-4 sm:-left-12" />
+                            <CarouselNext className="-right-4 sm:-right-12" />
+                        </Carousel>
+                    </DialogContent>
+                </Dialog>
             </div>
         )}
       </section>

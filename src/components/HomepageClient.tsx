@@ -117,61 +117,6 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
     )
 }
 
-function ProposalsSection({ proposals }: { proposals: Proposal[] }) {
-    if (!proposals || proposals.length === 0) {
-        return null;
-    }
-
-    return (
-        <section id="proposals-section" className="py-16 lg:py-24">
-            <div className="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-12">
-                    <h2 className="font-headline text-3xl font-bold md:text-4xl">
-                        Nuestras Propuestas
-                    </h2>
-                    <p className="mt-4 text-lg text-foreground/80">
-                        Ideas claras para una Misiones más libre y próspera.
-                    </p>
-                </div>
-                <Carousel
-                    opts={{
-                        align: "start",
-                        loop: proposals.length > 2,
-                    }}
-                    className="w-full"
-                >
-                    <CarouselContent className="-ml-4">
-                        {proposals.map((proposal) => (
-                            <CarouselItem key={proposal.id} className="pl-4 basis-5/6 sm:basis-1/2 lg:basis-1/3">
-                                <div className="h-full">
-                                    <Card className="flex flex-col h-[450px] bg-card overflow-hidden">
-                                        <CardHeader>
-                                            <CardTitle className="font-headline text-xl truncate">{proposal.title}</CardTitle>
-                                        </CardHeader>
-                                        <CardContent className="flex-1 flex flex-col justify-center overflow-y-auto">
-                                            <div
-                                                className={cn(
-                                                    "prose prose-sm prose-invert max-w-full",
-                                                    "[&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-md",
-                                                    "[&_img]:rounded-md [&_img]:max-h-64 [&_img]:mx-auto",
-                                                    "[&_audio]:w-full"
-                                                )}
-                                                dangerouslySetInnerHTML={{ __html: proposal.content }}
-                                            />
-                                        </CardContent>
-                                    </Card>
-                                </div>
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="-left-4 sm:-left-12" />
-                    <CarouselNext className="-right-4 sm:-right-12" />
-                </Carousel>
-            </div>
-        </section>
-    );
-}
-
 export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
 
@@ -196,8 +141,6 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
 
       <div className="relative z-10">
         <OrganigramaSection organigramaData={organigramaData} />
-
-        <ProposalsSection proposals={proposals} />
 
         {/* Mosaic Section */}
         <section className="py-16 lg:py-24">
