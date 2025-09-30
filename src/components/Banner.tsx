@@ -86,7 +86,7 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                                 </Button>
                             </div>
                         </DialogTrigger>
-                        <DialogContent className="max-w-6xl bg-card">
+                        <DialogContent className="w-full sm:max-w-6xl bg-card mx-4">
                            <DialogHeader>
                                <DialogTitle className="font-headline text-2xl text-primary">Nuestras Propuestas</DialogTitle>
                            </DialogHeader>
