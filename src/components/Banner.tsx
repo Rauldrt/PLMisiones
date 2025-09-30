@@ -103,7 +103,7 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                         >
                             <CarouselContent>
                                 {proposals.map((proposal) => (
-                                    <CarouselItem key={proposal.id} className="flex justify-center px-2 basis-full sm:basis-auto">
+                                    <CarouselItem key={proposal.id} className="basis-full flex justify-center px-4">
                                         <Card className="flex flex-col h-full bg-card/90 backdrop-blur-sm overflow-hidden w-80 lg:w-96">
                                             <CardHeader>
                                                 <CardTitle className="font-headline text-xl whitespace-normal">{proposal.title}</CardTitle>
@@ -123,8 +123,8 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                                     </CarouselItem>
                                 ))}
                             </CarouselContent>
-                             <CarouselPrevious className="-left-4 sm:-left-12" />
-                            <CarouselNext className="-right-4 sm:-right-12" />
+                             <CarouselPrevious className="absolute -left-4 sm:-left-12 top-1/2 -translate-y-1/2" />
+                            <CarouselNext className="absolute -right-4 sm:-right-12 top-1/2 -translate-y-1/2" />
                         </Carousel>
                     </DialogContent>
                 </Dialog>
