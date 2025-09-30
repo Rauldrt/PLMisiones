@@ -93,32 +93,30 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                         </button>
                     </DialogTrigger>
                     <DialogOverlay className="bg-black/50 backdrop-blur-sm" />
-                    <DialogContent className="bg-transparent border-none shadow-none max-w-[16rem] sm:max-w-xl lg:max-w-4xl p-0">
+                    <DialogContent className="bg-transparent border-none shadow-none w-full sm:max-w-6xl p-0">
                         <Carousel
                             opts={{ align: "start", loop: proposals.length > 3 }}
                             className="w-full"
                         >
                             <CarouselContent>
                                 {proposals.map((proposal) => (
-                                    <CarouselItem key={proposal.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
-                                        <div className="h-full p-1">
-                                            <Card className="flex flex-col bg-card/90 backdrop-blur-sm overflow-hidden lg:min-h-[450px]">
-                                                <CardHeader>
-                                                    <CardTitle className="font-headline text-xl truncate">{proposal.title}</CardTitle>
-                                                </CardHeader>
-                                                <CardContent className="flex-1 flex flex-col justify-center overflow-y-auto">
-                                                    <div
-                                                        className={cn(
-                                                            "prose prose-sm prose-invert max-w-full",
-                                                            "[&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-md",
-                                                            "[&_img]:rounded-md [&_img]:max-h-64 [&_img]:mx-auto",
-                                                            "[&_audio]:w-full"
-                                                        )}
-                                                        dangerouslySetInnerHTML={{ __html: proposal.content }}
-                                                    />
-                                                </CardContent>
-                                            </Card>
-                                        </div>
+                                    <CarouselItem key={proposal.id} className="basis-full sm:basis-1/2 lg:basis-1/3 px-2">
+                                        <Card className="flex flex-col h-full bg-card/90 backdrop-blur-sm overflow-hidden">
+                                            <CardHeader>
+                                                <CardTitle className="font-headline text-xl truncate">{proposal.title}</CardTitle>
+                                            </CardHeader>
+                                            <CardContent className="flex-1 flex flex-col justify-center overflow-y-auto">
+                                                <div
+                                                    className={cn(
+                                                        "prose prose-sm prose-invert max-w-full",
+                                                        "[&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-md",
+                                                        "[&_img]:rounded-md [&_img]:max-h-64 [&_img]:mx-auto",
+                                                        "[&_audio]:w-full"
+                                                    )}
+                                                    dangerouslySetInnerHTML={{ __html: proposal.content }}
+                                                />
+                                            </CardContent>
+                                        </Card>
                                     </CarouselItem>
                                 ))}
                             </CarouselContent>
