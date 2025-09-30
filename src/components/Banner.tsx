@@ -93,7 +93,7 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                         </div>
                     </CollapsibleTrigger>
                     <CollapsibleContent className="w-full max-w-6xl mt-8 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
-                        <div className="transition-all duration-500 opacity-0 data-[state=open]:opacity-100 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-top-4">
+                        <div className="transition-all duration-500 opacity-0 data-[state=open]:opacity-100">
                             <Carousel
                                 opts={{
                                     align: "start",
@@ -101,9 +101,9 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                                 }}
                                 className="w-full"
                             >
-                                <CarouselContent className="">
+                                <CarouselContent>
                                     {proposals.map((proposal) => (
-                                        <CarouselItem key={proposal.id} className="basis-5/6 sm:basis-1/2 lg:basis-1/3 px-2">
+                                        <CarouselItem key={proposal.id} className="basis-5/6 sm:basis-1/2 lg:basis-1/3 pl-4">
                                             <div className="h-full">
                                                 <Card className="flex flex-col h-[450px] bg-card/80 backdrop-blur-sm overflow-hidden">
                                                     <CardHeader>
