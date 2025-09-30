@@ -16,11 +16,6 @@ import { AnimatedBannerBackground } from './AnimatedBannerBackground';
 import { BannerContentTabs } from './BannerContentTabs';
 import { NotificationDropdown } from './NotificationDropdown';
 import { Icons } from './icons';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { cn } from '@/lib/utils';
-import React from 'react';
-
 
 interface BannerProps {
     textSlides: BannerTextSlide[];
@@ -32,17 +27,23 @@ interface BannerProps {
 }
 
 export function Banner({ textSlides, backgroundSlides, candidates, notifications, notificationSettings, proposals }: BannerProps) {
-  const [isOpen, setIsOpen] = React.useState(false);
+  
+  const handleProposalsClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    document.getElementById('proposals-section')?.scrollIntoView({
+      behavior: 'smooth'
+    });
+  };
 
   return (
-    <section className="relative w-full flex flex-col z-0 min-h-[600px] md:min-h-[720px]">
+    <section className="relative w-full flex flex-col z-0 min-h-[600px] md:min-h-[720px] justify-between">
         <AnimatedBannerBackground slides={backgroundSlides} />
         
         <div className="relative z-20 h-full w-full flex flex-col justify-between flex-1 pt-16 md:pt-20">
             <NotificationDropdown notifications={notifications} notificationSettings={notificationSettings} />
             <Carousel
-                opts={{ loop: true }}
-                plugins={[Autoplay({ delay: 5000, stopOnInteraction: true })]}
+                opts={{ loop: textSlides.length > 1 }}
+                plugins={textSlides.length > 1 ? [Autoplay({ delay: 5000, stopOnInteraction: true })] : []}
                 className="w-full"
             >
                 <CarouselContent>
@@ -68,69 +69,31 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                     </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2" />
-                <CarouselNext className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2" />
+                {textSlides.length > 1 && (
+                  <>
+                    <CarouselPrevious className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2" />
+                    <CarouselNext className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2" />
+                  </>
+                )}
             </Carousel>
         
             <div className="w-full pb-8">
                 <BannerContentTabs candidates={candidates} />
             </div>
-
-            {proposals && proposals.length > 0 && (
-                <Collapsible
-                  open={isOpen}
-                  onOpenChange={setIsOpen}
-                  className="w-full flex flex-col items-center pb-20 md:pb-32 px-4"
-                >
-                    <CollapsibleTrigger asChild>
-                        <div className="flex items-center cursor-pointer group">
-                            <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm">
-                                <Icons.Proposals className="h-12 w-12 animate-icon-glow text-yellow-400" />
-                            </div>
-                            <Button variant="outline" className="h-auto py-2 bg-black/20 border-white/20 text-white group-hover:bg-black/40 backdrop-blur-sm rounded-l-none border-l-0">
-                                {isOpen ? "Ocultar Propuestas" : "Ver Nuestras Propuestas"}
-                            </Button>
-                        </div>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="w-full max-w-6xl mt-8 data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up overflow-hidden">
-                        <Carousel
-                            opts={{
-                                align: "start",
-                                loop: proposals.length > 2,
-                            }}
-                            className="w-full"
-                        >
-                            <CarouselContent className="-ml-4">
-                                {proposals.map((proposal) => (
-                                    <CarouselItem key={proposal.id} className="pl-4 basis-5/6 sm:basis-1/2 lg:basis-1/3">
-                                        <div className="h-full">
-                                            <Card className="flex flex-col h-[450px] bg-card/80 backdrop-blur-sm overflow-hidden">
-                                                <CardHeader>
-                                                    <CardTitle className="font-headline text-xl truncate">{proposal.title}</CardTitle>
-                                                </CardHeader>
-                                                <CardContent className="flex-1 flex flex-col justify-center overflow-y-auto">
-                                                    <div
-                                                        className={cn(
-                                                            "prose prose-sm prose-invert max-w-full",
-                                                            "[&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-md",
-                                                            "[&_img]:rounded-md [&_img]:max-h-64 [&_img]:mx-auto",
-                                                            "[&_audio]:w-full"
-                                                        )}
-                                                        dangerouslySetInnerHTML={{ __html: proposal.content }}
-                                                    />
-                                                </CardContent>
-                                            </Card>
-                                        </div>
-                                    </CarouselItem>
-                                ))}
-                            </CarouselContent>
-                            <CarouselPrevious className="-left-4 sm:-left-12" />
-                            <CarouselNext className="-right-4 sm:-right-12" />
-                        </Carousel>
-                    </CollapsibleContent>
-                </Collapsible>
-            )}
         </div>
+
+        {proposals && proposals.length > 0 && (
+            <div className="relative z-20 w-full flex flex-col items-center pb-20 md:pb-32 px-4">
+                <a href="#proposals-section" onClick={handleProposalsClick} className="flex items-center cursor-pointer group">
+                    <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm">
+                        <Icons.Proposals className="h-12 w-12 animate-icon-glow text-yellow-400" />
+                    </div>
+                    <div className="h-auto py-2 px-4 bg-black/20 border border-white/20 text-white group-hover:bg-black/40 backdrop-blur-sm rounded-r-md border-l-0">
+                        Ver Nuestras Propuestas
+                    </div>
+                </a>
+            </div>
+        )}
       </section>
   )
 }
