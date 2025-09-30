@@ -103,23 +103,25 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                         >
                             <CarouselContent>
                                 {proposals.map((proposal) => (
-                                    <CarouselItem key={proposal.id} className="basis-full flex justify-center px-4">
-                                        <Card className="flex flex-col h-full bg-card/90 backdrop-blur-sm overflow-hidden w-80 lg:w-96">
-                                            <CardHeader>
-                                                <CardTitle className="font-headline text-xl whitespace-normal">{proposal.title}</CardTitle>
-                                            </CardHeader>
-                                            <CardContent className="flex-1 flex flex-col justify-center overflow-y-auto">
-                                                <div
-                                                    className={cn(
-                                                        "w-full whitespace-normal",
-                                                        "[&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-md",
-                                                        "[&_img]:rounded-md [&_img]:max-h-64 [&_img]:mx-auto",
-                                                        "[&_audio]:w-full"
-                                                    )}
-                                                    dangerouslySetInnerHTML={{ __html: proposal.content }}
-                                                />
-                                            </CardContent>
-                                        </Card>
+                                    <CarouselItem key={proposal.id} className="basis-full sm:basis-1/2 lg:basis-1/3">
+                                        <div className="p-2 h-full">
+                                            <Card className="flex flex-col h-full bg-card/90 backdrop-blur-sm overflow-hidden">
+                                                <CardHeader>
+                                                    <CardTitle className="font-headline text-xl whitespace-normal">{proposal.title}</CardTitle>
+                                                </CardHeader>
+                                                <CardContent className="flex-1 flex flex-col justify-center overflow-y-auto">
+                                                    <div
+                                                        className={cn(
+                                                            "w-full whitespace-normal",
+                                                            "[&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-md",
+                                                            "[&_img]:rounded-md [&_img]:max-h-64 [&_img]:mx-auto",
+                                                            "[&_audio]:w-full"
+                                                        )}
+                                                        dangerouslySetInnerHTML={{ __html: proposal.content }}
+                                                    />
+                                                </CardContent>
+                                            </Card>
+                                        </div>
                                     </CarouselItem>
                                 ))}
                             </CarouselContent>
