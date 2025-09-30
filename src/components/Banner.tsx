@@ -17,8 +17,9 @@ import { BannerContentTabs } from './BannerContentTabs';
 import { NotificationDropdown } from './NotificationDropdown';
 import { Icons } from './icons';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { cn } from '@/lib/utils';
+import React from 'react';
 
 
 interface BannerProps {
@@ -31,6 +32,8 @@ interface BannerProps {
 }
 
 export function Banner({ textSlides, backgroundSlides, candidates, notifications, notificationSettings, proposals }: BannerProps) {
+  const [isOpen, setIsOpen] = React.useState(false);
+
   return (
     <section className="relative w-full flex flex-col z-0 min-h-[600px] md:min-h-[720px]">
         <AnimatedBannerBackground slides={backgroundSlides} />
@@ -74,59 +77,58 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
             </div>
 
             {proposals && proposals.length > 0 && (
-                <div className="w-full flex justify-center pb-20 md:pb-32 px-4">
-                    <Dialog>
-                        <DialogTrigger asChild>
-                            <div className="flex items-center cursor-pointer group">
-                                <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm">
-                                    <Icons.Proposals className="h-12 w-12 animate-icon-glow text-yellow-400" />
-                                </div>
-                                <Button variant="outline" className="h-auto py-2 bg-black/20 border-white/20 text-white group-hover:bg-black/40 backdrop-blur-sm rounded-l-none border-l-0">
-                                    Ver Nuestras Propuestas
-                                </Button>
+                <Collapsible
+                  open={isOpen}
+                  onOpenChange={setIsOpen}
+                  className="w-full flex flex-col items-center pb-20 md:pb-32 px-4"
+                >
+                    <CollapsibleTrigger asChild>
+                        <div className="flex items-center cursor-pointer group">
+                            <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm">
+                                <Icons.Proposals className="h-12 w-12 animate-icon-glow text-yellow-400" />
                             </div>
-                        </DialogTrigger>
-                        <DialogContent className="w-[calc(100%-2rem)] sm:w-full sm:max-w-6xl bg-card">
-                           <DialogHeader>
-                               <DialogTitle className="font-headline text-2xl text-primary">Nuestras Propuestas</DialogTitle>
-                           </DialogHeader>
-                            <Carousel
-                                opts={{
-                                    align: "start",
-                                    loop: proposals.length > 2,
-                                }}
-                                className="w-full"
-                            >
-                                <CarouselContent>
-                                    {proposals.map((proposal) => (
-                                        <CarouselItem key={proposal.id} className="basis-5/6 sm:basis-1/2 md:basis-1/3 px-2">
-                                            <div className="h-full">
-                                                <Card className="flex flex-col h-[450px] bg-background/50 overflow-hidden">
-                                                    <CardHeader>
-                                                        <CardTitle className="font-headline text-xl truncate">{proposal.title}</CardTitle>
-                                                    </CardHeader>
-                                                    <CardContent className="flex-1 flex flex-col justify-center overflow-y-auto">
-                                                        <div
-                                                            className={cn(
-                                                                "prose prose-sm prose-invert max-w-full",
-                                                                "[&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-md",
-                                                                "[&_img]:rounded-md [&_img]:max-h-64 [&_img]:mx-auto",
-                                                                "[&_audio]:w-full"
-                                                            )}
-                                                            dangerouslySetInnerHTML={{ __html: proposal.content }}
-                                                        />
-                                                    </CardContent>
-                                                </Card>
-                                            </div>
-                                        </CarouselItem>
-                                    ))}
-                                </CarouselContent>
-                                <CarouselPrevious className="-left-4 sm:-left-12" />
-                                <CarouselNext className="-right-4 sm:-right-12" />
-                            </Carousel>
-                        </DialogContent>
-                    </Dialog>
-                </div>
+                            <Button variant="outline" className="h-auto py-2 bg-black/20 border-white/20 text-white group-hover:bg-black/40 backdrop-blur-sm rounded-l-none border-l-0">
+                                {isOpen ? "Ocultar Propuestas" : "Ver Nuestras Propuestas"}
+                            </Button>
+                        </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="w-full max-w-6xl mt-8">
+                         <Carousel
+                            opts={{
+                                align: "start",
+                                loop: proposals.length > 2,
+                            }}
+                            className="w-full"
+                        >
+                            <CarouselContent className="">
+                                {proposals.map((proposal) => (
+                                    <CarouselItem key={proposal.id} className="basis-5/6 sm:basis-1/2 lg:basis-1/3 px-2">
+                                        <div className="h-full">
+                                            <Card className="flex flex-col h-[450px] bg-card/80 backdrop-blur-sm overflow-hidden">
+                                                <CardHeader>
+                                                    <CardTitle className="font-headline text-xl truncate">{proposal.title}</CardTitle>
+                                                </CardHeader>
+                                                <CardContent className="flex-1 flex flex-col justify-center overflow-y-auto">
+                                                    <div
+                                                        className={cn(
+                                                            "prose prose-sm prose-invert max-w-full",
+                                                            "[&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-md",
+                                                            "[&_img]:rounded-md [&_img]:max-h-64 [&_img]:mx-auto",
+                                                            "[&_audio]:w-full"
+                                                        )}
+                                                        dangerouslySetInnerHTML={{ __html: proposal.content }}
+                                                    />
+                                                </CardContent>
+                                            </Card>
+                                        </div>
+                                    </CarouselItem>
+                                ))}
+                            </CarouselContent>
+                            <CarouselPrevious className="-left-4 sm:-left-12" />
+                            <CarouselNext className="-right-4 sm:-right-12" />
+                        </Carousel>
+                    </CollapsibleContent>
+                </Collapsible>
             )}
         </div>
       </section>
