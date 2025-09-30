@@ -16,7 +16,7 @@ import { AnimatedBannerBackground } from './AnimatedBannerBackground';
 import { BannerContentTabs } from './BannerContentTabs';
 import { NotificationDropdown } from './NotificationDropdown';
 import { Icons } from './icons';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTrigger, DialogOverlay } from '@/components/ui/dialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
@@ -91,14 +91,14 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                             </div>
                         </button>
                     </DialogTrigger>
-                    <DialogContent className="bg-transparent border-none shadow-none max-w-6xl w-full p-4">
+                    <DialogContent className="bg-transparent border-none shadow-none max-w-6xl w-[calc(100%-2rem)] sm:w-full p-4">
                         <Carousel
                             opts={{ align: "start", loop: proposals.length > 2 }}
                             className="w-full"
                         >
-                            <CarouselContent className="-ml-4">
+                            <CarouselContent>
                                 {proposals.map((proposal) => (
-                                    <CarouselItem key={proposal.id} className="pl-4 basis-5/6 sm:basis-1/2 lg:basis-1/3">
+                                    <CarouselItem key={proposal.id} className="pl-4 basis-1/2 lg:basis-1/3">
                                         <div className="h-full">
                                             <Card className="flex flex-col h-[450px] bg-card/90 backdrop-blur-sm overflow-hidden">
                                                 <CardHeader>
@@ -120,7 +120,7 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                                     </CarouselItem>
                                 ))}
                             </CarouselContent>
-                            <CarouselPrevious className="-left-4 sm:-left-12" />
+                             <CarouselPrevious className="-left-4 sm:-left-12" />
                             <CarouselNext className="-right-4 sm:-right-12" />
                         </Carousel>
                     </DialogContent>
