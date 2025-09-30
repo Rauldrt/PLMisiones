@@ -101,8 +101,8 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                             <CarouselContent>
                                 {proposals.map((proposal) => (
                                     <CarouselItem key={proposal.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
-                                        <div className="h-full">
-                                            <Card className="flex flex-col h-[450px] bg-card/90 backdrop-blur-sm overflow-hidden">
+                                        <div className="h-full p-1">
+                                            <Card className="flex flex-col bg-card/90 backdrop-blur-sm overflow-hidden lg:min-h-[450px]">
                                                 <CardHeader>
                                                     <CardTitle className="font-headline text-xl truncate">{proposal.title}</CardTitle>
                                                 </CardHeader>
