@@ -93,18 +93,19 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                         </button>
                     </DialogTrigger>
                     <DialogOverlay className="bg-black/50 backdrop-blur-sm" />
-                    <DialogContent className="bg-transparent border-none shadow-none w-full max-w-6xl p-0">
+                    <DialogContent className="bg-transparent border-none shadow-none p-0">
                         <Carousel
                             opts={{
                                 align: "center",
-                                loop: proposals.length > 1
+                                loop: proposals.length > 1,
+                                dragFree: true,
                             }}
                             className="w-full"
                         >
                             <CarouselContent>
                                 {proposals.map((proposal) => (
-                                    <CarouselItem key={proposal.id} className="w-full max-w-sm">
-                                        <div className="p-2 h-full">
+                                    <CarouselItem key={proposal.id} className="w-full max-w-xs px-2">
+                                        <div className="p-1">
                                             <Card className="flex flex-col h-full bg-card/90 backdrop-blur-sm overflow-hidden">
                                                 <CardHeader>
                                                     <CardTitle className="font-headline text-xl whitespace-normal">{proposal.title}</CardTitle>
