@@ -7,7 +7,7 @@ import path from 'path';
 
 // Note: This module should only be imported and used in server-side components or actions.
 
-const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg'];
+const MEDIA_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.mp4', '.webm', '.mp3', '.wav', '.ogg'];
 
 /**
  * Recursively scans a directory and returns a list of all file paths.
@@ -34,12 +34,12 @@ export async function getPublicImages(): Promise<string[]> {
         const publicDir = path.join(process.cwd(), 'public');
         const allFiles = await getFilesRecursively(publicDir);
 
-        const imageUrls = allFiles
-            .filter(file => IMAGE_EXTENSIONS.includes(path.extname(file).toLowerCase()))
+        const mediaUrls = allFiles
+            .filter(file => MEDIA_EXTENSIONS.includes(path.extname(file).toLowerCase()))
             .map(file => path.relative(publicDir, file))
             .map(file => `/${file.replace(/\\/g, '/')}`); // Ensure forward slashes for URLs
 
-        return imageUrls;
+        return mediaUrls;
     } catch (error) {
         // If the public directory doesn't exist, it's not a critical error.
         if (error instanceof Error && (error as NodeJS.ErrnoException).code === 'ENOENT') {
