@@ -69,13 +69,13 @@ export default function ManageProposalsPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold font-headline">Gestionar Propuestas</h1>
-        <p className="text-muted-foreground">Administra las propuestas de campaña que se muestran en el banner.</p>
+        <p className="text-muted-foreground">Administra las propuestas de campaña que se muestran en el carrusel del banner.</p>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle>Items de Propuestas</CardTitle>
-          <CardDescription>Haz clic en un item para expandirlo y editarlo. Los cambios se guardan todos juntos.</CardDescription>
+          <CardDescription>Edita el contenido de cada propuesta. Puedes usar HTML para incrustar videos, audios, imágenes o texto formateado.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
           {isLoading ? <p>Cargando...</p> : (
@@ -102,9 +102,11 @@ export default function ManageProposalsPage() {
                         <Input id={`title-${index}`} value={item.title} onChange={e => handleFieldChange(index, 'title', e.target.value)} />
                       </div>
                       <div className="space-y-1 mt-4">
-                        <Label htmlFor={`content-${index}`}>Contenido</Label>
-                        <Textarea id={`content-${index}`} value={item.content} onChange={e => handleFieldChange(index, 'content', e.target.value)} rows={4} />
-                        <p className="text-xs text-muted-foreground">Puedes usar HTML para insertar videos o imágenes. Ej: &lt;iframe src="..."&gt;&lt;/iframe&gt;</p>
+                        <Label htmlFor={`content-${index}`}>Contenido (HTML)</Label>
+                        <Textarea id={`content-${index}`} value={item.content} onChange={e => handleFieldChange(index, 'content', e.target.value)} rows={8} />
+                        <p className="text-xs text-muted-foreground">
+                          Pega aquí el código HTML. Para videos de YouTube, usa el código de inserción. Para audio/imágenes de la galería, usa las etiquetas &lt;audio controls src=&quot;/archivo.mp3&quot;&gt;&lt;/audio&gt; o &lt;img src=&quot;/imagen.jpg&quot; /&gt;.
+                        </p>
                       </div>
                   </AccordionContent>
                 </UiAccordionItem>

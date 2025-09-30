@@ -16,8 +16,7 @@ import { AnimatedBannerBackground } from './AnimatedBannerBackground';
 import { BannerContentTabs } from './BannerContentTabs';
 import { NotificationDropdown } from './NotificationDropdown';
 import { Icons } from './icons';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
-import { Card } from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { cn } from '@/lib/utils';
 
@@ -87,28 +86,42 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                                 </Button>
                             </div>
                         </DialogTrigger>
-                        <DialogContent className="max-w-2xl bg-card">
+                        <DialogContent className="max-w-3xl bg-card">
                            <DialogHeader>
                                <DialogTitle className="font-headline text-2xl text-primary">Nuestras Propuestas</DialogTitle>
                            </DialogHeader>
-                            <Card className="mt-2 bg-transparent border-none shadow-none">
-                                <Accordion type="single" collapsible className="w-full">
+                            <Carousel
+                                opts={{
+                                    align: "start",
+                                    loop: proposals.length > 1,
+                                }}
+                                className="w-full"
+                            >
+                                <CarouselContent className="-ml-4">
                                     {proposals.map((proposal) => (
-                                    <AccordionItem key={proposal.id} value={proposal.id}>
-                                        <AccordionTrigger className="font-headline text-lg text-left hover:no-underline">
-                                        {proposal.title}
-                                        </AccordionTrigger>
-                                        <AccordionContent 
-                                            className={cn(
-                                                "text-base text-foreground/80 pt-2",
-                                                "prose prose-sm prose-invert max-w-full"
-                                            )}
-                                            dangerouslySetInnerHTML={{ __html: proposal.content }}
-                                        />
-                                    </AccordionItem>
+                                        <CarouselItem key={proposal.id} className="pl-4">
+                                            <Card className="flex flex-col h-full bg-background/50">
+                                                <CardHeader>
+                                                    <CardTitle className="font-headline text-xl">{proposal.title}</CardTitle>
+                                                </CardHeader>
+                                                <CardContent className="flex-1 flex flex-col justify-center">
+                                                    <div
+                                                        className={cn(
+                                                            "prose prose-sm prose-invert max-w-full",
+                                                            "[&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-md",
+                                                            "[&_img]:rounded-md",
+                                                            "[&_audio]:w-full"
+                                                        )}
+                                                        dangerouslySetInnerHTML={{ __html: proposal.content }}
+                                                    />
+                                                </CardContent>
+                                            </Card>
+                                        </CarouselItem>
                                     ))}
-                                </Accordion>
-                            </Card>
+                                </CarouselContent>
+                                <CarouselPrevious className="-left-4 sm:-left-12" />
+                                <CarouselNext className="-right-4 sm:-right-12" />
+                            </Carousel>
                         </DialogContent>
                     </Dialog>
                 </div>
