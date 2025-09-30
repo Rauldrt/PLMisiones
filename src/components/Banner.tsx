@@ -19,6 +19,7 @@ import { Icons } from './icons';
 import { Dialog, DialogContent, DialogTrigger, DialogOverlay } from '@/components/ui/dialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 
 interface BannerProps {
     textSlides: BannerTextSlide[];
@@ -91,14 +92,15 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                             </div>
                         </button>
                     </DialogTrigger>
-                    <DialogContent className="bg-transparent border-none shadow-none max-w-6xl w-[calc(100%-2rem)] sm:w-full p-4">
+                    <DialogOverlay className="bg-black/50 backdrop-blur-sm" />
+                    <DialogContent className="bg-transparent border-none shadow-none max-w-6xl w-[calc(100%-2rem)] sm:w-full p-0">
                         <Carousel
-                            opts={{ align: "start", loop: proposals.length > 2 }}
+                            opts={{ align: "start", loop: proposals.length > 3 }}
                             className="w-full"
                         >
                             <CarouselContent>
                                 {proposals.map((proposal) => (
-                                    <CarouselItem key={proposal.id} className="pl-4 basis-1/2 lg:basis-1/3">
+                                    <CarouselItem key={proposal.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
                                         <div className="h-full">
                                             <Card className="flex flex-col h-[450px] bg-card/90 backdrop-blur-sm overflow-hidden">
                                                 <CardHeader>
