@@ -95,7 +95,10 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                     <DialogOverlay className="bg-black/50 backdrop-blur-sm" />
                     <DialogContent className="bg-transparent border-none shadow-none w-full sm:max-w-6xl p-0">
                         <Carousel
-                            opts={{ align: "start", loop: proposals.length > 3 }}
+                            opts={{
+                                align: "start",
+                                loop: proposals.length > 1
+                            }}
                             className="w-full"
                         >
                             <CarouselContent>
@@ -108,7 +111,7 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                                             <CardContent className="flex-1 flex flex-col justify-center overflow-y-auto">
                                                 <div
                                                     className={cn(
-                                                        "prose prose-sm prose-invert max-w-full",
+                                                        "max-w-full whitespace-normal",
                                                         "[&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-md",
                                                         "[&_img]:rounded-md [&_img]:max-h-64 [&_img]:mx-auto",
                                                         "[&_audio]:w-full"
