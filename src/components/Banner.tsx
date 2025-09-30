@@ -86,36 +86,38 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                                 </Button>
                             </div>
                         </DialogTrigger>
-                        <DialogContent className="max-w-3xl bg-card">
+                        <DialogContent className="max-w-6xl bg-card">
                            <DialogHeader>
                                <DialogTitle className="font-headline text-2xl text-primary">Nuestras Propuestas</DialogTitle>
                            </DialogHeader>
                             <Carousel
                                 opts={{
                                     align: "start",
-                                    loop: proposals.length > 1,
+                                    loop: proposals.length > 3,
                                 }}
                                 className="w-full"
                             >
                                 <CarouselContent className="-ml-4">
                                     {proposals.map((proposal) => (
-                                        <CarouselItem key={proposal.id} className="pl-4">
-                                            <Card className="flex flex-col h-full bg-background/50">
-                                                <CardHeader>
-                                                    <CardTitle className="font-headline text-xl">{proposal.title}</CardTitle>
-                                                </CardHeader>
-                                                <CardContent className="flex-1 flex flex-col justify-center">
-                                                    <div
-                                                        className={cn(
-                                                            "prose prose-sm prose-invert max-w-full",
-                                                            "[&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-md",
-                                                            "[&_img]:rounded-md",
-                                                            "[&_audio]:w-full"
-                                                        )}
-                                                        dangerouslySetInnerHTML={{ __html: proposal.content }}
-                                                    />
-                                                </CardContent>
-                                            </Card>
+                                        <CarouselItem key={proposal.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                                            <div className="h-full p-1">
+                                                <Card className="flex flex-col h-[450px] bg-background/50 overflow-hidden">
+                                                    <CardHeader>
+                                                        <CardTitle className="font-headline text-xl truncate">{proposal.title}</CardTitle>
+                                                    </CardHeader>
+                                                    <CardContent className="flex-1 flex flex-col justify-center overflow-y-auto">
+                                                        <div
+                                                            className={cn(
+                                                                "prose prose-sm prose-invert max-w-full",
+                                                                "[&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-md",
+                                                                "[&_img]:rounded-md [&_img]:max-h-64 [&_img]:mx-auto",
+                                                                "[&_audio]:w-full"
+                                                            )}
+                                                            dangerouslySetInnerHTML={{ __html: proposal.content }}
+                                                        />
+                                                    </CardContent>
+                                                </Card>
+                                            </div>
                                         </CarouselItem>
                                     ))}
                                 </CarouselContent>
