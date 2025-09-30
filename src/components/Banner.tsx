@@ -93,13 +93,13 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                             <Carousel
                                 opts={{
                                     align: "start",
-                                    loop: proposals.length > 1,
+                                    loop: proposals.length > 2,
                                 }}
                                 className="w-full"
                             >
                                 <CarouselContent>
                                     {proposals.map((proposal) => (
-                                        <CarouselItem key={proposal.id} className="basis-full sm:basis-1/2 lg:basis-1/3 px-2">
+                                        <CarouselItem key={proposal.id} className="basis-5/6 sm:basis-1/2 md:basis-1/3 px-2">
                                             <div className="h-full">
                                                 <Card className="flex flex-col h-[450px] bg-background/50 overflow-hidden">
                                                     <CardHeader>
