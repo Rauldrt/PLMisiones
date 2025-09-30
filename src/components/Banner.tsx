@@ -80,7 +80,7 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
         </div>
         
         {proposals && proposals.length > 0 && (
-             <div className="relative z-20 w-full flex flex-col items-center pb-20 md:pb-32 px-4">
+            <div className="relative z-20 w-full flex flex-col items-center pb-20 md:pb-32 px-4">
                 <Dialog>
                     <DialogTrigger asChild>
                          <button className="flex items-center cursor-pointer group">
@@ -96,17 +96,17 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                     <DialogContent className="bg-transparent border-none shadow-none w-full sm:max-w-6xl p-0">
                         <Carousel
                             opts={{
-                                align: "start",
+                                align: "center",
                                 loop: proposals.length > 1
                             }}
                             className="w-full"
                         >
                             <CarouselContent>
                                 {proposals.map((proposal) => (
-                                    <CarouselItem key={proposal.id} className="flex justify-center px-2">
+                                    <CarouselItem key={proposal.id} className="flex justify-center px-2 basis-full sm:basis-auto">
                                         <Card className="flex flex-col h-full bg-card/90 backdrop-blur-sm overflow-hidden w-80 lg:w-96">
                                             <CardHeader>
-                                                <CardTitle className="font-headline text-xl">{proposal.title}</CardTitle>
+                                                <CardTitle className="font-headline text-xl whitespace-normal">{proposal.title}</CardTitle>
                                             </CardHeader>
                                             <CardContent className="flex-1 flex flex-col justify-center overflow-y-auto">
                                                 <div
