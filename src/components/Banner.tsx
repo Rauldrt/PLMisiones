@@ -92,41 +92,43 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                             </Button>
                         </div>
                     </CollapsibleTrigger>
-                    <CollapsibleContent className="w-full max-w-6xl mt-8">
-                         <Carousel
-                            opts={{
-                                align: "start",
-                                loop: proposals.length > 2,
-                            }}
-                            className="w-full"
-                        >
-                            <CarouselContent className="">
-                                {proposals.map((proposal) => (
-                                    <CarouselItem key={proposal.id} className="basis-5/6 sm:basis-1/2 lg:basis-1/3 px-2">
-                                        <div className="h-full">
-                                            <Card className="flex flex-col h-[450px] bg-card/80 backdrop-blur-sm overflow-hidden">
-                                                <CardHeader>
-                                                    <CardTitle className="font-headline text-xl truncate">{proposal.title}</CardTitle>
-                                                </CardHeader>
-                                                <CardContent className="flex-1 flex flex-col justify-center overflow-y-auto">
-                                                    <div
-                                                        className={cn(
-                                                            "prose prose-sm prose-invert max-w-full",
-                                                            "[&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-md",
-                                                            "[&_img]:rounded-md [&_img]:max-h-64 [&_img]:mx-auto",
-                                                            "[&_audio]:w-full"
-                                                        )}
-                                                        dangerouslySetInnerHTML={{ __html: proposal.content }}
-                                                    />
-                                                </CardContent>
-                                            </Card>
-                                        </div>
-                                    </CarouselItem>
-                                ))}
-                            </CarouselContent>
-                            <CarouselPrevious className="-left-4 sm:-left-12" />
-                            <CarouselNext className="-right-4 sm:-right-12" />
-                        </Carousel>
+                    <CollapsibleContent className="w-full max-w-6xl mt-8 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
+                        <div className="transition-all duration-500 opacity-0 data-[state=open]:opacity-100 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-top-4">
+                            <Carousel
+                                opts={{
+                                    align: "start",
+                                    loop: proposals.length > 2,
+                                }}
+                                className="w-full"
+                            >
+                                <CarouselContent className="">
+                                    {proposals.map((proposal) => (
+                                        <CarouselItem key={proposal.id} className="basis-5/6 sm:basis-1/2 lg:basis-1/3 px-2">
+                                            <div className="h-full">
+                                                <Card className="flex flex-col h-[450px] bg-card/80 backdrop-blur-sm overflow-hidden">
+                                                    <CardHeader>
+                                                        <CardTitle className="font-headline text-xl truncate">{proposal.title}</CardTitle>
+                                                    </CardHeader>
+                                                    <CardContent className="flex-1 flex flex-col justify-center overflow-y-auto">
+                                                        <div
+                                                            className={cn(
+                                                                "prose prose-sm prose-invert max-w-full",
+                                                                "[&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-md",
+                                                                "[&_img]:rounded-md [&_img]:max-h-64 [&_img]:mx-auto",
+                                                                "[&_audio]:w-full"
+                                                            )}
+                                                            dangerouslySetInnerHTML={{ __html: proposal.content }}
+                                                        />
+                                                    </CardContent>
+                                                </Card>
+                                            </div>
+                                        </CarouselItem>
+                                    ))}
+                                </CarouselContent>
+                                <CarouselPrevious className="-left-4 sm:-left-12" />
+                                <CarouselNext className="-right-4 sm:-right-12" />
+                            </Carousel>
+                        </div>
                     </CollapsibleContent>
                 </Collapsible>
             )}
