@@ -1,6 +1,6 @@
 
 'use client';
-import { useState, useEffect, useTransition } from 'react';
+import { useState, useEffect, useTransition, useRef } from 'react';
 import { getProposalsAction } from '@/actions/data';
 import { saveProposals } from '@/actions/admin';
 import type { Proposal } from '@/lib/types';
@@ -12,12 +12,19 @@ import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/icons';
 import { useToast } from '@/hooks/use-toast';
 import { Accordion, AccordionContent, AccordionItem as UiAccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { ImageGallery } from '@/components/ImageGallery';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import path from 'path';
 
 export default function ManageProposalsPage() {
   const [items, setItems] = useState<Proposal[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, startSavingTransition] = useTransition();
   const { toast } = useToast();
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const contentTextareaRef = useRef<HTMLTextAreaElement | null>(null);
+
 
   useEffect(() => {
     async function fetchData() {
@@ -46,6 +53,33 @@ export default function ManageProposalsPage() {
     setItems(newItems);
   };
   
+    const handleMediaSelect = (url: string) => {
+    if (editingIndex === null) return;
+
+    const extension = path.extname(url).toLowerCase();
+    let tagToInsert = '';
+
+    if (['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'].includes(extension)) {
+      tagToInsert = `<img src="${url}" alt="Imagen de propuesta" style="width:100%; height:auto; border-radius: 0.5rem;" />`;
+    } else if (['.mp3', '.wav', '.ogg'].includes(extension)) {
+      tagToInsert = `<audio controls src="${url}" style="width:100%;"></audio>`;
+    } else if (['.mp4', '.webm'].includes(extension)) {
+      tagToInsert = `<video controls src="${url}" style="width:100%; border-radius: 0.5rem;"></video>`;
+    } else {
+        toast({
+            variant: 'destructive',
+            title: 'Formato no soportado',
+            description: 'No se puede generar una etiqueta para este tipo de archivo.'
+        });
+        return;
+    }
+
+    const currentContent = items[editingIndex].content;
+    const newContent = `${currentContent}\n${tagToInsert}`;
+    handleFieldChange(editingIndex, 'content', newContent);
+    setGalleryOpen(false);
+  };
+
   const addItem = () => {
     setItems([...items, { id: new Date().getTime().toString(), title: 'Nueva Propuesta', content: 'Descripción de la propuesta...' }]);
   }
@@ -66,6 +100,7 @@ export default function ManageProposalsPage() {
   };
 
   return (
+    <Dialog open={galleryOpen} onOpenChange={setGalleryOpen}>
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold font-headline">Gestionar Propuestas</h1>
@@ -102,10 +137,23 @@ export default function ManageProposalsPage() {
                         <Input id={`title-${index}`} value={item.title} onChange={e => handleFieldChange(index, 'title', e.target.value)} />
                       </div>
                       <div className="space-y-1 mt-4">
-                        <Label htmlFor={`content-${index}`}>Contenido (HTML)</Label>
-                        <Textarea id={`content-${index}`} value={item.content} onChange={e => handleFieldChange(index, 'content', e.target.value)} rows={8} />
+                        <div className="flex justify-between items-center mb-1">
+                           <Label htmlFor={`content-${index}`}>Contenido (HTML)</Label>
+                            <DialogTrigger asChild>
+                                <Button variant="outline" size="sm" onClick={() => setEditingIndex(index)}>
+                                    <Icons.Gallery className="mr-2 h-4 w-4" />
+                                    Abrir Galería
+                                </Button>
+                            </DialogTrigger>
+                        </div>
+                        <Textarea 
+                            id={`content-${index}`} 
+                            value={item.content} 
+                            onChange={e => handleFieldChange(index, 'content', e.target.value)} 
+                            rows={8}
+                        />
                         <p className="text-xs text-muted-foreground">
-                          Pega aquí el código HTML. Para videos de YouTube, usa el código de inserción. Para audio/imágenes de la galería, usa las etiquetas &lt;audio controls src=&quot;/archivo.mp3&quot;&gt;&lt;/audio&gt; o &lt;img src=&quot;/imagen.jpg&quot; /&gt;.
+                          Pega aquí el código HTML. Para videos de YouTube, usa el código de inserción. Para audio/imágenes de la galería, usa el botón de arriba para insertar la etiqueta correcta.
                         </p>
                       </div>
                   </AccordionContent>
@@ -122,5 +170,14 @@ export default function ManageProposalsPage() {
         </CardContent>
       </Card>
     </div>
+     <DialogContent className="max-w-4xl h-[80vh]">
+        <DialogHeader>
+            <DialogTitle>Seleccionar Contenido de la Galería</DialogTitle>
+            <p className="text-sm text-muted-foreground">Selecciona un archivo para insertarlo como una etiqueta HTML en el contenido.</p>
+        </DialogHeader>
+        <ImageGallery onImageSelect={handleMediaSelect} />
+      </DialogContent>
+    </Dialog>
   );
 }
+
