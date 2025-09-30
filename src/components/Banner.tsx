@@ -103,7 +103,7 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                                     <CarouselItem key={proposal.id} className="basis-full sm:basis-1/2 lg:basis-1/3 px-2">
                                         <Card className="flex flex-col h-full bg-card/90 backdrop-blur-sm overflow-hidden">
                                             <CardHeader>
-                                                <CardTitle className="font-headline text-xl truncate">{proposal.title}</CardTitle>
+                                                <CardTitle className="font-headline text-xl">{proposal.title}</CardTitle>
                                             </CardHeader>
                                             <CardContent className="flex-1 flex flex-col justify-center overflow-y-auto">
                                                 <div
