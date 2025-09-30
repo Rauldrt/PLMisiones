@@ -93,7 +93,7 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                         </button>
                     </DialogTrigger>
                     <DialogOverlay className="bg-black/50 backdrop-blur-sm" />
-                    <DialogContent className="bg-transparent border-none shadow-none w-full sm:max-w-6xl p-0">
+                    <DialogContent className="bg-transparent border-none shadow-none w-full max-w-6xl p-0">
                         <Carousel
                             opts={{
                                 align: "center",
@@ -103,7 +103,7 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                         >
                             <CarouselContent>
                                 {proposals.map((proposal) => (
-                                    <CarouselItem key={proposal.id} className="basis-full sm:basis-1/2 lg:basis-1/3">
+                                    <CarouselItem key={proposal.id} className="w-full max-w-sm">
                                         <div className="p-2 h-full">
                                             <Card className="flex flex-col h-full bg-card/90 backdrop-blur-sm overflow-hidden">
                                                 <CardHeader>
