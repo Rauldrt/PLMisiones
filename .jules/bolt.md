@@ -1,0 +1,3 @@
+## 2024-05-24 - Optimizing Scroll Event Handlers in React
+**Learning:** Attaching `window.addEventListener('scroll')` directly to state setters (e.g., `setOffsetY(window.scrollY)`) in React causes synchronous re-renders at the scroll rate (up to 60fps), which blocks the main thread and causes severe jank and performance degradation, especially with parallax effects.
+**Action:** Always wrap scroll event handlers that update state in `requestAnimationFrame` using a `ticking` flag pattern to align state updates with browser paints and drop unnecessary intermediate frames. Also pass `{ passive: true }` to the event listener to improve scroll performance.
