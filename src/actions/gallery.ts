@@ -14,7 +14,7 @@ export async function uploadPublicFilesAction(files: { name: string; data: strin
     try {
         const publicDir = path.join(process.cwd(), 'public');
         
-        for (const file of files) {
+        const uploadPromises = files.map(async (file) => {
             // Sanitize file name to prevent directory traversal
             const sanitizedFileName = path.basename(file.name);
             if (sanitizedFileName !== file.name) {
@@ -29,7 +29,9 @@ export async function uploadPublicFilesAction(files: { name: string; data: strin
             }
 
             await fs.writeFile(filePath, base64Data, 'base64');
-        }
+        });
+
+        await Promise.all(uploadPromises);
 
         revalidatePath('/admin/gallery');
         return { success: true, message: `${files.length} archivo(s) subido(s) con éxito.` };
