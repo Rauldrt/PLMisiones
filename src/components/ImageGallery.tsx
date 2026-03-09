@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { getPublicImagesAction } from "@/actions/gallery";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
 import { Skeleton } from "./ui/skeleton";
 import { Icons } from "./icons";
 import path from "path";
