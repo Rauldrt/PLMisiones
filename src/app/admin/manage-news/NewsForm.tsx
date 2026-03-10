@@ -133,7 +133,7 @@ export function NewsForm({
                     <div className="flex items-center gap-2">
                       <FormControl><Input placeholder="https://... o /ruta/local.jpg" {...field} value={field.value || ''}/></FormControl>
                       <DialogTrigger asChild>
-                          <Button variant="outline" size="icon">
+                          <Button aria-label="Abrir galería" variant="outline" size="icon">
                               <Icons.Gallery className="w-4 h-4" />
                           </Button>
                       </DialogTrigger>

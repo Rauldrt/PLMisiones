@@ -102,7 +102,7 @@ export default function ManagePageHeadersPage() {
                             <div className="flex items-center gap-2">
                                 <Input id={`imageUrl-${index}`} value={header.imageUrl || ''} onChange={e => handleFieldChange(index, 'imageUrl', e.target.value)} />
                                 <DialogTrigger asChild>
-                                    <Button variant="outline" size="icon" onClick={() => setEditingIndex(index)}>
+                                    <Button aria-label="Editar" variant="outline" size="icon" onClick={() => setEditingIndex(index)}>
                                         <Icons.Gallery className="w-4 h-4" />
                                     </Button>
                                 </DialogTrigger>

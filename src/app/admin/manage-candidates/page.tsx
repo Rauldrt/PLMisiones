@@ -92,7 +92,7 @@ export default function ManageCandidatesPage() {
                           </div>
                         </AccordionTrigger>
                         <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
-                            <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
+                            <Button aria-label="Eliminar" variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
                         </div>
                       </div>
                     <AccordionContent className="p-4 border-t space-y-4">
@@ -111,7 +111,7 @@ export default function ManageCandidatesPage() {
                             <div className="flex items-center gap-2">
                                 <Input id={`imageUrl-${index}`} value={item.imageUrl} onChange={e => handleFieldChange(index, 'imageUrl', e.target.value)} />
                                 <DialogTrigger asChild>
-                                    <Button variant="outline" size="icon" onClick={() => setEditingIndex(index)}>
+                                    <Button aria-label="Editar" variant="outline" size="icon" onClick={() => setEditingIndex(index)}>
                                         <Icons.Gallery className="w-4 h-4" />
                                     </Button>
                                 </DialogTrigger>
