@@ -140,14 +140,14 @@ export default function ManageNewsPage() {
                         </div>
                         </AccordionTrigger>
                         <div className="flex items-center gap-1.5 pr-2">
-                            <Button variant="ghost" size="icon" onClick={() => moveArticle(index, 'up')} disabled={index === 0 || isSaving}>
+                            <Button aria-label="Mover hacia arriba" variant="ghost" size="icon" onClick={() => moveArticle(index, 'up')} disabled={index === 0 || isSaving}>
                                 <Icons.ChevronUp className="h-4 w-4" />
                             </Button>
-                             <Button variant="ghost" size="icon" onClick={() => moveArticle(index, 'down')} disabled={index === articles.length - 1 || isSaving}>
+                             <Button aria-label="Mover hacia abajo" variant="ghost" size="icon" onClick={() => moveArticle(index, 'down')} disabled={index === articles.length - 1 || isSaving}>
                                 <Icons.ChevronDown className="h-4 w-4" />
                             </Button>
                              <DialogTrigger asChild>
-                                <Button variant="outline" size="icon" onClick={() => setEditingArticle(article)}>
+                                <Button aria-label="Editar" variant="outline" size="icon" onClick={() => setEditingArticle(article)}>
                                     <Icons.Edit className="h-4 w-4" />
                                 </Button>
                             </DialogTrigger>
@@ -158,7 +158,7 @@ export default function ManageNewsPage() {
                             />
                             <AlertDialog>
                             <AlertDialogTrigger asChild>
-                                <Button variant="destructive" size="icon" disabled={isSaving}>
+                                <Button aria-label="Eliminar" variant="destructive" size="icon" disabled={isSaving}>
                                     <Icons.Trash className="h-4 w-4" />
                                 </Button>
                             </AlertDialogTrigger>

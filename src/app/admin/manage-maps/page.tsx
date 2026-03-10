@@ -82,7 +82,7 @@ export default function ManageMapsPage() {
                             onCheckedChange={(checked) => handleFieldChange(index, 'enabled', checked)}
                             aria-label="Habilitar mapa"
                           />
-                          <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
+                          <Button aria-label="Eliminar" variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
                       </div>
                     </div>
                   <AccordionContent className="p-4 border-t">

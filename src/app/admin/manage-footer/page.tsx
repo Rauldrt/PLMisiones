@@ -199,7 +199,7 @@ export default function ManageFooterPage() {
                     </div>
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
-                            <Button variant="destructive" size="icon"><Icons.Trash className="w-4 h-4" /></Button>
+                            <Button aria-label="Eliminar" variant="destructive" size="icon"><Icons.Trash className="w-4 h-4" /></Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader>

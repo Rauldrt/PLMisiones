@@ -122,13 +122,13 @@ export default function ManageProposalsPage() {
                           <span>{item.title || `Propuesta ${index + 1}`}</span>
                       </AccordionTrigger>
                       <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
-                          <Button variant="ghost" size="icon" onClick={() => moveItem(index, 'up')} disabled={index === 0}>
+                          <Button aria-label="Mover hacia arriba" variant="ghost" size="icon" onClick={() => moveItem(index, 'up')} disabled={index === 0}>
                               <Icons.ChevronUp className="w-4 h-4"/>
                           </Button>
-                            <Button variant="ghost" size="icon" onClick={() => moveItem(index, 'down')} disabled={index === items.length - 1}>
+                            <Button aria-label="Mover hacia abajo" variant="ghost" size="icon" onClick={() => moveItem(index, 'down')} disabled={index === items.length - 1}>
                               <Icons.ChevronDown className="w-4 h-4"/>
                           </Button>
-                          <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
+                          <Button aria-label="Eliminar" variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
                       </div>
                     </div>
                   <AccordionContent className="p-4 border-t">
