@@ -1,7 +1,7 @@
 
 import { getGoogleFormAction, getPageHeaderByPathAction } from '@/actions/data';
 import { PageHeader } from '@/components/PageHeader';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { GoogleFormEmbed } from '@/components/GoogleFormEmbed';
 
 export const metadata = {
