@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getPublicNewsAction, getPageHeaderByPathAction } from '@/actions/data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/PageHeader';
 import { InstagramEmbedProcessor } from '@/components/InstagramEmbedProcessor';
 import { NewsCard } from '@/components/NewsCard';
