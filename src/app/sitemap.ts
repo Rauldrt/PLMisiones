@@ -1,4 +1,4 @@
-import { getPublicNewsAction, getReferentesAction } from '@/actions/data';
+import { getPublicNewsAction } from '@/actions/data';
 import { MetadataRoute } from 'next';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://partidolibertariomisiones.com.ar';
