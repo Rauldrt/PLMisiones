@@ -18,10 +18,22 @@ export function PageHeader({ icon, title, description, imageUrl, imageHint }: Pa
   const IconComponent = getIcon(icon);
   const [offsetY, setOffsetY] = useState(0);
 
-  const handleScroll = () => setOffsetY(window.scrollY);
-
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    let ticking = false;
+
+    // Optimization: Throttle scroll events using requestAnimationFrame to prevent
+    // synchronous state updates from blocking the main thread during scrolling.
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setOffsetY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
