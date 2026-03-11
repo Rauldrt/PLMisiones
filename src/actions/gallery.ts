@@ -13,12 +13,18 @@ export async function getPublicImagesAction() {
 export async function uploadPublicFilesAction(files: { name: string; data: string }[]): Promise<{ success: boolean; message: string }> {
     try {
         const publicDir = path.join(process.cwd(), 'public');
+        const ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.mp4', '.webm', '.mp3', '.wav', '.ogg'];
         
-        for (const file of files) {
+        await Promise.all(files.map(async (file) => {
             // Sanitize file name to prevent directory traversal
             const sanitizedFileName = path.basename(file.name);
             if (sanitizedFileName !== file.name) {
                 throw new Error(`Nombre de archivo inválido: ${file.name}`);
+            }
+
+            const ext = path.extname(sanitizedFileName).toLowerCase();
+            if (!ALLOWED_EXTENSIONS.includes(ext)) {
+                throw new Error(`Extensión de archivo no permitida: ${ext}`);
             }
 
             const filePath = path.join(publicDir, sanitizedFileName);
@@ -29,7 +35,7 @@ export async function uploadPublicFilesAction(files: { name: string; data: strin
             }
 
             await fs.writeFile(filePath, base64Data, 'base64');
-        }
+        }));
 
         revalidatePath('/admin/gallery');
         return { success: true, message: `${files.length} archivo(s) subido(s) con éxito.` };
