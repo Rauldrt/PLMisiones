@@ -1,0 +1,3 @@
+## 2026-03-12 - [Missing button types and accessible labels]
+**Learning:** Found a recurring pattern where interactive elements built with the `<button>` tag lack explicit `type="button"` and `aria-label` attributes. Without `type="button"`, these elements can implicitly trigger form submissions if placed within a `<form>` context. Furthermore, interactive icon-only or generic elements require explicit `aria-label` attributes (in Spanish) to be properly interpreted by screen readers.
+**Action:** Consistently include `type="button"` on non-submit buttons and `aria-label` localized to Spanish for all icon-only interactive controls.
