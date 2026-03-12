@@ -18,11 +18,31 @@ export function PageHeader({ icon, title, description, imageUrl, imageHint }: Pa
   const IconComponent = getIcon(icon);
   const [offsetY, setOffsetY] = useState(0);
 
-  const handleScroll = () => setOffsetY(window.scrollY);
-
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    let ticking = false;
+    let frameId: number;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        // ⚡ Bolt: Throttling scroll events using requestAnimationFrame prevents synchronous state updates
+        // and layout thrashing, reducing main thread blocking during scroll.
+        // Impact: Measurably smoother scrolling and reduced dropped frames.
+        frameId = window.requestAnimationFrame(() => {
+          setOffsetY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    // ⚡ Bolt: passive: true allows the browser to scroll immediately without waiting for preventDefault()
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+        window.removeEventListener('scroll', handleScroll);
+        // ⚡ Bolt: Prevent state updates on unmounted components
+        if (frameId) window.cancelAnimationFrame(frameId);
+    };
   }, []);
 
   return (
