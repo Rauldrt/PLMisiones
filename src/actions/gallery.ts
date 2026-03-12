@@ -10,6 +10,8 @@ export async function getPublicImagesAction() {
     return getPublicImages();
 }
 
+const ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.mp4', '.webm', '.mp3', '.wav', '.ogg'];
+
 export async function uploadPublicFilesAction(files: { name: string; data: string }[]): Promise<{ success: boolean; message: string }> {
     try {
         const publicDir = path.join(process.cwd(), 'public');
@@ -19,6 +21,11 @@ export async function uploadPublicFilesAction(files: { name: string; data: strin
             const sanitizedFileName = path.basename(file.name);
             if (sanitizedFileName !== file.name) {
                 throw new Error(`Nombre de archivo inválido: ${file.name}`);
+            }
+
+            const ext = path.extname(sanitizedFileName).toLowerCase();
+            if (!ALLOWED_EXTENSIONS.includes(ext)) {
+                throw new Error(`Tipo de archivo no permitido: ${ext}`);
             }
 
             const filePath = path.join(publicDir, sanitizedFileName);

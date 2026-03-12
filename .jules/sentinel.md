@@ -1,0 +1,4 @@
+## 2024-05-24 - Unrestricted File Upload Vulnerability in Gallery Action
+**Vulnerability:** The `uploadPublicFilesAction` server action allowed arbitrary file types (like .html, .js, .php) to be uploaded directly into the `public` directory, posing a high risk for Cross-Site Scripting (XSS) and potentially Remote Code Execution (RCE) depending on server configuration.
+**Learning:** While the code used `path.basename` to prevent directory traversal (e.g. `../../`), it failed to validate the file extension. In Next.js, files in the `public` directory are served statically, so a malicious `.html` file uploaded there would be directly accessible and executed in the user's browser under the application's origin.
+**Prevention:** Always validate file extensions against a strict allowlist (e.g., images, audio, video) before saving user-uploaded files, especially to publicly accessible directories. Ensure the extension check is case-insensitive.
