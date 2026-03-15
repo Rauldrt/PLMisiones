@@ -1,0 +1,3 @@
+## 2024-03-11 - [Throttling Scroll Listeners]
+**Learning:** Found an anti-pattern in the codebase where scroll event listeners were updating state synchronously on every tick (`setOffsetY(window.scrollY)`), blocking the main thread and causing potential jank during scrolling.
+**Action:** Always use `requestAnimationFrame` with a `ticking` flag to throttle scroll event handlers, and ensure `{ passive: true }` is passed to `addEventListener` to allow the browser to optimize scrolling performance without waiting for the listener to execute. Applied this to `AnimatedBannerBackground.tsx` and `PageHeader.tsx`.
