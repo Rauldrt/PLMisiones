@@ -1,0 +1,3 @@
+## 2024-03-15 - Unthrottled Scroll Event Listeners
+**Learning:** Found an anti-pattern in the codebase where scroll event listeners were updating React state synchronously without throttling or `{ passive: true }`. This causes layout thrashing and jank during scrolling because React tries to re-render the component continuously as the scroll position changes.
+**Action:** When adding scroll event listeners, always use `requestAnimationFrame` with a `ticking` flag to throttle state updates to the browser's paint cycle, and add `{ passive: true }` to the event listener options so the browser knows scrolling won't be blocked.
