@@ -1,7 +1,6 @@
 
 'use client';
 
-import { useEffect } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import type { NewsArticle } from '@/lib/types';
