@@ -35,6 +35,20 @@ const fetchAndParseUrlTool = ai.defineTool(
   },
   async ({ url }) => {
     try {
+      // Security: Prevent SSRF by checking the hostname against internal/private IP ranges and localhost.
+      const parsedUrl = new URL(url);
+      const hostname = parsedUrl.hostname.toLowerCase();
+      const isLocalhost = hostname === 'localhost' || hostname === '[::1]';
+      const isPrivateIP = /^127\.\d+\.\d+\.\d+$/.test(hostname) || // Loopback
+        /^10\.\d+\.\d+\.\d+$/.test(hostname) || // Class A private
+        /^172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+$/.test(hostname) || // Class B private
+        /^192\.168\.\d+\.\d+$/.test(hostname) || // Class C private
+        /^169\.254\.\d+\.\d+$/.test(hostname); // Link-local (AWS metadata, etc)
+
+      if (isLocalhost || isPrivateIP) {
+        throw new Error('SSRF attempt blocked: Cannot fetch from internal or private networks.');
+      }
+
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
