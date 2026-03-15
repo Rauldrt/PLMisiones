@@ -10,11 +10,18 @@ export async function getPublicImagesAction() {
     return getPublicImages();
 }
 
+const ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.mp4', '.webm', '.mp3', '.wav', '.ogg'];
+
 export async function uploadPublicFilesAction(files: { name: string; data: string }[]): Promise<{ success: boolean; message: string }> {
     try {
         const publicDir = path.join(process.cwd(), 'public');
         
         for (const file of files) {
+            // Security: Validate file extension to prevent unrestricted file upload (e.g., .html, .js)
+            const ext = path.extname(file.name).toLowerCase();
+            if (!ALLOWED_EXTENSIONS.includes(ext)) {
+                throw new Error(`Tipo de archivo no permitido: ${ext || 'sin extensión'}. Solo se permiten archivos multimedia.`);
+            }
             // Sanitize file name to prevent directory traversal
             const sanitizedFileName = path.basename(file.name);
             if (sanitizedFileName !== file.name) {
