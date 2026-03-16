@@ -18,11 +18,33 @@ export function PageHeader({ icon, title, description, imageUrl, imageHint }: Pa
   const IconComponent = getIcon(icon);
   const [offsetY, setOffsetY] = useState(0);
 
-  const handleScroll = () => setOffsetY(window.scrollY);
-
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    let ticking = false;
+    let animationFrameId: number;
+
+    // ⚡ Bolt: Throttled scroll listener using requestAnimationFrame
+    // to prevent synchronous React state updates from blocking the main thread
+    // during high-frequency scroll events
+    const handleScroll = () => {
+      if (!ticking) {
+        animationFrameId = window.requestAnimationFrame(() => {
+          setOffsetY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    // ⚡ Bolt: Added { passive: true } to tell the browser we won't call preventDefault,
+    // allowing it to optimize scroll performance.
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (animationFrameId) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, []);
 
   return (
