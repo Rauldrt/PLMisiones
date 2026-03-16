@@ -35,6 +35,31 @@ const fetchAndParseUrlTool = ai.defineTool(
   },
   async ({ url }) => {
     try {
+      // Security: Prevent SSRF by validating the URL before fetching
+      const parsedUrl = new URL(url);
+      if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
+        throw new Error('Invalid protocol. Only HTTP and HTTPS are allowed.');
+      }
+
+      const hostname = parsedUrl.hostname.toLowerCase();
+      // Block common internal/private IP ranges and metadata service.
+      // We check for exact matches or subdomains of localhost, and exact matches for common private IPs.
+      // (Note: A complete SSRF defense requires resolving the DNS, but this mitigates trivial attacks).
+      const isPrivateOrLocal =
+        hostname === 'localhost' ||
+        hostname.endsWith('.localhost') ||
+        hostname === '127.0.0.1' ||
+        hostname === '::1' ||
+        hostname === '0.0.0.0' ||
+        hostname === '169.254.169.254' || // AWS/GCP Metadata
+        /^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(hostname) ||
+        /^192\.168\.\d{1,3}\.\d{1,3}$/.test(hostname) ||
+        /^172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}$/.test(hostname);
+
+      if (isPrivateOrLocal) {
+        throw new Error('Access to local or private networks is forbidden.');
+      }
+
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
