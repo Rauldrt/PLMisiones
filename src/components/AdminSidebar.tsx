@@ -63,6 +63,7 @@ function NavContent({ socialLinks }: NavContentProps) {
                 'flex items-center gap-3 rounded-lg px-3 py-2 text-foreground/80 transition-all hover:text-foreground hover:bg-muted',
                 pathname.startsWith(link.href) ? 'bg-muted font-semibold text-foreground' : ''
               )}
+              aria-current={pathname.startsWith(link.href) ? "page" : undefined}
             >
               {Icon && <Icon className="h-5 w-5" />}
               {link.label}
@@ -122,12 +123,12 @@ export function AdminSidebar({ socialLinks }: AdminSidebarProps) {
       <div className="md:hidden absolute top-4 left-4 z-50">
          <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon">
+              <Button variant="outline" size="icon" aria-controls="admin-mobile-menu">
                 <Icons.Menu className="h-5 w-5" />
-                <span className="sr-only">Abrir menú</span>
+                <span className="sr-only">Abrir menú de administración</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[240px] p-0">
+            <SheetContent id="admin-mobile-menu" side="left" className="w-[240px] p-0">
                <NavContent socialLinks={socialLinks} />
             </SheetContent>
           </Sheet>

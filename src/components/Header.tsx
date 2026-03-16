@@ -67,6 +67,7 @@ export function Header({ socialLinks }: HeaderProps) {
                   'relative overflow-hidden rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ease-in-out hover:scale-105 hover:bg-muted',
                   (pathname === link.href) ? 'font-semibold text-foreground' : 'text-foreground/80'
                 )}
+                aria-current={pathname === link.href ? "page" : undefined}
               >
                 {link.label}
               </Link>
@@ -90,13 +91,15 @@ export function Header({ socialLinks }: HeaderProps) {
                 variant="default"
                 size="icon"
                 className="fixed bottom-6 right-6 z-50 h-16 w-16 rounded-full shadow-lg"
+                aria-expanded={isMobileMenuOpen}
+                aria-controls="mobile-menu-content"
               >
                   <Icons.Menu className={cn("absolute h-6 w-6 transition-all duration-300", isMobileMenuOpen && "opacity-0 rotate-90")} />
                   <Icons.Close className={cn("absolute h-6 w-6 transition-all duration-300", !isMobileMenuOpen && "opacity-0 rotate-90")} />
-                <span className="sr-only">Abrir menú</span>
+                <span className="sr-only">{isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}</span>
               </Button>
           </PopoverTrigger>
-          <PopoverContent side="top" align="end" className="w-64 p-0 mb-2" sideOffset={12}>
+          <PopoverContent id="mobile-menu-content" side="top" align="end" className="w-64 p-0 mb-2" sideOffset={12}>
             <div className="flex flex-col h-full">
               <div className="p-4 border-b">
                   <Link href="/" className="flex items-center gap-3" onClick={(e) => handleLinkClick(e, '/')}>
@@ -114,6 +117,7 @@ export function Header({ socialLinks }: HeaderProps) {
                       'block rounded-md px-3 py-2 text-base font-medium hover:bg-muted',
                       pathname === link.href ? 'font-semibold text-foreground' : 'text-foreground/80'
                     )}
+                    aria-current={pathname === link.href ? "page" : undefined}
                   >
                     {link.label}
                   </Link>
