@@ -17,6 +17,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import type { BannerSlide, MosaicItem, AccordionItem, NewsArticle, Referente, Notification } from '@/lib/types';
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
+import { clientSanitize } from '@/lib/client-sanitize';
 
 
 interface HomepageClientProps {
@@ -189,7 +190,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                   </div>
                 </CardHeader>
                 <CardContent className="flex-grow p-6 pt-0">
-                  <div className="text-foreground/80 line-clamp-3" dangerouslySetInnerHTML={{ __html: article.content.split('</p>')[0] + '</p>'}} />
+                  <div className="text-foreground/80 line-clamp-3" dangerouslySetInnerHTML={{ __html: clientSanitize(article.content.split('</p>')[0] + '</p>')}} />
                 </CardContent>
                 <div className="p-6 pt-0">
                   <Button asChild variant="link" className="p-0 h-auto">

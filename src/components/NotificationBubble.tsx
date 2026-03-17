@@ -17,6 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { clientSanitize } from '@/lib/client-sanitize';
 
 interface NotificationDropdownProps {
   notifications: NotificationItem[];
@@ -72,7 +73,7 @@ function NotificationDialog({
             </DialogHeader>
             <div
               className="prose prose-sm prose-invert mt-4 max-w-full"
-              dangerouslySetInnerHTML={{ __html: item.content }}
+              dangerouslySetInnerHTML={{ __html: clientSanitize(item.content) }}
             />
             <Button asChild className="mt-4">
               <Link href="/notificaciones">Ver todas las notificaciones</Link>

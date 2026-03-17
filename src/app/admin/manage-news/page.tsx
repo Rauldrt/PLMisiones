@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/dialog"
 import { cn } from '@/lib/utils';
 import { Switch } from '@/components/ui/switch';
+import { clientSanitize } from '@/lib/client-sanitize';
 
 
 export default function ManageNewsPage() {
@@ -180,7 +181,7 @@ export default function ManageNewsPage() {
                     <AccordionContent className="pt-2 pb-4">
                         <div
                             className="prose prose-sm prose-invert max-w-full line-clamp-4"
-                            dangerouslySetInnerHTML={{ __html: article.content }}
+                            dangerouslySetInnerHTML={{ __html: clientSanitize(article.content) }}
                         />
                     </AccordionContent>
                     </AccordionItem>

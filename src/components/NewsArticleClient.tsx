@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import type { NewsArticle } from '@/lib/types';
 import { notFound } from 'next/navigation';
+import { clientSanitize } from '@/lib/client-sanitize';
 
 interface NewsArticleClientProps {
   article: NewsArticle;
@@ -51,12 +52,12 @@ export function NewsArticleClient({ article, formattedDate }: NewsArticleClientP
 
             {isEmbed ? (
               // For embeds, we let them take the full width of the container.
-              <div className="responsive-video" dangerouslySetInnerHTML={{ __html: article.content }} />
+              <div className="responsive-video" dangerouslySetInnerHTML={{ __html: clientSanitize(article.content) }} />
             ) : (
               // For standard text articles, we use the prose class for styling.
               <div 
                 className="prose prose-invert mx-auto max-w-4xl prose-headings:font-headline prose-a:text-foreground/80 prose-strong:text-foreground" 
-                dangerouslySetInnerHTML={{ __html: article.content }} 
+                dangerouslySetInnerHTML={{ __html: clientSanitize(article.content) }}
               />
             )}
         </div>

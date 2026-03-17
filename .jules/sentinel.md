@@ -1,4 +1,4 @@
-## 2024-05-24 - Unrestricted File Upload in Gallery Action
-**Vulnerability:** The Server Action `uploadPublicFilesAction` allowed arbitrary base64 file data to be written to the `public/` directory without validating the file extension, leading to a potential Unrestricted File Upload vulnerability (e.g., uploading `.html` or `.js` files for XSS).
-**Learning:** Even if a file name is sanitized against path traversal (`path.basename`), the file extension must still be validated against a strict whitelist to ensure only expected file types (like images and videos) can be uploaded and served from public directories.
-**Prevention:** Always validate file extensions against a whitelist of safe types before writing any user-uploaded content to the filesystem.
+## 2024-05-24 - Unsanitized input used in dangerouslySetInnerHTML
+**Vulnerability:** Several components render raw HTML user input without sanitization using `dangerouslySetInnerHTML`. Specifically, `article.content`, `item.content`, `proposal.content` and `item.embedCode` are rendered as is, opening up Cross-Site Scripting (XSS) attacks.
+**Learning:** In Next.js applications, `dangerouslySetInnerHTML` is commonly used to render rich text. However, when the content is from an untrusted source or user input, it poses a significant XSS risk if not sanitized properly on the client and server.
+**Prevention:** Always sanitize HTML input using a library like `dompurify` (or `isomorphic-dompurify` for SSR/Server Components) before passing it to `dangerouslySetInnerHTML`. Ensure that both client-side sanitization and server-side validation/sanitization are implemented as defense-in-depth measures. Whitelist necessary tags like `iframe` for video embeds securely.

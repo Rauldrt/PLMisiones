@@ -18,6 +18,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { cva } from 'class-variance-authority';
+import { clientSanitize } from '@/lib/client-sanitize';
 
 interface NotificationDropdownProps {
   notifications: NotificationItem[];
@@ -83,13 +84,13 @@ function NotificationDialog({
 
              {item.content && isEmbed ? (
                 <div className={cn("w-full overflow-hidden", !hasTextContent && "rounded-lg")}>
-                    <div className="responsive-video" dangerouslySetInnerHTML={{ __html: item.content }} />
+                    <div className="responsive-video" dangerouslySetInnerHTML={{ __html: clientSanitize(item.content) }} />
                 </div>
             ) : item.content && (
                 <div className="pb-6 px-6 -mx-6">
                   <div
                     className="prose prose-sm prose-invert mt-4 max-w-full"
-                    dangerouslySetInnerHTML={{ __html: item.content }}
+                    dangerouslySetInnerHTML={{ __html: clientSanitize(item.content) }}
                   />
                 </div>
             )}
