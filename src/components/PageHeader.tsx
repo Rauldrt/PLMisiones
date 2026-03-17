@@ -20,10 +20,11 @@ export function PageHeader({ icon, title, description, imageUrl, imageHint }: Pa
 
   useEffect(() => {
     let ticking = false;
+    let animationFrameId: number;
 
     const handleScroll = () => {
       if (!ticking) {
-        window.requestAnimationFrame(() => {
+        animationFrameId = window.requestAnimationFrame(() => {
           // ⚡ Bolt: Throttled state update to prevent main thread blocking during scroll
           setOffsetY(window.scrollY);
           ticking = false;
@@ -34,7 +35,14 @@ export function PageHeader({ icon, title, description, imageUrl, imageHint }: Pa
 
     // ⚡ Bolt: Added { passive: true } to improve scrolling performance
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      // ⚡ Bolt: Cancel any pending animation frame to prevent state updates on unmounted components
+      if (animationFrameId) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, []);
 
   return (
