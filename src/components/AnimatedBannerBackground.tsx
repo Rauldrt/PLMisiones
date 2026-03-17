@@ -14,10 +14,22 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
   const [currentIndex, setCurrentIndex] = useState(0);
   const [offsetY, setOffsetY] = useState(0);
 
-  const handleScroll = () => setOffsetY(window.scrollY);
-
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          // ⚡ Bolt: Throttled state update to prevent main thread blocking during scroll
+          setOffsetY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    // ⚡ Bolt: Added { passive: true } to improve scrolling performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
