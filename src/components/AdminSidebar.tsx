@@ -123,7 +123,7 @@ export function AdminSidebar({ socialLinks }: AdminSidebarProps) {
       <div className="md:hidden absolute top-4 left-4 z-50">
          <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon" aria-controls="admin-mobile-menu">
+              <Button variant="outline" size="icon">
                 <Icons.Menu className="h-5 w-5" />
                 <span className="sr-only">Abrir menú de administración</span>
               </Button>
