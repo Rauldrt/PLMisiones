@@ -4,6 +4,7 @@
 import type { StreamingItem } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { clientSanitize } from "@/lib/client-sanitize";
 
 interface StreamingSectionProps {
     items: StreamingItem[];
@@ -42,7 +43,7 @@ export function StreamingSection({ items }: StreamingSectionProps) {
                                     <CardContent className="flex-grow flex items-center justify-center">
                                         <div
                                             className="responsive-video w-full rounded-md overflow-hidden"
-                                            dangerouslySetInnerHTML={{ __html: item.embedCode }}
+                                            dangerouslySetInnerHTML={{ __html: clientSanitize(item.embedCode) }}
                                         />
                                     </CardContent>
                                 </Card>

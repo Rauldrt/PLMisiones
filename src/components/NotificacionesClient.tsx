@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
+import { clientSanitize } from '@/lib/client-sanitize';
 
 interface NotificacionesClientProps {
   initialNotifications: NotificationItem[];
@@ -65,10 +66,10 @@ export function NotificacionesClient({ initialNotifications }: NotificacionesCli
                         <CardContent className="p-4 pt-0">
                           {isEmbed ? (
                               <div className="responsive-video rounded-md overflow-hidden">
-                                  <div dangerouslySetInnerHTML={{ __html: item.content }} />
+                                  <div dangerouslySetInnerHTML={{ __html: clientSanitize(item.content) }} />
                               </div>
                           ) : (
-                              <div className="prose prose-sm prose-invert max-w-full" dangerouslySetInnerHTML={{ __html: item.content }} />
+                              <div className="prose prose-sm prose-invert max-w-full" dangerouslySetInnerHTML={{ __html: clientSanitize(item.content) }} />
                           )}
                         </CardContent>
                       </>
