@@ -13,10 +13,9 @@ async function writeJsonFile(filePath: string, data: any) {
 export async function saveNews(articles: NewsArticle[]) {
   await writeJsonFile('src/data/news.json', articles);
   revalidatePath('/');
-  revalidatePath('/noticias');
-  articles.forEach(article => {
-    revalidatePath(`/noticias/${article.slug}`);
-  });
+  // ⚡ Bolt: Use layout revalidation to efficiently invalidate all news articles at once
+  // instead of calling revalidatePath inside a loop for every single article slug.
+  revalidatePath('/noticias', 'layout');
   return { success: true, message: 'Noticias guardadas con éxito.' };
 }
 
