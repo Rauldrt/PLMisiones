@@ -18,6 +18,7 @@ import { NotificationDropdown } from './NotificationDropdown';
 import { Icons } from './icons';
 import { Dialog, DialogContent, DialogTrigger, DialogOverlay } from '@/components/ui/dialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { clientSanitize } from '@/lib/client-sanitize';
 import { cn } from '@/lib/utils';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 
@@ -117,7 +118,8 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                                                         "[&_img]:rounded-md [&_img]:max-h-64 [&_img]:mx-auto",
                                                         "[&_audio]:w-full"
                                                     )}
-                                                    dangerouslySetInnerHTML={{ __html: proposal.content }}
+                                                    // Security: Sanitize proposal content to prevent XSS attacks
+                                                    dangerouslySetInnerHTML={{ __html: clientSanitize(proposal.content) }}
                                                 />
                                             </CardContent>
                                         </Card>

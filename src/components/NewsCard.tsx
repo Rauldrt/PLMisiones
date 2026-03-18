@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import type { NewsArticle } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Icons } from './icons';
+import { clientSanitize } from '@/lib/client-sanitize';
 
 function formatDate(dateString: string) {
     const date = new Date(dateString);
@@ -77,7 +78,8 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                                 <div className="pointer-events-none absolute inset-0 z-10" />
                                 <div 
                                     className="h-full w-full flex items-center justify-center [&_iframe]:h-full [&_iframe]:w-full [&_blockquote]:h-auto [&_blockquote]:w-full"
-                                    dangerouslySetInnerHTML={{ __html: article.content }} 
+                                    // Security: Sanitize article content to prevent XSS attacks
+                                    dangerouslySetInnerHTML={{ __html: clientSanitize(article.content) }}
                                 />
                             </div>
                         ) : (
