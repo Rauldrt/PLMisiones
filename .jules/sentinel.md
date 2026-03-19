@@ -6,3 +6,7 @@
 **Vulnerability:** Found `dangerouslySetInnerHTML` being used without `clientSanitize` in `src/components/Banner.tsx` and `src/components/NewsCard.tsx`.
 **Learning:** Even internal content from a CMS should be sanitized before rendering on the client to prevent XSS.
 **Prevention:** Always use `clientSanitize` (from `@/lib/client-sanitize`) when using `dangerouslySetInnerHTML` in client components.
+## 2026-03-19 - Prevent Server-Side Request Forgery (SSRF) in AI Flows
+**Vulnerability:** AI tools that fetch content from user-provided URLs (like `fetchAndParseUrl` in Genkit flows) could be exploited to make requests to internal network services, private IP ranges, or localhost (SSRF).
+**Learning:** When building tools that use `fetch` with external inputs, it's critical to parse the URL and validate the hostname. Simply accepting any valid URL allows attackers to scan internal infrastructure or interact with internal APIs.
+**Prevention:** Always parse user-provided URLs using `new URL(url)` and validate the `hostname`. explicitly block `localhost`, loopback addresses (e.g., `127.0.0.1`, `[::1]`), private IP ranges (e.g., `10.x.x.x`, `192.168.x.x`), and internal TLDs (`.local`, `.internal`) before making the request.

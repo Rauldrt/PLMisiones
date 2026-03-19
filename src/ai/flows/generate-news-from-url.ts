@@ -35,6 +35,23 @@ const fetchAndParseUrlTool = ai.defineTool(
   },
   async ({ url }) => {
     try {
+      const parsedUrl = new URL(url);
+      const hostname = parsedUrl.hostname;
+
+      // Prevent SSRF to internal/private networks
+      if (
+        hostname === 'localhost' ||
+        hostname === '127.0.0.1' ||
+        hostname === '[::1]' ||
+        hostname.match(/^10\.\d+\.\d+\.\d+$/) ||
+        hostname.match(/^172\.(1[6-9]|2[0-9]|3[0-1])\.\d+\.\d+$/) ||
+        hostname.match(/^192\.168\.\d+\.\d+$/) ||
+        hostname.endsWith('.local') ||
+        hostname.endsWith('.internal')
+      ) {
+        throw new Error('Access to internal networks is forbidden.');
+      }
+
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
