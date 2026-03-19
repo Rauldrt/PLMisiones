@@ -13,10 +13,8 @@ async function writeJsonFile(filePath: string, data: any) {
 export async function saveNews(articles: NewsArticle[]) {
   await writeJsonFile('src/data/news.json', articles);
   revalidatePath('/');
-  revalidatePath('/noticias');
-  articles.forEach(article => {
-    revalidatePath(`/noticias/${article.slug}`);
-  });
+  // ⚡ Bolt: Use layout revalidation to batch-invalidate /noticias and all its subpaths in a single operation, eliminating the O(N) revalidatePath loop.
+  revalidatePath('/noticias', 'layout');
   return { success: true, message: 'Noticias guardadas con éxito.' };
 }
 
