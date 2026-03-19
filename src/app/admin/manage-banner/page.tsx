@@ -81,7 +81,7 @@ export default function ManageBannerPage() {
                         <span>{slide.title || `Diapositiva ${index + 1}`}</span>
                       </AccordionTrigger>
                       <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
-                          <Button variant="destructive" size="icon" onClick={() => removeSlide(slide.id)}><Icons.Trash className="w-4 h-4"/></Button>
+                          <Button variant="destructive" size="icon" onClick={() => removeSlide(slide.id)} aria-label="Eliminar diapositiva"><Icons.Trash className="w-4 h-4"/></Button>
                       </div>
                     </div>
                   <AccordionContent className="p-4 border-t space-y-4">

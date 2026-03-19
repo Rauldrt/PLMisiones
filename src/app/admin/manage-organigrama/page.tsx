@@ -93,7 +93,7 @@ export default function ManageOrganigramaPage() {
                         </div>
                       </AccordionTrigger>
                       <div className="flex gap-2 items-center">
-                          <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
+                          <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)} aria-label="Eliminar"><Icons.Trash className="w-4 h-4"/></Button>
                       </div>
                     </div>
                     <AccordionContent className="p-4 border-t space-y-4">
@@ -112,7 +112,7 @@ export default function ManageOrganigramaPage() {
                              <div className="flex items-center gap-2">
                                 <Input id={`imageUrl-${index}`} value={item.imageUrl} onChange={e => handleFieldChange(index, 'imageUrl', e.target.value)} />
                                 <DialogTrigger asChild>
-                                    <Button variant="outline" size="icon" onClick={() => setEditingIndex(index)}>
+                                    <Button variant="outline" size="icon" onClick={() => setEditingIndex(index)} aria-label="Editar">
                                         <Icons.Gallery className="w-4 h-4" />
                                     </Button>
                                 </DialogTrigger>

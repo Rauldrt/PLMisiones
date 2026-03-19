@@ -120,7 +120,7 @@ export default function ManageMosaicPage() {
                           <span>{item.title || `Mosaico ${index + 1}`}</span>
                         </AccordionTrigger>
                         <div className="flex gap-2 items-center">
-                            <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)}><Icons.Trash className="w-4 h-4"/></Button>
+                            <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)} aria-label="Eliminar"><Icons.Trash className="w-4 h-4"/></Button>
                         </div>
                       </div>
                     <AccordionContent className="p-4 border-t space-y-4">
@@ -181,7 +181,7 @@ export default function ManageMosaicPage() {
                               <div key={imgIndex} className="flex items-center gap-2">
                                   <Input value={url} onChange={e => handleImageChange(index, imgIndex, e.target.value)} />
                                   <DialogTrigger asChild>
-                                    <Button variant="outline" size="icon" onClick={() => {
+                                    <Button variant="outline" size="icon" aria-label="Abrir galería" onClick={() => {
                                         setEditingItemIndex(index);
                                         setEditingImageIndex(imgIndex);
                                     }}>
@@ -189,14 +189,14 @@ export default function ManageMosaicPage() {
                                     </Button>
                                   </DialogTrigger>
                                   <div className="flex flex-col">
-                                    <Button variant="ghost" size="icon" className="h-5" onClick={() => moveImage(index, imgIndex, 'up')} disabled={imgIndex === 0}>
+                                    <Button variant="ghost" size="icon" className="h-5" onClick={() => moveImage(index, imgIndex, 'up')} disabled={imgIndex === 0} aria-label="Subir imagen">
                                         <Icons.ChevronUp className="w-4 h-4"/>
                                     </Button>
-                                    <Button variant="ghost" size="icon" className="h-5" onClick={() => moveImage(index, imgIndex, 'down')} disabled={imgIndex === item.imageUrls.length - 1}>
+                                    <Button variant="ghost" size="icon" className="h-5" onClick={() => moveImage(index, imgIndex, 'down')} disabled={imgIndex === item.imageUrls.length - 1} aria-label="Bajar imagen">
                                         <Icons.ChevronDown className="w-4 h-4"/>
                                     </Button>
                                   </div>
-                                  <Button variant="ghost" size="icon" onClick={() => removeImage(index, imgIndex)}>
+                                  <Button variant="ghost" size="icon" onClick={() => removeImage(index, imgIndex)} aria-label="Eliminar imagen">
                                       <Icons.Trash className="w-4 h-4 text-destructive"/>
                                   </Button>
                               </div>

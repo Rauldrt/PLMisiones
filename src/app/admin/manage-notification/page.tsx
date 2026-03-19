@@ -144,7 +144,7 @@ export default function ManageNotificationPage() {
                 <div className="flex items-center gap-2">
                     <Input id="imageUrl" value={item.imageUrl || ''} onChange={e => handleFieldChange('imageUrl', e.target.value)} />
                     <DialogTrigger asChild>
-                        <Button variant="outline" size="icon">
+                        <Button variant="outline" size="icon" aria-label="Abrir galería">
                             <Icons.Gallery className="w-4 h-4" />
                         </Button>
                     </DialogTrigger>
