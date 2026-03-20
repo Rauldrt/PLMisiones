@@ -141,14 +141,14 @@ export default function ManageNewsPage() {
                         </div>
                         </AccordionTrigger>
                         <div className="flex items-center gap-1.5 pr-2">
-                            <Button variant="ghost" size="icon" onClick={() => moveArticle(index, 'up')} disabled={index === 0 || isSaving}>
+                            <Button variant="ghost" size="icon" onClick={() => moveArticle(index, 'up')} disabled={index === 0 || isSaving} aria-label="Subir artículo">
                                 <Icons.ChevronUp className="h-4 w-4" />
                             </Button>
-                             <Button variant="ghost" size="icon" onClick={() => moveArticle(index, 'down')} disabled={index === articles.length - 1 || isSaving}>
+                             <Button variant="ghost" size="icon" onClick={() => moveArticle(index, 'down')} disabled={index === articles.length - 1 || isSaving} aria-label="Bajar artículo">
                                 <Icons.ChevronDown className="h-4 w-4" />
                             </Button>
                              <DialogTrigger asChild>
-                                <Button variant="outline" size="icon" onClick={() => setEditingArticle(article)}>
+                                <Button variant="outline" size="icon" onClick={() => setEditingArticle(article)} aria-label="Editar artículo">
                                     <Icons.Edit className="h-4 w-4" />
                                 </Button>
                             </DialogTrigger>
@@ -159,7 +159,7 @@ export default function ManageNewsPage() {
                             />
                             <AlertDialog>
                             <AlertDialogTrigger asChild>
-                                <Button variant="destructive" size="icon" disabled={isSaving}>
+                                <Button variant="destructive" size="icon" disabled={isSaving} aria-label="Eliminar artículo">
                                     <Icons.Trash className="h-4 w-4" />
                                 </Button>
                             </AlertDialogTrigger>

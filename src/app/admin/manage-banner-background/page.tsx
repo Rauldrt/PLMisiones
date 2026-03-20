@@ -112,13 +112,13 @@ export default function ManageBannerBackgroundPage() {
                             </div>
                         </AccordionTrigger>
                         <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
-                            <Button variant="ghost" size="icon" onClick={() => moveSlide(index, 'up')} disabled={index === 0}>
+                            <Button variant="ghost" size="icon" onClick={() => moveSlide(index, 'up')} disabled={index === 0} aria-label="Subir diapositiva">
                                 <Icons.ChevronUp className="w-4 h-4"/>
                             </Button>
-                            <Button variant="ghost" size="icon" onClick={() => moveSlide(index, 'down')} disabled={index === slides.length - 1}>
+                            <Button variant="ghost" size="icon" onClick={() => moveSlide(index, 'down')} disabled={index === slides.length - 1} aria-label="Bajar diapositiva">
                                 <Icons.ChevronDown className="w-4 h-4"/>
                             </Button>
-                            <Button variant="destructive" size="icon" onClick={() => removeSlide(slide.id)}><Icons.Trash className="w-4 h-4"/></Button>
+                            <Button variant="destructive" size="icon" onClick={() => removeSlide(slide.id)} aria-label="Eliminar diapositiva"><Icons.Trash className="w-4 h-4"/></Button>
                         </div>
                         </div>
                     <AccordionContent className="p-4 border-t space-y-4">
@@ -127,7 +127,7 @@ export default function ManageBannerBackgroundPage() {
                             <div className="flex items-center gap-2">
                                 <Input id={`imageUrl-${index}`} value={slide.imageUrl} onChange={e => handleFieldChange(index, 'imageUrl', e.target.value)} />
                                 <DialogTrigger asChild>
-                                    <Button variant="outline" size="icon" onClick={() => setEditingIndex(index)}>
+                                    <Button variant="outline" size="icon" onClick={() => setEditingIndex(index)} aria-label="Editar">
                                         <Icons.Gallery className="w-4 h-4" />
                                     </Button>
                                 </DialogTrigger>

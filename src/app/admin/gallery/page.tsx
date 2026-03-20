@@ -138,7 +138,7 @@ export default function GalleryPage() {
                                     <div key={file.name} className="relative group">
                                         <Image src={file.preview} alt={file.name} width={150} height={150} className="rounded-md object-cover w-full aspect-square" />
                                         <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <Button variant="destructive" size="icon" onClick={() => removeFile(file.name)}>
+                                            <Button variant="destructive" size="icon" onClick={() => removeFile(file.name)} aria-label="Eliminar archivo">
                                                 <Icons.Trash className="h-4 w-4" />
                                             </Button>
                                         </div>
