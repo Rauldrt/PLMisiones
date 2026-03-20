@@ -128,6 +128,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                             size="icon" 
                             className="absolute top-2 right-2 text-white bg-black/20 hover:bg-black/40 rounded-full z-30"
                             onClick={handleClose}
+                            aria-label="Cerrar candidato"
                         >
                             <Icons.Close className="w-6 h-6" />
                         </Button>
