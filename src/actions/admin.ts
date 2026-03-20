@@ -13,10 +13,8 @@ async function writeJsonFile(filePath: string, data: any) {
 export async function saveNews(articles: NewsArticle[]) {
   await writeJsonFile('src/data/news.json', articles);
   revalidatePath('/');
-  revalidatePath('/noticias');
-  articles.forEach(article => {
-    revalidatePath(`/noticias/${article.slug}`);
-  });
+  // ⚡ Bolt: Use 'layout' for batch invalidation instead of looping (O(1) vs O(n))
+  revalidatePath('/noticias', 'layout');
   return { success: true, message: 'Noticias guardadas con éxito.' };
 }
 
