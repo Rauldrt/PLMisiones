@@ -85,6 +85,7 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
                 <Dialog>
                     <DialogTrigger asChild>
                          <button className="flex items-center cursor-pointer group">
+                            <span className="sr-only">Abrir diálogo de propuestas: </span>
                             <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm">
                                 <Icons.Proposals className="h-12 w-12 animate-icon-glow text-yellow-400" />
                             </div>

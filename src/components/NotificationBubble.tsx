@@ -121,6 +121,7 @@ export function NotificationDropdown({
           <div className="space-y-4">
             <NotificationDialog item={latestNotification}>
               <button className="w-full text-left">
+                <span className="sr-only">Abrir notificación: </span>
                 <div className="space-y-1 rounded-md p-2 hover:bg-muted">
                   <p className="font-semibold">{latestNotification.title}</p>
                   <p className="text-xs text-muted-foreground">
@@ -140,6 +141,7 @@ export function NotificationDropdown({
                   {otherNotifications.map((item) => (
                      <NotificationDialog item={item} key={item.id}>
                         <button className="w-full text-left">
+                            <span className="sr-only">Abrir notificación: </span>
                             <div className="rounded-md p-2 hover:bg-muted">
                                <p className="truncate text-sm">{item.title}</p>
                             </div>
