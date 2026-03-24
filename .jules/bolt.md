@@ -9,3 +9,7 @@
 ## 2024-05-24 - Batch Cache Invalidation with `revalidatePath`
 **Learning:** Calling `revalidatePath` inside a loop for individual items (like news articles) creates an O(N) performance bottleneck during cache invalidation, which scales poorly as the number of items grows.
 **Action:** Instead of looping over items and calling `revalidatePath` individually, use `revalidatePath(path, 'layout')` to batch-invalidate a path and all its subpaths in a single O(1) operation.
+
+## 2024-05-18 - Scroll-Linked Animations Re-renders
+**Learning:** Using `useState` to track window scroll position for parallax backgrounds causes continuous React re-renders, creating severe main thread blocking and layout thrashing.
+**Action:** When implementing scroll-based animations, use `useRef` to store DOM elements and update their `style.transform` directly inside a `requestAnimationFrame` loop, bypassing the React render cycle completely.

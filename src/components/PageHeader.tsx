@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { getIcon } from '@/components/icons';
 import { cn } from '@/lib/utils';
@@ -16,8 +16,8 @@ interface PageHeaderProps {
 
 export function PageHeader({ icon, title, description, imageUrl, imageHint }: PageHeaderProps) {
   const IconComponent = getIcon(icon);
-  const [offsetY, setOffsetY] = useState(0);
 
+  const parallaxRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     let ticking = false;
     let animationFrameId: number;
@@ -26,7 +26,9 @@ export function PageHeader({ icon, title, description, imageUrl, imageHint }: Pa
       if (!ticking) {
         animationFrameId = window.requestAnimationFrame(() => {
           // ⚡ Bolt: Throttled state update to prevent main thread blocking during scroll
-          setOffsetY(window.scrollY);
+          if (parallaxRef.current) {
+            parallaxRef.current.style.transform = `translateY(${window.scrollY * 0.4}px)`;
+          }
           ticking = false;
         });
         ticking = true;
@@ -49,8 +51,8 @@ export function PageHeader({ icon, title, description, imageUrl, imageHint }: Pa
     <div className="relative h-96 w-full overflow-hidden flex items-center justify-center text-center text-white">
       {imageUrl && (
         <div 
+          ref={parallaxRef}
           className="absolute inset-0 h-full w-full z-0"
-          style={{ transform: `translateY(${offsetY * 0.4}px)` }}
         >
           <Image
             src={imageUrl}
