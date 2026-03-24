@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import type { BannerBackgroundSlide } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -12,7 +12,7 @@ interface AnimatedBannerBackgroundProps {
 
 export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [offsetY, setOffsetY] = useState(0);
+  const parallaxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let ticking = false;
@@ -22,7 +22,9 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
       if (!ticking) {
         animationFrameId = window.requestAnimationFrame(() => {
           // ⚡ Bolt: Throttled state update to prevent main thread blocking during scroll
-          setOffsetY(window.scrollY);
+          if (parallaxRef.current) {
+            parallaxRef.current.style.transform = `translateY(${window.scrollY * 0.5}px)`;
+          }
           ticking = false;
         });
         ticking = true;
@@ -64,8 +66,8 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
 
   return (
     <div 
+      ref={parallaxRef}
       className="absolute inset-0 h-full w-full z-0 overflow-hidden"
-      style={{ transform: `translateY(${offsetY * 0.5}px)` }}
     >
       {slides.map((slide, index) => {
         return (
