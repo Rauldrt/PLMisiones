@@ -196,6 +196,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                   <Button asChild variant="link" className="p-0 h-auto">
                     <Link href={`/noticias/${article.slug}`}>
                       Leer más
+                      <span className="sr-only"> sobre {article.title}</span>
                     </Link>
                   </Button>
                 </div>
