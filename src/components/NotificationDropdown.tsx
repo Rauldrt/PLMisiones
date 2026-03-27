@@ -196,6 +196,7 @@ export function NotificationDropdown({
       <Popover>
         <PopoverTrigger asChild>
           <button>
+            <span className="sr-only">Abrir menú de notificaciones. </span>
             <TriggerButton />
           </button>
         </PopoverTrigger>
@@ -204,6 +205,7 @@ export function NotificationDropdown({
             {notifications.map((item, index) => (
               <NotificationDialog item={item} key={item.id}>
                 <button className="w-full text-left">
+                  <span className="sr-only">Ver notificación: </span>
                   <div className={cn("space-y-1 rounded-md p-2 hover:bg-muted", index > 0 && "border-t border-border")}>
                     <p className={cn("truncate", index === 0 ? "font-semibold" : "text-sm")}>{item.title}</p>
                     <p className="text-xs text-muted-foreground">
