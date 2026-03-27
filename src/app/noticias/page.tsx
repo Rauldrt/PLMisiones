@@ -14,7 +14,8 @@ export default async function NoticiasPage() {
     getPageHeaderByPathAction('/noticias'),
   ]);
 
-  const sortedNews = news.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  // ⚡ Bolt: Use direct string comparison for ISO 8601 dates to avoid O(N log N) Date object instantiations
+  const sortedNews = news.sort((a, b) => (b.date > a.date ? 1 : b.date < a.date ? -1 : 0));
 
   return (
     <div>
