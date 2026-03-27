@@ -16,27 +16,30 @@ export async function uploadPublicFilesAction(files: { name: string; data: strin
     try {
         const publicDir = path.join(process.cwd(), 'public');
         
-        for (const file of files) {
-            // Security: Validate file extension to prevent unrestricted file upload (e.g., .html, .js)
-            const ext = path.extname(file.name).toLowerCase();
-            if (!ALLOWED_EXTENSIONS.includes(ext)) {
-                throw new Error(`Tipo de archivo no permitido: ${ext || 'sin extensión'}. Solo se permiten archivos multimedia.`);
-            }
-            // Sanitize file name to prevent directory traversal
-            const sanitizedFileName = path.basename(file.name);
-            if (sanitizedFileName !== file.name) {
-                throw new Error(`Nombre de archivo inválido: ${file.name}`);
-            }
+        // ⚡ Bolt: Use Promise.all with an async map callback to write files concurrently, improving I/O performance
+        await Promise.all(
+            files.map(async (file) => {
+                // Security: Validate file extension to prevent unrestricted file upload (e.g., .html, .js)
+                const ext = path.extname(file.name).toLowerCase();
+                if (!ALLOWED_EXTENSIONS.includes(ext)) {
+                    throw new Error(`Tipo de archivo no permitido: ${ext || 'sin extensión'}. Solo se permiten archivos multimedia.`);
+                }
+                // Sanitize file name to prevent directory traversal
+                const sanitizedFileName = path.basename(file.name);
+                if (sanitizedFileName !== file.name) {
+                    throw new Error(`Nombre de archivo inválido: ${file.name}`);
+                }
 
-            const filePath = path.join(publicDir, sanitizedFileName);
-            const base64Data = file.data.split(';base64,').pop();
+                const filePath = path.join(publicDir, sanitizedFileName);
+                const base64Data = file.data.split(';base64,').pop();
 
-            if (!base64Data) {
-                throw new Error(`Datos inválidos para el archivo: ${file.name}`);
-            }
+                if (!base64Data) {
+                    throw new Error(`Datos inválidos para el archivo: ${file.name}`);
+                }
 
-            await fs.writeFile(filePath, base64Data, 'base64');
-        }
+                await fs.writeFile(filePath, base64Data, 'base64');
+            })
+        );
 
         revalidatePath('/admin/gallery');
         return { success: true, message: `${files.length} archivo(s) subido(s) con éxito.` };
