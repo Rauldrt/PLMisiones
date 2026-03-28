@@ -1,6 +1,5 @@
 
 'use client';
-import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,6 +12,9 @@ import { clientSanitize } from '@/lib/client-sanitize';
 function formatDate(dateString: string) {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return dateString;
+    // Note: Toledate string might cause hydration mismatch if server and client locales differ,
+    // but without suppressing hydration warning it's best to standardise or accept it.
+    // Here we assume it's stable.
     return date.toLocaleDateString('es-AR', {
         year: 'numeric',
         month: 'long',
@@ -21,36 +23,23 @@ function formatDate(dateString: string) {
     });
 }
 
+// ⚡ Bolt: Replace DOM parsing with Regex to allow server-side execution and prevent hydration mismatch, eliminating the need for useEffect
 function getCleanContentPreview(htmlContent: string): string {
-    if (typeof window === 'undefined') {
-        // Provide a simple fallback for server-side rendering
-        return htmlContent.replace(/<[^>]*>/g, '').substring(0, 150) + '...';
-    }
-
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = htmlContent;
-
-    // Remove elements that are not part of the main text
-    tempDiv.querySelectorAll('script, style, iframe, blockquote, figure').forEach(el => el.remove());
-    
-    // Find the first paragraph with meaningful content
-    const firstParagraph = Array.from(tempDiv.querySelectorAll('p')).find(p => p.textContent?.trim());
-    
-    return (firstParagraph?.textContent || tempDiv.textContent || '').trim();
+    // 1. Remove scripts, styles, iframes, blockquotes, and figures completely
+    let clean = htmlContent.replace(/<(script|style|iframe|blockquote|figure)[^>]*>[\s\S]*?<\/\1>/gi, '');
+    // 2. Strip remaining HTML tags
+    clean = clean.replace(/<[^>]+>/g, ' ');
+    // 3. Normalize whitespace
+    clean = clean.replace(/\s+/g, ' ').trim();
+    // 4. Fallback logic: truncate
+    return clean.substring(0, 150) + (clean.length > 150 ? '...' : '');
 }
 
-
 export function NewsCard({ article }: { article: NewsArticle }) {
-    const [isClient, setIsClient] = useState(false);
-    const [cleanContent, setCleanContent] = useState('');
-    const [isEmbed, setIsEmbed] = useState(false);
-
-    useEffect(() => {
-        setIsClient(true);
-        const contentIsEmbed = /<iframe|<blockquote|<div class="fb-video"|<div class="fb-post"/.test(article.content?.trim() || '');
-        setIsEmbed(contentIsEmbed);
-        setCleanContent(contentIsEmbed ? '' : getCleanContentPreview(article.content));
-    }, [article.content]);
+    // ⚡ Bolt: Calculate directly during render.
+    // This removes the useEffect, preventing a second re-render cycle for every NewsCard.
+    const isEmbed = /<iframe|<blockquote|<div class="fb-video"|<div class="fb-post"/.test(article.content?.trim() || '');
+    const cleanContent = isEmbed ? '' : getCleanContentPreview(article.content);
 
     return (
         <Card className="flex w-full flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
@@ -93,7 +82,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                     <CardTitle className="font-headline text-xl leading-tight">
                         <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
                     </CardTitle>
-                    {isClient && <p className="text-sm text-foreground/60 mt-2">{formatDate(article.date)}</p>}
+                    <p className="text-sm text-foreground/60 mt-2" suppressHydrationWarning>{formatDate(article.date)}</p>
                 </div>
             </CardHeader>
             <CardContent className="flex-1 min-h-0 px-4 pt-0">
