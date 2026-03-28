@@ -46,7 +46,9 @@ const fetchAndParseUrlTool = ai.defineTool(
         const parsedUrl = new URL(currentUrl);
         if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') throw new Error('Only HTTP/S allowed');
 
-        const { address } = await dns.promises.lookup(parsedUrl.hostname);
+        // Extract hostname and remove IPv6 brackets if present, otherwise dns.lookup fails
+        const hostname = parsedUrl.hostname.replace(/[\[\]]/g, '');
+        const { address } = await dns.promises.lookup(hostname);
         const isPrivate = address === '::1' || address === '::' || /^127\.\d+\.\d+\.\d+$/.test(address) ||
           /^10\.\d+\.\d+\.\d+$/.test(address) || /^172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+$/.test(address) ||
           /^192\.168\.\d+\.\d+$/.test(address) || /^0\.0\.0\.0$/.test(address) || /^169\.254\.\d+\.\d+$/.test(address) ||
