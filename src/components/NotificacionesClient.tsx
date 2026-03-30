@@ -39,7 +39,7 @@ export function NotificacionesClient({ initialNotifications }: NotificacionesCli
                   <Card key={item.id} className="overflow-hidden">
                     {item.imageUrl && (
                       <DialogTrigger asChild>
-                         <button className="relative h-96 w-full cursor-pointer" onClick={() => handleImageClick(item.imageUrl!)}>
+                         <button className="relative h-96 w-full cursor-pointer" onClick={() => handleImageClick(item.imageUrl!)} aria-label={`Ampliar imagen de notificación: ${item.title || 'Sin título'}`}>
                             <Image
                                 src={item.imageUrl}
                                 alt={item.title}

@@ -113,7 +113,7 @@ export function NotificationDropdown({
     <div className="absolute top-6 right-6 z-30">
       <Popover>
         <PopoverTrigger asChild>
-          <button>
+          <button aria-label="Abrir menú de notificaciones">
             <TriggerButton />
           </button>
         </PopoverTrigger>
