@@ -93,7 +93,8 @@ export async function saveNotificationsPage(items: NotificationItem[]) {
 
 export async function saveFooterContent(item: FooterContent) {
     await writeJsonFile('src/data/footer.json', item);
-    revalidatePath('/*'); // Revalidate all pages since footer is global
+    // ⚡ Bolt: Replaced invalid /* pattern with O(1) site-wide invalidation
+    revalidatePath('/', 'layout');
     return { success: true, message: 'Contenido del pie de página guardado con éxito.' };
 }
 
@@ -111,15 +112,15 @@ export async function savePageHeaders(items: PageHeader[]) {
 
 export async function saveSocialLinks(items: SocialLink[]) {
     await writeJsonFile('src/data/social-links.json', items);
-    revalidatePath('/*'); // Revalidate all pages since footer is global
+    // ⚡ Bolt: Replaced invalid /* pattern with O(1) site-wide invalidation
+    revalidatePath('/', 'layout');
     return { success: true, message: 'Enlaces de redes sociales guardados con éxito.' };
 }
 
 export async function saveGoogleForms(items: GoogleForm[]) {
     await writeJsonFile('src/data/google-forms.json', items);
-    revalidatePath('/afiliacion');
-    revalidatePath('/fiscales');
-    revalidatePath('/*'); // revalidate all for footer
+    // ⚡ Bolt: Replaced multiple specific and invalid /* revalidations with a single O(1) invalidation
+    revalidatePath('/', 'layout');
     return { success: true, message: 'Formularios de Google guardados con éxito.' };
 }
 
