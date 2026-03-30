@@ -93,6 +93,7 @@ export function Header({ socialLinks }: HeaderProps) {
                 className="fixed bottom-6 right-6 z-50 h-16 w-16 rounded-full shadow-lg"
                 aria-expanded={isMobileMenuOpen}
                 aria-controls="mobile-menu-content"
+                aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
               >
                   <Icons.Menu className={cn("absolute h-6 w-6 transition-all duration-300", isMobileMenuOpen && "opacity-0 rotate-90")} />
                   <Icons.Close className={cn("absolute h-6 w-6 transition-all duration-300", !isMobileMenuOpen && "opacity-0 rotate-90")} />
