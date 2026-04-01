@@ -16,7 +16,9 @@ export async function uploadPublicFilesAction(files: { name: string; data: strin
     try {
         const publicDir = path.join(process.cwd(), 'public');
         
-        for (const file of files) {
+        // ⚡ Bolt: Process multiple file uploads concurrently using Promise.all to reduce total wait time.
+        // Expected impact: Faster upload for multiple files, O(1) wait time instead of O(N) by parallelizing disk I/O.
+        await Promise.all(files.map(async (file) => {
             // Security: Validate file extension to prevent unrestricted file upload (e.g., .html, .js)
             const ext = path.extname(file.name).toLowerCase();
             if (!ALLOWED_EXTENSIONS.includes(ext)) {
@@ -36,7 +38,7 @@ export async function uploadPublicFilesAction(files: { name: string; data: strin
             }
 
             await fs.writeFile(filePath, base64Data, 'base64');
-        }
+        }));
 
         revalidatePath('/admin/gallery');
         return { success: true, message: `${files.length} archivo(s) subido(s) con éxito.` };
