@@ -1,6 +1,6 @@
 
 'use client';
-import { useState, useEffect } from 'react';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -41,16 +41,9 @@ function getCleanContentPreview(htmlContent: string): string {
 
 
 export function NewsCard({ article }: { article: NewsArticle }) {
-    const [isClient, setIsClient] = useState(false);
-    const [cleanContent, setCleanContent] = useState('');
-    const [isEmbed, setIsEmbed] = useState(false);
-
-    useEffect(() => {
-        setIsClient(true);
-        const contentIsEmbed = /<iframe|<blockquote|<div class="fb-video"|<div class="fb-post"/.test(article.content?.trim() || '');
-        setIsEmbed(contentIsEmbed);
-        setCleanContent(contentIsEmbed ? '' : getCleanContentPreview(article.content));
-    }, [article.content]);
+    // ⚡ Bolt: Compute derived state directly during render to prevent unnecessary double renders
+    const isEmbed = /<iframe|<blockquote|<div class="fb-video"|<div class="fb-post"/.test(article.content?.trim() || '');
+    const cleanContent = isEmbed ? '' : getCleanContentPreview(article.content);
 
     return (
         <Card className="flex w-full flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
@@ -93,11 +86,13 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                     <CardTitle className="font-headline text-xl leading-tight">
                         <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
                     </CardTitle>
-                    {isClient && <p className="text-sm text-foreground/60 mt-2">{formatDate(article.date)}</p>}
+                    <p suppressHydrationWarning className="text-sm text-foreground/60 mt-2">
+                        {formatDate(article.date)}
+                    </p>
                 </div>
             </CardHeader>
             <CardContent className="flex-1 min-h-0 px-4 pt-0">
-                <p className="text-foreground/80 line-clamp-4">
+                <p suppressHydrationWarning className="text-foreground/80 line-clamp-4">
                     {cleanContent}
                 </p>
             </CardContent>
