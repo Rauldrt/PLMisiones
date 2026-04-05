@@ -167,6 +167,7 @@ export function NewsForm({
           />
           <div className="flex gap-2">
             <Button type="submit" disabled={isPending}>
+              {isPending && <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />}
               {isPending ? 'Guardando...' : isEditing ? 'Guardar Cambios' : 'Guardar Artículo'}
             </Button>
              {isEditing && onCancel && (
