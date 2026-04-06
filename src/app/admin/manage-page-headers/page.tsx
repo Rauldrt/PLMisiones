@@ -125,7 +125,14 @@ export default function ManagePageHeadersPage() {
             )}
             <div className="flex justify-end items-center pt-4">
                 <Button onClick={handleSave} disabled={isSaving}>
-                    {isSaving ? 'Guardando...' : 'Guardar Cambios'}
+                    {isSaving ? (
+                        <>
+                            <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+                            Guardando...
+                        </>
+                    ) : (
+                        'Guardar Cambios'
+                    )}
                 </Button>
             </div>
             </CardContent>
