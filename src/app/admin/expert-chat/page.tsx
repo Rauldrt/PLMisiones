@@ -112,7 +112,14 @@ export default function ExpertChatPage() {
                 disabled={isPending}
               />
               <Button onClick={handleSendMessage} disabled={isPending || !input.trim()}>
-                {isPending ? 'Pensando...' : 'Enviar'}
+                {isPending ? (
+                  <>
+                    <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+                    Pensando...
+                  </>
+                ) : (
+                  'Enviar'
+                )}
               </Button>
             </div>
           </div>

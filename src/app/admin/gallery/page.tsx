@@ -149,7 +149,14 @@ export default function GalleryPage() {
                             </ScrollArea>
                             <div className="mt-4 flex justify-end">
                                 <Button onClick={handleUpload} disabled={isUploading}>
-                                    {isUploading ? 'Subiendo...' : `Subir ${filesToUpload.length} Archivo(s)`}
+                                    {isUploading ? (
+                                        <>
+                                            <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+                                            Subiendo...
+                                        </>
+                                    ) : (
+                                        `Subir ${filesToUpload.length} Archivo(s)`
+                                    )}
                                 </Button>
                             </div>
                         </div>

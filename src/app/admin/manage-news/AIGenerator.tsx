@@ -70,7 +70,14 @@ export function AIGenerator({ onContentGenerated }: AIGeneratorProps) {
               disabled={isPending}
             />
             <Button onClick={handleGenerate} disabled={isPending || !url}>
-              {isPending ? 'Generando...' : 'Generar'}
+              {isPending ? (
+                <>
+                  <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+                  Generando...
+                </>
+              ) : (
+                'Generar'
+              )}
             </Button>
           </div>
         </div>
