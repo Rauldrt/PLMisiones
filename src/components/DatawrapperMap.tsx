@@ -12,12 +12,19 @@ export function DatawrapperMap({ title, src }: DatawrapperMapProps) {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const handleMessage = (event: MessageEvent) => {
-                if (event.data["datawrapper-height"]) {
+                if (
+                    event.data &&
+                    typeof event.data === 'object' &&
+                    "datawrapper-height" in event.data
+                ) {
                     const iframe = iframeRef.current;
                     if (iframe && iframe.contentWindow === event.source) {
                          const chartId = Object.keys(event.data["datawrapper-height"])[0];
-                         const height = event.data["datawrapper-height"][chartId] + "px";
-                         iframe.style.height = height;
+                         const heightData = event.data["datawrapper-height"][chartId];
+                         if (heightData) {
+                             const height = heightData + "px";
+                             iframe.style.height = height;
+                         }
                     }
                 }
             };
@@ -27,10 +34,14 @@ export function DatawrapperMap({ title, src }: DatawrapperMapProps) {
         }
     }, [src]);
 
+    if (!src) {
+        return null;
+    }
+
     return (
         <iframe
             ref={iframeRef}
-            title={title}
+            title={title || "Mapa interactivo"}
             aria-label="Mapa coroplético"
             src={src}
             scrolling="no"
