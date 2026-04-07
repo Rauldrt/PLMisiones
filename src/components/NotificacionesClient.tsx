@@ -5,7 +5,7 @@ import { useState } from 'react';
 import type { NotificationItem } from '@/lib/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { clientSanitize } from '@/lib/client-sanitize';
@@ -91,7 +91,10 @@ export function NotificacionesClient({ initialNotifications }: NotificacionesCli
         </div>
         
         {selectedImage && (
-            <DialogContent className="max-w-7xl w-full h-full max-h-[90vh] p-2 bg-transparent border-0 shadow-none flex items-center justify-center">
+            <DialogContent aria-describedby={undefined} className="max-w-7xl w-full h-full max-h-[90vh] p-2 bg-transparent border-0 shadow-none flex items-center justify-center">
+                <span className="sr-only">
+                    <DialogTitle>Vista ampliada</DialogTitle>
+                </span>
                 <Image
                     src={selectedImage}
                     alt="Vista ampliada"
