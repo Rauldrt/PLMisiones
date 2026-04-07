@@ -44,9 +44,9 @@ export default function ManagePageHeadersPage() {
     });
   };
 
-  const handleFieldChange = (index: number, field: keyof PageHeader, value: string) => {
+  const handleFieldChange = <K extends keyof PageHeader>(index: number, field: K, value: PageHeader[K]) => {
     const newHeaders = [...headers];
-    (newHeaders[index] as any)[field] = value;
+    newHeaders[index] = { ...newHeaders[index], [field]: value };
     setHeaders(newHeaders);
   };
   
