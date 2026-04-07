@@ -13,9 +13,9 @@ interface ParsedEmbed {
     iframeTitle: string;
 }
 
-function parseEmbedCode(embedCode: string): ParsedEmbed | null {
-    const srcMatch = embedCode.match(/<iframe.*?src="(.*?)"/);
-    const titleMatch = embedCode.match(/<iframe.*?title="(.*?)"/);
+export function parseEmbedCode(embedCode: string): ParsedEmbed | null {
+    const srcMatch = embedCode.match(/<iframe[^>]*?src=['"](.*?)['"]/is);
+    const titleMatch = embedCode.match(/<iframe[^>]*?title=['"](.*?)['"]/is);
 
     if (srcMatch && srcMatch[1] && titleMatch && titleMatch[1]) {
         return {
