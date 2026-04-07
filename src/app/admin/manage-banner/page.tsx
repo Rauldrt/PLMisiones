@@ -39,9 +39,9 @@ export default function ManageBannerPage() {
     });
   };
 
-  const handleFieldChange = (index: number, field: keyof BannerTextSlide, value: string) => {
+  const handleFieldChange = <T extends keyof BannerTextSlide>(index: number, field: T, value: BannerTextSlide[T]) => {
     const newSlides = [...slides];
-    (newSlides[index] as any)[field] = value;
+    newSlides[index] = { ...newSlides[index], [field]: value };
     setSlides(newSlides);
   };
   
