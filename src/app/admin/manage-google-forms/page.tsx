@@ -40,9 +40,9 @@ export default function ManageGoogleFormsPage() {
     });
   };
 
-  const handleFieldChange = (index: number, field: keyof GoogleForm, value: string) => {
+  const handleFieldChange = <K extends keyof GoogleForm>(index: number, field: K, value: GoogleForm[K]) => {
     const newForms = [...forms];
-    (newForms[index] as any)[field] = value;
+    newForms[index] = { ...newForms[index], [field]: value };
     setForms(newForms);
   };
 
