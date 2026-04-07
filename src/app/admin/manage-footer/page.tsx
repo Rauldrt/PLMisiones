@@ -73,9 +73,9 @@ export default function ManageFooterPage() {
     setContent({ ...content, [field]: value });
   };
   
-  const handleLinkChange = (index: number, field: keyof SocialLink, value: string) => {
+  const handleLinkChange = <K extends keyof SocialLink>(index: number, field: K, value: SocialLink[K]) => {
     const newLinks = [...socialLinks];
-    (newLinks[index] as any)[field] = value;
+    newLinks[index] = { ...newLinks[index], [field]: value };
     setSocialLinks(newLinks);
   };
   
