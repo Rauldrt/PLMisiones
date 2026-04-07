@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, OrganigramaMember, Candidate, Notification, Proposal, FooterContent, MapEmbed, PageHeader, SocialLink, NotificationItem, GoogleForm, StreamingItem } from '@/lib/types';
 import { getNewsAction } from '@/actions/data';
 
-async function writeJsonFile(filePath: string, data: any) {
+async function writeJsonFile<T>(filePath: string, data: T) {
   const fullPath = path.join(process.cwd(), filePath);
   await fs.writeFile(fullPath, JSON.stringify(data, null, 2));
 }
