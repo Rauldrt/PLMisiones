@@ -10,7 +10,8 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import * as cheerio from 'cheerio';
-import dns from 'dns';
+import fetch from 'node-fetch';
+import { useAgent } from 'request-filtering-agent';
 
 const GenerateNewsContentInputSchema = z.object({
   url: z.string().url().describe('The URL to generate news content from.'),
@@ -36,9 +37,9 @@ const fetchAndParseUrlTool = ai.defineTool(
   },
   async ({ url }) => {
     try {
-      // SECURITY: Protect against SSRF by manually following redirects and validating IPs
+      // SECURITY: Protect against SSRF by manually following redirects and validating IPs with request-filtering-agent
       let currentUrl = url;
-      let response: Response;
+      let response;
       let redirects = 0;
 
       while (true) {
@@ -46,15 +47,11 @@ const fetchAndParseUrlTool = ai.defineTool(
         const parsedUrl = new URL(currentUrl);
         if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') throw new Error('Only HTTP/S allowed');
 
-        const { address } = await dns.promises.lookup(parsedUrl.hostname);
-        const isPrivate = address === '::1' || address === '::' || /^127\.\d+\.\d+\.\d+$/.test(address) ||
-          /^10\.\d+\.\d+\.\d+$/.test(address) || /^172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+$/.test(address) ||
-          /^192\.168\.\d+\.\d+$/.test(address) || /^0\.0\.0\.0$/.test(address) || /^169\.254\.\d+\.\d+$/.test(address) ||
-          /^f[cd][0-9a-f]{2}:/i.test(address) || /^::ffff:(127|10|172\.(1[6-9]|2\d|3[0-1])|192\.168|169\.254|0)\./i.test(address);
+        response = await fetch(currentUrl, {
+            redirect: 'manual',
+            agent: useAgent(currentUrl)
+        });
 
-        if (isPrivate) throw new Error('Access to private network forbidden');
-
-        response = await fetch(currentUrl, { redirect: 'manual' });
         if ([301, 302, 303, 307, 308].includes(response.status)) {
           const location = response.headers.get('location');
           if (!location) throw new Error('Redirect missing location header');
