@@ -157,7 +157,7 @@ export default function ManageMosaicPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-1">
                                     <Label>Tipo de Transición</Label>
-                                    <Select value={item.animationType || 'fade'} onValueChange={(v) => handleFieldChange(index, 'animationType', v as any)}>
+                                    <Select value={item.animationType || 'fade'} onValueChange={(v) => handleFieldChange(index, 'animationType', v as MosaicItem['animationType'])}>
                                         <SelectTrigger><SelectValue /></SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="fade">Fade</SelectItem>
