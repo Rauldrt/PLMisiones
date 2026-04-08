@@ -13,3 +13,10 @@
 ## 2024-05-17 - Custom State and ARIA expanded
 **Learning:** While Radix UI `PopoverTrigger` manages `aria-expanded` internally, if the component relies on an external, controlled React state (like `isMobileMenuOpen`) and visually changes its internal icons based on that state, the custom state variable's `aria-expanded` shouldn't be blindly removed without fully verifying it's actually completely redundant or ensuring that the trigger element retains a proper accessible name (e.g. `aria-label` or `.sr-only`). The button in `Header.tsx` did not have an `aria-label` and relied on a visual icon change.
 **Action:** Do not remove `aria-expanded` from trigger elements that rely on external state variables to manage visual icons without verifying. Always ensure icon-only buttons have an `aria-label` or `.sr-only` text.
+## 2024-05-17 - Button aria-label vs Image alt text
+**Learning:** When wrapping an `<Image>` element with a `<button>` (like a thumbnail trigger), adding an `aria-label` to the button completely overrides the `alt` text of the child image for screen readers. If the `aria-label` is generic (like "Ver imagen"), the contextual description is lost.
+**Action:** When adding `aria-label` to buttons wrapping dynamic images, ensure the label dynamically includes the image's original descriptive text or title (e.g., `aria-label={\`Ver imagen ampliada: \${item.title}\`}`).
+
+## 2024-05-17 - Build Artifact Pollution
+**Learning:** Running `pnpm build` in this Next.js project generates PWA service worker artifacts (`public/sw.js`, `public/workbox-*.js`). If these aren't gitignored, they will pollute the git index when doing blanket `git add` operations.
+**Action:** Always manually review `git status` output before creating a commit or PR to ensure auto-generated build files are not staged, and use `git rm --cached` or `git restore --staged` if they are.
