@@ -13,3 +13,10 @@
 ## 2024-05-17 - Custom State and ARIA expanded
 **Learning:** While Radix UI `PopoverTrigger` manages `aria-expanded` internally, if the component relies on an external, controlled React state (like `isMobileMenuOpen`) and visually changes its internal icons based on that state, the custom state variable's `aria-expanded` shouldn't be blindly removed without fully verifying it's actually completely redundant or ensuring that the trigger element retains a proper accessible name (e.g. `aria-label` or `.sr-only`). The button in `Header.tsx` did not have an `aria-label` and relied on a visual icon change.
 **Action:** Do not remove `aria-expanded` from trigger elements that rely on external state variables to manage visual icons without verifying. Always ensure icon-only buttons have an `aria-label` or `.sr-only` text.
+## 2026-04-10 - Adding ARIA labels to custom button triggers
+**Learning:** Custom interactive components that wrap complex visual elements (like notification bubbles, image thumbnails, or icon-based triggers) often lack implicit accessible names. Screen readers rely on `aria-label` on the interactive wrapper (e.g., `<button>`) when the contents are heavily stylized or lack straightforward text nodes.
+**Action:** Always add descriptive `aria-label` attributes to `<button>` wrappers that act as triggers for popovers, dialogs, or selection actions, ensuring the label clearly states the action and target context.
+
+## 2026-04-10 - ARIA Labels overriding inner text
+**Learning:** Found that adding `aria-label` to a button that already contains text nodes (like dates or titles) completely overrides the inner text for screen readers. This causes information loss and violates WCAG 2.5.3 if the visible text is no longer in the accessible name.
+**Action:** Never add `aria-label` to elements that already have sufficient inner text. Only use `aria-label` for icon-only buttons or elements without text content. Rely on the natural inner text whenever possible.
