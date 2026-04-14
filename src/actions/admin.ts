@@ -105,7 +105,8 @@ export async function saveMaps(items: MapEmbed[]) {
 
 export async function savePageHeaders(items: PageHeader[]) {
     await writeJsonFile('src/data/page-headers.json', items);
-    items.forEach(item => revalidatePath(item.path));
+    // ⚡ Bolt: Deduplicate paths to avoid redundant invalidations (O(1) invalidations for duplicate paths instead of O(N))
+    Array.from(new Set(items.map(item => item.path))).forEach(path => revalidatePath(path));
     return { success: true, message: 'Encabezados guardados con éxito.' };
 }
 
