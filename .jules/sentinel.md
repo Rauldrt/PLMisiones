@@ -10,3 +10,8 @@
 **Vulnerability:** The Genkit flow `generateNewsContent` allows fetching the contents of any arbitrary URL without checking if it resolves to a private or local IP address, leading to a Server-Side Request Forgery (SSRF) vulnerability. This could allow internal network mapping or reading sensitive metadata.
 **Learning:** Tools used by AI flows, especially those accepting raw URLs to fetch content, must have strict network boundary protections to prevent SSRF just like any traditional proxy or webhook endpoint.
 **Prevention:** Implement strict IP boundary checks and protocol validation using the `URL` API. Use boundary-matched regular expressions (e.g., `/^10\.\d+\.\d+\.\d+$/`) instead of prefix matching to accurately identify private ranges without accidentally blocking legitimate subdomains.
+
+## 2026-04-17 - Stored XSS via SVG Uploads
+**Vulnerability:** The gallery upload action allowed '.svg' files, which can contain executable JavaScript and lead to Stored Cross-Site Scripting (XSS).
+**Learning:** SVG files are essentially XML documents that can embed scripts. Allowing them in public uploads without strict sanitization is a major security risk.
+**Prevention:** Strictly exclude '.svg' and other vector formats from allowed file extensions in upload handlers.
