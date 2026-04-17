@@ -13,3 +13,7 @@
 ## 2024-05-17 - Custom State and ARIA expanded
 **Learning:** While Radix UI `PopoverTrigger` manages `aria-expanded` internally, if the component relies on an external, controlled React state (like `isMobileMenuOpen`) and visually changes its internal icons based on that state, the custom state variable's `aria-expanded` shouldn't be blindly removed without fully verifying it's actually completely redundant or ensuring that the trigger element retains a proper accessible name (e.g. `aria-label` or `.sr-only`). The button in `Header.tsx` did not have an `aria-label` and relied on a visual icon change.
 **Action:** Do not remove `aria-expanded` from trigger elements that rely on external state variables to manage visual icons without verifying. Always ensure icon-only buttons have an `aria-label` or `.sr-only` text.
+
+## 2026-04-17 - Focus Visible Styles on Custom Radix Triggers
+**Learning:** When using custom `button` triggers inside Radix UI `PopoverTrigger` or `DialogTrigger` with `asChild`, they do not inherit default focus styles, making them inaccessible to keyboard users.
+**Action:** Always manually add `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2` utility classes to custom triggers, and dynamically incorporate descriptive text into `aria-label`s when wrapping images to avoid overriding their `alt` text.
