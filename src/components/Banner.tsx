@@ -84,7 +84,7 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
             <div className="relative z-20 w-full flex flex-col items-center pb-20 md:pb-32 px-4">
                 <Dialog>
                     <DialogTrigger asChild>
-                         <button className="flex items-center cursor-pointer group">
+                         <button className="flex items-center cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-full">
                             <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm">
                                 <Icons.Proposals className="h-12 w-12 animate-icon-glow text-yellow-400" />
                             </div>
