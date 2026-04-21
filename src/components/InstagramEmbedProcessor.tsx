@@ -37,14 +37,26 @@ export function InstagramEmbedProcessor() {
       document.body.appendChild(newScript);
     }
     
-    // Re-run processing when navigation occurs, in case new embeds are loaded.
-    const interval = setInterval(() => {
-      if (document.querySelector('.instagram-media:not(.instagram-media-rendered)')) {
-        processInstagram();
-      }
-    }, 1000);
+    // Reactively process new embeds using a MutationObserver instead of polling.
+    // This avoids unnecessary main-thread blocking and layout thrashing.
+    const observer = new MutationObserver((mutations) => {
+      // Check if any nodes were added in this mutation batch
+      const hasAddedNodes = mutations.some((mutation) => mutation.addedNodes.length > 0);
 
-    return () => clearInterval(interval);
+      if (hasAddedNodes) {
+        // Run document.querySelector exactly once per batch to avoid O(N) performance issues
+        if (document.querySelector('.instagram-media:not(.instagram-media-rendered)')) {
+          processInstagram();
+        }
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => observer.disconnect();
 
   }, []);
 
