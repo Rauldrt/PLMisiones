@@ -59,7 +59,7 @@ export default function ManageProposalsPage() {
     const extension = path.extname(url).toLowerCase();
     let tagToInsert = '';
 
-    if (['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'].includes(extension)) {
+    if (['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(extension)) {
       tagToInsert = `<img src="${url}" alt="Imagen de propuesta" style="width:100%; height:auto; border-radius: 0.5rem;" />`;
     } else if (['.mp3', '.wav', '.ogg'].includes(extension)) {
       tagToInsert = `<audio controls src="${url}" style="width:100%;"></audio>`;
