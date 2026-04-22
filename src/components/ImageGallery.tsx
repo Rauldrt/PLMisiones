@@ -13,7 +13,7 @@ interface ImageGalleryProps {
     onImageSelect: (url: string) => void;
 }
 
-const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg'];
+const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif'];
 
 export function ImageGallery({ onImageSelect }: ImageGalleryProps) {
     const [mediaUrls, setMediaUrls] = useState<string[]>([]);
