@@ -13,3 +13,7 @@
 ## 2024-11-20 - Use useRef for scroll-based animations (parallax)
 **Learning:** Using `useState` inside a `requestAnimationFrame` loop attached to a `scroll` event listener causes continuous React re-renders and layout thrashing. Even though the frame loop throttles the state updates, the component and all its children still re-render on every frame where scrolling occurs, creating significant main thread blocking and jank.
 **Action:** When implementing scroll-based parallax or animations, store the DOM elements in a `useRef` and directly manipulate their `style.transform` properties inside the `requestAnimationFrame` callback. This completely bypasses the React render cycle, resulting in significantly smoother 60FPS scroll performance with less memory allocation. Ensure you still capture the animation frame ID and `cancelAnimationFrame` in the cleanup function.
+
+## 2026-04-24 - Deduplicate revalidatePath calls in loops
+**Learning:** Calling `revalidatePath` inside a loop directly on an item's path can trigger redundant O(N) operations when multiple items target the same route, leading to unnecessary cache invalidation overhead.
+**Action:** When calling `revalidatePath` over an array of items with paths, deduplicate the paths first using a `Set` (e.g., `Array.from(new Set(paths)).forEach(...)`) to prevent redundant operations and reduce time complexity to O(1) per unique route.
