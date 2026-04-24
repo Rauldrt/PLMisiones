@@ -39,7 +39,7 @@ export function NotificacionesClient({ initialNotifications }: NotificacionesCli
                   <Card key={item.id} className="overflow-hidden">
                     {item.imageUrl && (
                       <DialogTrigger asChild>
-                         <button className="relative h-96 w-full cursor-pointer" onClick={() => handleImageClick(item.imageUrl!)}>
+                         <button className="relative h-96 w-full cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" onClick={() => handleImageClick(item.imageUrl!)}>
                             <Image
                                 src={item.imageUrl}
                                 alt={item.title}
