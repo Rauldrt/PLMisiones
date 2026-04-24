@@ -113,14 +113,14 @@ export function NotificationDropdown({
     <div className="absolute top-6 right-6 z-30">
       <Popover>
         <PopoverTrigger asChild>
-          <button>
+          <button className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
             <TriggerButton />
           </button>
         </PopoverTrigger>
         <PopoverContent className="w-80" align="end">
           <div className="space-y-4">
             <NotificationDialog item={latestNotification}>
-              <button className="w-full text-left">
+              <button className="w-full text-left rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                 <div className="space-y-1 rounded-md p-2 hover:bg-muted">
                   <p className="font-semibold">{latestNotification.title}</p>
                   <p className="text-xs text-muted-foreground">
@@ -139,7 +139,7 @@ export function NotificationDropdown({
                 <div className="space-y-2">
                   {otherNotifications.map((item) => (
                      <NotificationDialog item={item} key={item.id}>
-                        <button className="w-full text-left">
+                        <button className="w-full text-left rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                             <div className="rounded-md p-2 hover:bg-muted">
                                <p className="truncate text-sm">{item.title}</p>
                             </div>
