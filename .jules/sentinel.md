@@ -10,3 +10,7 @@
 **Vulnerability:** The Genkit flow `generateNewsContent` allows fetching the contents of any arbitrary URL without checking if it resolves to a private or local IP address, leading to a Server-Side Request Forgery (SSRF) vulnerability. This could allow internal network mapping or reading sensitive metadata.
 **Learning:** Tools used by AI flows, especially those accepting raw URLs to fetch content, must have strict network boundary protections to prevent SSRF just like any traditional proxy or webhook endpoint.
 **Prevention:** Implement strict IP boundary checks and protocol validation using the `URL` API. Use boundary-matched regular expressions (e.g., `/^10\.\d+\.\d+\.\d+$/`) instead of prefix matching to accurately identify private ranges without accidentally blocking legitimate subdomains.
+## 2026-04-29 - DNS Rebinding SSRF Protection
+**Vulnerability:** IP validation checks for SSRF prevention are ineffective if the subsequent `fetch` call uses the original hostname, as DNS rebinding can map the host to a private IP after the validation step.
+**Learning:** When manually implementing SSRF protections, resolving an IP and checking it is not enough. The connection itself must be established directly to the verified IP address.
+**Prevention:** To prevent DNS rebinding without third-party dependencies, resolve the IP, construct a new `URL` using the resolved IP as the `hostname`, and pass the original domain in the `Host` header of the `fetch` options.
