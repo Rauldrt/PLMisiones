@@ -46,12 +46,22 @@ export function MosaicTile({ item, onClick }: MosaicTileProps) {
   const animationDurationStyle = {
     animationDuration: `${baseDuration}ms`
   };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick(item, currentIndex);
+    }
+  };
   
   return (
     <div
       onClick={() => onClick(item, currentIndex)}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
       className={cn(
-        'relative overflow-hidden rounded-3xl group cursor-pointer',
+        'relative overflow-hidden rounded-3xl group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
         `md:col-span-${item.colSpan}`,
         `md:row-span-${item.rowSpan}`
       )}
