@@ -37,14 +37,20 @@ export function InstagramEmbedProcessor() {
       document.body.appendChild(newScript);
     }
     
+    // ⚡ Bolt: Use MutationObserver instead of setInterval to avoid blocking main thread (O(1) checks on DOM mutation)
     // Re-run processing when navigation occurs, in case new embeds are loaded.
-    const interval = setInterval(() => {
-      if (document.querySelector('.instagram-media:not(.instagram-media-rendered)')) {
-        processInstagram();
+    const observer = new MutationObserver((mutations) => {
+      // Only process if actual nodes were added
+      if (mutations.some(m => m.addedNodes.length > 0)) {
+        if (document.querySelector('.instagram-media:not(.instagram-media-rendered)')) {
+          processInstagram();
+        }
       }
-    }, 1000);
+    });
 
-    return () => clearInterval(interval);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
 
   }, []);
 
