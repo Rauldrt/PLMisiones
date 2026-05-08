@@ -23,9 +23,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
       setLoading(false);
+
+      if (user) {
+        const token = await user.getIdToken();
+        document.cookie = `session=${token}; path=/; max-age=3600; samesite=strict; secure`;
+      } else {
+        document.cookie = `session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+      }
     });
 
     return () => unsubscribe();
@@ -37,6 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     await signOut(auth);
+    document.cookie = `session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
     if (pathname.startsWith('/admin')) {
       router.push('/login');
     }
