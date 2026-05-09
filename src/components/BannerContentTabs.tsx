@@ -83,7 +83,18 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                                 key={candidate.id} 
                                 className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4"
                             >
-                                <div onClick={(e) => handleCardClick(candidate, e)}>
+                                <div
+                                    onClick={(e) => handleCardClick(candidate, e)}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            e.preventDefault();
+                                            handleCardClick(candidate, e as any);
+                                        }
+                                    }}
+                                    className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg"
+                                >
                                     <ExpandingCandidateCard 
                                         candidate={candidate}
                                         isExpanded={false}
