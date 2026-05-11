@@ -49,9 +49,17 @@ export function MosaicTile({ item, onClick }: MosaicTileProps) {
   
   return (
     <div
+      role="button"
+      tabIndex={0}
       onClick={() => onClick(item, currentIndex)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick(item, currentIndex);
+        }
+      }}
       className={cn(
-        'relative overflow-hidden rounded-3xl group cursor-pointer',
+        'relative overflow-hidden rounded-3xl group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
         `md:col-span-${item.colSpan}`,
         `md:row-span-${item.rowSpan}`
       )}
