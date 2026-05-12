@@ -23,9 +23,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
       setLoading(false);
+
+      if (user) {
+        try {
+          const token = await user.getIdToken();
+          // Set session cookie for server actions
+          document.cookie = `__session=${token}; path=/; max-age=${60 * 60 * 24 * 5}; SameSite=Lax; Secure`;
+        } catch (error) {
+          console.error('Error getting token', error);
+        }
+      } else {
+        document.cookie = '__session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      }
     });
 
     return () => unsubscribe();
