@@ -2,7 +2,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { onAuthStateChanged, getAuth, signInWithEmailAndPassword, signOut, User } from 'firebase/auth';
+import { onIdTokenChanged, getAuth, signInWithEmailAndPassword, signOut, User } from 'firebase/auth';
 import { getFirebaseApp } from '@/lib/firebase/client';
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -23,8 +23,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onIdTokenChanged(auth, async (user) => {
       setUser(user);
+      if (user) {
+        const token = await user.getIdToken();
+        document.cookie = `firebaseToken=${token}; path=/; secure; samesite=strict`;
+      } else {
+        document.cookie = "firebaseToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      }
       setLoading(false);
     });
 
@@ -37,6 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     await signOut(auth);
+    document.cookie = "firebaseToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
     if (pathname.startsWith('/admin')) {
       router.push('/login');
     }
