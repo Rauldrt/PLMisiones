@@ -11,6 +11,9 @@ import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import * as cheerio from 'cheerio';
 import dns from 'dns';
+import http from 'http';
+import https from 'https';
+import zlib from 'zlib';
 
 const GenerateNewsContentInputSchema = z.object({
   url: z.string().url().describe('The URL to generate news content from.'),
@@ -46,7 +49,7 @@ const fetchAndParseUrlTool = ai.defineTool(
         const parsedUrl = new URL(currentUrl);
         if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') throw new Error('Only HTTP/S allowed');
 
-        const { address } = await dns.promises.lookup(parsedUrl.hostname);
+        const { address, family } = await dns.promises.lookup(parsedUrl.hostname);
         const isPrivate = address === '::1' || address === '::' || /^127\.\d+\.\d+\.\d+$/.test(address) ||
           /^10\.\d+\.\d+\.\d+$/.test(address) || /^172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+$/.test(address) ||
           /^192\.168\.\d+\.\d+$/.test(address) || /^0\.0\.0\.0$/.test(address) || /^169\.254\.\d+\.\d+$/.test(address) ||
@@ -54,7 +57,41 @@ const fetchAndParseUrlTool = ai.defineTool(
 
         if (isPrivate) throw new Error('Access to private network forbidden');
 
-        response = await fetch(currentUrl, { redirect: 'manual' });
+        response = await new Promise<any>((resolve, reject) => {
+          const reqModule = parsedUrl.protocol === 'https:' ? https : http;
+          const req = reqModule.get(currentUrl, {
+            lookup: (hostname: string, opts: any, cb: any) => {
+              const callback = typeof opts === 'function' ? opts : cb;
+              if (opts && typeof opts === 'object' && opts.all) callback(null, [{ address, family }]);
+              else callback(null, address, family);
+            }
+          }, (res) => {
+            let stream: any = res;
+            const enc = res.headers['content-encoding'];
+            if (enc === 'gzip') stream = res.pipe(zlib.createGunzip());
+            else if (enc === 'br') stream = res.pipe(zlib.createBrotliDecompress());
+            else if (enc === 'deflate') stream = res.pipe(zlib.createInflate());
+
+            const chunks: Buffer[] = [];
+            stream.on('data', (c: Buffer) => chunks.push(c));
+            stream.on('end', () => {
+              const headers = new Headers();
+              for (const [k, v] of Object.entries(res.headers)) {
+                if (Array.isArray(v)) v.forEach(val => headers.append(k, val));
+                else if (v) headers.append(k, v);
+              }
+              resolve({
+                ok: (res.statusCode || 200) >= 200 && (res.statusCode || 200) < 300,
+                status: res.statusCode || 200,
+                headers,
+                text: async () => Buffer.concat(chunks).toString('utf-8')
+              });
+            });
+            stream.on('error', reject);
+          });
+          req.on('error', reject);
+          req.end();
+        });
         if ([301, 302, 303, 307, 308].includes(response.status)) {
           const location = response.headers.get('location');
           if (!location) throw new Error('Redirect missing location header');
