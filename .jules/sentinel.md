@@ -10,3 +10,7 @@
 **Vulnerability:** The Genkit flow `generateNewsContent` allows fetching the contents of any arbitrary URL without checking if it resolves to a private or local IP address, leading to a Server-Side Request Forgery (SSRF) vulnerability. This could allow internal network mapping or reading sensitive metadata.
 **Learning:** Tools used by AI flows, especially those accepting raw URLs to fetch content, must have strict network boundary protections to prevent SSRF just like any traditional proxy or webhook endpoint.
 **Prevention:** Implement strict IP boundary checks and protocol validation using the `URL` API. Use boundary-matched regular expressions (e.g., `/^10\.\d+\.\d+\.\d+$/`) instead of prefix matching to accurately identify private ranges without accidentally blocking legitimate subdomains.
+## 2026-05-18 - Securing Next.js Server Actions
+**Vulnerability:** Server Actions in Next.js were publicly exposed by default without explicit server-side authentication, allowing unauthenticated users to execute sensitive operations like file writes.
+**Learning:** Next.js Server Actions are essentially public API endpoints and do not automatically inherit client-side Firebase authentication state unless explicitly passed or synced via cookies.
+**Prevention:** Always implement explicit server-side authorization checks (e.g., verifyAdmin()) at the beginning of sensitive Server Actions, and sync client auth state to a session cookie.
