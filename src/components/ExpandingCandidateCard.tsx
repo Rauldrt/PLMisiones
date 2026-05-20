@@ -8,18 +8,28 @@ import { cn } from '@/lib/utils';
 interface ExpandingCandidateCardProps {
   candidate: Candidate;
   isExpanded: boolean;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
 export function ExpandingCandidateCard({ candidate, isExpanded, onClick }: ExpandingCandidateCardProps) {
   const transitionClass = 'transition-all duration-500';
   const easeClass = '[transition-timing-function:cubic-bezier(0.4,0,0.2,1)]';
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick(e);
+    }
+  };
+
   return (
     <div
       onClick={onClick}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
       className={cn(
-        'group relative w-full cursor-pointer overflow-hidden rounded-lg',
+        'group relative w-full cursor-pointer overflow-hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
         transitionClass,
         easeClass,
         isExpanded 
