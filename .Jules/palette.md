@@ -13,3 +13,7 @@
 ## 2024-05-17 - Custom State and ARIA expanded
 **Learning:** While Radix UI `PopoverTrigger` manages `aria-expanded` internally, if the component relies on an external, controlled React state (like `isMobileMenuOpen`) and visually changes its internal icons based on that state, the custom state variable's `aria-expanded` shouldn't be blindly removed without fully verifying it's actually completely redundant or ensuring that the trigger element retains a proper accessible name (e.g. `aria-label` or `.sr-only`). The button in `Header.tsx` did not have an `aria-label` and relied on a visual icon change.
 **Action:** Do not remove `aria-expanded` from trigger elements that rely on external state variables to manage visual icons without verifying. Always ensure icon-only buttons have an `aria-label` or `.sr-only` text.
+
+## 2026-05-21 - Interactive Custom Elements Require Keyboard Support
+**Learning:** Found a `div` used as a clickable card trigger in `BannerContentTabs` that lacked keyboard navigation capabilities (no `tabIndex`, no `role`, and no keyboard event handler), effectively locking out users navigating via keyboard.
+**Action:** When using generic elements like `div` or `span` as interactive buttons (e.g., expanding cards), always add `role="button"`, `tabIndex={0}`, an `onKeyDown` handler for Enter and Space keys (preventing default Space scrolling), and apply Tailwind `focus-visible` utility classes.
