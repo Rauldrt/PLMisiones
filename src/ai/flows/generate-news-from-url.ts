@@ -11,6 +11,7 @@ import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import * as cheerio from 'cheerio';
 import dns from 'dns';
+import { verifyAdmin } from '@/lib/server/auth';
 
 const GenerateNewsContentInputSchema = z.object({
   url: z.string().url().describe('The URL to generate news content from.'),
@@ -24,6 +25,7 @@ const GenerateNewsContentOutputSchema = z.object({
 export type GenerateNewsContentOutput = z.infer<typeof GenerateNewsContentOutputSchema>;
 
 export async function generateNewsContent(input: GenerateNewsContentInput): Promise<GenerateNewsContentOutput> {
+  await verifyAdmin();
   return generateNewsContentFlow(input);
 }
 
