@@ -38,13 +38,28 @@ export function InstagramEmbedProcessor() {
     }
     
     // Re-run processing when navigation occurs, in case new embeds are loaded.
-    const interval = setInterval(() => {
-      if (document.querySelector('.instagram-media:not(.instagram-media-rendered)')) {
-        processInstagram();
+    // ⚡ Bolt: Replace setInterval with MutationObserver to avoid continuous main-thread blocking
+    let frameId: number;
+    const observer = new MutationObserver(() => {
+      // Debounce using requestAnimationFrame to prevent multiple rapid executions within a single frame
+      if (frameId) {
+        window.cancelAnimationFrame(frameId);
       }
-    }, 1000);
+      frameId = window.requestAnimationFrame(() => {
+        if (document.querySelector('.instagram-media:not(.instagram-media-rendered)')) {
+          processInstagram();
+        }
+      });
+    });
 
-    return () => clearInterval(interval);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+      if (frameId) {
+        window.cancelAnimationFrame(frameId);
+      }
+    };
 
   }, []);
 
