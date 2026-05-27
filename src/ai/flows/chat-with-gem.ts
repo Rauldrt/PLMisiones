@@ -9,6 +9,7 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
+import { verifyAdmin } from '@/lib/server/auth';
 
 const ChatWithGemInputSchema = z.object({
   prompt: z.string().describe('The user\'s question or prompt for the Gem.'),
@@ -21,6 +22,7 @@ const ChatWithGemOutputSchema = z.object({
 export type ChatWithGemOutput = z.infer<typeof ChatWithGemOutputSchema>;
 
 export async function chatWithGem(input: ChatWithGemInput): Promise<ChatWithGemOutput> {
+  await verifyAdmin();
   return chatWithGemFlow(input);
 }
 
