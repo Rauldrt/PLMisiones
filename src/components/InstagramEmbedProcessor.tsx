@@ -37,14 +37,30 @@ export function InstagramEmbedProcessor() {
       document.body.appendChild(newScript);
     }
     
-    // Re-run processing when navigation occurs, in case new embeds are loaded.
-    const interval = setInterval(() => {
-      if (document.querySelector('.instagram-media:not(.instagram-media-rendered)')) {
-        processInstagram();
-      }
-    }, 1000);
+    // ⚡ Bolt: Replace setInterval with MutationObserver to avoid main-thread blocking
+    // Re-run processing when new embeds are loaded via navigation or dynamic injection
+    let debounceTimer: ReturnType<typeof setTimeout>;
 
-    return () => clearInterval(interval);
+    const observer = new MutationObserver((mutations) => {
+      // Check if any added node might be or contain an instagram-media element
+      const hasAddedNodes = mutations.some(m => m.addedNodes.length > 0);
+
+      if (hasAddedNodes) {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          if (document.querySelector('.instagram-media:not(.instagram-media-rendered)')) {
+            processInstagram();
+          }
+        }, 300); // Debounce to prevent layout thrashing
+      }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(debounceTimer);
+    };
 
   }, []);
 
