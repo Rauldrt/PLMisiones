@@ -13,3 +13,7 @@
 ## 2024-11-20 - Use useRef for scroll-based animations (parallax)
 **Learning:** Using `useState` inside a `requestAnimationFrame` loop attached to a `scroll` event listener causes continuous React re-renders and layout thrashing. Even though the frame loop throttles the state updates, the component and all its children still re-render on every frame where scrolling occurs, creating significant main thread blocking and jank.
 **Action:** When implementing scroll-based parallax or animations, store the DOM elements in a `useRef` and directly manipulate their `style.transform` properties inside the `requestAnimationFrame` callback. This completely bypasses the React render cycle, resulting in significantly smoother 60FPS scroll performance with less memory allocation. Ensure you still capture the animation frame ID and `cancelAnimationFrame` in the cleanup function.
+
+## 2026-05-28 - Replaced setInterval with MutationObserver for DOM Polling
+**Learning:** Continuously polling the DOM for asynchronously injected elements (like third-party embeds) using `setInterval` blocks the main thread and degrades scrolling and rendering performance, even if the work per frame is small. Next.js applications shouldn't rely on interval polling.
+**Action:** Use a `MutationObserver` configured with `childList` and `subtree` to react only when nodes are added to the DOM. Combine this with a debounced query to prevent performance regressions when large DOM trees are inserted at once.
