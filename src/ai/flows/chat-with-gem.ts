@@ -20,7 +20,10 @@ const ChatWithGemOutputSchema = z.object({
 });
 export type ChatWithGemOutput = z.infer<typeof ChatWithGemOutputSchema>;
 
+import { verifyAdmin } from '@/lib/server/auth';
+
 export async function chatWithGem(input: ChatWithGemInput): Promise<ChatWithGemOutput> {
+  await verifyAdmin();
   return chatWithGemFlow(input);
 }
 
