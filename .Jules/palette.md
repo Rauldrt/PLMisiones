@@ -13,3 +13,7 @@
 ## 2024-05-17 - Custom State and ARIA expanded
 **Learning:** While Radix UI `PopoverTrigger` manages `aria-expanded` internally, if the component relies on an external, controlled React state (like `isMobileMenuOpen`) and visually changes its internal icons based on that state, the custom state variable's `aria-expanded` shouldn't be blindly removed without fully verifying it's actually completely redundant or ensuring that the trigger element retains a proper accessible name (e.g. `aria-label` or `.sr-only`). The button in `Header.tsx` did not have an `aria-label` and relied on a visual icon change.
 **Action:** Do not remove `aria-expanded` from trigger elements that rely on external state variables to manage visual icons without verifying. Always ensure icon-only buttons have an `aria-label` or `.sr-only` text.
+
+## 2026-05-31 - Focus-visible preference for interactive elements
+**Learning:** When applying focus styles for accessibility in custom components or unstyled buttons (e.g., custom Radix UI triggers with `asChild`), prefer using `focus-visible:` utilities (like `focus-visible:ring-2`) instead of standard `focus:` utilities. Standard `focus` states trigger upon mouse clicks, often leaving unwanted persistent focus rings that look like visual bugs to pointer users, whereas `focus-visible` correctly targets only keyboard navigation.
+**Action:** Default to `focus-visible` utility classes for all new interactive elements unless there is a specific design requirement for persistent click focus.
