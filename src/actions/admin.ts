@@ -4,8 +4,10 @@ import path from 'path';
 import { revalidatePath } from 'next/cache';
 import type { NewsArticle, BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, Referente, OrganigramaMember, Candidate, Notification, Proposal, FooterContent, MapEmbed, PageHeader, SocialLink, NotificationItem, GoogleForm, StreamingItem } from '@/lib/types';
 import { getNewsAction } from '@/actions/data';
+import { verifyAdmin } from '@/lib/server/auth';
 
 async function writeJsonFile(filePath: string, data: any) {
+  await verifyAdmin();
   const fullPath = path.join(process.cwd(), filePath);
   await fs.writeFile(fullPath, JSON.stringify(data, null, 2));
 }
@@ -62,6 +64,7 @@ export async function saveCandidates(items: Candidate[]) {
 }
 
 export async function addNewsArticle(article: Omit<NewsArticle, 'id' | 'slug'>) {
+    await verifyAdmin();
     const articles = await getNewsAction();
     const newArticle: NewsArticle = {
         ...article,
