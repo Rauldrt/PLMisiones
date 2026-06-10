@@ -115,6 +115,7 @@ export function NotificationDropdown({
         <PopoverTrigger asChild>
           <button>
             <TriggerButton />
+            <span className="sr-only">Toggle notifications</span>
           </button>
         </PopoverTrigger>
         <PopoverContent className="w-80" align="end">
