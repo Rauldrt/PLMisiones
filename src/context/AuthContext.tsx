@@ -2,7 +2,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { onAuthStateChanged, getAuth, signInWithEmailAndPassword, signOut, User } from 'firebase/auth';
+import { onIdTokenChanged, getAuth, signInWithEmailAndPassword, signOut, User } from 'firebase/auth';
 import { getFirebaseApp } from '@/lib/firebase/client';
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -23,9 +23,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onIdTokenChanged(auth, async (user) => {
       setUser(user);
       setLoading(false);
+      if (user) {
+          const token = await user.getIdToken();
+          document.cookie = `token=${token}; path=/; max-age=3600; SameSite=Strict; Secure`;
+      } else {
+          document.cookie = `token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=Strict; Secure`;
+      }
     });
 
     return () => unsubscribe();
