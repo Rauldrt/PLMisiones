@@ -113,7 +113,7 @@ export function NotificationDropdown({
     <div className="absolute top-6 right-6 z-30">
       <Popover>
         <PopoverTrigger asChild>
-          <button>
+          <button className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
             <TriggerButton />
           </button>
         </PopoverTrigger>
