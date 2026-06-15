@@ -1,4 +1,5 @@
 'use server';
+import { verifyAdmin } from '@/lib/server/auth';
 /**
  * @fileOverview Generates news content from a given URL by fetching, parsing, and summarizing its content.
  *
@@ -24,6 +25,7 @@ const GenerateNewsContentOutputSchema = z.object({
 export type GenerateNewsContentOutput = z.infer<typeof GenerateNewsContentOutputSchema>;
 
 export async function generateNewsContent(input: GenerateNewsContentInput): Promise<GenerateNewsContentOutput> {
+  await verifyAdmin();
   return generateNewsContentFlow(input);
 }
 

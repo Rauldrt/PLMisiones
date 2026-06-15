@@ -1,5 +1,6 @@
 
 'use server';
+import { verifyAdmin } from '@/lib/server/auth';
 
 import { getPublicImages } from "@/lib/gallery-service";
 import { promises as fs } from 'fs';
@@ -14,6 +15,7 @@ const ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.
 
 export async function uploadPublicFilesAction(files: { name: string; data: string }[]): Promise<{ success: boolean; message: string }> {
     try {
+        await verifyAdmin();
         const publicDir = path.join(process.cwd(), 'public');
         
         for (const file of files) {
