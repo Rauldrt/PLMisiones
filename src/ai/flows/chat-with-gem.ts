@@ -1,4 +1,5 @@
 'use server';
+import { verifyAdmin } from '@/lib/server/auth';
 /**
  * @fileOverview A Genkit flow for chatting with a specialized Gemini model (Gem).
  *
@@ -21,6 +22,7 @@ const ChatWithGemOutputSchema = z.object({
 export type ChatWithGemOutput = z.infer<typeof ChatWithGemOutputSchema>;
 
 export async function chatWithGem(input: ChatWithGemInput): Promise<ChatWithGemOutput> {
+  await verifyAdmin();
   return chatWithGemFlow(input);
 }
 
