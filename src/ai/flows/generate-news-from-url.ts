@@ -23,7 +23,10 @@ const GenerateNewsContentOutputSchema = z.object({
 });
 export type GenerateNewsContentOutput = z.infer<typeof GenerateNewsContentOutputSchema>;
 
+import { verifyAdmin } from '@/lib/server/auth';
+
 export async function generateNewsContent(input: GenerateNewsContentInput): Promise<GenerateNewsContentOutput> {
+  await verifyAdmin();
   return generateNewsContentFlow(input);
 }
 
