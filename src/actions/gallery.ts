@@ -12,7 +12,10 @@ export async function getPublicImagesAction() {
 
 const ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.mp4', '.webm', '.mp3', '.wav', '.ogg'];
 
+import { verifyAdmin } from '@/lib/server/auth';
+
 export async function uploadPublicFilesAction(files: { name: string; data: string }[]): Promise<{ success: boolean; message: string }> {
+    await verifyAdmin();
     try {
         const publicDir = path.join(process.cwd(), 'public');
         
