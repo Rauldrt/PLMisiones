@@ -1,0 +1,3 @@
+## 2024-06-21 - Added aria-labels to interactive custom trigger elements
+**Learning:** Many interactive elements like notifications and image galleries in the app were using bare buttons without any screen reader context because their visual content was sufficient.
+**Action:** Always add descriptive `aria-label`s to custom trigger elements (like notification bubbles, image overlays, and gallery tiles) to ensure full accessibility for screen readers.
