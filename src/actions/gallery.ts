@@ -5,14 +5,17 @@ import { getPublicImages } from "@/lib/gallery-service";
 import { promises as fs } from 'fs';
 import path from 'path';
 import { revalidatePath } from 'next/cache';
+import { verifyAdmin } from '@/lib/server/auth';
 
 export async function getPublicImagesAction() {
+    await verifyAdmin();
     return getPublicImages();
 }
 
 const ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.mp4', '.webm', '.mp3', '.wav', '.ogg'];
 
 export async function uploadPublicFilesAction(files: { name: string; data: string }[]): Promise<{ success: boolean; message: string }> {
+    await verifyAdmin();
     try {
         const publicDir = path.join(process.cwd(), 'public');
         
