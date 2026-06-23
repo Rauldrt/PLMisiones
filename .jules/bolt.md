@@ -13,3 +13,7 @@
 ## 2024-11-20 - Use useRef for scroll-based animations (parallax)
 **Learning:** Using `useState` inside a `requestAnimationFrame` loop attached to a `scroll` event listener causes continuous React re-renders and layout thrashing. Even though the frame loop throttles the state updates, the component and all its children still re-render on every frame where scrolling occurs, creating significant main thread blocking and jank.
 **Action:** When implementing scroll-based parallax or animations, store the DOM elements in a `useRef` and directly manipulate their `style.transform` properties inside the `requestAnimationFrame` callback. This completely bypasses the React render cycle, resulting in significantly smoother 60FPS scroll performance with less memory allocation. Ensure you still capture the animation frame ID and `cancelAnimationFrame` in the cleanup function.
+
+## 2025-01-20 - Global Cache Invalidation in Next.js Server Actions
+**Learning:** Using `revalidatePath('/*')` is invalid for global cache invalidation in Next.js Server Actions and fails to clear the cache. Additionally, combining global invalidation with individual path invalidations (e.g. `/afiliacion`) or looping without deduplication creates redundant performance overhead.
+**Action:** Always use `revalidatePath('/', 'layout')` to globally invalidate the entire application. When invalidating multiple dynamic paths in a loop, always deduplicate them first using `new Set()`.

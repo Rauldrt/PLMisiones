@@ -93,7 +93,8 @@ export async function saveNotificationsPage(items: NotificationItem[]) {
 
 export async function saveFooterContent(item: FooterContent) {
     await writeJsonFile('src/data/footer.json', item);
-    revalidatePath('/*'); // Revalidate all pages since footer is global
+    // ⚡ Bolt: Use 'layout' for global invalidation instead of invalid '/*'
+    revalidatePath('/', 'layout');
     return { success: true, message: 'Contenido del pie de página guardado con éxito.' };
 }
 
@@ -105,21 +106,24 @@ export async function saveMaps(items: MapEmbed[]) {
 
 export async function savePageHeaders(items: PageHeader[]) {
     await writeJsonFile('src/data/page-headers.json', items);
-    items.forEach(item => revalidatePath(item.path));
+    // ⚡ Bolt: Deduplicate paths to prevent redundant O(N) cache invalidations
+    Array.from(new Set(items.map(item => item.path))).forEach(path => {
+        if (path) revalidatePath(path);
+    });
     return { success: true, message: 'Encabezados guardados con éxito.' };
 }
 
 export async function saveSocialLinks(items: SocialLink[]) {
     await writeJsonFile('src/data/social-links.json', items);
-    revalidatePath('/*'); // Revalidate all pages since footer is global
+    // ⚡ Bolt: Use 'layout' for global invalidation instead of invalid '/*'
+    revalidatePath('/', 'layout');
     return { success: true, message: 'Enlaces de redes sociales guardados con éxito.' };
 }
 
 export async function saveGoogleForms(items: GoogleForm[]) {
     await writeJsonFile('src/data/google-forms.json', items);
-    revalidatePath('/afiliacion');
-    revalidatePath('/fiscales');
-    revalidatePath('/*'); // revalidate all for footer
+    // ⚡ Bolt: Global revalidation makes individual paths redundant
+    revalidatePath('/', 'layout');
     return { success: true, message: 'Formularios de Google guardados con éxito.' };
 }
 
