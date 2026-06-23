@@ -48,13 +48,15 @@ export function MosaicTile({ item, onClick }: MosaicTileProps) {
   };
   
   return (
-    <div
+    <button
+      type="button"
       onClick={() => onClick(item, currentIndex)}
       className={cn(
-        'relative overflow-hidden rounded-3xl group cursor-pointer',
+        'relative overflow-hidden rounded-3xl group cursor-pointer text-left focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary focus-visible:ring-offset-2',
         `md:col-span-${item.colSpan}`,
         `md:row-span-${item.rowSpan}`
       )}
+      aria-label={`Ver galería de ${item.title}`}
     >
       {item.imageUrls.map((url, index) => (
         <Image
@@ -75,6 +77,6 @@ export function MosaicTile({ item, onClick }: MosaicTileProps) {
       <div className="absolute inset-0 flex items-end justify-start p-4 md:p-6">
         <h3 className="font-headline text-2xl font-bold text-white bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full">{item.title}</h3>
       </div>
-    </div>
+    </button>
   );
 }
