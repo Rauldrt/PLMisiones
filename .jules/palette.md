@@ -1,0 +1,3 @@
+## 2025-02-28 - Accessible custom Popover and Dialog triggers
+**Learning:** When using Radix UI `PopoverTrigger` or `DialogTrigger` with `asChild`, injecting a visually hidden `span` for accessibility inside a custom component that spreads props (like `Button`) can silently override `props.children` or cause unexpected layout behaviour in standard interactive elements like `button`.
+**Action:** Use `aria-label` attributes directly on the custom elements (like `<button>`) passed to `asChild` triggers when they lack text content, rather than injecting `sr-only` spans.
