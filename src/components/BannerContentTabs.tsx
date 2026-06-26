@@ -25,7 +25,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
     
     const [cardPosition, setCardPosition] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
 
-    const handleCardClick = (candidate: Candidate, e: React.MouseEvent<HTMLDivElement>) => {
+    const handleCardClick = (candidate: Candidate, e: React.MouseEvent<HTMLElement>) => {
         if (expandedCandidate) return;
 
         const rect = e.currentTarget.getBoundingClientRect();
@@ -83,13 +83,18 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                                 key={candidate.id} 
                                 className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4"
                             >
-                                <div onClick={(e) => handleCardClick(candidate, e)}>
+                                <button
+                                    type="button"
+                                    onClick={(e) => handleCardClick(candidate, e)}
+                                    className="block w-full h-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg"
+                                    aria-label={`View details for ${candidate.name}`}
+                                >
                                     <ExpandingCandidateCard 
                                         candidate={candidate}
                                         isExpanded={false}
                                         onClick={() => {}}
                                     />
-                                </div>
+                                </button>
                             </CarouselItem>
                         ))}
                     </CarouselContent>
