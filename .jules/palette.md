@@ -1,0 +1,3 @@
+## 2024-06-28 - Semantic Button Migration for Interactive Cards
+**Learning:** Interactive region components like expanding cards often rely on a clickable `<div>` which neglects screen reader and keyboard users due to missing semantic roles and focus states.
+**Action:** When implementing custom interactive components acting as buttons, always convert the wrapping `<div>` to a `<button type="button">`, append `text-left block` layout classes, provide an `aria-expanded` attribute if applicable, and explicitly include keyboard focus utility styles like `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring`.
