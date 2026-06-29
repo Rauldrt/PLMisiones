@@ -1,0 +1,3 @@
+## 2024-05-18 - Semantic Triggers for Modals
+**Learning:** Found a candidate carousel where the modal trigger was a non-semantic `<div onClick={...}>`. This prevented keyboard users from focusing and activating the cards. When converting interactive divs to buttons for accessibility, it is crucial to explicitly apply `w-full block text-left` to prevent the browser's default button styling from breaking the layout.
+**Action:** Always convert non-semantic clickable divs to `<button type="button">`, ensure they have an accessible name (via `aria-label` or sr-only text), add keyboard focus styles, and apply necessary layout reset classes like `w-full block text-left`.
