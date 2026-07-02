@@ -25,7 +25,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
     
     const [cardPosition, setCardPosition] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
 
-    const handleCardClick = (candidate: Candidate, e: React.MouseEvent<HTMLDivElement>) => {
+    const handleCardClick = (candidate: Candidate, e: React.MouseEvent<HTMLButtonElement>) => {
         if (expandedCandidate) return;
 
         const rect = e.currentTarget.getBoundingClientRect();
@@ -83,13 +83,11 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                                 key={candidate.id} 
                                 className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4"
                             >
-                                <div onClick={(e) => handleCardClick(candidate, e)}>
-                                    <ExpandingCandidateCard 
-                                        candidate={candidate}
-                                        isExpanded={false}
-                                        onClick={() => {}}
-                                    />
-                                </div>
+                                <ExpandingCandidateCard
+                                    candidate={candidate}
+                                    isExpanded={false}
+                                    onClick={(e) => handleCardClick(candidate, e)}
+                                />
                             </CarouselItem>
                         ))}
                     </CarouselContent>
@@ -121,7 +119,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                          <ExpandingCandidateCard
                             candidate={expandedCandidate}
                             isExpanded={true}
-                            onClick={handleClose}
+                            onClick={(e) => { e.stopPropagation(); handleClose(); }}
                         />
                         <Button 
                             variant="ghost" 

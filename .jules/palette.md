@@ -1,0 +1,3 @@
+## 2026-07-02 - Convert Interactive Divs to Buttons
+**Learning:** Radix UI components (like `DialogTrigger`) and generic interactive `div`s often lose default keyboard focus styles and accessible names when custom inner elements or simple click handlers are used.
+**Action:** Always convert non-semantic `onClick` `<div>` elements to `<button type="button">`, add explicit `aria-label` attributes, and apply Tailwind `focus-visible:` utilities (e.g., `focus-visible:ring-2`) combined with block sizing (`text-left`, `w-full`, `h-full`, `block`) to ensure full keyboard accessibility and screen reader support without breaking layouts.
