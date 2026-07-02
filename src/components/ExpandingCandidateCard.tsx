@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 interface ExpandingCandidateCardProps {
   candidate: Candidate;
   isExpanded: boolean;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export function ExpandingCandidateCard({ candidate, isExpanded, onClick }: ExpandingCandidateCardProps) {
@@ -16,10 +16,12 @@ export function ExpandingCandidateCard({ candidate, isExpanded, onClick }: Expan
   const easeClass = '[transition-timing-function:cubic-bezier(0.4,0,0.2,1)]';
 
   return (
-    <div
+    <button
+      type="button"
       onClick={onClick}
+      aria-label={`Ver detalles de ${candidate.name}`}
       className={cn(
-        'group relative w-full cursor-pointer overflow-hidden rounded-lg',
+        'group relative w-full text-left cursor-pointer overflow-hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
         transitionClass,
         easeClass,
         isExpanded 
@@ -71,6 +73,6 @@ export function ExpandingCandidateCard({ candidate, isExpanded, onClick }: Expan
         <p className="text-base font-medium text-foreground/80 mt-1">{candidate.role}</p>
         <p className="text-sm text-foreground/80 mt-4 line-clamp-3">{candidate.bio}</p>
       </div>
-    </div>
+    </button>
   );
 }
