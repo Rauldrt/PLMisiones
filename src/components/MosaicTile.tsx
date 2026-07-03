@@ -48,10 +48,12 @@ export function MosaicTile({ item, onClick }: MosaicTileProps) {
   };
   
   return (
-    <div
+    <button
+      type="button"
+      aria-label={`Ver detalles de ${item.title}`}
       onClick={() => onClick(item, currentIndex)}
       className={cn(
-        'relative overflow-hidden rounded-3xl group cursor-pointer',
+        'relative block w-full h-full text-left overflow-hidden rounded-3xl group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
         `md:col-span-${item.colSpan}`,
         `md:row-span-${item.rowSpan}`
       )}
@@ -75,6 +77,6 @@ export function MosaicTile({ item, onClick }: MosaicTileProps) {
       <div className="absolute inset-0 flex items-end justify-start p-4 md:p-6">
         <h3 className="font-headline text-2xl font-bold text-white bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full">{item.title}</h3>
       </div>
-    </div>
+    </button>
   );
 }
