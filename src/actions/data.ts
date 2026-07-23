@@ -17,7 +17,8 @@ import {
     readMapsFile,
     readPageHeadersFile,
     readGoogleFormsFile,
-    readStreamingFile
+    readStreamingFile,
+    readBannerConfigFile
 } from '@/lib/server/data';
 
 // These actions are safe to call from client components.
@@ -108,4 +109,8 @@ export async function getGoogleFormAction(id: string) {
 
 export async function getStreamingAction() {
     return readStreamingFile();
+}
+
+export async function getBannerConfigAction() {
+    return readBannerConfigFile();
 }

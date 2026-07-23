@@ -19,7 +19,8 @@ import type {
     SocialLink, 
     NotificationItem, 
     GoogleForm, 
-    StreamingItem 
+    StreamingItem,
+    BannerConfig 
 } from '@/lib/types';
 import { getNewsAction } from '@/actions/data';
 import { collection, getDocs, doc, setDoc, deleteDoc, writeBatch } from 'firebase/firestore';
@@ -275,4 +276,10 @@ export async function saveStreaming(items: StreamingItem[]) {
     await writeData('streaming', 'src/data/streaming.json', items);
     revalidatePath('/');
     return { success: true, message: 'Sección de Streaming guardada con éxito.' };
+}
+
+export async function saveBannerConfig(config: BannerConfig) {
+    await writeData('settings', 'src/data/banner-config.json', config, true, 'banner_config');
+    revalidatePath('/');
+    return { success: true, message: 'Configuración del banner guardada con éxito.' };
 }

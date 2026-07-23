@@ -17,7 +17,8 @@ import type {
     MapEmbed, 
     NotificationItem, 
     GoogleForm, 
-    StreamingItem 
+    StreamingItem,
+    BannerConfig 
 } from '../types';
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { getFirestoreDb } from '../firebase/client';
@@ -225,3 +226,11 @@ export async function getGoogleFormAction(id: string): Promise<GoogleForm | unde
 export async function readStreamingFile(): Promise<StreamingItem[]> {
     return readData<StreamingItem[]>('streaming', 'src/data/streaming.json');
 }
+
+export async function readBannerConfigFile(): Promise<BannerConfig> {
+    return readData<BannerConfig>('settings', 'src/data/banner-config.json', true, 'banner_config');
+}
+export async function getBannerConfigAction(): Promise<BannerConfig> {
+    return readBannerConfigFile();
+}
+

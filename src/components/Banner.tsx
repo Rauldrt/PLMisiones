@@ -29,9 +29,10 @@ interface BannerProps {
     notifications: NotificationItem[];
     notificationSettings: Notification;
     proposals: Proposal[];
+    showProposals?: boolean;
 }
 
-export function Banner({ textSlides, backgroundSlides, candidates, notifications, notificationSettings, proposals }: BannerProps) {
+export function Banner({ textSlides, backgroundSlides, candidates, notifications, notificationSettings, proposals, showProposals }: BannerProps) {
   
   return (
     <section className="relative w-full flex flex-col z-0 min-h-[600px] md:min-h-[720px] justify-between">
@@ -80,7 +81,7 @@ export function Banner({ textSlides, backgroundSlides, candidates, notifications
             </div>
         </div>
         
-        {proposals && proposals.length > 0 && (
+        {showProposals !== false && proposals && proposals.length > 0 && (
             <div className="relative z-20 w-full flex flex-col items-center pb-20 md:pb-32 px-4">
                 <Dialog>
                     <DialogTrigger asChild>

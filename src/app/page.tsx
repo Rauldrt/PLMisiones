@@ -2,6 +2,7 @@
 export const dynamic = 'force-dynamic';
 
 import { HomepageClient } from '@/components/HomepageClient';
+import type { Candidate } from '@/lib/types';
 import { 
     getBannerTextSlidesAction, 
     getBannerBackgroundSlidesAction, 
@@ -13,7 +14,9 @@ import {
     getNotificationAction,
     getOrganigramaAction, 
     getProposalsAction,
-    getStreamingAction
+    getStreamingAction,
+    getReferentesAction,
+    getBannerConfigAction
 } from '@/actions/data';
 
 export default async function Home() {
@@ -29,6 +32,8 @@ export default async function Home() {
     organigrama,
     proposals,
     streamingItems,
+    referentes,
+    bannerConfig,
   ] = await Promise.all([
     getBannerTextSlidesAction(),
     getBannerBackgroundSlidesAction(),
@@ -41,7 +46,18 @@ export default async function Home() {
     getOrganigramaAction(),
     getProposalsAction(),
     getStreamingAction(),
+    getReferentesAction(),
+    getBannerConfigAction(),
   ]);
+
+  // Resolving what content to display on the banner's bottom section based on configuration
+  let bannerBottomItems: Candidate[] = [];
+  if (bannerConfig.bottomContentType === 'candidates') {
+    bannerBottomItems = candidates;
+  } else if (bannerConfig.bottomContentType === 'referentes') {
+    // Map Referente to Candidate layout (Candidate extends Referente, so they are structurally identical)
+    bannerBottomItems = referentes;
+  }
 
   return (
     <HomepageClient
@@ -50,12 +66,14 @@ export default async function Home() {
       mosaicItems={mosaicItems}
       accordionItems={accordionItems}
       newsArticles={newsArticles.slice(0, 3)} // Show latest 3 articles on home
-      candidates={candidates}
+      candidates={bannerBottomItems}
       notifications={notifications}
       notificationSettings={notificationSettings}
       organigramaData={organigrama}
       proposals={proposals}
       streamingItems={streamingItems}
+      showProposals={bannerConfig.showProposals}
     />
   );
 }
+

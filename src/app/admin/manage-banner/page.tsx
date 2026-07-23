@@ -1,9 +1,8 @@
-
 'use client';
 import { useState, useEffect, useTransition } from 'react';
-import { getBannerTextSlidesAction } from '@/actions/data';
-import { saveBannerText } from '@/actions/admin';
-import type { BannerTextSlide } from '@/lib/types';
+import { getBannerTextSlidesAction, getBannerConfigAction } from '@/actions/data';
+import { saveBannerText, saveBannerConfig } from '@/actions/admin';
+import type { BannerTextSlide, BannerConfig } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,18 +10,26 @@ import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/icons';
 import { useToast } from '@/hooks/use-toast';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function ManageBannerPage() {
   const [slides, setSlides] = useState<BannerTextSlide[]>([]);
+  const [config, setConfig] = useState<BannerConfig | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, startSavingTransition] = useTransition();
+  const [isSavingConfig, startSavingConfigTransition] = useTransition();
   const { toast } = useToast();
 
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const data = await getBannerTextSlidesAction();
-      setSlides(data);
+      const [slidesData, configData] = await Promise.all([
+        getBannerTextSlidesAction(),
+        getBannerConfigAction()
+      ]);
+      setSlides(slidesData);
+      setConfig(configData);
       setIsLoading(false);
     }
     fetchData();
@@ -35,6 +42,18 @@ export default function ManageBannerPage() {
         toast({ title: 'Éxito', description: result.message });
       } else {
         toast({ variant: 'destructive', title: 'Error', description: 'No se pudo guardar el texto del banner.' });
+      }
+    });
+  };
+
+  const handleSaveConfig = () => {
+    if (!config) return;
+    startSavingConfigTransition(async () => {
+      const result = await saveBannerConfig(config);
+      if (result.success) {
+        toast({ title: 'Éxito', description: result.message });
+      } else {
+        toast({ variant: 'destructive', title: 'Error', description: 'No se pudo guardar la configuración del banner.' });
       }
     });
   };
@@ -62,9 +81,77 @@ export default function ManageBannerPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold font-headline">Gestionar Texto del Banner</h1>
-        <p className="text-muted-foreground">Administra las diapositivas de texto del carrusel principal.</p>
+        <h1 className="text-3xl font-bold font-headline">Gestionar Texto y Configuración del Banner</h1>
+        <p className="text-muted-foreground">Administra la visualización del banner principal y las diapositivas de texto.</p>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Configuración Visual del Banner</CardTitle>
+          <CardDescription>
+            Controla qué elementos se muestran en la página de inicio en la parte inferior del banner.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {isLoading || !config ? (
+            <p>Cargando configuración...</p>
+          ) : (
+            <>
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 border rounded-lg bg-muted/20">
+                <div className="space-y-0.5">
+                  <Label className="text-base font-semibold">Contenido Inferior</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Elige si mostrar las tarjetas de candidatos, las de referentes o si ocultar la sección.
+                  </p>
+                </div>
+                <div className="w-full md:w-[240px]">
+                  <Select
+                    value={config.bottomContentType}
+                    onValueChange={(val: any) =>
+                      setConfig({ ...config, bottomContentType: val })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecciona el tipo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="candidates">Mostrar Candidatos</SelectItem>
+                      <SelectItem value="referentes">Mostrar Referentes</SelectItem>
+                      <SelectItem value="hidden">Ocultar Sección</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 border rounded-lg bg-muted/20">
+                <div className="space-y-0.5">
+                  <Label className="text-base font-semibold">Propuestas de Campaña</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Habilita o deshabilita el botón flotante "Ver Nuestras Propuestas" en la pantalla de inicio.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={config.showProposals}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, showProposals: checked })
+                    }
+                  />
+                  <span className="text-sm text-muted-foreground">
+                    {config.showProposals ? 'Habilitado' : 'Desactivado'}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <Button onClick={handleSaveConfig} disabled={isSavingConfig}>
+                  {isSavingConfig ? 'Guardando Configuración...' : 'Guardar Configuración'}
+                </Button>
+              </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
@@ -72,7 +159,7 @@ export default function ManageBannerPage() {
           <CardDescription>Haz clic en una diapositiva para expandirla y editarla. El fondo se gestiona en otra sección.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
-           {isLoading ? <p>Cargando...</p> : (
+           {isLoading ? <p>Cargando diapositivas...</p> : (
             <Accordion type="single" collapsible className="w-full">
               {slides.map((slide, index) => (
                 <AccordionItem key={slide.id} value={slide.id}>

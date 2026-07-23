@@ -146,3 +146,9 @@ export interface StreamingItem {
   title: string;
   embedCode: string;
 }
+
+export interface BannerConfig {
+  bottomContentType: 'candidates' | 'referentes' | 'hidden';
+  showProposals: boolean;
+}
+
