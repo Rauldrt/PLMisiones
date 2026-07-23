@@ -1,1 +1,8 @@
-{}
+{
+  "firestore": [
+    {
+      "database": "pl-misiones",
+      "rules": "firestore.rules"
+    }
+  ]
+}
