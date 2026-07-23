@@ -73,6 +73,9 @@ export default async function Home() {
       proposals={proposals}
       streamingItems={streamingItems}
       showProposals={bannerConfig.showProposals}
+      layoutMode={bannerConfig.layoutMode}
+      institutionalBgType={bannerConfig.institutionalBgType}
+      institutionalBgVal={bannerConfig.institutionalBgVal}
     />
   );
 }

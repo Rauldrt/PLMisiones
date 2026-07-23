@@ -1,4 +1,7 @@
 {
   "bottomContentType": "candidates",
-  "showProposals": true
+  "showProposals": true,
+  "layoutMode": "campaign",
+  "institutionalBgType": "color",
+  "institutionalBgVal": "linear-gradient(to bottom right, #09090b, #180828, #09090b)"
 }

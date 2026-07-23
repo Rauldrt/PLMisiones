@@ -8,13 +8,16 @@ import { cn } from '@/lib/utils';
 
 interface AnimatedBannerBackgroundProps {
   slides: BannerBackgroundSlide[];
+  disableParallax?: boolean;
+  disableOverlay?: boolean;
 }
 
-export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundProps) {
+export function AnimatedBannerBackground({ slides, disableParallax = false, disableOverlay = false }: AnimatedBannerBackgroundProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (disableParallax) return;
     let ticking = false;
     let animationFrameId: number;
 
@@ -35,7 +38,7 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     // Set initial position
-    if (containerRef.current) {
+    if (containerRef.current && !disableParallax) {
       containerRef.current.style.transform = `translateY(${window.scrollY * 0.5}px)`;
     }
 
@@ -94,10 +97,12 @@ export function AnimatedBannerBackground({ slides }: AnimatedBannerBackgroundPro
           />
         )
       })}
-      <div 
-        className="absolute inset-0 z-10 bg-black" 
-        style={{ opacity: overlayOpacity }}
-      />
+      {!disableOverlay && (
+        <div 
+          className="absolute inset-0 z-10 bg-black" 
+          style={{ opacity: overlayOpacity }}
+        />
+      )}
     </div>
   );
 }

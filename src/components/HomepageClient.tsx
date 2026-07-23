@@ -36,6 +36,9 @@ interface HomepageClientProps {
     proposals: Proposal[];
     streamingItems: StreamingItem[];
     showProposals?: boolean;
+    layoutMode?: 'campaign' | 'institutional';
+    institutionalBgType?: 'color' | 'image';
+    institutionalBgVal?: string;
 }
 
 interface LightboxData {
@@ -118,7 +121,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
     )
 }
 
-export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems, showProposals }: HomepageClientProps) {
+export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems, showProposals, layoutMode, institutionalBgType, institutionalBgVal }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
 
     const handleTileClick = (item: MosaicItem, startIndex: number) => {
@@ -139,7 +142,10 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         notifications={notifications}
         notificationSettings={notificationSettings}
         proposals={proposals}
-        showProposals={showProposals} />
+        showProposals={showProposals}
+        layoutMode={layoutMode}
+        institutionalBgType={institutionalBgType}
+        institutionalBgVal={institutionalBgVal} />
 
       <div className="relative z-10">
         <OrganigramaSection organigramaData={organigramaData} />

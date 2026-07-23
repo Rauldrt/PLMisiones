@@ -150,5 +150,8 @@ export interface StreamingItem {
 export interface BannerConfig {
   bottomContentType: 'candidates' | 'referentes' | 'hidden';
   showProposals: boolean;
+  layoutMode: 'campaign' | 'institutional';
+  institutionalBgType: 'color' | 'image';
+  institutionalBgVal: string;
 }
 
