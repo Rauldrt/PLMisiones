@@ -1,4 +1,6 @@
 
+export const dynamic = 'force-dynamic';
+
 import { getPublicNewsAction, getPageHeaderByPathAction } from '@/actions/data';
 import { PageHeader } from '@/components/PageHeader';
 import { InstagramEmbedProcessor } from '@/components/InstagramEmbedProcessor';

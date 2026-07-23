@@ -1,4 +1,6 @@
 
+export const dynamic = 'force-dynamic';
+
 import { HomepageClient } from '@/components/HomepageClient';
 import { 
     getBannerTextSlidesAction, 

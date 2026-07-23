@@ -1,4 +1,6 @@
 
+export const dynamic = 'force-dynamic';
+
 import type { PageHeader as PageHeaderType } from '@/lib/types';
 import { getReferentesAction, getMapsAction, getPageHeadersAction } from '@/actions/data';
 import { PageHeader } from '@/components/PageHeader';
