@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { initializeApp } from 'firebase/app';
-import { initializeFirestore, doc, setDoc, writeBatch } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, writeBatch } from 'firebase/firestore';
 
 // Load environment variables
 dotenv.config({ path: '.env.local' });
@@ -26,9 +26,7 @@ if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
 console.log(`🚀 Iniciando migración de datos a Firestore para el proyecto: ${firebaseConfig.projectId} (Base de datos: ${process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID || 'pl-misiones'})...`);
 
 const app = initializeApp(firebaseConfig);
-const db = initializeFirestore(app, {
-  databaseId: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID || 'pl-misiones'
-});
+const db = getFirestore(app, process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID || 'pl-misiones');
 
 async function readJsonFile(filePath: string) {
   try {

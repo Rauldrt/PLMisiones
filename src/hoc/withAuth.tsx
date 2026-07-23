@@ -10,12 +10,17 @@ export function withAuth<P extends object>(Component: ComponentType<P>) {
   return function WithAuth(props: P) {
     const { user, loading } = useAuth();
     const router = useRouter();
+    const isAuthDisabled = process.env.NEXT_PUBLIC_DISABLE_ADMIN_AUTH === 'true';
 
     useEffect(() => {
-      if (!loading && !user) {
+      if (!isAuthDisabled && !loading && !user) {
         router.push('/login');
       }
-    }, [user, loading, router]);
+    }, [user, loading, router, isAuthDisabled]);
+
+    if (isAuthDisabled) {
+      return <Component {...props} />;
+    }
 
     if (loading || !user) {
       return (

@@ -1,6 +1,6 @@
 
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
-import { initializeFirestore } from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -19,9 +19,8 @@ export function getFirebaseApp(): FirebaseApp {
 }
 
 export function getFirestoreDb() {
-    return initializeFirestore(getFirebaseApp(), {
-        databaseId: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID || 'pl-misiones'
-    });
+    return getFirestore(getFirebaseApp(), process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID || 'pl-misiones');
 }
+
 
 
