@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem, NewsArticle, Candidate, NotificationItem, OrganigramaMember, Proposal, StreamingItem, Notification } from '@/lib/types';
+import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem as AccordionItemType, NewsArticle, Candidate, NotificationItem, OrganigramaMember, Proposal, StreamingItem, Notification } from '@/lib/types';
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
 import { NewsCard } from './NewsCard';
@@ -27,7 +27,7 @@ interface HomepageClientProps {
     bannerTextSlides: BannerTextSlide[];
     bannerBackgroundSlides: BannerBackgroundSlide[];
     mosaicItems: MosaicItem[];
-    accordionItems: AccordionItem[];
+    accordionItems: AccordionItemType[];
     newsArticles: NewsArticle[];
     candidates: Candidate[];
     notifications: NotificationItem[];

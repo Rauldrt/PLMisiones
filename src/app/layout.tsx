@@ -69,7 +69,7 @@ export default async function RootLayout({
             <SiteLayout 
               footerContent={footerContent} 
               socialLinks={socialLinks} 
-              contactForm={contactForm}
+              contactForm={contactForm || { id: 'contacto', title: 'Contacto', embedUrl: '' }}
             >
               {children}
             </SiteLayout>

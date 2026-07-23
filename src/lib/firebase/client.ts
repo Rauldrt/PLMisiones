@@ -1,5 +1,6 @@
 
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -16,3 +17,8 @@ const firebaseConfig = {
 export function getFirebaseApp(): FirebaseApp {
     return !getApps().length ? initializeApp(firebaseConfig) : getApp();
 }
+
+export function getFirestoreDb() {
+    return getFirestore(getFirebaseApp());
+}
+

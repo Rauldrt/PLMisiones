@@ -14,16 +14,18 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import type { BannerSlide, MosaicItem, AccordionItem, NewsArticle, Referente, Notification } from '@/lib/types';
+import type { MosaicItem, NewsArticle, Referente, Notification } from '@/lib/types';
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
 import { clientSanitize } from '@/lib/client-sanitize';
 
+type BannerSlide = any;
+type AccordionItemType = any;
 
 interface HomepageClientProps {
     bannerSlides: BannerSlide[];
     mosaicItems: MosaicItem[];
-    accordionItems: AccordionItem[];
+    accordionItems: AccordionItemType[];
     newsArticles: NewsArticle[];
     referentes: Referente[];
     notification: Notification;
@@ -65,7 +67,7 @@ function OrganigramaSection() {
                             {organigramaData.map((member) => (
                                 <CarouselItem key={member.id} className="pl-2 basis-auto">
                                     <Button
-                                        variant={selectedMember.id === member.id ? 'primary' : 'outline'}
+                                        variant={selectedMember.id === member.id ? 'default' : 'outline'}
                                         onClick={() => setSelectedMember(member)}
                                     >
                                         {member.name}
@@ -121,7 +123,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
 
   return (
     <div className="flex flex-col overflow-x-hidden">
-      <Banner bannerSlides={bannerSlides} referentes={referentes} notification={notification} />
+      <Banner textSlides={[]} backgroundSlides={[]} candidates={[]} notifications={[]} notificationSettings={notification} proposals={[]} />
 
       <OrganigramaSection />
 
@@ -175,7 +177,7 @@ export function HomepageClient({ bannerSlides, mosaicItems, accordionItems, news
                 <CardHeader className="p-0">
                    <div className="relative h-48 w-full">
                      <Image
-                      src={article.imageUrl}
+                      src={article.imageUrl || '/logo-banner.png'}
                       alt={article.title}
                       fill
                       className="object-cover"
