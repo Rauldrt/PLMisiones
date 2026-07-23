@@ -24,28 +24,81 @@ import type {
 import { getNewsAction } from '@/actions/data';
 import { collection, getDocs, doc, setDoc, deleteDoc, writeBatch } from 'firebase/firestore';
 import { getFirestoreDb } from '@/lib/firebase/client';
+import * as admin from 'firebase-admin';
+import { getApps, initializeApp, cert } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
 
 const isFirebaseConfigured = typeof process !== 'undefined' && !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
 
+let adminDb: any = null;
+
+function getAdminDb() {
+  if (typeof process === 'undefined' || !process.env.FIREBASE_SERVICE_ACCOUNT) {
+    return null;
+  }
+  
+  if (!adminDb) {
+    try {
+      if (getApps().length === 0) {
+        const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+        initializeApp({
+          credential: cert(serviceAccount)
+        });
+      }
+      // Access the custom database 'pl-misiones'
+      adminDb = getFirestore('pl-misiones');
+    } catch (err) {
+      console.error("Failed to parse or initialize Firebase Admin SDK:", err);
+      return null;
+    }
+  }
+  return adminDb;
+}
+
 async function syncFirestoreCollection(collectionName: string, newItems: any[]) {
+  const adminDbInstance = getAdminDb();
+  if (adminDbInstance) {
+    console.log(`[Admin SDK] Syncing collection "${collectionName}" with ${newItems.length} items...`);
+    const colRef = adminDbInstance.collection(collectionName);
+    const snapshot = await colRef.get();
+    
+    const existingIds = new Set(snapshot.docs.map((d: any) => d.id));
+    const newIds = new Set(newItems.map(item => item.id));
+    
+    const batch = adminDbInstance.batch();
+    
+    newItems.forEach((item, index) => {
+      const docRef = colRef.doc(item.id);
+      const { id, ...data } = item;
+      batch.set(docRef, { ...data, position: index });
+    });
+    
+    existingIds.forEach(id => {
+      if (!newIds.has(id)) {
+        const docRef = colRef.doc(id);
+        batch.delete(docRef);
+      }
+    });
+    
+    await batch.commit();
+    return;
+  }
+
+  // Fallback to client SDK
   const db = getFirestoreDb();
   const colRef = collection(db, collectionName);
-  
-  // Get existing documents to find deletions
   const snapshot = await getDocs(colRef);
   const existingIds = new Set(snapshot.docs.map(d => d.id));
   const newIds = new Set(newItems.map(item => item.id));
   
   const batch = writeBatch(db);
   
-  // Set new/updated items (include position index to preserve original array order)
   newItems.forEach((item, index) => {
     const docRef = doc(db, collectionName, item.id);
     const { id, ...data } = item;
     batch.set(docRef, { ...data, position: index });
   });
   
-  // Delete removed items
   existingIds.forEach(id => {
     if (!newIds.has(id)) {
       const docRef = doc(db, collectionName, id);
@@ -57,6 +110,16 @@ async function syncFirestoreCollection(collectionName: string, newItems: any[]) 
 }
 
 async function setFirestoreDoc(collectionName: string, docId: string, data: any) {
+  const adminDbInstance = getAdminDb();
+  if (adminDbInstance) {
+    console.log(`[Admin SDK] Setting doc "${collectionName}/${docId}"...`);
+    const docRef = adminDbInstance.collection(collectionName).doc(docId);
+    const { id, ...cleanData } = data;
+    await docRef.set(cleanData);
+    return;
+  }
+
+  // Fallback to client SDK
   const db = getFirestoreDb();
   const docRef = doc(db, collectionName, docId);
   const { id, ...cleanData } = data;
