@@ -142,7 +142,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
       {activeBg && (
         <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
           <div 
-            className="absolute inset-0 opacity-40 filter blur-[80px]"
+            className="absolute inset-0 opacity-65 filter blur-[50px]"
             style={{ 
               backgroundImage: `url(${activeBg})`,
               backgroundPosition: 'center',
@@ -151,7 +151,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
             }}
           />
           {/* Subtle light glassmorphism overlay that tints the background with our white-dominated theme */}
-          <div className="absolute inset-0 bg-background/60 backdrop-blur-[40px]" />
+          <div className="absolute inset-0 bg-background/40 backdrop-blur-[20px]" />
         </div>
       )}
 
