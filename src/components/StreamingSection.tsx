@@ -16,7 +16,7 @@ export function StreamingSection({ items }: StreamingSectionProps) {
     }
 
     return (
-        <section className="py-16 bg-card lg:py-24">
+        <section className="py-16 bg-card/50 backdrop-blur-md border-y border-border/30 lg:py-24 relative z-10">
             <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
                     <h2 className="font-headline text-3xl font-bold md:text-4xl">
@@ -36,7 +36,7 @@ export function StreamingSection({ items }: StreamingSectionProps) {
                     <CarouselContent className="-ml-4">
                         {items.map((item) => (
                             <CarouselItem key={item.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                                <Card className="flex flex-col h-full overflow-hidden bg-background">
+                                <Card className="flex flex-col h-full overflow-hidden bg-card/85 backdrop-blur border-border/50 shadow-md">
                                     <CardHeader>
                                         <CardTitle className="font-headline text-xl truncate">{item.title}</CardTitle>
                                     </CardHeader>

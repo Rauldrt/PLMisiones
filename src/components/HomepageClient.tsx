@@ -62,7 +62,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
     }
 
     return (
-        <section className="py-16 bg-card lg:py-24">
+        <section className="py-16 bg-card/50 backdrop-blur-md border-y border-border/30 lg:py-24 relative z-10">
             <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center gap-8">
                  <div className="text-center">
                     <h2 className="font-headline text-3xl font-bold md:text-4xl">
@@ -91,7 +91,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
               
                 {selectedMember && (
                     <div className="w-full mt-4">
-                        <Card className="bg-background border-border">
+                        <Card className="bg-card/85 backdrop-blur border-border/50 shadow-md">
                             <CardContent className="p-6">
                                 <div className="flex flex-col md:flex-row items-center gap-6">
                                     <div className="relative h-32 w-32 md:h-40 md:w-40 flex-shrink-0">
@@ -123,6 +123,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
 
 export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems, showProposals, layoutMode, institutionalBgType, institutionalBgVal }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
+    const [activeBg, setActiveBg] = useState<string>('');
 
     const handleTileClick = (item: MosaicItem, startIndex: number) => {
         setLightboxData({ 
@@ -134,7 +135,24 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
     };
 
   return (
-    <div className="flex flex-col overflow-x-hidden">
+    <div className="flex flex-col overflow-x-hidden relative min-h-screen">
+      {/* Dynamic blurred fixed parallax background */}
+      {activeBg && (
+        <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+          <div 
+            className="absolute inset-0 opacity-40 filter blur-[80px]"
+            style={{ 
+              backgroundImage: `url(${activeBg})`,
+              backgroundPosition: 'center',
+              backgroundSize: 'cover',
+              transform: 'scale(1.2) translate3d(0, 0, 0)',
+            }}
+          />
+          {/* Subtle light glassmorphism overlay that tints the background with our white-dominated theme */}
+          <div className="absolute inset-0 bg-background/60 backdrop-blur-[40px]" />
+        </div>
+      )}
+
       <Banner 
         textSlides={bannerTextSlides}
         backgroundSlides={bannerBackgroundSlides} 
@@ -145,13 +163,15 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         showProposals={showProposals}
         layoutMode={layoutMode}
         institutionalBgType={institutionalBgType}
-        institutionalBgVal={institutionalBgVal} />
+        institutionalBgVal={institutionalBgVal}
+        onBgChange={setActiveBg}
+      />
 
       <div className="relative z-10">
         <OrganigramaSection organigramaData={organigramaData} />
 
         {/* Mosaic Section */}
-        <section className="py-16 lg:py-24">
+        <section className="py-16 lg:py-24 relative z-10">
             <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 grid-rows-4 md:grid-cols-4 md:grid-rows-2 gap-4 h-[800px] md:h-[500px]">
                 {mosaicItems.map((item) => (
@@ -162,7 +182,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         </section>
         
         {/* Accordion Section */}
-        <section className="py-16 bg-card lg:py-24">
+        <section className="py-16 bg-card/50 backdrop-blur-md border-y border-border/30 lg:py-24 relative z-10">
             <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-center font-headline text-3xl font-bold md:text-4xl">
                 Nuestra Identidad
@@ -189,7 +209,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         <StreamingSection items={streamingItems} />
 
         {/* News Section */}
-        <section className="py-16 lg:py-24">
+        <section className="py-16 lg:py-24 relative z-10">
             <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-center font-headline text-3xl font-bold md:text-4xl">
                 Últimas Noticias

@@ -10,11 +10,18 @@ interface AnimatedBannerBackgroundProps {
   slides: BannerBackgroundSlide[];
   disableParallax?: boolean;
   disableOverlay?: boolean;
+  onImageChange?: (url: string) => void;
 }
 
-export function AnimatedBannerBackground({ slides, disableParallax = false, disableOverlay = false }: AnimatedBannerBackgroundProps) {
+export function AnimatedBannerBackground({ slides, disableParallax = false, disableOverlay = false, onImageChange }: AnimatedBannerBackgroundProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (slides.length > 0 && onImageChange) {
+      onImageChange(slides[currentIndex]?.imageUrl || '');
+    }
+  }, [currentIndex, slides, onImageChange]);
 
   useEffect(() => {
     if (disableParallax) return;

@@ -48,7 +48,7 @@ export function Footer({ socialLinks, contactForm, footerContent }: FooterProps)
                                   <p>{footerContent.email}</p>
                                   <p>{footerContent.phone}</p>
                                   {footerContent.whatsapp && (
-                                      <Button asChild variant="outline" className="bg-green-500/10 border-green-500/30 hover:bg-green-500/20 text-green-400 hover:text-green-300">
+                                      <Button asChild variant="outline" className="bg-green-500/10 border-green-500/30 hover:bg-green-500/20 text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-semibold">
                                           <Link href={`https://wa.me/${footerContent.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer">
                                               <Icons.Whatsapp className="h-6 w-6" />
                                               Contactar por WhatsApp

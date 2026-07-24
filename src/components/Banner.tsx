@@ -1,5 +1,5 @@
 'use client';
-
+import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -32,6 +32,7 @@ interface BannerProps {
     layoutMode?: 'campaign' | 'institutional';
     institutionalBgType?: 'color' | 'image';
     institutionalBgVal?: string;
+    onBgChange?: (url: string) => void;
 }
 
 export function Banner({ 
@@ -44,10 +45,21 @@ export function Banner({
   showProposals,
   layoutMode = 'campaign',
   institutionalBgType = 'color',
-  institutionalBgVal = 'linear-gradient(to bottom right, #09090b, #180828, #09090b)'
+  institutionalBgVal = 'linear-gradient(to bottom right, #09090b, #180828, #09090b)',
+  onBgChange
 }: BannerProps) {
   
   const isInstitutional = layoutMode === 'institutional';
+
+  useEffect(() => {
+    if (isInstitutional) {
+      if (institutionalBgType === 'image' && institutionalBgVal) {
+        onBgChange?.(institutionalBgVal);
+      } else {
+        onBgChange?.('');
+      }
+    }
+  }, [isInstitutional, institutionalBgType, institutionalBgVal, onBgChange]);
 
   return (
     <section className="relative w-full flex flex-col z-0 min-h-[600px] md:min-h-[720px] justify-between">
@@ -68,7 +80,7 @@ export function Banner({
             <div className="absolute inset-0 z-0" style={{ background: institutionalBgVal }} />
           )
         ) : (
-          <AnimatedBannerBackground slides={backgroundSlides} />
+          <AnimatedBannerBackground slides={backgroundSlides} onImageChange={onBgChange} />
         )}
         
         <div className="relative z-20 h-full w-full flex flex-col justify-between flex-1 pt-2 md:pt-8 lg:pt-16">
