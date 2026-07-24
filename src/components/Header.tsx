@@ -12,7 +12,8 @@ import { Separator } from './ui/separator';
 import Image from 'next/image';
 import type { SocialLink, NotificationItem, Notification } from '@/lib/types';
 import { getPublicNotificationsAction, getNotificationAction } from '@/actions/data';
-import { NotificationDialog } from '@/components/NotificationDropdown';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { clientSanitize } from '@/lib/client-sanitize';
 
 const navLinks = [
   { href: '/', label: 'Inicio' },
@@ -132,26 +133,46 @@ export function Header({ socialLinks }: HeaderProps) {
           <PopoverContent id="mobile-menu-content" side="top" align="end" className="w-64 p-0 mb-2" sideOffset={12}>
             <div className="flex flex-col h-full">
               {notificationSettings?.enabled && notifications.length > 0 && (
-                <div className="p-3 bg-accent/5 border-b border-border/40">
-                  <div className="flex items-center gap-2 mb-1.5">
+                <div className="p-3 bg-orange-500/5 border-b border-border/40">
+                  <div className="flex items-center gap-2 mb-2">
                     <span className="relative flex h-2 w-2">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
                     </span>
-                    <span className="text-xs font-semibold text-orange-500">{notificationSettings.text}</span>
+                    <span className="text-xs font-bold text-orange-500 tracking-wide uppercase">
+                      {notificationSettings.text || 'Notificaciones'}
+                    </span>
                   </div>
-                  <div className="space-y-1">
+                  <Accordion type="single" collapsible className="w-full space-y-1">
                     {notifications.map((item) => (
-                      <NotificationDialog item={item} key={item.id}>
-                        <button 
-                          className="w-full text-left rounded p-1.5 hover:bg-muted text-xs block truncate text-foreground"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          {item.title}
-                        </button>
-                      </NotificationDialog>
+                      <AccordionItem key={item.id} value={item.id} className="border-b-0">
+                        <AccordionTrigger className="text-xs hover:no-underline py-1.5 px-2 rounded hover:bg-muted text-left text-foreground font-medium flex justify-between items-center w-full">
+                          <span className="truncate pr-4 flex-1">{item.title}</span>
+                        </AccordionTrigger>
+                        <AccordionContent className="pt-2 pb-3 px-2 text-xs text-muted-foreground bg-muted/40 rounded border border-border/10 mt-1">
+                          {item.imageUrl && (
+                            <div className="relative w-full h-32 mb-2 rounded overflow-hidden">
+                              <Image
+                                src={item.imageUrl}
+                                alt={item.title}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                          )}
+                          {item.content && (
+                            <div
+                              className="whitespace-normal [&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded [&_img]:rounded [&_img]:max-h-32 [&_img]:mx-auto [&_a]:text-orange-500 [&_a]:underline"
+                              dangerouslySetInnerHTML={{ __html: clientSanitize(item.content) }}
+                            />
+                          )}
+                          <p className="text-[10px] text-muted-foreground/60 mt-2 text-right">
+                            {new Date(item.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
+                          </p>
+                        </AccordionContent>
+                      </AccordionItem>
                     ))}
-                  </div>
+                  </Accordion>
                 </div>
               )}
               <div className="p-4 border-b">

@@ -28,9 +28,13 @@ interface NotificationDropdownProps {
 export function NotificationDialog({
   item,
   children,
+  open,
+  onOpenChange,
 }: {
   item: NotificationItem;
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }) {
   const isImageOnly = item.imageUrl && !item.title && !item.content;
   const isEmbed = item.content?.includes('<iframe');
@@ -38,8 +42,8 @@ export function NotificationDialog({
 
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
       <DialogContent
         className={cn(
           isImageOnly
