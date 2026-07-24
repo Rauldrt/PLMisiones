@@ -159,3 +159,11 @@ export interface BannerConfig {
   bannerOverlayOpacity?: number;
 }
 
+export interface FormSubmission {
+  id: string;
+  type: 'contacto' | 'afiliacion' | 'fiscales';
+  data: Record<string, any>;
+  status: 'pending' | 'reviewed' | 'approved' | 'rejected';
+  createdAt: string;
+}
+

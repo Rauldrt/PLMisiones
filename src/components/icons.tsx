@@ -44,6 +44,10 @@ import {
   Palette,
   Music2,
   Upload,
+  Inbox,
+  Check,
+  Download,
+  Search,
 } from 'lucide-react';
 import type { SVGProps } from 'react';
 
@@ -108,6 +112,10 @@ export const Icons = {
   Media: Video,
   Music2,
   Upload,
+  Inbox: Inbox,
+  Check: Check,
+  Download: Download,
+  Search: Search,
 };
 
 export type IconName = keyof typeof Icons;

@@ -31,7 +31,8 @@ const adminNavLinks = [
   { href: '/admin/manage-accordion', label: 'Acordeón', icon: 'Accordion' },
   { href: '/admin/manage-streaming', label: 'Streaming Ágora', icon: 'Youtube' },
   { href: '/admin/manage-maps', label: 'Mapas', icon: 'Location' },
-  { href: '/admin/manage-google-forms', label: 'Google Forms', icon: 'Forms' },
+  { href: '/admin/manage-google-forms', label: 'Títulos Formularios', icon: 'Forms' },
+  { href: '/admin/submissions', label: 'Recibidos / Solicitudes', icon: 'Inbox' },
   { href: '/admin/manage-footer', label: 'Footer', icon: 'Footer' },
   { href: '/admin/gallery', label: 'Galería', icon: 'Gallery' },
 ];
