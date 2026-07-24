@@ -74,12 +74,22 @@ export interface SocialLink {
   url: string;
 }
 
+export interface FormField {
+  id: string;
+  label: string;
+  type: 'text' | 'number' | 'email' | 'textarea' | 'select';
+  required: boolean;
+  placeholder?: string;
+  options?: string[];
+}
+
 export interface GoogleForm {
   id: string;
   title: string;
   description?: string;
   embedUrl: string;
   sheetUrl?: string;
+  fields?: FormField[];
 }
 
 
@@ -165,5 +175,14 @@ export interface FormSubmission {
   data: Record<string, any>;
   status: 'pending' | 'reviewed' | 'approved' | 'rejected';
   createdAt: string;
+  read?: boolean;
+}
+
+export interface WhatsappConfig {
+  enabled: boolean;
+  provider: 'callmebot' | 'webhook';
+  apiKey?: string;
+  numbers?: string;
+  webhookUrl?: string;
 }
 

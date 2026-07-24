@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useTransition, useMemo } from 'react';
-import { getSubmissionsAction, updateSubmissionStatusAction, deleteSubmissionAction } from '@/actions/submissions';
+import { getSubmissionsAction, updateSubmissionStatusAction, deleteSubmissionAction, markSubmissionReadAction } from '@/actions/submissions';
 import type { FormSubmission } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Icons } from '@/components/icons';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 export default function SubmissionsPage() {
   const [submissions, setSubmissions] = useState<FormSubmission[]>([]);
@@ -49,6 +50,24 @@ export default function SubmissionsPage() {
         toast({ variant: 'destructive', title: 'Error', description: result.message });
       }
     });
+  };
+
+  const handleToggleRead = (id: string, read: boolean) => {
+    startUpdateTransition(async () => {
+      const result = await markSubmissionReadAction(id, read);
+      if (result.success) {
+        setSubmissions(prev => prev.map(s => s.id === id ? { ...s, read } : s));
+      } else {
+        toast({ variant: 'destructive', title: 'Error', description: result.message });
+      }
+    });
+  };
+
+  const handleViewSubmission = (s: FormSubmission) => {
+    setViewingSubmission(s);
+    if (s.read === false || s.read === undefined) {
+      handleToggleRead(s.id, true);
+    }
   };
 
   const handleDelete = (id: string) => {
@@ -232,6 +251,7 @@ export default function SubmissionsPage() {
                     <table className="min-w-full divide-y divide-border text-sm">
                       <thead className="bg-muted/50">
                         <tr>
+                          <th className="w-12 px-6 py-4 text-center font-semibold text-muted-foreground">Leído</th>
                           <th className="px-6 py-4 text-left font-semibold text-muted-foreground">Fecha</th>
                           <th className="px-6 py-4 text-left font-semibold text-muted-foreground">Nombre</th>
                           {tab !== 'contacto' && <th className="px-6 py-4 text-left font-semibold text-muted-foreground">DNI</th>}
@@ -244,31 +264,45 @@ export default function SubmissionsPage() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border bg-card/10">
-                        {filteredSubmissions.map((s) => (
-                          <tr key={s.id} className="hover:bg-muted/10 transition-colors">
-                            <td className="px-6 py-4 whitespace-nowrap text-muted-foreground">
-                              {new Date(s.createdAt).toLocaleDateString('es-AR')}
-                            </td>
-                            <td className="px-6 py-4 font-medium">{s.data.name}</td>
-                            {tab !== 'contacto' && <td className="px-6 py-4">{s.data.dni}</td>}
-                            <td className="px-6 py-4 text-muted-foreground">{s.data.phone || '-'}</td>
-                            <td className="px-6 py-4 truncate max-w-[180px]">
-                              {tab === 'contacto' ? s.data.subject : tab === 'afiliacion' ? s.data.locality : s.data.electoralSection}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[s.status]}`}>
-                                {statusLabels[s.status]}
-                              </span>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right space-x-1">
-                              <Button 
-                                size="sm" 
-                                variant="outline" 
-                                className="rounded-lg"
-                                onClick={() => setViewingSubmission(s)}
-                              >
-                                <Icons.View className="w-3.5 h-3.5 mr-1" /> Ver
-                              </Button>
+                        {filteredSubmissions.map((s) => {
+                          const isUnread = s.read === false || s.read === undefined;
+                          return (
+                            <tr key={s.id} className={cn("hover:bg-muted/10 transition-colors", isUnread ? "font-bold text-foreground bg-blue-500/5" : "text-muted-foreground")}>
+                              <td className="px-6 py-4 whitespace-nowrap text-center">
+                                <input
+                                  type="checkbox"
+                                  checked={!isUnread}
+                                  onChange={(e) => handleToggleRead(s.id, e.target.checked)}
+                                  className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary accent-primary cursor-pointer"
+                                  title={isUnread ? "Marcar como leído" : "Marcar como no leído"}
+                                />
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
+                                  {isUnread && <span className="w-2 h-2 rounded-full bg-blue-500 mr-2 animate-pulse" />}
+                                  {new Date(s.createdAt).toLocaleDateString('es-AR')}
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 font-medium text-foreground">{s.data.name}</td>
+                              {tab !== 'contacto' && <td className="px-6 py-4 text-foreground">{s.data.dni}</td>}
+                              <td className="px-6 py-4">{s.data.phone || '-'}</td>
+                              <td className="px-6 py-4 truncate max-w-[180px]">
+                                {tab === 'contacto' ? s.data.subject : tab === 'afiliacion' ? s.data.locality : s.data.electoralSection}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[s.status]}`}>
+                                  {statusLabels[s.status]}
+                                </span>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-right space-x-1">
+                                <Button 
+                                  size="sm" 
+                                  variant="outline" 
+                                  className="rounded-lg"
+                                  onClick={() => handleViewSubmission(s)}
+                                >
+                                  <Icons.View className="w-3.5 h-3.5 mr-1" /> Ver
+                                </Button>
                               <Button 
                                 size="sm" 
                                 variant="destructive" 
@@ -280,7 +314,8 @@ export default function SubmissionsPage() {
                               </Button>
                             </td>
                           </tr>
-                        ))}
+                        );
+                      })}
                       </tbody>
                     </table>
                   </div>

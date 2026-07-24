@@ -18,7 +18,8 @@ import type {
     NotificationItem, 
     GoogleForm, 
     StreamingItem,
-    BannerConfig 
+    BannerConfig,
+    FormField
 } from '../types';
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { getFirestoreDb } from '../firebase/client';
@@ -211,8 +212,42 @@ export async function getPageHeaderByPathAction(path: string): Promise<PageHeade
   return headers.find(header => header.path === path);
 }
 
+export const DEFAULT_FORM_FIELDS: Record<string, FormField[]> = {
+  contacto: [
+    { id: 'name', label: 'Nombre Completo', type: 'text', required: true, placeholder: 'Juan Pérez' },
+    { id: 'email', label: 'Correo Electrónico', type: 'email', required: true, placeholder: 'juan@email.com' },
+    { id: 'phone', label: 'Teléfono / WhatsApp', type: 'text', required: false, placeholder: '+54 376 4123456' },
+    { id: 'subject', label: 'Asunto', type: 'text', required: false, placeholder: 'Consulta sobre afiliaciones' },
+    { id: 'message', label: 'Mensaje', type: 'textarea', required: true, placeholder: 'Escribe tu mensaje aquí...' }
+  ],
+  afiliacion: [
+    { id: 'name', label: 'Nombre Completo', type: 'text', required: true, placeholder: 'Juan Carlos Pérez' },
+    { id: 'dni', label: 'Número de DNI (sin puntos)', type: 'text', required: true, placeholder: '35123456' },
+    { id: 'email', label: 'Correo Electrónico', type: 'email', required: true, placeholder: 'juan.perez@example.com' },
+    { id: 'phone', label: 'Celular / WhatsApp', type: 'text', required: true, placeholder: '3764556677' },
+    { id: 'locality', label: 'Localidad de Residencia', type: 'text', required: true, placeholder: 'Posadas' },
+    { id: 'address', label: 'Domicilio Completo', type: 'text', required: true, placeholder: 'Av. Corrientes 1234, Piso 2 Dto A' },
+    { id: 'occupation', label: 'Profesión / Ocupación / Estudios', type: 'text', required: false, placeholder: 'Comerciante / Estudiante' },
+    { id: 'comments', label: '¿Por qué te gustaría afiliarte?', type: 'textarea', required: false, placeholder: 'Comentarios adicionales...' }
+  ],
+  fiscales: [
+    { id: 'name', label: 'Nombre Completo', type: 'text', required: true, placeholder: 'María Laura González' },
+    { id: 'dni', label: 'Número de DNI (sin puntos)', type: 'text', required: true, placeholder: '28123456' },
+    { id: 'email', label: 'Correo Electrónico', type: 'email', required: true, placeholder: 'maria@example.com' },
+    { id: 'phone', label: 'Celular / WhatsApp', type: 'text', required: true, placeholder: '3764998877' },
+    { id: 'locality', label: 'Localidad de Votación', type: 'text', required: true, placeholder: 'Eldorado' },
+    { id: 'electoralSection', label: 'Escuela / Sección Electoral de preferencia', type: 'text', required: true, placeholder: 'Escuela Normal Nº 11 o Circuito Electoral' },
+    { id: 'availability', label: 'Disponibilidad Horaria', type: 'select', required: true, placeholder: 'Selecciona disponibilidad', options: ['Jornada Completa (07:30 a 18:30)', 'Turno Mañana (07:30 a 13:00)', 'Turno Tarde (13:00 a 18:30)'] },
+    { id: 'comments', label: 'Comentarios o Experiencia Previa', type: 'text', required: false, placeholder: 'He fiscalizado en las elecciones 2023 / Ninguna' }
+  ]
+};
+
 export async function readGoogleFormsFile(): Promise<GoogleForm[]> {
-    return readData<GoogleForm[]>('google_forms', 'src/data/google-forms.json');
+    const items = await readData<GoogleForm[]>('google_forms', 'src/data/google-forms.json');
+    return items.map(form => ({
+      ...form,
+      fields: form.fields && form.fields.length > 0 ? form.fields : (DEFAULT_FORM_FIELDS[form.id] || [])
+    }));
 }
 export async function getGoogleFormsAction(): Promise<GoogleForm[]> {
     return readGoogleFormsFile();

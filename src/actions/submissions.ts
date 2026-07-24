@@ -1,13 +1,15 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import type { FormSubmission } from '@/lib/types';
-import { collection, getDocs, doc, setDoc, deleteDoc } from 'firebase/firestore';
+import type { FormSubmission, WhatsappConfig } from '@/lib/types';
+import { collection, getDocs, doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
 import { getFirestoreDb } from '@/lib/firebase/client';
 import * as admin from 'firebase-admin';
 import { getApps, initializeApp, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 import crypto from 'crypto';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 const isFirebaseConfigured = typeof process !== 'undefined' && !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
 
@@ -36,7 +38,155 @@ function getAdminDb() {
   return adminDb;
 }
 
-// In-memory fallback for local dev if firebase is not available
+// Global variable for local in-memory config fallback
+let localWhatsappConfig: WhatsappConfig = {
+  enabled: false,
+  provider: 'callmebot',
+  apiKey: '',
+  numbers: '',
+  webhookUrl: '',
+};
+
+// ----------------------------------------------------
+// Whatsapp Configuration Actions
+// ----------------------------------------------------
+export async function getWhatsappConfigAction(): Promise<WhatsappConfig> {
+  if (isFirebaseConfigured) {
+    try {
+      const adminDbInstance = getAdminDb();
+      if (adminDbInstance) {
+        const docSnap = await adminDbInstance.collection('settings').doc('whatsapp_config').get();
+        if (docSnap.exists) {
+          return docSnap.data() as WhatsappConfig;
+        }
+      } else {
+        const db = getFirestoreDb();
+        const docRef = doc(db, 'settings', 'whatsapp_config');
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          return docSnap.data() as WhatsappConfig;
+        }
+      }
+    } catch (err) {
+      console.warn("Failed to fetch WhatsappConfig from Firestore:", err);
+    }
+  }
+
+  // Fallback to local JSON file
+  try {
+    const fullPath = path.join(process.cwd(), 'src/data/whatsapp-config.json');
+    const data = await fs.readFile(fullPath, 'utf-8');
+    return JSON.parse(data) as WhatsappConfig;
+  } catch (err) {
+    return localWhatsappConfig;
+  }
+}
+
+export async function saveWhatsappConfigAction(config: WhatsappConfig) {
+  let firestoreSuccess = false;
+  if (isFirebaseConfigured) {
+    try {
+      const adminDbInstance = getAdminDb();
+      if (adminDbInstance) {
+        await adminDbInstance.collection('settings').doc('whatsapp_config').set(config);
+      } else {
+        const db = getFirestoreDb();
+        const docRef = doc(db, 'settings', 'whatsapp_config');
+        await setDoc(docRef, config);
+      }
+      firestoreSuccess = true;
+    } catch (err) {
+      console.error("Failed to save WhatsappConfig in Firestore:", err);
+    }
+  } else {
+    localWhatsappConfig = config;
+  }
+
+  // Save to local JSON file
+  try {
+    const fullPath = path.join(process.cwd(), 'src/data/whatsapp-config.json');
+    await fs.writeFile(fullPath, JSON.stringify(config, null, 2));
+  } catch (fsError) {
+    if (!firestoreSuccess) throw fsError;
+  }
+
+  revalidatePath('/admin/submissions');
+  revalidatePath('/admin/manage-google-forms');
+  return { success: true, message: 'Configuración de WhatsApp guardada con éxito.' };
+}
+
+// Helper: Send WhatsApp notification via API fetch
+async function sendWhatsappNotification(config: WhatsappConfig, submission: FormSubmission) {
+  if (!config.enabled || !config.numbers) return;
+
+  const formNames = {
+    contacto: 'Contacto',
+    afiliacion: 'Pre-Afiliación',
+    fiscales: 'Fiscales de Mesa'
+  };
+
+  const text = `*Partido Libertario Misiones*\nNueva solicitud de *${formNames[submission.type] || submission.type}*:\n\n` +
+    Object.entries(submission.data)
+      .map(([key, val]) => {
+        const labels: Record<string, string> = {
+          name: 'Nombre',
+          dni: 'DNI',
+          email: 'Email',
+          phone: 'Teléfono',
+          locality: 'Localidad',
+          address: 'Domicilio',
+          occupation: 'Profesión',
+          subject: 'Asunto',
+          message: 'Mensaje',
+          electoralSection: 'Escuela/Sección',
+          availability: 'Disponibilidad',
+          comments: 'Comentarios'
+        };
+        let formattedVal = String(val);
+        if (key === 'availability') {
+          formattedVal = val === 'full_day' ? 'Jornada Completa' : val === 'morning' ? 'Mañana' : 'Tarde';
+        }
+        return `- *${labels[key] || key}*: ${formattedVal}`;
+      })
+      .join('\n') +
+    `\n\nVer panel: https://www.partidolibertariomisiones.org/admin/submissions`;
+
+  const numberList = config.numbers.split(',').map(n => n.trim());
+  
+  for (const number of numberList) {
+    if (!number) continue;
+    try {
+      if (config.provider === 'callmebot' && config.apiKey) {
+        const cleanNumber = number.replace(/[+\s-]/g, ''); // CallMeBot phone format is pure numbers with country code
+        const url = `https://api.callmebot.com/whatsapp.php?phone=${cleanNumber}&text=${encodeURIComponent(text)}&apikey=${config.apiKey}`;
+        const res = await fetch(url);
+        if (!res.ok) {
+          console.error(`CallMeBot notification failed for number ${number}:`, res.statusText);
+        }
+      } else if (config.provider === 'webhook' && config.webhookUrl) {
+        const res = await fetch(config.webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: text,
+            type: submission.type,
+            data: submission.data,
+            createdAt: submission.createdAt
+          })
+        });
+        if (!res.ok) {
+          console.error(`Webhook notification failed:`, res.statusText);
+        }
+      }
+    } catch (err) {
+      console.error(`Error dispatching Whatsapp alert to ${number}:`, err);
+    }
+  }
+}
+
+// ----------------------------------------------------
+// Submissions Actions
+// ----------------------------------------------------
 let localSubmissions: FormSubmission[] = [];
 
 export async function submitFormAction(
@@ -50,6 +200,7 @@ export async function submitFormAction(
     data,
     status: 'pending',
     createdAt: new Date().toISOString(),
+    read: false, // Default to unread!
   };
 
   if (isFirebaseConfigured) {
@@ -70,6 +221,19 @@ export async function submitFormAction(
     }
   } else {
     localSubmissions.push(submission);
+  }
+
+  // Asynchronously send WhatsApp notification
+  try {
+    const waConfig = await getWhatsappConfigAction();
+    if (waConfig && waConfig.enabled) {
+      // Don't await here to keep client response fast
+      sendWhatsappNotification(waConfig, submission).catch(err => 
+        console.error("WhatsApp notification background error:", err)
+      );
+    }
+  } catch (waError) {
+    console.error("Failed to load WhatsApp config on submit:", waError);
   }
 
   revalidatePath('/admin/submissions');
@@ -126,6 +290,32 @@ export async function updateSubmissionStatusAction(
 
   revalidatePath('/admin/submissions');
   return { success: true, message: 'Estado actualizado correctamente.' };
+}
+
+export async function markSubmissionReadAction(id: string, read: boolean) {
+  if (isFirebaseConfigured) {
+    try {
+      const adminDbInstance = getAdminDb();
+      if (adminDbInstance) {
+        await adminDbInstance.collection('submissions').doc(id).update({ read });
+      } else {
+        const db = getFirestoreDb();
+        const docRef = doc(db, 'submissions', id);
+        await setDoc(docRef, { read }, { merge: true });
+      }
+    } catch (err) {
+      console.error('Error marking submission as read:', err);
+      return { success: false, message: 'Error al actualizar estado de lectura.' };
+    }
+  } else {
+    const index = localSubmissions.findIndex(s => s.id === id);
+    if (index !== -1 && localSubmissions[index]) {
+      localSubmissions[index].read = read;
+    }
+  }
+
+  revalidatePath('/admin/submissions');
+  return { success: true, message: 'Estado de lectura actualizado.' };
 }
 
 export async function deleteSubmissionAction(id: string) {

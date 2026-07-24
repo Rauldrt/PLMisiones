@@ -14,6 +14,8 @@ import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import type { SocialLink } from '@/lib/types';
 import { Separator } from './ui/separator';
+import { getSubmissionsAction } from '@/actions/submissions';
+import { useState, useEffect } from 'react';
 
 const adminNavLinks = [
   { href: '/admin/expert-chat', label: 'Chat Experto', icon: 'AI' },
@@ -44,6 +46,23 @@ interface NavContentProps {
 function NavContent({ socialLinks }: NavContentProps) {
   const pathname = usePathname();
   const { logout } = useAuth();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    async function loadUnreadCount() {
+      try {
+        const submissions = await getSubmissionsAction();
+        const count = submissions.filter(s => s.read === false || s.read === undefined).length;
+        setUnreadCount(count);
+      } catch (err) {
+        console.error("Failed to load unread count in sidebar:", err);
+      }
+    }
+    loadUnreadCount();
+
+    const interval = setInterval(loadUnreadCount, 15000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="flex h-full flex-col">
@@ -56,18 +75,27 @@ function NavContent({ socialLinks }: NavContentProps) {
       <nav className="flex-1 space-y-2 p-4 overflow-y-auto">
         {adminNavLinks.map((link) => {
           const Icon = link.icon ? Icons[link.icon as IconName] : null;
+          const isSubmissions = link.href === '/admin/submissions';
+
           return (
             <Link
               key={link.href}
               href={link.href}
               className={cn(
-                'flex items-center gap-3 rounded-lg px-3 py-2 text-foreground/80 transition-all hover:text-foreground hover:bg-muted',
+                'flex items-center justify-between rounded-lg px-3 py-2 text-foreground/80 transition-all hover:text-foreground hover:bg-muted',
                 pathname.startsWith(link.href) ? 'bg-muted font-semibold text-foreground' : ''
               )}
               aria-current={pathname.startsWith(link.href) ? "page" : undefined}
             >
-              {Icon && <Icon className="h-5 w-5" />}
-              {link.label}
+              <span className="flex items-center gap-3">
+                {Icon && <Icon className="h-5 w-5" />}
+                {link.label}
+              </span>
+              {isSubmissions && unreadCount > 0 && (
+                <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white animate-pulse">
+                  {unreadCount}
+                </span>
+              )}
             </Link>
           );
         })}

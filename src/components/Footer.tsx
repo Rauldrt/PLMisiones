@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import { Button } from './ui/button';
 import type { SocialLink, FooterContent, GoogleForm } from '@/lib/types';
-import { ContactForm } from '@/components/forms/ContactForm';
+import { DynamicForm } from '@/components/forms/DynamicForm';
 
 
 interface FooterProps {
@@ -77,7 +77,7 @@ export function Footer({ socialLinks, contactForm, footerContent }: FooterProps)
                     </div>
                 </div>
                 <div>
-                    <ContactForm />
+                    <DynamicForm formId="contacto" />
                 </div>
             </div>
         </Card>
