@@ -71,14 +71,14 @@ export function Banner({
           <AnimatedBannerBackground slides={backgroundSlides} />
         )}
         
-        <div className="relative z-20 h-full w-full flex flex-col justify-between flex-1 pt-16 md:pt-20">
+        <div className="relative z-20 h-full w-full flex flex-col justify-between flex-1 pt-2 md:pt-8 lg:pt-16">
             <div className="hidden md:block">
               <NotificationDropdown notifications={notifications} notificationSettings={notificationSettings} />
             </div>
             
             {isInstitutional ? (
               /* --- MODAL / SPLIT LAYOUT (Institutional) --- */
-              <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-12 flex-1 w-full">
+              <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pt-2 pb-8 lg:py-12 flex-1 w-full">
                 
                 {/* Columna Izquierda: Texto de la diapositiva */}
                 <div className="flex flex-col justify-center text-center lg:text-left w-full">
