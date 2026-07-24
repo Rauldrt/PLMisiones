@@ -92,15 +92,15 @@ export function Banner({
                         <CarouselItem key={slide.id} className="pl-0 group">
                           <div className="relative h-full w-full text-center lg:text-left">
                             <div className="w-full flex flex-col items-center lg:items-start text-center lg:text-left">
-                              <h1 className="font-headline text-4xl font-bold text-white md:text-6xl lg:text-7xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
+                              <h1 className="font-headline text-2xl sm:text-3xl md:text-6xl lg:text-7xl font-bold text-white opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
                                 {slide.title}
                               </h1>
-                              <p className="mt-4 max-w-xl mx-auto lg:mx-0 text-lg text-white/80 md:text-xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.4s' }}>
+                              <p className="mt-2 sm:mt-4 max-w-xl mx-auto lg:mx-0 text-sm sm:text-base md:text-xl text-white/80 opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.4s' }}>
                                 {slide.subtitle}
                               </p>
                               <div className="opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.6s' }}>
                                 {slide.ctaText && slide.ctaLink && (
-                                  <Button asChild size="lg" className="mt-6">
+                                  <Button asChild className="mt-3 sm:mt-6 h-9 px-4 sm:h-11 sm:px-8 text-xs sm:text-base font-semibold">
                                     <Link href={slide.ctaLink}>{slide.ctaText}</Link>
                                   </Button>
                                 )}
@@ -151,15 +151,15 @@ export function Banner({
                     <CarouselItem key={slide.id} className="group">
                       <div className="relative h-full w-full">
                         <div className="w-full px-4 flex flex-col items-center justify-center text-center">
-                          <h1 className="font-headline text-4xl font-bold text-white md:text-6xl lg:text-7xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
+                          <h1 className="font-headline text-3xl md:text-6xl lg:text-7xl font-bold text-white opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
                             {slide.title}
                           </h1>
-                          <p className="mt-4 max-w-3xl mx-auto text-lg text-white/80 md:text-xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.4s' }}>
+                          <p className="mt-2 sm:mt-4 max-w-3xl mx-auto text-sm sm:text-base md:text-xl text-white/80 opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.4s' }}>
                             {slide.subtitle}
                           </p>
                           <div className="opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.6s' }}>
                             {slide.ctaText && slide.ctaLink && (
-                              <Button asChild size="lg" className="mt-4">
+                              <Button asChild className="mt-3 sm:mt-4 h-9 px-4 sm:h-11 sm:px-8 text-xs sm:text-base font-semibold">
                                 <Link href={slide.ctaLink}>{slide.ctaText}</Link>
                               </Button>
                             )}
