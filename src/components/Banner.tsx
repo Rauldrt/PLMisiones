@@ -81,7 +81,7 @@ export function Banner({
               <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pt-2 pb-8 lg:py-12 flex-1 w-full">
                 
                 {/* Columna Izquierda: Texto de la diapositiva */}
-                <div className="flex flex-col justify-center text-center lg:text-left w-full">
+                <div className="flex flex-col justify-center text-center w-full">
                   <Carousel
                     opts={{ loop: textSlides.length > 1 }}
                     plugins={textSlides.length > 1 ? [Autoplay({ delay: 5000, stopOnInteraction: true })] : []}
@@ -90,12 +90,12 @@ export function Banner({
                     <CarouselContent className="ml-0">
                       {textSlides.map((slide) => (
                         <CarouselItem key={slide.id} className="pl-0 group">
-                          <div className="relative h-full w-full text-center lg:text-left">
-                            <div className="w-full flex flex-col items-center lg:items-start text-center lg:text-left">
+                          <div className="relative h-full w-full text-center">
+                            <div className="w-full flex flex-col items-center text-center">
                               <h1 className="font-headline text-2xl sm:text-3xl md:text-6xl lg:text-7xl font-bold text-white opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
                                 {slide.title}
                               </h1>
-                              <p className="mt-2 sm:mt-4 max-w-xl mx-auto lg:mx-0 text-sm sm:text-base md:text-xl text-white/80 opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.4s' }}>
+                              <p className="mt-2 sm:mt-4 max-w-xl mx-auto text-sm sm:text-base md:text-xl text-white/80 opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.4s' }}>
                                 {slide.subtitle}
                               </p>
                               <div className="opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.6s' }}>
