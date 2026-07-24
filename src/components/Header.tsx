@@ -106,133 +106,168 @@ export function Header({ socialLinks }: HeaderProps) {
       </header>
 
       <div className="md:hidden">
-        <Popover open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-          <div className="fixed bottom-6 right-6 z-50 overflow-visible">
-            <PopoverTrigger asChild>
+        {/* Backdrop overlay */}
+        <div 
+          className={cn(
+            "fixed inset-0 z-40 bg-black/60 backdrop-blur-md transition-opacity duration-300 ease-in-out",
+            isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          )}
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+
+        {/* FAB / Modal Container */}
+        <div 
+          className={cn(
+            "fixed z-50 transition-all duration-300 ease-in-out overflow-hidden shadow-2xl border",
+            isMobileMenuOpen 
+              ? "bottom-6 right-6 w-[calc(100vw-2rem)] max-w-xs rounded-[2rem] bg-card border-border p-5 flex flex-col max-h-[80vh]" 
+              : "bottom-6 right-6 w-16 h-16 rounded-full bg-primary text-primary-foreground border-transparent flex items-center justify-center cursor-pointer hover:scale-105"
+          )}
+          onClick={() => {
+            if (!isMobileMenuOpen) {
+              setIsMobileMenuOpen(true);
+            }
+          }}
+        >
+          {!isMobileMenuOpen ? (
+            /* --- FAB CERRADO --- */
+            <div className="relative w-full h-full flex items-center justify-center">
+              <Icons.Menu className="h-6 w-6 text-primary-foreground" />
+              {notificationSettings?.enabled && notifications.length > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-5 w-5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-5 w-5 bg-orange-500 text-[10px] font-bold text-white items-center justify-center shadow border border-background">
+                    {notifications.length}
+                  </span>
+                </span>
+              )}
+            </div>
+          ) : (
+            /* --- MODAL ABIERTO --- */
+            <div className="flex flex-col h-full w-full overflow-hidden animate-fade-in-up" style={{ animationDuration: '300ms' }} onClick={(e) => e.stopPropagation()}>
+              {/* Scrollable Container (Notificaciones + Links de Navegación) */}
+              <div className="flex-1 overflow-y-auto space-y-4 pr-1 scrollbar-thin">
+                
+                {/* Notificaciones en Acordeón */}
+                {notificationSettings?.enabled && notifications.length > 0 && (
+                  <div className="p-3 bg-orange-500/5 rounded-2xl border border-orange-500/10">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                      </span>
+                      <span className="text-xs font-bold text-orange-500 tracking-wide uppercase">
+                        {notificationSettings.text || 'Notificaciones'}
+                      </span>
+                    </div>
+                    <Accordion type="single" collapsible className="w-full space-y-1">
+                      {notifications.map((item) => (
+                        <AccordionItem key={item.id} value={item.id} className="border-b-0">
+                          <AccordionTrigger className="text-xs hover:no-underline py-1.5 px-2 rounded hover:bg-muted text-left text-foreground font-medium flex justify-between items-center w-full">
+                            <span className="truncate pr-4 flex-1">{item.title}</span>
+                          </AccordionTrigger>
+                          <AccordionContent className="pt-2 pb-3 px-2 text-xs text-muted-foreground bg-muted/40 rounded border border-border/10 mt-1">
+                            {item.imageUrl && (
+                              <div className="relative w-full h-32 mb-2 rounded overflow-hidden">
+                                <Image
+                                  src={item.imageUrl}
+                                  alt={item.title}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                            )}
+                            {item.content && (
+                              <div
+                                className="whitespace-normal [&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded [&_img]:rounded [&_img]:max-h-32 [&_img]:mx-auto [&_a]:text-orange-500 [&_a]:underline"
+                                dangerouslySetInnerHTML={{ __html: clientSanitize(item.content) }}
+                              />
+                            )}
+                            <p className="text-[10px] text-muted-foreground/60 mt-2 text-right">
+                              {new Date(item.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
+                            </p>
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  </div>
+                )}
+
+                {/* Logo y Encabezado */}
+                <div className="p-2 border-b flex items-center gap-3">
+                  <Image src="/logo.png" alt="Logo del Partido" width={36} height={36} />
+                  <span className="font-headline text-base font-bold text-foreground">Libertario Misiones</span>
+                </div>
+
+                {/* Enlaces Principales */}
+                <nav className="flex flex-col gap-1">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={(e) => handleLinkClick(e, link.href)}
+                      className={cn(
+                        'block rounded-md px-3 py-2 text-sm font-medium hover:bg-muted',
+                        pathname === link.href ? 'font-semibold text-foreground' : 'text-foreground/80'
+                      )}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </nav>
+
+                <Separator />
+
+                {/* Botones de Acción */}
+                <div className="flex flex-col gap-2">
+                  <Button asChild variant="outline" size="sm" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Link href="/fiscales">Fiscalizá</Link>
+                  </Button>
+                  <Button asChild size="sm" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Link href="/afiliacion">Afiliarse</Link>
+                  </Button>
+                  <Button asChild variant="ghost" size="sm" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Link href="/admin">Admin</Link>
+                  </Button>
+                </div>
+
+                <Separator />
+
+                {/* Redes Sociales */}
+                <div className="flex justify-center gap-5 py-2">
+                  {socialLinks.map((link) => {
+                    const IconComponent = getIcon(link.name);
+                    return (
+                      <Link
+                        key={link.id}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-foreground/60 hover:text-foreground transition-colors"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {IconComponent ? <IconComponent className="h-5 w-5" /> : <Icons.Social className="h-5 w-5" />}
+                      </Link>
+                    )
+                  })}
+                </div>
+
+              </div>
+
+              {/* Botón Flotante para Cerrar el Modal */}
+              <div className="flex justify-end pt-3 mt-1 border-t border-border/40">
                 <Button
                   variant="default"
                   size="icon"
-                  className="h-16 w-16 rounded-full shadow-lg"
-                  aria-expanded={isMobileMenuOpen}
-                  aria-controls="mobile-menu-content"
+                  className="h-12 w-12 rounded-full shadow-md hover:scale-105 transition-transform"
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
-                    <Icons.Menu className={cn("absolute h-6 w-6 transition-all duration-300", isMobileMenuOpen && "opacity-0 rotate-90")} />
-                    <Icons.Close className={cn("absolute h-6 w-6 transition-all duration-300", !isMobileMenuOpen && "opacity-0 rotate-90")} />
-                  <span className="sr-only">{isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}</span>
+                  <Icons.Close className="h-5 w-5 text-primary-foreground" />
                 </Button>
-            </PopoverTrigger>
-            {notificationSettings?.enabled && notifications.length > 0 && !isMobileMenuOpen && (
-              <span className="absolute -top-1.5 -right-1.5 flex h-6 w-6 z-[60] pointer-events-none">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-6 w-6 bg-orange-500 text-[11px] font-bold text-white items-center justify-center shadow-lg border-2 border-background">
-                  {notifications.length}
-                </span>
-              </span>
-            )}
-          </div>
-          <PopoverContent id="mobile-menu-content" side="top" align="end" className="w-64 p-0 mb-2" sideOffset={12}>
-            <div className="flex flex-col h-full">
-              {notificationSettings?.enabled && notifications.length > 0 && (
-                <div className="p-3 bg-orange-500/5 border-b border-border/40">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                    </span>
-                    <span className="text-xs font-bold text-orange-500 tracking-wide uppercase">
-                      {notificationSettings.text || 'Notificaciones'}
-                    </span>
-                  </div>
-                  <Accordion type="single" collapsible className="w-full space-y-1">
-                    {notifications.map((item) => (
-                      <AccordionItem key={item.id} value={item.id} className="border-b-0">
-                        <AccordionTrigger className="text-xs hover:no-underline py-1.5 px-2 rounded hover:bg-muted text-left text-foreground font-medium flex justify-between items-center w-full">
-                          <span className="truncate pr-4 flex-1">{item.title}</span>
-                        </AccordionTrigger>
-                        <AccordionContent className="pt-2 pb-3 px-2 text-xs text-muted-foreground bg-muted/40 rounded border border-border/10 mt-1">
-                          {item.imageUrl && (
-                            <div className="relative w-full h-32 mb-2 rounded overflow-hidden">
-                              <Image
-                                src={item.imageUrl}
-                                alt={item.title}
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
-                          )}
-                          {item.content && (
-                            <div
-                              className="whitespace-normal [&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded [&_img]:rounded [&_img]:max-h-32 [&_img]:mx-auto [&_a]:text-orange-500 [&_a]:underline"
-                              dangerouslySetInnerHTML={{ __html: clientSanitize(item.content) }}
-                            />
-                          )}
-                          <p className="text-[10px] text-muted-foreground/60 mt-2 text-right">
-                            {new Date(item.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
-                          </p>
-                        </AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
-                </div>
-              )}
-              <div className="p-4 border-b">
-                  <Link href="/" className="flex items-center gap-3" onClick={(e) => handleLinkClick(e, '/')}>
-                      <Image src="/logo.png" alt="Logo del Partido" width={40} height={40} />
-                      <span className="font-headline text-lg font-bold">Libertario Misiones</span>
-                  </Link>
               </div>
-              <nav className="flex flex-col gap-1 p-2">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={(e) => handleLinkClick(e, link.href)}
-                    className={cn(
-                      'block rounded-md px-3 py-2 text-base font-medium hover:bg-muted',
-                      pathname === link.href ? 'font-semibold text-foreground' : 'text-foreground/80'
-                    )}
-                    aria-current={pathname === link.href ? "page" : undefined}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </nav>
-              <Separator/>
-              <div className="p-2 flex flex-col gap-2">
-                  <Button asChild variant="outline" onClick={() => setIsMobileMenuOpen(false)}>
-                      <Link href="/fiscales">Fiscalizá</Link>
-                  </Button>
-                  <Button asChild onClick={() => setIsMobileMenuOpen(false)}>
-                      <Link href="/afiliacion">Afiliarse</Link>
-                  </Button>
-                   <Button asChild variant="ghost" onClick={() => setIsMobileMenuOpen(false)}>
-                      <Link href="/admin">Admin</Link>
-                  </Button>
-              </div>
-              <Separator />
-               <div className="p-4">
-                    <div className="flex justify-center gap-6">
-                        {socialLinks.map((link) => {
-                            const IconComponent = getIcon(link.name);
-                            return (
-                                <Link
-                                    key={link.id}
-                                    href={link.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-foreground/60 hover:text-foreground transition-colors"
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                >
-                                    {IconComponent ? <IconComponent className="h-6 w-6" /> : <Icons.Social className="h-6 w-6" />}
-                                    <span className="sr-only">{link.name}</span>
-                                </Link>
-                            )
-                        })}
-                    </div>
-                </div>
             </div>
-          </PopoverContent>
-        </Popover>
+          )}
+        </div>
       </div>
     </>
   );
