@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useTransition } from 'react';
 import { getBannerTextSlidesAction, getBannerConfigAction } from '@/actions/data';
-import { saveBannerText, saveBannerConfig } from '@/actions/admin';
+import { saveBannerText, saveBannerConfig, uploadBannerImageAction } from '@/actions/admin';
 import type { BannerTextSlide, BannerConfig } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,8 +14,6 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ImageGallery } from '@/components/ImageGallery';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { getFirebaseApp } from '@/lib/firebase/client';
 
 export default function ManageBannerPage() {
   const [slides, setSlides] = useState<BannerTextSlide[]>([]);
@@ -33,30 +31,45 @@ export default function ManageBannerPage() {
 
     setIsUploading(true);
     try {
-      const storage = getStorage(getFirebaseApp());
-      const fileExtension = file.name.split('.').pop();
-      const fileName = `banner/${Date.now()}-${Math.random().toString(36).substring(2, 10)}.${fileExtension}`;
-      const storageRef = ref(storage, fileName);
-      
-      const snapshot = await uploadBytes(storageRef, file);
-      const downloadUrl = await getDownloadURL(snapshot.ref);
-      
-      if (config) {
-        setConfig({ ...config, institutionalBgVal: downloadUrl });
-      }
-      
-      toast({
-        title: 'Éxito',
-        description: 'Imagen subida a Firebase Storage con éxito.',
-      });
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = async () => {
+        const base64Data = reader.result as string;
+        const result = await uploadBannerImageAction(base64Data, file.name);
+        
+        if (result.success && result.url) {
+          if (config) {
+            setConfig({ ...config, institutionalBgVal: result.url });
+          }
+          toast({
+            title: 'Éxito',
+            description: result.message,
+          });
+        } else {
+          toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: result.message,
+          });
+        }
+        setIsUploading(false);
+      };
+      reader.onerror = (error) => {
+        console.error('Error reading file:', error);
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'No se pudo leer el archivo seleccionado.',
+        });
+        setIsUploading(false);
+      };
     } catch (error) {
       console.error('Error al subir la imagen:', error);
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: 'No se pudo subir la imagen a Firebase Storage.',
+        description: 'No se pudo iniciar la subida de la imagen.',
       });
-    } finally {
       setIsUploading(false);
     }
   };

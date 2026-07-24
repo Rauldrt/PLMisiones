@@ -28,6 +28,8 @@ import { getFirestoreDb } from '@/lib/firebase/client';
 import * as admin from 'firebase-admin';
 import { getApps, initializeApp, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
+import { getStorage } from 'firebase-admin/storage';
+import crypto from 'crypto';
 
 const isFirebaseConfigured = typeof process !== 'undefined' && !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
 
@@ -43,7 +45,8 @@ function getAdminDb() {
       if (getApps().length === 0) {
         const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
         initializeApp({
-          credential: cert(serviceAccount)
+          credential: cert(serviceAccount),
+          storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || 'partido-libertario-mns.firebasestorage.app'
         });
       }
       // Access the custom database 'pl-misiones'
@@ -282,4 +285,50 @@ export async function saveBannerConfig(config: BannerConfig) {
     await writeData('settings', 'src/data/banner-config.json', config, true, 'banner_config');
     revalidatePath('/');
     return { success: true, message: 'Configuración del banner guardada con éxito.' };
+}
+
+export async function uploadBannerImageAction(base64Data: string, fileName: string): Promise<{ success: boolean; url?: string; message: string }> {
+  try {
+    if (typeof process === 'undefined' || !process.env.FIREBASE_SERVICE_ACCOUNT) {
+      throw new Error("El entorno Firebase no está configurado.");
+    }
+    
+    if (getApps().length === 0) {
+      const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+      initializeApp({
+        credential: cert(serviceAccount),
+        storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || 'partido-libertario-mns.firebasestorage.app'
+      });
+    }
+
+    const bucket = getStorage().bucket();
+    const base64Content = base64Data.split(';base64,').pop();
+    if (!base64Content) {
+      throw new Error("Datos base64 inválidos.");
+    }
+    const buffer = Buffer.from(base64Content, 'base64');
+    
+    const fileExtension = fileName.split('.').pop() || 'jpg';
+    const cleanFileName = `banner/${Date.now()}-${Math.random().toString(36).substring(2, 10)}.${fileExtension}`;
+    
+    const file = bucket.file(cleanFileName);
+    
+    const downloadToken = crypto.randomUUID();
+    
+    await file.save(buffer, {
+      metadata: {
+        contentType: `image/${fileExtension === 'svg' ? 'svg+xml' : fileExtension}`,
+        metadata: {
+          firebaseStorageDownloadTokens: downloadToken
+        }
+      }
+    });
+    
+    const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(cleanFileName)}?alt=media&token=${downloadToken}`;
+    
+    return { success: true, url: publicUrl, message: 'Imagen subida con éxito.' };
+  } catch (error) {
+    console.error('Error in uploadBannerImageAction:', error);
+    return { success: false, message: `Error al subir imagen: ${error instanceof Error ? error.message : 'Error desconocido'}` };
+  }
 }
