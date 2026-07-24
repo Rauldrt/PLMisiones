@@ -40,6 +40,7 @@ interface HomepageClientProps {
     layoutMode?: 'campaign' | 'institutional';
     institutionalBgType?: 'color' | 'image';
     institutionalBgVal?: string;
+    bannerOverlayOpacity?: number;
 }
 
 interface LightboxData {
@@ -124,7 +125,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
     )
 }
 
-export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems, showProposals, layoutMode, institutionalBgType, institutionalBgVal }: HomepageClientProps) {
+export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems, showProposals, layoutMode, institutionalBgType, institutionalBgVal, bannerOverlayOpacity }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
     const { setActiveBg } = useBackground();
 
@@ -152,6 +153,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         institutionalBgType={institutionalBgType}
         institutionalBgVal={institutionalBgVal}
         onBgChange={setActiveBg}
+        bannerOverlayOpacity={bannerOverlayOpacity}
       />
 
       <div className="relative z-10">

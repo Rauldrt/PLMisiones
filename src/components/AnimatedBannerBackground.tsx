@@ -11,9 +11,10 @@ interface AnimatedBannerBackgroundProps {
   disableParallax?: boolean;
   disableOverlay?: boolean;
   onImageChange?: (url: string) => void;
+  bannerOverlayOpacity?: number;
 }
 
-export function AnimatedBannerBackground({ slides, disableParallax = false, disableOverlay = false, onImageChange }: AnimatedBannerBackgroundProps) {
+export function AnimatedBannerBackground({ slides, disableParallax = false, disableOverlay = false, onImageChange, bannerOverlayOpacity }: AnimatedBannerBackgroundProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -77,7 +78,7 @@ export function AnimatedBannerBackground({ slides, disableParallax = false, disa
   }
   
   const currentSlide = slides[currentIndex];
-  const overlayOpacity = (currentSlide?.overlayOpacity ?? 0.7) * 0.45;
+  const overlayOpacity = bannerOverlayOpacity ?? ((currentSlide?.overlayOpacity ?? 0.7) * 0.45);
 
   return (
     <div 

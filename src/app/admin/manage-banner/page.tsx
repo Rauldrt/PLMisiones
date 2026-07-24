@@ -310,6 +310,70 @@ export default function ManageBannerPage() {
                     </span>
                   </div>
                 </div>
+                {/* Ajustes de Fondo y Opacidad */}
+                <div className="space-y-4 p-4 border rounded-lg bg-muted/20">
+                  <h3 className="text-base font-semibold">Fondo de Página y Efecto Parallax</h3>
+                  <p className="text-xs text-muted-foreground mb-4">
+                    Configura los valores visuales del efecto de profundidad y desenfoque.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="pageBgBlur">Desenfoque del Fondo (px)</Label>
+                      <Input
+                        id="pageBgBlur"
+                        type="number"
+                        min={0}
+                        max={100}
+                        value={config.pageBgBlur ?? 50}
+                        onChange={(e) =>
+                          setConfig({ ...config, pageBgBlur: Number(e.target.value) })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="pageBgOpacity">Opacidad del Fondo (0 a 1)</Label>
+                      <Input
+                        id="pageBgOpacity"
+                        type="number"
+                        min={0}
+                        max={1}
+                        step={0.05}
+                        value={config.pageBgOpacity ?? 0.65}
+                        onChange={(e) =>
+                          setConfig({ ...config, pageBgOpacity: Number(e.target.value) })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="pageBgOverlayOpacity">Opacidad de Capa sobre Fondo (0 a 1)</Label>
+                      <Input
+                        id="pageBgOverlayOpacity"
+                        type="number"
+                        min={0}
+                        max={1}
+                        step={0.05}
+                        value={config.pageBgOverlayOpacity ?? 0.4}
+                        onChange={(e) =>
+                          setConfig({ ...config, pageBgOverlayOpacity: Number(e.target.value) })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="bannerOverlayOpacity">Opacidad de Capa del Banner (0 a 1)</Label>
+                      <Input
+                        id="bannerOverlayOpacity"
+                        type="number"
+                        min={0}
+                        max={1}
+                        step={0.05}
+                        value={config.bannerOverlayOpacity ?? 0.31}
+                        onChange={(e) =>
+                          setConfig({ ...config, bannerOverlayOpacity: Number(e.target.value) })
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
 
                 <div className="flex justify-end pt-2">
                   <Button onClick={handleSaveConfig} disabled={isSavingConfig}>

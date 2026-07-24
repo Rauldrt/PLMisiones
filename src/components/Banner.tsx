@@ -33,6 +33,7 @@ interface BannerProps {
     institutionalBgType?: 'color' | 'image';
     institutionalBgVal?: string;
     onBgChange?: (url: string) => void;
+    bannerOverlayOpacity?: number;
 }
 
 export function Banner({ 
@@ -46,7 +47,8 @@ export function Banner({
   layoutMode = 'campaign',
   institutionalBgType = 'color',
   institutionalBgVal = 'linear-gradient(to bottom right, #09090b, #180828, #09090b)',
-  onBgChange
+  onBgChange,
+  bannerOverlayOpacity
 }: BannerProps) {
   
   const isInstitutional = layoutMode === 'institutional';
@@ -86,7 +88,7 @@ export function Banner({
             <div className="absolute inset-0 z-0" style={{ background: institutionalBgVal }} />
           )
         ) : (
-          <AnimatedBannerBackground slides={backgroundSlides} onImageChange={onBgChange} />
+          <AnimatedBannerBackground slides={backgroundSlides} onImageChange={onBgChange} bannerOverlayOpacity={bannerOverlayOpacity} />
         )}
         
         <div className="relative z-20 h-full w-full flex flex-col justify-between flex-1 pt-2 md:pt-8 lg:pt-16">

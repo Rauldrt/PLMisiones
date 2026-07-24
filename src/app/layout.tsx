@@ -3,7 +3,7 @@ import { SiteLayout } from '@/components/SiteLayout';
 import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
 import type { Metadata } from 'next'
-import { getSocialLinksAction, getGoogleFormAction, getFooterContentAction } from '@/actions/data';
+import { getSocialLinksAction, getGoogleFormAction, getFooterContentAction, getBannerConfigAction } from '@/actions/data';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://partidolibertariomisiones.com.ar';
 
@@ -46,10 +46,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const [socialLinks, contactForm, footerContent] = await Promise.all([
+  const [socialLinks, contactForm, footerContent, bannerConfig] = await Promise.all([
     getSocialLinksAction(),
     getGoogleFormAction('contacto'),
-    getFooterContentAction()
+    getFooterContentAction(),
+    getBannerConfigAction()
   ]);
 
   return (
@@ -70,6 +71,7 @@ export default async function RootLayout({
               footerContent={footerContent} 
               socialLinks={socialLinks} 
               contactForm={contactForm || { id: 'contacto', title: 'Contacto', embedUrl: '' }}
+              bannerConfig={bannerConfig}
             >
               {children}
             </SiteLayout>

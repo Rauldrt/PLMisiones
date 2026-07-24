@@ -153,5 +153,9 @@ export interface BannerConfig {
   layoutMode: 'campaign' | 'institutional';
   institutionalBgType: 'color' | 'image';
   institutionalBgVal: string;
+  pageBgBlur?: number;
+  pageBgOpacity?: number;
+  pageBgOverlayOpacity?: number;
+  bannerOverlayOpacity?: number;
 }
 

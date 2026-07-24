@@ -76,6 +76,7 @@ export default async function Home() {
       layoutMode={bannerConfig.layoutMode}
       institutionalBgType={bannerConfig.institutionalBgType}
       institutionalBgVal={bannerConfig.institutionalBgVal}
+      bannerOverlayOpacity={bannerConfig.bannerOverlayOpacity}
     />
   );
 }
