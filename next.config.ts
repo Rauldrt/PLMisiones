@@ -13,10 +13,10 @@ const cspHeader = `
     default-src 'self';
     script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://www.youtube.com https://s.ytimg.com https://www.instagram.com *.cdninstagram.com datawrapper.dwcdn.net;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    img-src 'self' blob: data: https://picsum.photos *.cdninstagram.com *.fbcdn.net https://placehold.co;
+    img-src 'self' blob: data: https://picsum.photos *.cdninstagram.com *.fbcdn.net https://placehold.co https://firebasestorage.googleapis.com;
     font-src 'self' https://fonts.gstatic.com;
     frame-src 'self' https://www.youtube.com https://www.instagram.com datawrapper.dwcdn.net https://docs.google.com https://www.facebook.com;
-    connect-src 'self' https://vitals.vercel-insights.com https://identitytoolkit.googleapis.com;
+    connect-src 'self' https://vitals.vercel-insights.com https://identitytoolkit.googleapis.com https://firestore.googleapis.com https://firebasestorage.googleapis.com;
 `;
 
 
@@ -39,6 +39,12 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'picsum.photos',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'firebasestorage.googleapis.com',
         port: '',
         pathname: '/**',
       },
