@@ -106,7 +106,7 @@ export function AnimatedBannerBackground({ slides, disableParallax = false, disa
       })}
       {!disableOverlay && (
         <div 
-          className="absolute inset-0 z-10 bg-black" 
+          className="absolute inset-0 z-10 bg-background" 
           style={{ opacity: overlayOpacity }}
         />
       )}

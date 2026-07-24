@@ -50,6 +50,12 @@ export function Banner({
 }: BannerProps) {
   
   const isInstitutional = layoutMode === 'institutional';
+  const isBgImage = institutionalBgType === 'image';
+  const textColorClass = (!isInstitutional || isBgImage) ? 'text-foreground' : 'text-white';
+  const textMutedColorClass = (!isInstitutional || isBgImage) ? 'text-foreground/80' : 'text-white/80';
+  const pillsColorClass = (!isInstitutional || isBgImage)
+    ? 'bg-card/60 text-foreground/75 hover:bg-card/90 hover:text-foreground border-border/40 shadow-sm'
+    : 'bg-white/10 text-white/80 hover:bg-white/20 border-white/5';
 
   useEffect(() => {
     if (isInstitutional) {
@@ -104,10 +110,10 @@ export function Banner({
                         <CarouselItem key={slide.id} className="pl-0 group">
                           <div className="relative h-full w-full text-center">
                             <div className="w-full flex flex-col items-center text-center">
-                              <h1 className="font-headline text-2xl sm:text-3xl md:text-6xl lg:text-7xl font-bold text-white opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
+                              <h1 className={cn("font-headline text-2xl sm:text-3xl md:text-6xl lg:text-7xl font-bold opacity-0 animate-fade-in-up group-data-[active]:opacity-100", textColorClass)} style={{ animationDelay: '0.2s' }}>
                                 {slide.title}
                               </h1>
-                              <p className="mt-2 sm:mt-4 max-w-xl mx-auto text-sm sm:text-base md:text-xl text-white/80 opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.4s' }}>
+                              <p className={cn("mt-2 sm:mt-4 max-w-xl mx-auto text-sm sm:text-base md:text-xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100", textMutedColorClass)} style={{ animationDelay: '0.4s' }}>
                                 {slide.subtitle}
                               </p>
                               <div className="opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.6s' }}>
@@ -138,13 +144,13 @@ export function Banner({
                   
                   {/* Botones Visuales tipo Píldoras (no funcionales por ahora) */}
                   <div className="flex gap-3 mt-6">
-                    <button className="px-5 py-2 rounded-full bg-white/10 text-white/80 hover:bg-white/20 text-xs font-semibold backdrop-blur-sm transition-all border border-white/5 cursor-not-allowed">
+                    <button className={cn("px-5 py-2 rounded-full text-xs font-semibold backdrop-blur-sm transition-all border cursor-not-allowed", pillsColorClass)}>
                       Participá
                     </button>
-                    <button className="px-5 py-2 rounded-full bg-white/10 text-white/80 hover:bg-white/20 text-xs font-semibold backdrop-blur-sm transition-all border border-white/5 cursor-not-allowed">
+                    <button className={cn("px-5 py-2 rounded-full text-xs font-semibold backdrop-blur-sm transition-all border cursor-not-allowed", pillsColorClass)}>
                       Intereses
                     </button>
-                    <button className="px-5 py-2 rounded-full bg-white/10 text-white/80 hover:bg-white/20 text-xs font-semibold backdrop-blur-sm transition-all border border-white/5 cursor-not-allowed">
+                    <button className={cn("px-5 py-2 rounded-full text-xs font-semibold backdrop-blur-sm transition-all border cursor-not-allowed", pillsColorClass)}>
                       Comentá
                     </button>
                   </div>
@@ -163,10 +169,10 @@ export function Banner({
                     <CarouselItem key={slide.id} className="group">
                       <div className="relative h-full w-full">
                         <div className="w-full px-4 flex flex-col items-center justify-center text-center">
-                          <h1 className="font-headline text-3xl md:text-6xl lg:text-7xl font-bold text-white opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.2s' }}>
+                          <h1 className={cn("font-headline text-3xl md:text-6xl lg:text-7xl font-bold opacity-0 animate-fade-in-up group-data-[active]:opacity-100", textColorClass)} style={{ animationDelay: '0.2s' }}>
                             {slide.title}
                           </h1>
-                          <p className="mt-2 sm:mt-4 max-w-3xl mx-auto text-sm sm:text-base md:text-xl text-white/80 opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.4s' }}>
+                          <p className={cn("mt-2 sm:mt-4 max-w-3xl mx-auto text-sm sm:text-base md:text-xl opacity-0 animate-fade-in-up group-data-[active]:opacity-100", textMutedColorClass)} style={{ animationDelay: '0.4s' }}>
                             {slide.subtitle}
                           </p>
                           <div className="opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.6s' }}>
