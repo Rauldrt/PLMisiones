@@ -127,7 +127,7 @@ export function AffiliationForm() {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Juan Carlos Pérez"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
                 required
               />
@@ -140,7 +140,7 @@ export function AffiliationForm() {
                 value={formData.dni}
                 onChange={handleChange}
                 placeholder="35123456"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
                 required
               />
@@ -157,7 +157,7 @@ export function AffiliationForm() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="juan.perez@example.com"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
                 required
               />
@@ -170,7 +170,7 @@ export function AffiliationForm() {
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="3764556677"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
                 required
               />
@@ -186,7 +186,7 @@ export function AffiliationForm() {
                 value={formData.locality}
                 onChange={handleChange}
                 placeholder="Posadas"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
                 required
               />
@@ -199,7 +199,7 @@ export function AffiliationForm() {
                 value={formData.address}
                 onChange={handleChange}
                 placeholder="Av. Corrientes 1234, Piso 2 Dto A"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
                 required
               />
@@ -214,7 +214,7 @@ export function AffiliationForm() {
               value={formData.occupation}
               onChange={handleChange}
               placeholder="Comerciante / Estudiante de Ingeniería / Abogado"
-              className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+              className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
               disabled={isPending}
             />
           </div>
@@ -228,7 +228,7 @@ export function AffiliationForm() {
               onChange={handleChange}
               placeholder="Comentarios adicionales o motivos para sumarte..."
               rows={3}
-              className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl resize-none"
+              className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl resize-none transition-colors duration-200"
               disabled={isPending}
             />
           </div>

@@ -101,7 +101,7 @@ export function ContactForm() {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Juan Pérez"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
                 required
               />
@@ -115,7 +115,7 @@ export function ContactForm() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="juan@email.com"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
                 required
               />
@@ -130,7 +130,7 @@ export function ContactForm() {
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="+54 376 4123456"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
               />
             </div>
@@ -142,7 +142,7 @@ export function ContactForm() {
                 value={formData.subject}
                 onChange={handleChange}
                 placeholder="Consulta sobre afiliaciones"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
               />
             </div>
@@ -156,7 +156,7 @@ export function ContactForm() {
               onChange={handleChange}
               placeholder="Escribe tu mensaje aquí..."
               rows={4}
-              className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl resize-none"
+              className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl resize-none transition-colors duration-200"
               disabled={isPending}
               required
             />

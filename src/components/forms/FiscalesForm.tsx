@@ -135,7 +135,7 @@ export function FiscalesForm() {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="María Laura González"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
                 required
               />
@@ -148,7 +148,7 @@ export function FiscalesForm() {
                 value={formData.dni}
                 onChange={handleChange}
                 placeholder="28123456"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
                 required
               />
@@ -165,7 +165,7 @@ export function FiscalesForm() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="maria@example.com"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
                 required
               />
@@ -178,7 +178,7 @@ export function FiscalesForm() {
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="3764998877"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
                 required
               />
@@ -194,7 +194,7 @@ export function FiscalesForm() {
                 value={formData.locality}
                 onChange={handleChange}
                 placeholder="Eldorado"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
                 required
               />
@@ -207,7 +207,7 @@ export function FiscalesForm() {
                 value={formData.electoralSection}
                 onChange={handleChange}
                 placeholder="Escuela Normal Nº 11 o Circuito Electoral"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
                 required
               />
@@ -218,7 +218,7 @@ export function FiscalesForm() {
             <div className="space-y-2">
               <Label htmlFor="fi-availability" className="text-foreground/80">Disponibilidad Horaria *</Label>
               <Select value={formData.availability} onValueChange={handleSelectChange}>
-                <SelectTrigger id="fi-availability" className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl">
+                <SelectTrigger id="fi-availability" className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-all duration-200">
                   <SelectValue placeholder="Selecciona disponibilidad" />
                 </SelectTrigger>
                 <SelectContent>
@@ -236,7 +236,7 @@ export function FiscalesForm() {
                 value={formData.comments}
                 onChange={handleChange}
                 placeholder="He fiscalizado en las elecciones 2023 / Ninguna"
-                className="bg-background/50 border-white/30 focus:border-primary/50 rounded-xl"
+                className="bg-muted/80 border-input/60 focus:border-primary/50 focus:bg-background rounded-xl transition-colors duration-200"
                 disabled={isPending}
               />
             </div>
