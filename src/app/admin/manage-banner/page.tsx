@@ -329,6 +329,9 @@ export default function ManageBannerPage() {
                           setConfig({ ...config, pageBgBlur: Number(e.target.value) })
                         }
                       />
+                      <p className="text-[11px] text-muted-foreground leading-tight">
+                        Determina el nivel de difuminado. Valores bajos (ej: 20px) muestran formas de la foto; valores altos (ej: 80px) crean gradientes suaves.
+                      </p>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="pageBgOpacity">Opacidad del Fondo (0 a 1)</Label>
@@ -343,6 +346,9 @@ export default function ManageBannerPage() {
                           setConfig({ ...config, pageBgOpacity: Number(e.target.value) })
                         }
                       />
+                      <p className="text-[11px] text-muted-foreground leading-tight">
+                        Controla la intensidad del brillo y color de la imagen difuminada que se muestra de fondo.
+                      </p>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="pageBgOverlayOpacity">Opacidad de Capa sobre Fondo (0 a 1)</Label>
@@ -357,6 +363,9 @@ export default function ManageBannerPage() {
                           setConfig({ ...config, pageBgOverlayOpacity: Number(e.target.value) })
                         }
                       />
+                      <p className="text-[11px] text-muted-foreground leading-tight">
+                        Controla el tinte blanco que suaviza el fondo. Un valor bajo (ej: 0.3) lo hace más colorido; un valor alto lo lava con blanco.
+                      </p>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="bannerOverlayOpacity">Opacidad de Capa del Banner (0 a 1)</Label>
@@ -371,6 +380,9 @@ export default function ManageBannerPage() {
                           setConfig({ ...config, bannerOverlayOpacity: Number(e.target.value) })
                         }
                       />
+                      <p className="text-[11px] text-muted-foreground leading-tight">
+                        Ajusta la opacidad del velo claro del banner. Un valor de 0.3 a 0.45 permite ver la foto original manteniendo buena legibilidad.
+                      </p>
                     </div>
                   </div>
                 </div>
