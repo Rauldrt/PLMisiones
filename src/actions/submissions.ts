@@ -117,7 +117,7 @@ export async function saveWhatsappConfigAction(config: WhatsappConfig) {
 
 // Helper: Send WhatsApp notification via API fetch
 async function sendWhatsappNotification(config: WhatsappConfig, submission: FormSubmission) {
-  if (!config.enabled || !config.numbers) return;
+  if (!config.enabled) return;
 
   const formNames = {
     contacto: 'Contacto',
@@ -151,36 +151,61 @@ async function sendWhatsappNotification(config: WhatsappConfig, submission: Form
       .join('\n') +
     `\n\nVer panel: https://www.partidolibertariomisiones.org/admin/submissions`;
 
-  const numberList = config.numbers.split(',').map(n => n.trim());
-  
-  for (const number of numberList) {
-    if (!number) continue;
-    try {
-      if (config.provider === 'callmebot' && config.apiKey) {
-        const cleanNumber = number.replace(/[+\s-]/g, ''); // CallMeBot phone format is pure numbers with country code
+  try {
+    if (config.provider === 'telegram' && config.telegramToken && config.telegramChatId) {
+      const url = `https://api.telegram.org/bot${config.telegramToken}/sendMessage`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: config.telegramChatId,
+          text: text,
+          parse_mode: 'Markdown'
+        })
+      });
+      if (!res.ok) {
+        console.error("Telegram notification failed:", res.statusText);
+      }
+    } else if (config.provider === 'discord' && config.webhookUrl) {
+      const discordText = text.replace(/\*/g, '**');
+      const res = await fetch(config.webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          content: discordText
+        })
+      });
+      if (!res.ok) {
+        console.error("Discord notification failed:", res.statusText);
+      }
+    } else if (config.provider === 'webhook' && config.webhookUrl) {
+      const res = await fetch(config.webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: text,
+          type: submission.type,
+          data: submission.data,
+          createdAt: submission.createdAt
+        })
+      });
+      if (!res.ok) {
+        console.error(`Webhook notification failed:`, res.statusText);
+      }
+    } else if (config.provider === 'callmebot' && config.apiKey && config.numbers) {
+      const numberList = config.numbers.split(',').map(n => n.trim());
+      for (const number of numberList) {
+        if (!number) continue;
+        const cleanNumber = number.replace(/[+\s-]/g, '');
         const url = `https://api.callmebot.com/whatsapp.php?phone=${cleanNumber}&text=${encodeURIComponent(text)}&apikey=${config.apiKey}`;
         const res = await fetch(url);
         if (!res.ok) {
           console.error(`CallMeBot notification failed for number ${number}:`, res.statusText);
         }
-      } else if (config.provider === 'webhook' && config.webhookUrl) {
-        const res = await fetch(config.webhookUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: text,
-            type: submission.type,
-            data: submission.data,
-            createdAt: submission.createdAt
-          })
-        });
-        if (!res.ok) {
-          console.error(`Webhook notification failed:`, res.statusText);
-        }
       }
-    } catch (err) {
-      console.error(`Error dispatching Whatsapp alert to ${number}:`, err);
     }
+  } catch (err) {
+    console.error(`Error sending notification via ${config.provider}:`, err);
   }
 }
 

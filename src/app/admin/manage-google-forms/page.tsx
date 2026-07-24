@@ -412,7 +412,7 @@ export default function ManageGoogleFormsPage() {
                     <div className="space-y-6 border-t pt-4">
                       {/* Provider Select */}
                       <div className="space-y-2">
-                        <Label htmlFor="wa-provider">Proveedor de Mensajería</Label>
+                        <Label htmlFor="wa-provider">Proveedor de Notificaciones</Label>
                         <Select
                           value={waConfig.provider}
                           onValueChange={(val: any) => handleWaPropChange('provider', val)}
@@ -421,51 +421,111 @@ export default function ManageGoogleFormsPage() {
                             <SelectValue placeholder="Seleccionar proveedor" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="callmebot">CallMeBot (Gratuito / Alertas de una vía)</SelectItem>
-                            <SelectItem value="webhook">Webhook Genérico (Zapier, Make, Integración personalizada)</SelectItem>
+                            <SelectItem value="callmebot">WhatsApp vía CallMeBot (Gratuito / Una vía)</SelectItem>
+                            <SelectItem value="telegram">Telegram Bot (Recomendado - 100% Gratis e Instantáneo)</SelectItem>
+                            <SelectItem value="discord">Discord Webhook (Gratis y Simple)</SelectItem>
+                            <SelectItem value="webhook">Webhook Genérico (POST JSON)</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
 
-                      {/* Phone Numbers List */}
-                      <div className="space-y-2">
-                        <Label htmlFor="wa-numbers">Números de Teléfono de Destino (separados por comas)</Label>
-                        <Input
-                          id="wa-numbers"
-                          value={waConfig.numbers || ''}
-                          onChange={(e) => handleWaPropChange('numbers', e.target.value)}
-                          placeholder="ej: +5493764123456, +5493764987654"
-                          className="rounded-xl bg-background/50"
-                        />
-                        <p className="text-xs text-muted-foreground">
-                          Ingresa los números telefónicos en formato internacional (con código de país y de área). Puedes colocar varios separados por coma.
-                        </p>
-                      </div>
+                      {/* Conditional Fields based on Provider */}
+                      {waConfig.provider === 'callmebot' && (
+                        <>
+                          <div className="space-y-2">
+                            <Label htmlFor="wa-numbers">Números de Teléfono de Destino (separados por comas)</Label>
+                            <Input
+                              id="wa-numbers"
+                              value={waConfig.numbers || ''}
+                              onChange={(e) => handleWaPropChange('numbers', e.target.value)}
+                              placeholder="ej: +5493764123456, +5493764987654"
+                              className="rounded-xl bg-background/50"
+                            />
+                            <p className="text-xs text-muted-foreground">
+                              Ingresa los números telefónicos en formato internacional (código de país y de área). Varios separados por coma.
+                            </p>
+                          </div>
+                          <div className="space-y-4 bg-muted/40 p-4 border rounded-2xl">
+                            <div className="space-y-2">
+                              <Label htmlFor="wa-apikey">CallMeBot API Key</Label>
+                              <Input
+                                id="wa-apikey"
+                                value={waConfig.apiKey || ''}
+                                onChange={(e) => handleWaPropChange('apiKey', e.target.value)}
+                                placeholder="Ej: 123456"
+                                className="rounded-xl bg-background"
+                              />
+                            </div>
+                            <div className="text-xs text-muted-foreground space-y-2">
+                              <p className="font-semibold text-foreground">💡 ¿Cómo obtener tu API Key de CallMeBot?</p>
+                              <ol className="list-decimal pl-4 space-y-1">
+                                <li>Agrega el número <span className="font-semibold text-green-600">+34 644 20 22 84</span> a tus contactos.</li>
+                                <li>Envía un mensaje de WhatsApp: <span className="font-mono bg-muted px-1 py-0.5 rounded border">I allow callmebot to send me messages</span></li>
+                                <li>El bot te enviará la clave en segundos.</li>
+                              </ol>
+                            </div>
+                          </div>
+                        </>
+                      )}
 
-                      {/* Conditional Config Inputs */}
-                      {waConfig.provider === 'callmebot' ? (
+                      {waConfig.provider === 'telegram' && (
                         <div className="space-y-4 bg-muted/40 p-4 border rounded-2xl">
                           <div className="space-y-2">
-                            <Label htmlFor="wa-apikey">CallMeBot API Key</Label>
+                            <Label htmlFor="tg-token">Token del Bot de Telegram</Label>
                             <Input
-                              id="wa-apikey"
-                              value={waConfig.apiKey || ''}
-                              onChange={(e) => handleWaPropChange('apiKey', e.target.value)}
-                              placeholder="Ej: 123456"
+                              id="tg-token"
+                              value={waConfig.telegramToken || ''}
+                              onChange={(e) => handleWaPropChange('telegramToken', e.target.value)}
+                              placeholder="Ej: 123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ"
                               className="rounded-xl bg-background"
                             />
                           </div>
-                          
+                          <div className="space-y-2">
+                            <Label htmlFor="tg-chatid">Chat ID o ID de Grupo</Label>
+                            <Input
+                              id="tg-chatid"
+                              value={waConfig.telegramChatId || ''}
+                              onChange={(e) => handleWaPropChange('telegramChatId', e.target.value)}
+                              placeholder="Ej: 987654321 o -1001234567890"
+                              className="rounded-xl bg-background"
+                            />
+                          </div>
                           <div className="text-xs text-muted-foreground space-y-2">
-                            <p className="font-semibold text-foreground">💡 ¿Cómo obtener tu API Key gratuita de CallMeBot?</p>
+                            <p className="font-semibold text-foreground">💡 ¿Cómo configurar tu Bot de Telegram en 60 segundos?</p>
                             <ol className="list-decimal pl-4 space-y-1">
-                              <li>Agrega a tus contactos el número: <span className="font-semibold text-green-600">+34 644 20 22 84</span></li>
-                              <li>Envía un mensaje por WhatsApp con el siguiente texto: <span className="font-mono bg-muted px-1 py-0.5 rounded border">I allow callmebot to send me messages</span></li>
-                              <li>El bot te responderá con tu API Key única en pocos segundos. Pégala aquí arriba.</li>
+                              <li>Busca a <span className="font-semibold text-blue-600">@BotFather</span> en Telegram y envía <span className="font-mono bg-muted px-1 rounded">/newbot</span>. Sigue los pasos para obtener el **Token**.</li>
+                              <li>Inicia el bot enviándole un mensaje privado haciendo clic en su enlace (ej: `t.me/TuBot`).</li>
+                              <li>Para obtener tu **Chat ID**, busca al usuario <span className="font-semibold text-blue-600">@userinfobot</span> en Telegram y envíale un mensaje. Te devolverá tu ID personal al instante.</li>
+                              <li>Si deseas recibir alertas en un **Grupo**, añade el bot al grupo, dale permisos de administrador, y obtén el ID del grupo (suele empezar con `-100`).</li>
                             </ol>
                           </div>
                         </div>
-                      ) : (
+                      )}
+
+                      {waConfig.provider === 'discord' && (
+                        <div className="space-y-4 bg-muted/40 p-4 border rounded-2xl">
+                          <div className="space-y-2">
+                            <Label htmlFor="dc-webhook">URL del Webhook de Discord</Label>
+                            <Input
+                              id="dc-webhook"
+                              value={waConfig.webhookUrl || ''}
+                              onChange={(e) => handleWaPropChange('webhookUrl', e.target.value)}
+                              placeholder="https://discord.com/api/webhooks/..."
+                              className="rounded-xl bg-background"
+                            />
+                          </div>
+                          <div className="text-xs text-muted-foreground space-y-2">
+                            <p className="font-semibold text-foreground">💡 ¿Cómo configurar un Webhook de Discord?</p>
+                            <ol className="list-decimal pl-4 space-y-1">
+                              <li>En tu servidor de Discord, haz clic derecho en el canal de texto elegido -{"&gt;"} **Editar Canal**.</li>
+                              <li>Ve a **Integraciones** -{"&gt;"} **Webhooks** -{"&gt;"} **Crear Webhook**.</li>
+                              <li>Haz clic en **Copiar URL del Webhook** y pégala aquí arriba. ¡Eso es todo!</li>
+                            </ol>
+                          </div>
+                        </div>
+                      )}
+
+                      {waConfig.provider === 'webhook' && (
                         <div className="space-y-4 bg-muted/40 p-4 border rounded-2xl">
                           <div className="space-y-2">
                             <Label htmlFor="wa-webhook">URL del Webhook (POST JSON)</Label>
@@ -478,7 +538,7 @@ export default function ManageGoogleFormsPage() {
                             />
                           </div>
                           <p className="text-xs text-muted-foreground">
-                            Cada vez que ingrese una solicitud, se enviará una petición HTTP POST con los datos serializados en JSON a esta URL, ideal para disparar flujos en Make, Zapier o n8n.
+                            Se enviará una petición HTTP POST con los datos serializados en JSON a esta URL, ideal para integrar con Make.com, Zapier o n8n.
                           </p>
                         </div>
                       )}
