@@ -53,7 +53,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
     }, [article.content]);
 
     return (
-        <Card className="flex w-full flex-col overflow-hidden bg-card border-border transition-transform hover:-translate-y-2">
+        <Card className="flex w-full flex-col overflow-hidden bg-card/90 border border-white/60 shadow-[0_15px_40px_-10px_rgba(139,31,164,0.06)] hover:shadow-[0_20px_50px_-5px_rgba(139,31,164,0.12)] rounded-[2rem] backdrop-blur-sm transition-all duration-300 hover:-translate-y-2">
             <CardHeader className="p-0">
                 <div className="relative w-full bg-muted overflow-hidden">
                     <Link

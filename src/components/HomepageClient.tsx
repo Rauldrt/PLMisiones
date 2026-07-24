@@ -62,60 +62,62 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
     }
 
     return (
-        <section className="py-16 bg-card/50 backdrop-blur-md border-y border-border/30 lg:py-24 relative z-10">
-            <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center gap-8">
-                 <div className="text-center">
-                    <h2 className="font-headline text-3xl font-bold md:text-4xl text-foreground">
-                        Organigrama del Partido
-                    </h2>
-                    <p className="mt-4 text-lg text-foreground/80">
-                        Conocé la estructura que nos organiza y nos impulsa.
-                    </p>
-                </div>
-                <div className="w-full max-w-sm md:max-w-md lg:max-w-2xl overflow-hidden">
-                    <Carousel opts={{ align: "start", loop: false }} className="w-full">
-                        <CarouselContent className="-ml-2">
-                            {organigramaData.map((member) => (
-                                <CarouselItem key={member.id} className="pl-2 basis-auto">
-                                    <Button
-                                        variant={selectedMember?.id === member.id ? 'default' : 'outline'}
-                                        onClick={() => setSelectedMember(member)}
-                                    >
-                                        {member.name}
-                                    </Button>
-                                </CarouselItem>
-                            ))}
-                        </CarouselContent>
-                    </Carousel>
-                </div>
-              
-                {selectedMember && (
-                    <div className="w-full mt-4">
-                        <Card className="bg-card/85 backdrop-blur border-border/50 shadow-md">
-                            <CardContent className="p-6">
-                                <div className="flex flex-col md:flex-row items-center gap-6">
-                                    <div className="relative h-32 w-32 md:h-40 md:w-40 flex-shrink-0">
-                                        <Image
-                                            src={selectedMember.imageUrl}
-                                            alt={selectedMember.name}
-                                            fill
-                                            className="rounded-lg object-cover"
-                                            sizes="(max-width: 768px) 128px, 160px"
-                                            data-ai-hint={selectedMember.imageHint}
-                                        />
-                                    </div>
-                                    <div className="text-center md:text-left">
-                                        <CardTitle className="font-headline text-2xl text-primary">{selectedMember.name}</CardTitle>
-                                        <CardDescription className="text-lg mt-1 text-foreground">{selectedMember.role}</CardDescription>
-                                        <p className="mt-4 text-foreground/80">
-                                            {selectedMember.description}
-                                        </p>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
+        <section className="py-16 bg-transparent relative z-10 lg:py-24">
+            <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <Card className="bg-card/90 border border-white/60 shadow-[0_25px_60px_-15px_rgba(139,31,164,0.1)] rounded-[2rem] backdrop-blur-lg p-6 md:p-10 w-full text-foreground flex flex-col items-center gap-8">
+                    <div className="text-center">
+                        <h2 className="font-headline text-3xl font-bold md:text-4xl text-foreground">
+                            Organigrama del Partido
+                        </h2>
+                        <p className="mt-4 text-lg text-foreground/80">
+                            Conocé la estructura que nos organiza y nos impulsa.
+                        </p>
                     </div>
-                )}
+                    <div className="w-full max-w-sm md:max-w-md lg:max-w-xl overflow-hidden">
+                        <Carousel opts={{ align: "start", loop: false }} className="w-full">
+                            <CarouselContent className="-ml-2">
+                                {organigramaData.map((member) => (
+                                    <CarouselItem key={member.id} className="pl-2 basis-auto">
+                                        <Button
+                                            variant={selectedMember?.id === member.id ? 'default' : 'outline'}
+                                            onClick={() => setSelectedMember(member)}
+                                        >
+                                            {member.name}
+                                        </Button>
+                                    </CarouselItem>
+                                ))}
+                            </CarouselContent>
+                        </Carousel>
+                    </div>
+                  
+                    {selectedMember && (
+                        <div className="w-full mt-4">
+                            <Card className="bg-card/80 border border-border/40 shadow-md rounded-2xl">
+                                <CardContent className="p-6">
+                                    <div className="flex flex-col md:flex-row items-center gap-6">
+                                        <div className="relative h-32 w-32 md:h-40 md:w-40 flex-shrink-0">
+                                            <Image
+                                                src={selectedMember.imageUrl}
+                                                alt={selectedMember.name}
+                                                fill
+                                                className="rounded-lg object-cover"
+                                                sizes="(max-width: 768px) 128px, 160px"
+                                                data-ai-hint={selectedMember.imageHint}
+                                            />
+                                        </div>
+                                        <div className="text-center md:text-left">
+                                            <CardTitle className="font-headline text-2xl text-primary">{selectedMember.name}</CardTitle>
+                                            <CardDescription className="text-lg mt-1 text-foreground">{selectedMember.role}</CardDescription>
+                                            <p className="mt-4 text-foreground/80">
+                                                {selectedMember.description}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    )}
+                </Card>
             </div>
         </section>
     )
@@ -182,26 +184,28 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         </section>
         
         {/* Accordion Section */}
-        <section className="py-16 bg-card/50 backdrop-blur-md border-y border-border/30 lg:py-24 relative z-10">
+        <section className="py-16 lg:py-24 bg-transparent relative z-10">
             <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-center font-headline text-3xl font-bold md:text-4xl text-foreground">
-                Nuestra Identidad
-            </h2>
-            <p className="mt-4 text-center text-lg text-foreground/80">
-                Los pilares que guían nuestro accionar.
-            </p>
-            <UiAccordion type="single" collapsible className="w-full mt-12">
-                {accordionItems.map((item) => (
-                <AccordionItem key={item.id} value={item.id}>
-                    <AccordionTrigger className="font-headline text-xl text-left hover:no-underline">
-                    {item.title}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-base text-foreground/80">
-                    {item.content}
-                    </AccordionContent>
-                </AccordionItem>
-                ))}
-            </UiAccordion>
+                <Card className="bg-card/90 border border-white/60 shadow-[0_25px_60px_-15px_rgba(139,31,164,0.1)] rounded-[2rem] backdrop-blur-lg p-6 md:p-10 w-full text-foreground">
+                    <h2 className="text-center font-headline text-3xl font-bold md:text-4xl text-foreground">
+                        Nuestra Identidad
+                    </h2>
+                    <p className="mt-4 text-center text-lg text-foreground/80">
+                        Los pilares que guían nuestro accionar.
+                    </p>
+                    <UiAccordion type="single" collapsible className="w-full mt-12">
+                        {accordionItems.map((item) => (
+                        <AccordionItem key={item.id} value={item.id}>
+                            <AccordionTrigger className="font-headline text-xl text-left hover:no-underline">
+                            {item.title}
+                            </AccordionTrigger>
+                            <AccordionContent className="text-base text-foreground/80">
+                            {item.content}
+                            </AccordionContent>
+                        </AccordionItem>
+                        ))}
+                    </UiAccordion>
+                </Card>
             </div>
         </section>
 

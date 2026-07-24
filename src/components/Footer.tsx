@@ -25,9 +25,9 @@ export function Footer({ socialLinks, contactForm, footerContent }: FooterProps)
   const creditsParts = (footerContent.credits || '').split('♥');
 
   return (
-    <footer className="bg-card text-foreground" id="contacto">
+    <footer className="bg-transparent relative z-10" id="contacto">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <Card className="bg-background border-border text-foreground p-6 md:p-10">
+        <Card className="bg-card/90 border border-white/60 shadow-[0_25px_60px_-15px_rgba(139,31,164,0.1)] rounded-[2rem] backdrop-blur-lg text-foreground p-6 md:p-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
                 <div className="space-y-8">
                     <div>
@@ -86,7 +86,7 @@ export function Footer({ socialLinks, contactForm, footerContent }: FooterProps)
             </div>
         </Card>
       </div>
-      <div className="bg-background">
+      <div className="bg-transparent border-t border-border/20 backdrop-blur-sm mt-8">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-3">

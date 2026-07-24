@@ -16,43 +16,45 @@ export function StreamingSection({ items }: StreamingSectionProps) {
     }
 
     return (
-        <section className="py-16 bg-card/50 backdrop-blur-md border-y border-border/30 lg:py-24 relative z-10">
+        <section className="py-16 lg:py-24 relative z-10 bg-transparent">
             <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-12">
-                    <h2 className="font-headline text-3xl font-bold md:text-4xl">
-                        Streaming Ágora
-                    </h2>
-                    <p className="mt-4 text-lg text-foreground/80">
-                        Reviví nuestros últimos programas y debates.
-                    </p>
-                </div>
-                <Carousel
-                    opts={{
-                        align: "start",
-                        loop: items.length > 2,
-                    }}
-                    className="w-full"
-                >
-                    <CarouselContent className="-ml-4">
-                        {items.map((item) => (
-                            <CarouselItem key={item.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                                <Card className="flex flex-col h-full overflow-hidden bg-card/85 backdrop-blur border-border/50 shadow-md">
-                                    <CardHeader>
-                                        <CardTitle className="font-headline text-xl truncate">{item.title}</CardTitle>
-                                    </CardHeader>
-                                    <CardContent className="flex-grow flex items-center justify-center">
-                                        <div
-                                            className="responsive-video w-full rounded-md overflow-hidden"
-                                            dangerouslySetInnerHTML={{ __html: clientSanitize(item.embedCode) }}
-                                        />
-                                    </CardContent>
-                                </Card>
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 hidden md:inline-flex" />
-                    <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 hidden md:inline-flex" />
-                </Carousel>
+                <Card className="bg-card/90 border border-white/60 shadow-[0_25px_60px_-15px_rgba(139,31,164,0.1)] rounded-[2rem] backdrop-blur-lg p-6 md:p-10 w-full text-foreground">
+                    <div className="text-center mb-12">
+                        <h2 className="font-headline text-3xl font-bold md:text-4xl text-foreground">
+                            Streaming Ágora
+                        </h2>
+                        <p className="mt-4 text-lg text-foreground/80">
+                            Reviví nuestros últimos programas y debates.
+                        </p>
+                    </div>
+                    <Carousel
+                        opts={{
+                            align: "start",
+                            loop: items.length > 2,
+                        }}
+                        className="w-full"
+                    >
+                        <CarouselContent className="-ml-4">
+                            {items.map((item) => (
+                                <CarouselItem key={item.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                                    <Card className="flex flex-col h-full overflow-hidden bg-card/80 border border-border/40 shadow-md">
+                                        <CardHeader>
+                                            <CardTitle className="font-headline text-xl truncate">{item.title}</CardTitle>
+                                        </CardHeader>
+                                        <CardContent className="flex-grow flex items-center justify-center">
+                                            <div
+                                                className="responsive-video w-full rounded-md overflow-hidden"
+                                                dangerouslySetInnerHTML={{ __html: clientSanitize(item.embedCode) }}
+                                            />
+                                        </CardContent>
+                                    </Card>
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 hidden md:inline-flex" />
+                        <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 hidden md:inline-flex" />
+                    </Carousel>
+                </Card>
             </div>
         </section>
     );
