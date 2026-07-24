@@ -3,14 +3,16 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Icons, getIcon } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { Separator } from './ui/separator';
 import Image from 'next/image';
-import type { SocialLink } from '@/lib/types';
+import type { SocialLink, NotificationItem, Notification } from '@/lib/types';
+import { getPublicNotificationsAction, getNotificationAction } from '@/actions/data';
+import { NotificationDialog } from '@/components/NotificationDropdown';
 
 const navLinks = [
   { href: '/', label: 'Inicio' },
@@ -26,6 +28,24 @@ interface HeaderProps {
 export function Header({ socialLinks }: HeaderProps) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+  const [notificationSettings, setNotificationSettings] = useState<Notification | null>(null);
+
+  useEffect(() => {
+    async function loadNotifications() {
+      try {
+        const [notifs, settings] = await Promise.all([
+          getPublicNotificationsAction(),
+          getNotificationAction()
+        ]);
+        setNotifications(notifs);
+        setNotificationSettings(settings);
+      } catch (err) {
+        console.error("Failed to load notifications in Header:", err);
+      }
+    }
+    loadNotifications();
+  }, []);
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     setIsMobileMenuOpen(false); // Always close mobile menu
@@ -96,11 +116,42 @@ export function Header({ socialLinks }: HeaderProps) {
               >
                   <Icons.Menu className={cn("absolute h-6 w-6 transition-all duration-300", isMobileMenuOpen && "opacity-0 rotate-90")} />
                   <Icons.Close className={cn("absolute h-6 w-6 transition-all duration-300", !isMobileMenuOpen && "opacity-0 rotate-90")} />
+                  {notificationSettings?.enabled && notifications.length > 0 && !isMobileMenuOpen && (
+                    <span className="absolute -top-1 -right-1 flex h-5 w-5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-5 w-5 bg-orange-500 text-[10px] font-bold text-white items-center justify-center">
+                        {notifications.length}
+                      </span>
+                    </span>
+                  )}
                 <span className="sr-only">{isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}</span>
               </Button>
           </PopoverTrigger>
           <PopoverContent id="mobile-menu-content" side="top" align="end" className="w-64 p-0 mb-2" sideOffset={12}>
             <div className="flex flex-col h-full">
+              {notificationSettings?.enabled && notifications.length > 0 && (
+                <div className="p-3 bg-accent/5 border-b border-border/40">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                    </span>
+                    <span className="text-xs font-semibold text-orange-500">{notificationSettings.text}</span>
+                  </div>
+                  <div className="space-y-1">
+                    {notifications.map((item) => (
+                      <NotificationDialog item={item} key={item.id}>
+                        <button 
+                          className="w-full text-left rounded p-1.5 hover:bg-muted text-xs block truncate text-foreground"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          {item.title}
+                        </button>
+                      </NotificationDialog>
+                    ))}
+                  </div>
+                </div>
+              )}
               <div className="p-4 border-b">
                   <Link href="/" className="flex items-center gap-3" onClick={(e) => handleLinkClick(e, '/')}>
                       <Image src="/logo.png" alt="Logo del Partido" width={40} height={40} />

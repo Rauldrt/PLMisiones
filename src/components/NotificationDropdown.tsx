@@ -25,7 +25,7 @@ interface NotificationDropdownProps {
   notificationSettings: TNotification;
 }
 
-function NotificationDialog({
+export function NotificationDialog({
   item,
   children,
 }: {
