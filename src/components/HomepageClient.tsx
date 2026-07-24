@@ -18,6 +18,7 @@ import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem 
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
 import { NewsCard } from './NewsCard';
+import { useBackground } from './SiteLayout';
 import { InstagramEmbedProcessor } from './InstagramEmbedProcessor';
 import { StreamingSection } from './StreamingSection';
 import { cn } from '@/lib/utils';
@@ -125,7 +126,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
 
 export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems, showProposals, layoutMode, institutionalBgType, institutionalBgVal }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
-    const [activeBg, setActiveBg] = useState<string>('');
+    const { setActiveBg } = useBackground();
 
     const handleTileClick = (item: MosaicItem, startIndex: number) => {
         setLightboxData({ 
@@ -138,22 +139,6 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
 
   return (
     <div className="flex flex-col overflow-x-hidden relative min-h-screen">
-      {/* Dynamic blurred fixed parallax background */}
-      {activeBg && (
-        <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-          <div 
-            className="absolute inset-0 opacity-65 filter blur-[50px]"
-            style={{ 
-              backgroundImage: `url(${activeBg})`,
-              backgroundPosition: 'center',
-              backgroundSize: 'cover',
-              transform: 'scale(1.2) translate3d(0, 0, 0)',
-            }}
-          />
-          {/* Subtle light glassmorphism overlay that tints the background with our white-dominated theme */}
-          <div className="absolute inset-0 bg-background/40 backdrop-blur-[20px]" />
-        </div>
-      )}
 
       <Banner 
         textSlides={bannerTextSlides}

@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { getIcon } from '@/components/icons';
 import { cn } from '@/lib/utils';
+import { useBackground } from '@/components/SiteLayout';
 
 interface PageHeaderProps {
   icon: string;
@@ -17,6 +18,16 @@ interface PageHeaderProps {
 export function PageHeader({ icon, title, description, imageUrl, imageHint }: PageHeaderProps) {
   const IconComponent = getIcon(icon);
   const imageContainerRef = useRef<HTMLDivElement>(null);
+  const { setActiveBg } = useBackground();
+
+  useEffect(() => {
+    if (imageUrl) {
+      setActiveBg(imageUrl);
+    }
+    return () => {
+      setActiveBg('');
+    };
+  }, [imageUrl, setActiveBg]);
 
   useEffect(() => {
     let ticking = false;
