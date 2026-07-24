@@ -25,25 +25,25 @@ export function Footer({ socialLinks, contactForm, footerContent }: FooterProps)
   const creditsParts = (footerContent.credits || '').split('♥');
 
   return (
-    <footer className="bg-card" id="contacto">
+    <footer className="bg-card text-foreground" id="contacto">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <Card className="bg-background border-border p-6 md:p-10">
+        <Card className="bg-background border-border text-foreground p-6 md:p-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
                 <div className="space-y-8">
                     <div>
-                        <h2 className="font-headline text-2xl font-bold">{footerContent.contactTitle}</h2>
+                        <h2 className="font-headline text-2xl font-bold text-foreground">{footerContent.contactTitle}</h2>
                         <p className="text-foreground/80 mt-2">{footerContent.contactDescription}</p>
                     </div>
                     <div className="space-y-4 text-foreground/90">
                         <div className="flex items-start gap-4">
                             <div>
-                                <h3 className="font-semibold">{footerContent.headquartersTitle}</h3>
+                                <h3 className="font-semibold text-foreground">{footerContent.headquartersTitle}</h3>
                                 <p className="text-foreground/80">{footerContent.address}</p>
                             </div>
                         </div>
                         <div className="flex items-start gap-4">
                             <div>
-                                <h3 className="font-semibold">{footerContent.contactInfoTitle}</h3>
+                                <h3 className="font-semibold text-foreground">{footerContent.contactInfoTitle}</h3>
                                 <div className="text-foreground/80 space-y-2 mt-2">
                                   <p>{footerContent.email}</p>
                                   <p>{footerContent.phone}</p>
@@ -60,7 +60,7 @@ export function Footer({ socialLinks, contactForm, footerContent }: FooterProps)
                         </div>
                         <div className="flex items-start gap-4">
                             <div>
-                                <h3 className="font-semibold">{footerContent.socialsTitle}</h3>
+                                <h3 className="font-semibold text-foreground">{footerContent.socialsTitle}</h3>
                                 <div className="flex items-center gap-4 mt-2">
                                      {socialLinks.map((link) => {
                                         const IconComponent = getIcon(link.name);
@@ -91,7 +91,7 @@ export function Footer({ socialLinks, contactForm, footerContent }: FooterProps)
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-3">
                 <Image src="/logo.png" alt="Logo del Partido" width={50} height={50} />
-                <span className="font-headline text-lg font-bold">Partido Libertario Misiones</span>
+                <span className="font-headline text-lg font-bold text-foreground">Partido Libertario Misiones</span>
             </div>
             <div className="text-center text-sm text-foreground/60 sm:text-right">
                 <p>{copyrightText} | <Link href="/admin" className="hover:text-accent">Admin</Link></p>

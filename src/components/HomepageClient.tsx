@@ -65,7 +65,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
         <section className="py-16 bg-card/50 backdrop-blur-md border-y border-border/30 lg:py-24 relative z-10">
             <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center gap-8">
                  <div className="text-center">
-                    <h2 className="font-headline text-3xl font-bold md:text-4xl">
+                    <h2 className="font-headline text-3xl font-bold md:text-4xl text-foreground">
                         Organigrama del Partido
                     </h2>
                     <p className="mt-4 text-lg text-foreground/80">
@@ -184,7 +184,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         {/* Accordion Section */}
         <section className="py-16 bg-card/50 backdrop-blur-md border-y border-border/30 lg:py-24 relative z-10">
             <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-center font-headline text-3xl font-bold md:text-4xl">
+            <h2 className="text-center font-headline text-3xl font-bold md:text-4xl text-foreground">
                 Nuestra Identidad
             </h2>
             <p className="mt-4 text-center text-lg text-foreground/80">
@@ -211,7 +211,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         {/* News Section */}
         <section className="py-16 lg:py-24 relative z-10">
             <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-center font-headline text-3xl font-bold md:text-4xl">
+            <h2 className="text-center font-headline text-3xl font-bold md:text-4xl text-foreground">
                 Últimas Noticias
             </h2>
             <p className="mt-4 text-center text-lg text-foreground/80">
