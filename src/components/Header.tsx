@@ -106,27 +106,29 @@ export function Header({ socialLinks }: HeaderProps) {
 
       <div className="md:hidden">
         <Popover open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-          <PopoverTrigger asChild>
-              <Button
-                variant="default"
-                size="icon"
-                className="fixed bottom-6 right-6 z-50 h-16 w-16 rounded-full shadow-lg"
-                aria-expanded={isMobileMenuOpen}
-                aria-controls="mobile-menu-content"
-              >
-                  <Icons.Menu className={cn("absolute h-6 w-6 transition-all duration-300", isMobileMenuOpen && "opacity-0 rotate-90")} />
-                  <Icons.Close className={cn("absolute h-6 w-6 transition-all duration-300", !isMobileMenuOpen && "opacity-0 rotate-90")} />
-                  {notificationSettings?.enabled && notifications.length > 0 && !isMobileMenuOpen && (
-                    <span className="absolute -top-1 -right-1 flex h-5 w-5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-5 w-5 bg-orange-500 text-[10px] font-bold text-white items-center justify-center">
-                        {notifications.length}
-                      </span>
-                    </span>
-                  )}
-                <span className="sr-only">{isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}</span>
-              </Button>
-          </PopoverTrigger>
+          <div className="fixed bottom-6 right-6 z-50 overflow-visible">
+            <PopoverTrigger asChild>
+                <Button
+                  variant="default"
+                  size="icon"
+                  className="h-16 w-16 rounded-full shadow-lg"
+                  aria-expanded={isMobileMenuOpen}
+                  aria-controls="mobile-menu-content"
+                >
+                    <Icons.Menu className={cn("absolute h-6 w-6 transition-all duration-300", isMobileMenuOpen && "opacity-0 rotate-90")} />
+                    <Icons.Close className={cn("absolute h-6 w-6 transition-all duration-300", !isMobileMenuOpen && "opacity-0 rotate-90")} />
+                  <span className="sr-only">{isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}</span>
+                </Button>
+            </PopoverTrigger>
+            {notificationSettings?.enabled && notifications.length > 0 && !isMobileMenuOpen && (
+              <span className="absolute -top-1.5 -right-1.5 flex h-6 w-6 z-[60] pointer-events-none">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-6 w-6 bg-orange-500 text-[11px] font-bold text-white items-center justify-center shadow-lg border-2 border-background">
+                  {notifications.length}
+                </span>
+              </span>
+            )}
+          </div>
           <PopoverContent id="mobile-menu-content" side="top" align="end" className="w-64 p-0 mb-2" sideOffset={12}>
             <div className="flex flex-col h-full">
               {notificationSettings?.enabled && notifications.length > 0 && (
