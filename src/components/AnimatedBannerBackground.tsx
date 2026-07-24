@@ -77,7 +77,7 @@ export function AnimatedBannerBackground({ slides, disableParallax = false, disa
   }
   
   const currentSlide = slides[currentIndex];
-  const overlayOpacity = (currentSlide?.overlayOpacity ?? 0.7) * 0.65;
+  const overlayOpacity = (currentSlide?.overlayOpacity ?? 0.7) * 0.45;
 
   return (
     <div 
