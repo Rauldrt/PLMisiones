@@ -14,6 +14,8 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ImageGallery } from '@/components/ImageGallery';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getFirebaseApp } from '@/lib/firebase/client';
 
 export default function ManageBannerPage() {
   const [slides, setSlides] = useState<BannerTextSlide[]>([]);
@@ -22,7 +24,42 @@ export default function ManageBannerPage() {
   const [isSaving, startSavingTransition] = useTransition();
   const [isSavingConfig, startSavingConfigTransition] = useTransition();
   const [galleryOpen, setGalleryOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const storage = getStorage(getFirebaseApp());
+      const fileExtension = file.name.split('.').pop();
+      const fileName = `banner/${Date.now()}-${Math.random().toString(36).substring(2, 10)}.${fileExtension}`;
+      const storageRef = ref(storage, fileName);
+      
+      const snapshot = await uploadBytes(storageRef, file);
+      const downloadUrl = await getDownloadURL(snapshot.ref);
+      
+      if (config) {
+        setConfig({ ...config, institutionalBgVal: downloadUrl });
+      }
+      
+      toast({
+        title: 'Éxito',
+        description: 'Imagen subida a Firebase Storage con éxito.',
+      });
+    } catch (error) {
+      console.error('Error al subir la imagen:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'No se pudo subir la imagen a Firebase Storage.',
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -168,7 +205,7 @@ export default function ManageBannerPage() {
                           ? 'Degradado / Color CSS (Ej: linear-gradient(to right, #000, #502))' 
                           : 'Imagen de Fondo (URL)'}
                       </Label>
-                      <div className="flex gap-2">
+                      <div className="flex flex-col sm:flex-row gap-2 w-full">
                         <Input
                           id="bg-value"
                           value={config.institutionalBgVal}
@@ -180,13 +217,33 @@ export default function ManageBannerPage() {
                               ? 'linear-gradient(to bottom right, #09090b, #180828, #09090b)'
                               : 'https://ejemplo.com/fondo.jpg'
                           }
+                          className="flex-1"
                         />
                         {config.institutionalBgType === 'image' && (
-                          <DialogTrigger asChild>
-                            <Button variant="outline" size="icon" aria-label="Abrir Galería">
-                              <Icons.Gallery className="w-4 h-4" />
+                          <div className="flex gap-2 shrink-0">
+                            <input
+                              type="file"
+                              id="banner-bg-upload"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={handleFileChange}
+                            />
+                            <Button 
+                              variant="outline" 
+                              onClick={() => document.getElementById('banner-bg-upload')?.click()}
+                              disabled={isUploading}
+                              type="button"
+                            >
+                              <Icons.Upload className="w-4 h-4 mr-2" />
+                              {isUploading ? 'Subiendo...' : 'Subir'}
                             </Button>
-                          </DialogTrigger>
+                            <DialogTrigger asChild>
+                              <Button variant="outline" type="button">
+                                <Icons.Gallery className="w-4 h-4 mr-2" />
+                                Galería
+                              </Button>
+                            </DialogTrigger>
+                          </div>
                         )}
                       </div>
                     </div>
