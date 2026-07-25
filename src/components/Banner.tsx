@@ -364,7 +364,7 @@ export function Banner({
                 </button>
               </DialogTrigger>
               <DialogOverlay className="bg-black/50 backdrop-blur-sm" />
-              <DialogContent className="w-full max-w-xs sm:max-w-xl lg:max-w-6xl xl:max-w-7xl p-0 bg-transparent border-none shadow-none">
+              <DialogContent className="w-full max-w-xs sm:max-w-xl lg:max-w-6xl xl:max-w-7xl p-0 bg-transparent border-none shadow-none animate-dialog-spring">
                 <Carousel
                   opts={{
                     align: "center",
