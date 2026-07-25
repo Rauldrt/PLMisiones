@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useTransition } from 'react';
 import { getGoogleFormsAction } from '@/actions/data';
 import { saveGoogleForms } from '@/actions/admin';
-import { getWhatsappConfigAction, saveWhatsappConfigAction } from '@/actions/submissions';
+import { getWhatsappConfigAction, saveWhatsappConfigAction, getGreenApiQrAction, getGreenApiStatusAction } from '@/actions/submissions';
 import type { GoogleForm, FormField, WhatsappConfig } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -130,6 +130,60 @@ export default function ManageGoogleFormsPage() {
     
     newForms[formIndex].fields = fields;
     setForms(newForms);
+  };
+
+  // ----------------------------------------------------
+  // Green-API connection state
+  // ----------------------------------------------------
+  const [greenQr, setGreenQr] = useState<string | null>(null);
+  const [greenStatus, setGreenStatus] = useState<string | null>(null);
+  const [checkingGreen, setCheckingGreen] = useState(false);
+
+  const handleCheckGreenApi = async () => {
+    if (!waConfig.greenApiInstanceId || !waConfig.greenApiToken) {
+      toast({
+        variant: 'destructive',
+        title: 'Faltan credenciales',
+        description: 'Por favor ingresa el ID de Instancia y el Token de Green-API.',
+      });
+      return;
+    }
+    setCheckingGreen(true);
+    setGreenQr(null);
+    setGreenStatus(null);
+    try {
+      const statusRes = await getGreenApiStatusAction(waConfig.greenApiInstanceId, waConfig.greenApiToken);
+      if (statusRes.success && statusRes.data) {
+        const state = statusRes.data.stateInstance;
+        setGreenStatus(state);
+        
+        if (state !== 'authorized') {
+          const qrRes = await getGreenApiQrAction(waConfig.greenApiInstanceId, waConfig.greenApiToken);
+          if (qrRes.success && qrRes.data) {
+            if (qrRes.data.type === 'qr') {
+              setGreenQr(qrRes.data.message);
+            } else if (qrRes.data.type === 'alreadyLogged') {
+              setGreenStatus('authorized');
+            }
+          }
+        }
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Error de conexión',
+          description: statusRes.message || 'No se pudo conectar con Green-API.',
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Ocurrió un error inesperado al conectar con Green-API.',
+      });
+    } finally {
+      setCheckingGreen(false);
+    }
   };
 
   // ----------------------------------------------------
@@ -540,6 +594,107 @@ export default function ManageGoogleFormsPage() {
                           <p className="text-xs text-muted-foreground">
                             Se enviará una petición HTTP POST con los datos serializados en JSON a esta URL, ideal para integrar con Make.com, Zapier o n8n.
                           </p>
+                        </div>
+                      )}
+
+                      {waConfig.provider === 'greenapi' && (
+                        <div className="space-y-6 bg-muted/40 p-4 border rounded-2xl">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label htmlFor="ga-instance">ID de Instancia (Instance ID)</Label>
+                              <Input
+                                id="ga-instance"
+                                value={waConfig.greenApiInstanceId || ''}
+                                onChange={(e) => handleWaPropChange('greenApiInstanceId', e.target.value)}
+                                placeholder="Ej: 1101123456"
+                                className="rounded-xl bg-background"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label htmlFor="ga-token">Token de API (apiTokenInstance)</Label>
+                              <Input
+                                id="ga-token"
+                                value={waConfig.greenApiToken || ''}
+                                onChange={(e) => handleWaPropChange('greenApiToken', e.target.value)}
+                                placeholder="Ej: d75b3a8c1f..."
+                                className="rounded-xl bg-background"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="ga-numbers">Números de WhatsApp Destinatarios (separados por comas)</Label>
+                            <Input
+                              id="ga-numbers"
+                              value={waConfig.numbers || ''}
+                              onChange={(e) => handleWaPropChange('numbers', e.target.value)}
+                              placeholder="Ej: +5493764123456, +5493764987654"
+                              className="rounded-xl bg-background"
+                            />
+                            <p className="text-xs text-muted-foreground">
+                              Ingresa los números con formato internacional (ej. +549...). El plan gratuito de Green-API permite enviar hasta a 3 chats distintos al mes.
+                            </p>
+                          </div>
+
+                          {/* Verification and QR Widget */}
+                          <div className="border-t pt-4 space-y-4">
+                            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                              <div className="space-y-1 text-center sm:text-left">
+                                <p className="font-semibold text-sm">Estado de Vinculación de WhatsApp</p>
+                                <p className="text-xs text-muted-foreground">
+                                  {greenStatus === 'authorized' ? (
+                                    <span className="text-green-600 font-bold flex items-center gap-1 justify-center sm:justify-start">
+                                      ● Activo / Conectado
+                                    </span>
+                                  ) : greenStatus ? (
+                                    <span className="text-yellow-600 font-medium">
+                                      ● Estado: {greenStatus} (No vinculado)
+                                    </span>
+                                  ) : (
+                                    <span>Presiona verificar para consultar.</span>
+                                  )}
+                                </p>
+                              </div>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                disabled={checkingGreen}
+                                onClick={handleCheckGreenApi}
+                                className="rounded-xl"
+                              >
+                                {checkingGreen ? (
+                                  <span className="flex items-center gap-2">
+                                    <span className="animate-spin rounded-full h-4 w-4 border-2 border-primary border-t-transparent" />
+                                    Verificando...
+                                  </span>
+                                ) : 'Verificar Estado / Obtener QR'}
+                              </Button>
+                            </div>
+
+                            {greenStatus === 'authorized' && (
+                              <div className="bg-green-500/10 border border-green-500/30 p-4 rounded-xl text-center text-green-700 text-xs font-medium">
+                                ¡Listo! Tu cuenta de WhatsApp está vinculada y autorizada correctamente con Green-API. Recibirás las alertas de forma instantánea.
+                              </div>
+                            )}
+
+                            {greenQr && (
+                              <div className="flex flex-col items-center bg-white p-4 rounded-xl border max-w-[260px] mx-auto text-center shadow-sm">
+                                <img src={greenQr} alt="Código QR para escanear" className="w-48 h-48 object-contain" />
+                                <p className="text-[10px] text-zinc-500 mt-2 font-medium">
+                                  Abre WhatsApp en tu celular {"->"} Dispositivos vinculados {"->"} Vincular un dispositivo, y escanea este código QR.
+                                </p>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="text-xs text-muted-foreground space-y-2 border-t pt-4">
+                            <p className="font-semibold text-foreground">💡 ¿Cómo configurar Green-API gratis en 3 pasos?</p>
+                            <ol className="list-decimal pl-4 space-y-1">
+                              <li>Regístrate gratis en <a href="https://green-api.com" target="_blank" rel="noopener noreferrer" className="text-primary underline">green-api.com</a>.</li>
+                              <li>Crea una instancia dentro del panel de control de Green-API seleccionando el plan **Developer (Gratuito)**.</li>
+                              <li>Copia el **ID de Instancia** y el **Token** que te asignen, pégalos arriba, presiona "Verificar Estado" y escanea el código QR desde tu celular.</li>
+                            </ol>
+                          </div>
                         </div>
                       )}
                     </div>

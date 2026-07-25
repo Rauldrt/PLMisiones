@@ -115,6 +115,34 @@ export async function saveWhatsappConfigAction(config: WhatsappConfig) {
   return { success: true, message: 'Configuración de WhatsApp guardada con éxito.' };
 }
 
+export async function getGreenApiQrAction(instanceId: string, token: string) {
+  try {
+    const url = `https://api.green-api.com/waInstance${instanceId}/qr/${token}`;
+    const res = await fetch(url);
+    if (!res.ok) {
+      return { success: false, message: `Error de API: ${res.statusText}` };
+    }
+    const data = await res.json();
+    return { success: true, data };
+  } catch (err: any) {
+    return { success: false, message: err.message || 'Error de conexión.' };
+  }
+}
+
+export async function getGreenApiStatusAction(instanceId: string, token: string) {
+  try {
+    const url = `https://api.green-api.com/waInstance${instanceId}/getStateInstance/${token}`;
+    const res = await fetch(url);
+    if (!res.ok) {
+      return { success: false, message: `Error de API: ${res.statusText}` };
+    }
+    const data = await res.json();
+    return { success: true, data };
+  } catch (err: any) {
+    return { success: false, message: err.message || 'Error de conexión.' };
+  }
+}
+
 // Helper: Send WhatsApp notification via API fetch
 async function sendWhatsappNotification(config: WhatsappConfig, submission: FormSubmission) {
   if (!config.enabled) return;
@@ -191,6 +219,25 @@ async function sendWhatsappNotification(config: WhatsappConfig, submission: Form
       });
       if (!res.ok) {
         console.error(`Webhook notification failed:`, res.statusText);
+      }
+    } else if (config.provider === 'greenapi' && config.greenApiInstanceId && config.greenApiToken && config.numbers) {
+      const numberList = config.numbers.split(',').map(n => n.trim());
+      for (const number of numberList) {
+        if (!number) continue;
+        const cleanNumber = number.replace(/[+\s-]/g, '');
+        const chatId = `${cleanNumber}@c.us`;
+        const url = `https://api.green-api.com/waInstance${config.greenApiInstanceId}/sendMessage/${config.greenApiToken}`;
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chatId: chatId,
+            message: text
+          })
+        });
+        if (!res.ok) {
+          console.error(`Green-API notification failed for number ${number}:`, res.statusText);
+        }
       }
     } else if (config.provider === 'callmebot' && config.apiKey && config.numbers) {
       const numberList = config.numbers.split(',').map(n => n.trim());

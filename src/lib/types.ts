@@ -180,11 +180,13 @@ export interface FormSubmission {
 
 export interface WhatsappConfig {
   enabled: boolean;
-  provider: 'callmebot' | 'webhook' | 'telegram' | 'discord';
+  provider: 'callmebot' | 'webhook' | 'telegram' | 'discord' | 'greenapi';
   apiKey?: string;
   numbers?: string;
   webhookUrl?: string;
   telegramToken?: string;
   telegramChatId?: string;
+  greenApiInstanceId?: string;
+  greenApiToken?: string;
 }
 
