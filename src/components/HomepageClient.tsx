@@ -66,7 +66,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
     return (
         <section className="py-16 bg-transparent relative z-10 lg:py-24">
             <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <Card className="bg-card/90 border border-white/60 shadow-[0_25px_60px_-15px_rgba(139,31,164,0.1)] rounded-[2rem] backdrop-blur-lg p-6 md:p-10 w-full text-foreground flex flex-col items-center gap-8">
+                <Card className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2rem] backdrop-blur-lg p-6 md:p-10 w-full text-foreground flex flex-col items-center gap-8">
                     <div className="text-center">
                         <h2 className="font-headline text-3xl font-bold md:text-4xl text-foreground">
                             Organigrama del Partido
@@ -173,7 +173,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         {/* Accordion Section */}
         <section className="py-16 lg:py-24 bg-transparent relative z-10">
             <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <Card className="bg-card/90 border border-white/60 shadow-[0_25px_60px_-15px_rgba(139,31,164,0.1)] rounded-[2rem] backdrop-blur-lg p-6 md:p-10 w-full text-foreground">
+                <Card className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2rem] backdrop-blur-lg p-6 md:p-10 w-full text-foreground">
                     <h2 className="text-center font-headline text-3xl font-bold md:text-4xl text-foreground">
                         Nuestra Identidad
                     </h2>

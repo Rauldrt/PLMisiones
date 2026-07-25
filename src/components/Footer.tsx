@@ -27,7 +27,7 @@ export function Footer({ socialLinks, contactForm, footerContent }: FooterProps)
   return (
     <footer className="bg-transparent relative z-10" id="contacto">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <Card className="bg-card/90 border border-white/60 shadow-[0_25px_60px_-15px_rgba(139,31,164,0.1)] rounded-[2rem] backdrop-blur-lg text-foreground p-6 md:p-10">
+        <Card className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2rem] backdrop-blur-lg text-foreground p-6 md:p-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
                 <div className="space-y-8">
                     <div>

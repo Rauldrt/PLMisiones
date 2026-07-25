@@ -9,7 +9,7 @@ interface GoogleFormEmbedProps {
 
 export function GoogleFormEmbed({ form }: GoogleFormEmbedProps) {
   return (
-    <Card className="bg-card/90 border border-white/60 shadow-[0_25px_60px_-15px_rgba(139,31,164,0.1)] rounded-[2rem] backdrop-blur-lg w-full text-foreground">
+    <Card className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2rem] backdrop-blur-lg w-full text-foreground">
       <CardHeader>
         <CardTitle className="font-headline text-2xl text-accent">{form.title}</CardTitle>
         {form.description && <CardDescription>{form.description}</CardDescription>}
