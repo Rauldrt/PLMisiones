@@ -2,7 +2,7 @@
 'use client';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { ReactNode, createContext, useContext, useState } from 'react';
+import { ReactNode, createContext, useContext, useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import type { SocialLink, FooterContent, GoogleForm, BannerConfig } from '@/lib/types';
 
@@ -39,6 +39,25 @@ export function SiteLayout({
   const pathname = usePathname();
   const isAdminRoute = pathname.startsWith('/admin') || pathname === '/login';
   const [activeBg, setActiveBg] = useState<string>('');
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    if (isAdminRoute) return;
+    
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isAdminRoute]);
   
   if (isAdminRoute) {
     return <>{children}</>;
@@ -60,7 +79,7 @@ export function SiteLayout({
                 backgroundImage: `url(${activeBg})`,
                 backgroundPosition: 'center',
                 backgroundSize: 'cover',
-                transform: 'scale(1.2) translate3d(0, 0, 0)',
+                transform: `scale(1.25) translate3d(0, ${scrollY * -0.1}px, 0)`,
                 opacity: bgOpacity,
                 filter: `blur(${bgBlur}px)`,
               }}
