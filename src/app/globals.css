@@ -27,25 +27,25 @@
   }
 
   .dark {
-    --background: 260 20% 98%;
-    --foreground: 260 50% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 260 50% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 260 50% 10%;
-    --primary: 292 60% 40%;
+    --background: 275 45% 4%;
+    --foreground: 260 20% 98%;
+    --card: 275 40% 6%;
+    --card-foreground: 260 20% 98%;
+    --popover: 275 40% 6%;
+    --popover-foreground: 260 20% 98%;
+    --primary: 285 75% 55%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 260 20% 92%;
-    --secondary-foreground: 260 50% 10%;
-    --muted: 260 20% 94%;
-    --muted-foreground: 260 20% 40%;
-    --accent: 292 60% 45%;
+    --secondary: 275 30% 12%;
+    --secondary-foreground: 260 20% 98%;
+    --muted: 275 25% 10%;
+    --muted-foreground: 275 15% 70%;
+    --accent: 285 75% 60%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
-    --border: 260 20% 88%;
-    --input: 260 20% 90%;
-    --ring: 292 60% 40%;
+    --border: 275 30% 15%;
+    --input: 275 30% 14%;
+    --ring: 285 75% 55%;
     --radius: 1.5rem;
   }
 }
@@ -88,4 +88,68 @@
   .responsive-video > * {
     @apply absolute top-0 left-0 w-full h-full;
   }
+}
+
+/* Floating Blob Animations for Premium Background */
+@keyframes blob-float-1 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(40px, -60px) scale(1.1);
+  }
+  66% {
+    transform: translate(-30px, 30px) scale(0.9);
+  }
+}
+
+@keyframes blob-float-2 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1.2);
+  }
+  50% {
+    transform: translate(-50px, 50px) scale(0.95);
+  }
+}
+
+.animate-blob-1 {
+  animation: blob-float-1 25s infinite alternate ease-in-out;
+}
+
+.animate-blob-2 {
+  animation: blob-float-2 30s infinite alternate ease-in-out;
+}
+
+/* Premium Button Shimmer/Glint Animation */
+@keyframes shimmer {
+  0% {
+    left: -150%;
+  }
+  50% {
+    left: -150%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+
+.animate-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  animation: shimmer 6s infinite ease-in-out;
 }

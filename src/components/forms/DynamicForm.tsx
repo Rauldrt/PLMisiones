@@ -236,7 +236,7 @@ export function DynamicForm({ formId, onSuccess }: DynamicFormProps) {
             <Button
               type="submit"
               disabled={isPending}
-              className="w-full rounded-full py-6 bg-primary hover:bg-primary/90 text-white font-semibold text-base transition-all duration-300 shadow-[0_4px_20px_rgba(139,31,164,0.25)] hover:shadow-[0_6px_25px_rgba(139,31,164,0.35)]"
+              className="w-full rounded-full py-6 bg-primary hover:bg-primary/90 text-white font-semibold text-base transition-all duration-300 shadow-[0_4px_20px_rgba(139,31,164,0.25)] hover:shadow-[0_6px_25px_rgba(139,31,164,0.35)] animate-shimmer"
             >
               {isPending ? (
                 <span className="flex items-center gap-2">

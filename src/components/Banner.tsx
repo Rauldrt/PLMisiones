@@ -120,7 +120,7 @@ export function Banner({
                               </p>
                               <div className="opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.6s' }}>
                                 {slide.ctaText && slide.ctaLink && (
-                                  <Button asChild className="mt-3 sm:mt-6 h-9 px-4 sm:h-11 sm:px-8 text-xs sm:text-base font-semibold">
+                                  <Button asChild className="mt-3 sm:mt-6 h-9 px-4 sm:h-11 sm:px-8 text-xs sm:text-base font-semibold animate-shimmer">
                                     <Link href={slide.ctaLink}>{slide.ctaText}</Link>
                                   </Button>
                                 )}
@@ -179,7 +179,7 @@ export function Banner({
                           </p>
                           <div className="opacity-0 animate-fade-in-up group-data-[active]:opacity-100" style={{ animationDelay: '0.6s' }}>
                             {slide.ctaText && slide.ctaLink && (
-                              <Button asChild className="mt-3 sm:mt-4 h-9 px-4 sm:h-11 sm:px-8 text-xs sm:text-base font-semibold">
+                              <Button asChild className="mt-3 sm:mt-4 h-9 px-4 sm:h-11 sm:px-8 text-xs sm:text-base font-semibold animate-shimmer">
                                 <Link href={slide.ctaLink}>{slide.ctaText}</Link>
                               </Button>
                             )}

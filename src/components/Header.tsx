@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Icons, getIcon } from '@/components/icons';
 import { Button } from '@/components/ui/button';
+import { Sun, Moon } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { Separator } from './ui/separator';
@@ -31,6 +32,25 @@ export function Header({ socialLinks }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [notificationSettings, setNotificationSettings] = useState<Notification | null>(null);
+
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    const isDark = document.documentElement.classList.contains('dark');
+    setTheme(isDark ? 'dark' : 'light');
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  };
 
   useEffect(() => {
     async function loadNotifications() {
@@ -95,10 +115,23 @@ export function Header({ socialLinks }: HeaderProps) {
             ))}
           </nav>
           <div className="hidden md:flex items-center gap-2">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={toggleTheme} 
+                className="rounded-full w-10 h-10 transition-all duration-300 active:scale-95 hover:bg-muted mr-1"
+                aria-label="Cambiar tema"
+              >
+                {theme === 'light' ? (
+                  <Moon className="h-[1.2rem] w-[1.2rem] text-foreground transition-all duration-300 hover:rotate-12" />
+                ) : (
+                  <Sun className="h-[1.2rem] w-[1.2rem] text-yellow-400 transition-all duration-300 hover:rotate-45" />
+                )}
+              </Button>
               <Button asChild variant="outline">
                   <Link href="/fiscales">Fiscalizá</Link>
               </Button>
-              <Button asChild>
+              <Button asChild className="animate-shimmer">
                   <Link href="/afiliacion">Afiliarse</Link>
               </Button>
           </div>
@@ -223,12 +256,35 @@ export function Header({ socialLinks }: HeaderProps) {
                   <Button asChild variant="outline" size="sm" onClick={() => setIsMobileMenuOpen(false)}>
                     <Link href="/fiscales">Fiscalizá</Link>
                   </Button>
-                  <Button asChild size="sm" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button asChild size="sm" className="animate-shimmer" onClick={() => setIsMobileMenuOpen(false)}>
                     <Link href="/afiliacion">Afiliarse</Link>
                   </Button>
                   <Button asChild variant="ghost" size="sm" onClick={() => setIsMobileMenuOpen(false)}>
                     <Link href="/admin">Admin</Link>
                   </Button>
+                  
+                  {/* Selector de Tema en Móvil */}
+                  <div className="flex items-center justify-between p-2 mt-1 rounded-xl bg-muted/40 border">
+                    <span className="text-xs font-medium text-foreground/80">Tema del Sitio</span>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={toggleTheme} 
+                      className="rounded-full px-3 py-1.5 h-auto text-xs flex items-center gap-2"
+                    >
+                      {theme === 'light' ? (
+                        <>
+                          <Moon className="h-3.5 w-3.5 text-foreground" />
+                          <span>Modo Oscuro</span>
+                        </>
+                      ) : (
+                        <>
+                          <Sun className="h-3.5 w-3.5 text-yellow-500" />
+                          <span>Modo Claro</span>
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </div>
 
                 <Separator />

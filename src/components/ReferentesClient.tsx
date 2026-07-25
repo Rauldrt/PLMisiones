@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Icons } from '@/components/icons';
 import { InteractiveMap } from '@/components/InteractiveMap';
 import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
 
 interface ReferentesClientProps {
   initialReferentes: Referente[];
@@ -18,6 +19,18 @@ interface ReferentesClientProps {
 export function ReferentesClient({ initialReferentes, initialMaps }: ReferentesClientProps) {
     const [referentes] = useState<Referente[]>(initialReferentes);
     const [maps] = useState<MapEmbed[]>(initialMaps);
+    const localityCounts = referentes.reduce((acc, ref) => {
+        if (ref.locality) {
+            const loc = ref.locality.trim();
+            acc[loc] = (acc[loc] || 0) + 1;
+        }
+        return acc;
+    }, {} as Record<string, number>);
+
+    const activeLocalities = Object.entries(localityCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 8);
+
     const [searchTerm, setSearchTerm] = useState('');
 
     const filteredReferentes = referentes.filter((referente) =>
@@ -39,6 +52,42 @@ export function ReferentesClient({ initialReferentes, initialMaps }: ReferentesC
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-full text-base"
                     />
+                    
+                    {activeLocalities.length > 0 && (
+                        <div className="flex flex-wrap gap-2 justify-center mt-4">
+                            <span className="text-xs text-muted-foreground self-center mr-1">Filtros por localidad:</span>
+                            {activeLocalities.map(([locality, count]) => (
+                                <button
+                                    key={locality}
+                                    onClick={() => setSearchTerm(searchTerm === locality ? '' : locality)}
+                                    className={cn(
+                                        "text-xs px-3 py-1 rounded-full border transition-all duration-200 flex items-center gap-1 active:scale-95",
+                                        searchTerm === locality
+                                            ? "bg-primary text-primary-foreground border-primary shadow-sm shadow-primary/30"
+                                            : "bg-background/40 hover:bg-muted text-foreground/80 border-border"
+                                    )}
+                                >
+                                    <span>{locality}</span>
+                                    <span className={cn(
+                                        "text-[10px] px-1.5 py-0.5 rounded-full",
+                                        searchTerm === locality 
+                                            ? "bg-white/20 text-white" 
+                                            : "bg-muted text-muted-foreground"
+                                    )}>
+                                        {count}
+                                    </span>
+                                </button>
+                            ))}
+                            {searchTerm && (
+                                <button
+                                    onClick={() => setSearchTerm('')}
+                                    className="text-xs text-primary hover:underline self-center ml-1"
+                                >
+                                    Limpiar
+                                </button>
+                            )}
+                        </div>
+                    )}
                 </div>
 
                 {showReferentes ? (
