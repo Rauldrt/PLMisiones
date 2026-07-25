@@ -114,7 +114,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                             '--left': `${cardPosition.left}px`,
                             '--width': `${cardPosition.width}px`,
                             '--height': `${cardPosition.height}px`,
-                            transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+                            transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
                         } as React.CSSProperties}
                         onClick={(e) => e.stopPropagation()} 
                     >

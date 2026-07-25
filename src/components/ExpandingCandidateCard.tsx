@@ -13,17 +13,17 @@ interface ExpandingCandidateCardProps {
 
 export function ExpandingCandidateCard({ candidate, isExpanded, onClick }: ExpandingCandidateCardProps) {
   const transitionClass = 'transition-all duration-500';
-  const easeClass = '[transition-timing-function:cubic-bezier(0.4,0,0.2,1)]';
+  const easeClass = '[transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)]';
 
   return (
     <div
       onClick={onClick}
       className={cn(
-        'group relative w-full cursor-pointer overflow-hidden rounded-lg',
+        'group relative w-full cursor-pointer overflow-hidden rounded-[2.5rem] shadow-xl border border-white/20 dark:border-white/5 bg-card/90',
         transitionClass,
         easeClass,
         isExpanded 
-          ? 'h-[480px] bg-card border border-border' 
+          ? 'h-[480px] bg-card border border-border shadow-2xl' 
           : 'h-[280px] bg-transparent border-none'
       )}
     >
@@ -33,7 +33,7 @@ export function ExpandingCandidateCard({ candidate, isExpanded, onClick }: Expan
           transitionClass,
           easeClass,
           isExpanded
-            ? 'w-full h-80 top-0 left-0 rounded-b-none rounded-t-lg'
+            ? 'w-full h-80 top-0 left-0 rounded-b-none rounded-t-[2.5rem]'
             : 'w-36 h-36 top-[60px] left-1/2 -translate-x-1/2 rounded-full group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-black/50'
         )}
       >
