@@ -476,6 +476,7 @@ export default function ManageGoogleFormsPage() {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="callmebot">WhatsApp vía CallMeBot (Gratuito / Una vía)</SelectItem>
+                            <SelectItem value="greenapi">WhatsApp vía Green-API (Recomendado - Gratis y Directo)</SelectItem>
                             <SelectItem value="telegram">Telegram Bot (Recomendado - 100% Gratis e Instantáneo)</SelectItem>
                             <SelectItem value="discord">Discord Webhook (Gratis y Simple)</SelectItem>
                             <SelectItem value="webhook">Webhook Genérico (POST JSON)</SelectItem>
