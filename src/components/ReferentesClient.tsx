@@ -44,7 +44,7 @@ export function ReferentesClient({ initialReferentes, initialMaps }: ReferentesC
                 {showReferentes ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {filteredReferentes.map((referente) => (
-                            <Card key={referente.id} className="flex flex-col text-center items-center bg-card/90 border border-white/80 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12),0_10px_30px_-10px_rgba(139,31,164,0.15)] hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.22),0_15px_35px_-5px_rgba(139,31,164,0.3)] rounded-[2rem] backdrop-blur-sm transition-all duration-300 hover:-translate-y-2.5">
+                            <Card key={referente.id} className="flex flex-col text-center items-center bg-card/90 border border-white/80 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12),0_10px_30px_-10px_rgba(139,31,164,0.15)] hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.22),0_15px_35px_-5px_rgba(139,31,164,0.3)] rounded-[2.5rem] backdrop-blur-sm transition-all duration-300 hover:-translate-y-2.5">
                                 <CardHeader className="p-6">
                                     <Avatar className="w-32 h-32 mx-auto border-4 border-primary">
                                         <AvatarImage src={referente.imageUrl} alt={referente.name} />
@@ -77,7 +77,7 @@ export function ReferentesClient({ initialReferentes, initialMaps }: ReferentesC
             </div>
 
             {maps.map(map => (
-                <Card key={map.id} className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2rem] backdrop-blur-lg">
+                <Card key={map.id} className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2.5rem] backdrop-blur-lg">
                     <CardHeader>
                         <CardTitle className="font-headline text-2xl">{map.title}</CardTitle>
                          <CardDescription>Explorá el mapa interactivo de la provincia.</CardDescription>

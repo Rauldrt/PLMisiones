@@ -18,7 +18,7 @@ export function StreamingSection({ items }: StreamingSectionProps) {
     return (
         <section className="py-16 lg:py-24 relative z-10 bg-transparent">
             <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <Card className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2rem] backdrop-blur-lg p-6 md:p-10 w-full text-foreground">
+                <Card className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2.5rem] backdrop-blur-lg p-6 md:p-10 w-full text-foreground">
                     <div className="text-center mb-12">
                         <h2 className="font-headline text-3xl font-bold md:text-4xl text-foreground">
                             Streaming Ágora

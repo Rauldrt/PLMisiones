@@ -126,7 +126,7 @@ export function DynamicForm({ formId, onSuccess }: DynamicFormProps) {
 
   if (loadingConfig) {
     return (
-      <Card className="bg-card/90 border border-white/88 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2rem] backdrop-blur-lg w-full text-foreground p-6 min-h-[300px] flex flex-col items-center justify-center">
+      <Card className="bg-card/90 border border-white/88 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2.5rem] backdrop-blur-lg w-full text-foreground p-6 min-h-[300px] flex flex-col items-center justify-center">
         <span className="animate-spin rounded-full h-8 w-8 border-4 border-primary border-t-transparent mb-2" />
         <p className="text-muted-foreground text-sm">Cargando formulario...</p>
       </Card>
@@ -135,7 +135,7 @@ export function DynamicForm({ formId, onSuccess }: DynamicFormProps) {
 
   if (!form) {
     return (
-      <Card className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2rem] backdrop-blur-lg w-full text-foreground p-6 text-center">
+      <Card className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2.5rem] backdrop-blur-lg w-full text-foreground p-6 text-center">
         <CardTitle className="text-red-500 font-headline mb-2">Formulario no disponible</CardTitle>
         <CardDescription>Ocurrió un error al cargar la configuración del formulario.</CardDescription>
       </Card>
@@ -144,7 +144,7 @@ export function DynamicForm({ formId, onSuccess }: DynamicFormProps) {
 
   if (submitted) {
     return (
-      <Card className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2rem] backdrop-blur-lg w-full text-foreground text-center p-8">
+      <Card className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2.5rem] backdrop-blur-lg w-full text-foreground text-center p-8">
         <CardContent className="space-y-6 pt-6">
           <div className="mx-auto w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center text-green-600">
             <Icons.Check className="w-10 h-10" />
@@ -167,7 +167,7 @@ export function DynamicForm({ formId, onSuccess }: DynamicFormProps) {
   }
 
   return (
-    <Card className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2rem] backdrop-blur-lg w-full text-foreground p-2 md:p-6">
+    <Card className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2.5rem] backdrop-blur-lg w-full text-foreground p-2 md:p-6">
       <CardHeader>
         <CardTitle className="font-headline text-3xl text-accent text-center">{form.title}</CardTitle>
         {form.description && (

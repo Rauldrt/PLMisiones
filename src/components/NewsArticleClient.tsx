@@ -37,7 +37,7 @@ export function NewsArticleClient({ article, formattedDate }: NewsArticleClientP
   return (
     <article className="py-16 relative z-10 bg-transparent">
       <div className="container mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <Card className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2rem] backdrop-blur-lg p-6 md:p-10 w-full text-foreground">
+        <Card className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2.5rem] backdrop-blur-lg p-6 md:p-10 w-full text-foreground">
           {/* Header inside the main content area */}
           <div className={cn("text-center", isEmbed ? "mb-8" : "")}>
             <h1 className="font-headline text-3xl sm:text-4xl font-bold md:text-5xl text-foreground">{article.title}</h1>
