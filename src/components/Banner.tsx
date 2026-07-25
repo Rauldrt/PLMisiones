@@ -1,5 +1,6 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { X } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -10,7 +11,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
-import type { BannerTextSlide, BannerBackgroundSlide, NotificationItem, Candidate, Proposal, Notification } from '@/lib/types';
+import type { BannerTextSlide, BannerBackgroundSlide, NotificationItem, Candidate, Proposal, Notification, FuchsiaPillConfig } from '@/lib/types';
 import Autoplay from 'embla-carousel-autoplay';
 import { AnimatedBannerBackground } from './AnimatedBannerBackground';
 import { BannerContentTabs } from './BannerContentTabs';
@@ -20,6 +21,37 @@ import { Dialog, DialogContent, DialogTrigger, DialogOverlay } from '@/component
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { clientSanitize } from '@/lib/client-sanitize';
 import { cn } from '@/lib/utils';
+
+const DEFAULT_FUCHSIA_PILLS: FuchsiaPillConfig[] = [
+  {
+    id: 'participa',
+    label: 'Participá',
+    title: 'Formá parte',
+    description: 'Formá parte de la transformación. Podés afiliarte como miembro oficial, sumarte como fiscal de mesa o participar en las reuniones locales.',
+    button1Text: 'Afiliarse',
+    button1Link: '/afiliacion',
+    button2Text: 'Fiscalizar',
+    button2Link: '/fiscales'
+  },
+  {
+    id: 'intereses',
+    label: 'Intereses',
+    title: 'Nuestros Intereses',
+    description: 'Trabajamos activamente bajo pilares que representan la libertad, el crecimiento económico y la honestidad en la administración pública.',
+    interestItems: [
+      { icon: '🗽', title: 'Libertad Económica', desc: 'Reducción de tasas municipales, simplificación de trámites y desregulación comercial.' },
+      { icon: '🌱', title: 'Desarrollo Local', desc: 'Apoyo a las PyMEs y productores de la provincia para fomentar empleo genuino.' },
+      { icon: '🏛️', title: 'Transparencia', desc: 'Fuerte control de las cuentas públicas, garantizando licitaciones e información transparente.' }
+    ]
+  },
+  {
+    id: 'comenta',
+    label: 'Comentá',
+    title: 'Dejanos tu comentario',
+    description: 'Dejanos tus ideas, dudas o sugerencias. Al completar el cuadro y enviar, se abrirá un chat pre-redactado de WhatsApp para hablar directamente con nuestro equipo de coordinación.',
+    whatsappNumber: '+5493764000000'
+  }
+];
 
 interface BannerProps {
     textSlides: BannerTextSlide[];
@@ -34,6 +66,7 @@ interface BannerProps {
     institutionalBgVal?: string;
     onBgChange?: (url: string) => void;
     bannerOverlayOpacity?: number;
+    fuchsiaPills?: FuchsiaPillConfig[];
 }
 
 export function Banner({ 
@@ -48,9 +81,18 @@ export function Banner({
   institutionalBgType = 'color',
   institutionalBgVal = 'linear-gradient(to bottom right, #09090b, #180828, #09090b)',
   onBgChange,
-  bannerOverlayOpacity
+  bannerOverlayOpacity,
+  fuchsiaPills
 }: BannerProps) {
   
+  const [activeFuchsiaTab, setActiveFuchsiaTab] = useState<'participa' | 'intereses' | 'comenta' | null>(null);
+  const [commentText, setCommentText] = useState('');
+
+  const pills = fuchsiaPills || DEFAULT_FUCHSIA_PILLS;
+  const participaPill = pills.find(p => p.id === 'participa') || DEFAULT_FUCHSIA_PILLS[0];
+  const interesesPill = pills.find(p => p.id === 'intereses') || DEFAULT_FUCHSIA_PILLS[1];
+  const comentaPill = pills.find(p => p.id === 'comenta') || DEFAULT_FUCHSIA_PILLS[2];
+
   const isInstitutional = layoutMode === 'institutional';
   const isBgImage = institutionalBgType === 'image';
   const textColorClass = (!isInstitutional || isBgImage) ? 'text-foreground' : 'text-white';
@@ -133,28 +175,133 @@ export function Banner({
                   </Carousel>
                 </div>
 
-                {/* Columna Derecha: Tarjeta de imagen y botones visuales */}
+                {/* Columna Derecha: Tarjeta de imagen y botones visuales acoplados elásticamente (estilo Fuchsia OS) */}
                 <div className="flex flex-col items-center justify-center w-full">
-                  {/* Tarjeta de Foto Redondeada */}
-                  <div className="relative w-full aspect-square max-w-[340px] sm:max-w-[400px] rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 bg-black/40 backdrop-blur-sm">
-                    <AnimatedBannerBackground 
-                      slides={backgroundSlides} 
-                      disableParallax={true} 
-                      disableOverlay={true} 
-                    />
-                  </div>
                   
-                  {/* Botones Visuales tipo Píldoras (no funcionales por ahora) */}
-                  <div className="flex gap-3 mt-6">
-                    <button className={cn("px-5 py-2 rounded-full text-xs font-semibold backdrop-blur-sm transition-all border cursor-not-allowed", pillsColorClass)}>
-                      Participá
-                    </button>
-                    <button className={cn("px-5 py-2 rounded-full text-xs font-semibold backdrop-blur-sm transition-all border cursor-not-allowed", pillsColorClass)}>
-                      Intereses
-                    </button>
-                    <button className={cn("px-5 py-2 rounded-full text-xs font-semibold backdrop-blur-sm transition-all border cursor-not-allowed", pillsColorClass)}>
-                      Comentá
-                    </button>
+                  {/* Contenedor Acoplador con Transición de Resorte */}
+                  <div className="flex flex-col md:flex-row items-center justify-center gap-6 w-full max-w-4xl min-h-[340px] md:min-h-[400px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
+                    
+                    {/* Tarjeta de Foto Redondeada (Se encoge elásticamente si hay panel abierto) */}
+                    <div className={cn(
+                      "relative transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 bg-black/40 backdrop-blur-sm flex-shrink-0",
+                      activeFuchsiaTab 
+                        ? "w-[220px] h-[220px] sm:w-[260px] sm:h-[260px] md:w-[280px] md:h-[280px]" 
+                        : "w-full aspect-square max-w-[340px] sm:max-w-[400px]"
+                    )}>
+                      <AnimatedBannerBackground 
+                        slides={backgroundSlides} 
+                        disableParallax={true} 
+                        disableOverlay={true} 
+                      />
+                    </div>
+
+                    {/* Subtarjeta de Contenido Fuchsia (Se expande elásticamente) */}
+                    {activeFuchsiaTab && (
+                      <div 
+                        className="w-full md:w-[360px] p-6 rounded-[2.5rem] bg-card/85 dark:bg-zinc-950/75 border border-white/20 dark:border-violet-500/20 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.25),0_15px_30px_-20px_rgba(139,31,164,0.3)] backdrop-blur-md animate-fade-in-up flex flex-col justify-between min-h-[260px] md:min-h-[280px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+                        style={{ animationDuration: '450ms' }}
+                      >
+                        <div>
+                          {/* Cabecera de la Tarjeta */}
+                          <div className="flex justify-between items-center mb-3">
+                            <h3 className="font-headline text-lg font-bold text-primary">
+                              {activeFuchsiaTab === 'participa' && participaPill.title}
+                              {activeFuchsiaTab === 'intereses' && interesesPill.title}
+                              {activeFuchsiaTab === 'comenta' && comentaPill.title}
+                            </h3>
+                            <button 
+                              onClick={() => setActiveFuchsiaTab(null)}
+                              className="p-1.5 rounded-full hover:bg-muted/80 text-muted-foreground hover:text-foreground transition-colors active:scale-90"
+                              aria-label="Cerrar"
+                            >
+                              <X className="h-4.5 w-4.5" />
+                            </button>
+                          </div>
+
+                          {/* Descripción */}
+                          <p className="text-xs text-foreground/85 leading-relaxed mb-4">
+                            {activeFuchsiaTab === 'participa' && participaPill.description}
+                            {activeFuchsiaTab === 'intereses' && interesesPill.description}
+                            {activeFuchsiaTab === 'comenta' && comentaPill.description}
+                          </p>
+
+                          {/* Contenido Dinámico según la Píldora */}
+                          {activeFuchsiaTab === 'participa' && (
+                            <div className="flex flex-col gap-2 mt-2">
+                              {participaPill.button1Text && participaPill.button1Link && (
+                                <Button asChild size="sm" className="w-full rounded-full py-5 text-xs font-semibold animate-shimmer">
+                                  <Link href={participaPill.button1Link}>{participaPill.button1Text}</Link>
+                                </Button>
+                              )}
+                              {participaPill.button2Text && participaPill.button2Link && (
+                                <Button asChild size="sm" variant="outline" className="w-full rounded-full py-5 text-xs font-semibold border-primary/40 hover:bg-primary/5">
+                                  <Link href={participaPill.button2Link}>{participaPill.button2Text}</Link>
+                                </Button>
+                              )}
+                            </div>
+                          )}
+
+                          {activeFuchsiaTab === 'intereses' && (
+                            <div className="space-y-3 mt-2">
+                              {(interesesPill.interestItems || DEFAULT_FUCHSIA_PILLS[1].interestItems)?.map((item, idx) => (
+                                <div 
+                                  key={idx} 
+                                  className="flex gap-2.5 p-2.5 rounded-2xl bg-muted/40 border border-border/10 animate-fade-in-up"
+                                  style={{ animationDelay: `${idx * 0.08}s`, animationDuration: '350ms' }}
+                                >
+                                  <span className="text-xl self-start">{item.icon}</span>
+                                  <div>
+                                    <h4 className="font-headline text-xs font-bold text-foreground">{item.title}</h4>
+                                    <p className="text-[10px] text-muted-foreground mt-0.5 leading-normal">{item.desc}</p>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {activeFuchsiaTab === 'comenta' && (
+                            <div className="space-y-3 mt-2 flex flex-col w-full">
+                              <textarea
+                                className="w-full text-xs p-3 rounded-2xl border border-input/60 bg-muted/30 focus:bg-background focus:ring-1 focus:ring-primary focus:outline-none resize-none min-h-[90px] text-foreground"
+                                placeholder="Escribí tu mensaje acá..."
+                                value={commentText}
+                                onChange={(e) => setCommentText(e.target.value)}
+                              />
+                              <Button
+                                size="sm"
+                                className="w-full rounded-full py-5 text-xs font-semibold flex items-center justify-center gap-1.5 animate-shimmer"
+                                disabled={!commentText.trim()}
+                                onClick={() => {
+                                  const num = (comentaPill.whatsappNumber || '+5493764000000').replace(/[+\s-]/g, '');
+                                  window.open(`https://api.whatsapp.com/send?phone=${num}&text=${encodeURIComponent(commentText)}`, '_blank');
+                                  setCommentText('');
+                                }}
+                              >
+                                <span>Enviar por WhatsApp</span>
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Botones Visuales tipo Píldoras Interactivas */}
+                  <div className="flex gap-3 mt-6 relative z-10">
+                    {pills.map((pill) => (
+                      <button
+                        key={pill.id}
+                        onClick={() => setActiveFuchsiaTab(activeFuchsiaTab === pill.id ? null : pill.id)}
+                        className={cn(
+                          "px-6 py-2.5 rounded-full text-xs font-bold transition-all duration-300 border active:scale-95 shadow-md",
+                          activeFuchsiaTab === pill.id
+                            ? "bg-primary text-white border-primary shadow-[0_4px_15px_rgba(139,31,164,0.4)]"
+                            : cn("hover:scale-105", pillsColorClass)
+                        )}
+                      >
+                        {pill.label}
+                      </button>
+                    ))}
                   </div>
                 </div>
 

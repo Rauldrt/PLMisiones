@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem as AccordionItemType, NewsArticle, Candidate, NotificationItem, OrganigramaMember, Proposal, StreamingItem, Notification } from '@/lib/types';
+import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem as AccordionItemType, NewsArticle, Candidate, NotificationItem, OrganigramaMember, Proposal, StreamingItem, Notification, FuchsiaPillConfig } from '@/lib/types';
 import { Banner } from './Banner';
 import { MosaicTile } from './MosaicTile';
 import { NewsCard } from './NewsCard';
@@ -41,6 +41,7 @@ interface HomepageClientProps {
     institutionalBgType?: 'color' | 'image';
     institutionalBgVal?: string;
     bannerOverlayOpacity?: number;
+    fuchsiaPills?: FuchsiaPillConfig[];
 }
 
 interface LightboxData {
@@ -125,7 +126,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
     )
 }
 
-export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems, showProposals, layoutMode, institutionalBgType, institutionalBgVal, bannerOverlayOpacity }: HomepageClientProps) {
+export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems, showProposals, layoutMode, institutionalBgType, institutionalBgVal, bannerOverlayOpacity, fuchsiaPills }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
     const { setActiveBg } = useBackground();
 
@@ -154,6 +155,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         institutionalBgVal={institutionalBgVal}
         onBgChange={setActiveBg}
         bannerOverlayOpacity={bannerOverlayOpacity}
+        fuchsiaPills={fuchsiaPills}
       />
 
       <div className="relative z-10">

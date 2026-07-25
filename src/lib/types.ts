@@ -157,6 +157,19 @@ export interface StreamingItem {
   embedCode: string;
 }
 
+export interface FuchsiaPillConfig {
+  id: 'participa' | 'intereses' | 'comenta';
+  label: string;
+  title: string;
+  description: string;
+  button1Text?: string;
+  button1Link?: string;
+  button2Text?: string;
+  button2Link?: string;
+  interestItems?: { icon: string; title: string; desc: string }[];
+  whatsappNumber?: string;
+}
+
 export interface BannerConfig {
   bottomContentType: 'candidates' | 'referentes' | 'hidden';
   showProposals: boolean;
@@ -167,6 +180,7 @@ export interface BannerConfig {
   pageBgOpacity?: number;
   pageBgOverlayOpacity?: number;
   bannerOverlayOpacity?: number;
+  fuchsiaPills?: FuchsiaPillConfig[];
 }
 
 export interface FormSubmission {

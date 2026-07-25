@@ -82,7 +82,39 @@ export default function ManageBannerPage() {
         getBannerConfigAction()
       ]);
       setSlides(slidesData);
-      setConfig(configData);
+      setConfig({
+        ...configData,
+        fuchsiaPills: configData.fuchsiaPills || [
+          {
+            id: 'participa',
+            label: 'Participá',
+            title: 'Formá parte',
+            description: 'Formá parte de la transformación. Podés afiliarte como miembro oficial, sumarte como fiscal de mesa o participar en las reuniones locales.',
+            button1Text: 'Afiliarse',
+            button1Link: '/afiliacion',
+            button2Text: 'Fiscalizar',
+            button2Link: '/fiscales'
+          },
+          {
+            id: 'intereses',
+            label: 'Intereses',
+            title: 'Nuestros Intereses',
+            description: 'Trabajamos activamente bajo pilares que representan la libertad, el crecimiento económico y la honestidad en la administración pública.',
+            interestItems: [
+              { icon: '🗽', title: 'Libertad Económica', desc: 'Reducción de tasas municipales, simplificación de trámites y desregulación comercial.' },
+              { icon: '🌱', title: 'Desarrollo Local', desc: 'Apoyo a las PyMEs y productores de la provincia para fomentar empleo genuino.' },
+              { icon: '🏛️', title: 'Transparencia', desc: 'Fuerte control de las cuentas públicas, garantizando licitaciones e información transparente.' }
+            ]
+          },
+          {
+            id: 'comenta',
+            label: 'Comentá',
+            title: 'Dejanos tu comentario',
+            description: 'Dejanos tus ideas, dudas o sugerencias. Al completar el cuadro y enviar, se abrirá un chat pre-redactado de WhatsApp para hablar directamente con nuestro equipo de coordinación.',
+            whatsappNumber: '+5493764000000'
+          }
+        ]
+      });
       setIsLoading(false);
     }
     fetchData();
@@ -258,6 +290,204 @@ export default function ManageBannerPage() {
                             </DialogTrigger>
                           </div>
                         )}
+                      </div>
+                    </div>
+                  
+                    {/* Tarjetas Interactivas Fuchsia OS Settings */}
+                    <div className="space-y-6 p-4 border rounded-lg bg-muted/5 mt-4">
+                      <div className="space-y-1">
+                        <Label className="text-base font-bold">Tarjetas Interactivas (Estilo Fuchsia OS)</Label>
+                        <p className="text-xs text-muted-foreground">
+                          Edita las píldoras de acción, títulos y descripciones que aparecen al pie de la foto en el modo Institucional.
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-6 pt-2 border-t">
+                        {config.fuchsiaPills?.map((pill, index) => (
+                          <div key={pill.id} className="p-4 border rounded-xl bg-card space-y-4 shadow-sm text-foreground">
+                            <div className="flex items-center gap-2 border-b pb-2">
+                              <span className="text-lg font-bold text-primary">
+                                {pill.id === 'participa' && '🤝 '}
+                                {pill.id === 'intereses' && '⚡ '}
+                                {pill.id === 'comenta' && '💬 '}
+                              </span>
+                              <h4 className="font-semibold text-sm capitalize">Tarjeta: {pill.label}</h4>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="space-y-1">
+                                <Label htmlFor={`pill-label-${pill.id}`}>Texto del Botón (Píldora)</Label>
+                                <Input
+                                  id={`pill-label-${pill.id}`}
+                                  value={pill.label}
+                                  onChange={(e) => {
+                                    const newPills = [...(config.fuchsiaPills || [])];
+                                    newPills[index] = { ...pill, label: e.target.value };
+                                    setConfig({ ...config, fuchsiaPills: newPills });
+                                  }}
+                                />
+                              </div>
+                              <div className="space-y-1">
+                                <Label htmlFor={`pill-title-${pill.id}`}>Título de la Subtarjeta</Label>
+                                <Input
+                                  id={`pill-title-${pill.id}`}
+                                  value={pill.title}
+                                  onChange={(e) => {
+                                    const newPills = [...(config.fuchsiaPills || [])];
+                                    newPills[index] = { ...pill, title: e.target.value };
+                                    setConfig({ ...config, fuchsiaPills: newPills });
+                                  }}
+                                />
+                              </div>
+                            </div>
+
+                            <div className="space-y-1">
+                              <Label htmlFor={`pill-desc-${pill.id}`}>Descripción</Label>
+                              <textarea
+                                id={`pill-desc-${pill.id}`}
+                                rows={2}
+                                className="w-full text-sm p-3 rounded-lg border border-input bg-background focus:ring-1 focus:ring-primary focus:outline-none"
+                                value={pill.description}
+                                onChange={(e) => {
+                                  const newPills = [...(config.fuchsiaPills || [])];
+                                  newPills[index] = { ...pill, description: e.target.value };
+                                  setConfig({ ...config, fuchsiaPills: newPills });
+                                }}
+                              />
+                            </div>
+
+                            {/* Participa Specific Fields */}
+                            {pill.id === 'participa' && (
+                              <div className="border-t pt-3 space-y-4">
+                                <h5 className="text-xs font-bold text-muted-foreground uppercase">Botones de Enlace</h5>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                  <div className="space-y-1">
+                                    <Label htmlFor="part-btn1-text">Botón Principal - Texto</Label>
+                                    <Input
+                                      id="part-btn1-text"
+                                      value={pill.button1Text || ''}
+                                      onChange={(e) => {
+                                        const newPills = [...(config.fuchsiaPills || [])];
+                                        newPills[index] = { ...pill, button1Text: e.target.value };
+                                        setConfig({ ...config, fuchsiaPills: newPills });
+                                      }}
+                                    />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <Label htmlFor="part-btn1-link">Botón Principal - Enlace (URL)</Label>
+                                    <Input
+                                      id="part-btn1-link"
+                                      value={pill.button1Link || ''}
+                                      onChange={(e) => {
+                                        const newPills = [...(config.fuchsiaPills || [])];
+                                        newPills[index] = { ...pill, button1Link: e.target.value };
+                                        setConfig({ ...config, fuchsiaPills: newPills });
+                                      }}
+                                    />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <Label htmlFor="part-btn2-text">Botón Secundario - Texto</Label>
+                                    <Input
+                                      id="part-btn2-text"
+                                      value={pill.button2Text || ''}
+                                      onChange={(e) => {
+                                        const newPills = [...(config.fuchsiaPills || [])];
+                                        newPills[index] = { ...pill, button2Text: e.target.value };
+                                        setConfig({ ...config, fuchsiaPills: newPills });
+                                      }}
+                                    />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <Label htmlFor="part-btn2-link">Botón Secundario - Enlace (URL)</Label>
+                                    <Input
+                                      id="part-btn2-link"
+                                      value={pill.button2Link || ''}
+                                      onChange={(e) => {
+                                        const newPills = [...(config.fuchsiaPills || [])];
+                                        newPills[index] = { ...pill, button2Link: e.target.value };
+                                        setConfig({ ...config, fuchsiaPills: newPills });
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Intereses Specific Fields */}
+                            {pill.id === 'intereses' && (
+                              <div className="border-t pt-3 space-y-4">
+                                <h5 className="text-xs font-bold text-muted-foreground uppercase">Etiquetas de Pilares (Máx 3)</h5>
+                                <div className="space-y-3">
+                                  {(pill.interestItems || []).map((item, itemIdx) => (
+                                    <div key={itemIdx} className="grid grid-cols-1 md:grid-cols-12 gap-2 items-center bg-muted/20 p-2 rounded-lg border">
+                                      <div className="md:col-span-2 space-y-1">
+                                        <Label className="text-[10px]">Icono</Label>
+                                        <Input
+                                          className="px-1 text-center"
+                                          value={item.icon}
+                                          onChange={(e) => {
+                                            const newPills = [...(config.fuchsiaPills || [])];
+                                            const newItems = [...(pill.interestItems || [])];
+                                            newItems[itemIdx] = { ...item, icon: e.target.value };
+                                            newPills[index] = { ...pill, interestItems: newItems };
+                                            setConfig({ ...config, fuchsiaPills: newPills });
+                                          }}
+                                        />
+                                      </div>
+                                      <div className="md:col-span-3 space-y-1">
+                                        <Label className="text-[10px]">Título</Label>
+                                        <Input
+                                          value={item.title}
+                                          onChange={(e) => {
+                                            const newPills = [...(config.fuchsiaPills || [])];
+                                            const newItems = [...(pill.interestItems || [])];
+                                            newItems[itemIdx] = { ...item, title: e.target.value };
+                                            newPills[index] = { ...pill, interestItems: newItems };
+                                            setConfig({ ...config, fuchsiaPills: newPills });
+                                          }}
+                                        />
+                                      </div>
+                                      <div className="md:col-span-7 space-y-1">
+                                        <Label className="text-[10px]">Descripción Corta</Label>
+                                        <Input
+                                          value={item.desc}
+                                          onChange={(e) => {
+                                            const newPills = [...(config.fuchsiaPills || [])];
+                                            const newItems = [...(pill.interestItems || [])];
+                                            newItems[itemIdx] = { ...item, desc: e.target.value };
+                                            newPills[index] = { ...pill, interestItems: newItems };
+                                            setConfig({ ...config, fuchsiaPills: newPills });
+                                          }}
+                                        />
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Comenta Specific Fields */}
+                            {pill.id === 'comenta' && (
+                              <div className="border-t pt-3 space-y-2">
+                                <h5 className="text-xs font-bold text-muted-foreground uppercase">Destinatario de Mensaje</h5>
+                                <div className="space-y-1">
+                                  <Label htmlFor="com-wa-num">Número de WhatsApp (con código de país, sin + ni espacios)</Label>
+                                  <Input
+                                    id="com-wa-num"
+                                    value={pill.whatsappNumber || ''}
+                                    onChange={(e) => {
+                                      const newPills = [...(config.fuchsiaPills || [])];
+                                      newPills[index] = { ...pill, whatsappNumber: e.target.value };
+                                      setConfig({ ...config, fuchsiaPills: newPills });
+                                    }}
+                                    placeholder="Ej: 5493764123456"
+                                  />
+                                </div>
+                              </div>
+                            )}
+
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
