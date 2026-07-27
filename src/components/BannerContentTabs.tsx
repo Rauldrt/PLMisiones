@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Carousel,
   CarouselContent,
@@ -21,6 +22,12 @@ interface BannerContentTabsProps {
 export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
     const [api, setApi] = useState<CarouselApi>();
     const [expandedCandidate, setExpandedCandidate] = useState<Candidate | null>(null);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        return () => setMounted(false);
+    }, []);
     
     const handleCardClick = (candidate: Candidate) => {
         setExpandedCandidate(candidate);
@@ -66,10 +73,10 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                 </Carousel>
             </div>
             
-            {/* Expanded Card Layer - Animación Fuchsia OS Resorte */}
-            {expandedCandidate && (
+            {/* Expanded Card Layer - Animación Fuchsia OS Resorte (Portalizado a document.body) */}
+            {expandedCandidate && mounted && createPortal(
                 <div 
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
+                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-md transition-opacity duration-300 animate-in fade-in"
                     onClick={handleClose}
                 >
                     <div
@@ -91,7 +98,8 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                             <Icons.Close className="w-5 h-5" />
                         </Button>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );
