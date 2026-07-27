@@ -198,7 +198,10 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         fuchsiaPills={fuchsiaPills}
       />
 
-      <div className="relative z-10">
+      <div className={cn(
+        "relative z-10",
+        layoutMode === 'institutional' && "-mt-16 md:-mt-24"
+      )}>
         <OrganigramaSection organigramaData={organigramaData} />
 
         {/* Mosaic Section */}
