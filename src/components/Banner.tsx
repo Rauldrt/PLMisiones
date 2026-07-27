@@ -152,7 +152,11 @@ export function Banner({
             <div 
               ref={bannerBgRef}
               className="absolute inset-0 w-full h-full"
-              style={{ transform: 'translate3d(0, 0, 0)' }}
+              style={{ 
+                transform: 'translate3d(0, 0, 0)',
+                WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)',
+                maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)'
+              }}
             >
               {institutionalBgType === 'image' ? (
                 <Image 
@@ -166,8 +170,6 @@ export function Banner({
                 <div className="absolute inset-0 w-full h-full scale-115" style={{ background: institutionalBgVal }} />
               )}
             </div>
-            {/* Smooth bottom fade mask to blend perfectly with the page background color */}
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background z-10 pointer-events-none" />
           </div>
         ) : (
           <AnimatedBannerBackground slides={backgroundSlides} onImageChange={onBgChange} bannerOverlayOpacity={bannerOverlayOpacity} parallaxFactor={0.35} />
