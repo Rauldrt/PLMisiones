@@ -9,12 +9,20 @@ import { cn } from '@/lib/utils';
 interface AnimatedBannerBackgroundProps {
   slides: BannerBackgroundSlide[];
   disableParallax?: boolean;
+  parallaxFactor?: number;
   disableOverlay?: boolean;
   onImageChange?: (url: string) => void;
   bannerOverlayOpacity?: number;
 }
 
-export function AnimatedBannerBackground({ slides, disableParallax = false, disableOverlay = false, onImageChange, bannerOverlayOpacity }: AnimatedBannerBackgroundProps) {
+export function AnimatedBannerBackground({ 
+  slides, 
+  disableParallax = false, 
+  parallaxFactor = 0.3,
+  disableOverlay = false, 
+  onImageChange, 
+  bannerOverlayOpacity 
+}: AnimatedBannerBackgroundProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -32,9 +40,9 @@ export function AnimatedBannerBackground({ slides, disableParallax = false, disa
     const handleScroll = () => {
       if (!ticking) {
         animationFrameId = window.requestAnimationFrame(() => {
-          // ⚡ Bolt: Update DOM directly to prevent React re-renders on scroll
           if (containerRef.current) {
-            containerRef.current.style.transform = `translateY(${window.scrollY * 0.5}px)`;
+            // translate3d forces GPU hardware acceleration to completely eliminate scroll jitter
+            containerRef.current.style.transform = `translate3d(0, ${window.scrollY * parallaxFactor}px, 0)`;
           }
           ticking = false;
         });
@@ -42,22 +50,20 @@ export function AnimatedBannerBackground({ slides, disableParallax = false, disa
       }
     };
 
-    // ⚡ Bolt: Added { passive: true } to improve scrolling performance
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     // Set initial position
-    if (containerRef.current && !disableParallax) {
-      containerRef.current.style.transform = `translateY(${window.scrollY * 0.5}px)`;
+    if (containerRef.current) {
+      containerRef.current.style.transform = `translate3d(0, ${window.scrollY * parallaxFactor}px, 0)`;
     }
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      // ⚡ Bolt: Cancel any pending animation frame to prevent memory leaks
       if (animationFrameId) {
         window.cancelAnimationFrame(animationFrameId);
       }
     };
-  }, []);
+  }, [disableParallax, parallaxFactor]);
 
 
   useEffect(() => {

@@ -130,7 +130,7 @@ export function Banner({
             <div className="absolute inset-0 z-0" style={{ background: institutionalBgVal }} />
           )
         ) : (
-          <AnimatedBannerBackground slides={backgroundSlides} onImageChange={onBgChange} bannerOverlayOpacity={bannerOverlayOpacity} />
+          <AnimatedBannerBackground slides={backgroundSlides} onImageChange={onBgChange} bannerOverlayOpacity={bannerOverlayOpacity} parallaxFactor={0.35} />
         )}
         
         <div className="relative z-20 h-full w-full flex flex-col justify-between flex-1 pt-2 md:pt-8 lg:pt-16">
@@ -190,7 +190,8 @@ export function Banner({
                     )}>
                       <AnimatedBannerBackground 
                         slides={backgroundSlides} 
-                        disableParallax={true} 
+                        disableParallax={false}
+                        parallaxFactor={0.12}
                         disableOverlay={true} 
                       />
                     </div>
