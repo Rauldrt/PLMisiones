@@ -291,7 +291,32 @@ export default function ManageBannerPage() {
                           </div>
                         )}
                       </div>
+                    {/* Estilo de la Tarjeta de Foto */}
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-4 border-t">
+                      <div className="space-y-0.5">
+                        <Label className="text-base font-semibold">Fondo de la Tarjeta de Foto</Label>
+                        <p className="text-xs text-muted-foreground">
+                          Elige si usar el fondo translúcido (Glassmorphism) o un efecto animado de Aurora Boreal.
+                        </p>
+                      </div>
+                      <div className="w-full md:w-[240px]">
+                        <Select
+                          value={config.fuchsiaCardBgType || 'glass'}
+                          onValueChange={(val: 'glass' | 'aurora') =>
+                            setConfig({ ...config, fuchsiaCardBgType: val })
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecciona el estilo" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="glass">Cristal Translúcido (Glassmorphism)</SelectItem>
+                            <SelectItem value="aurora">Aurora Boreal Animada</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
+                  </div>
                   
                     {/* Tarjetas Interactivas Fuchsia OS Settings */}
                     <div className="space-y-6 p-4 border rounded-lg bg-muted/5 mt-4">

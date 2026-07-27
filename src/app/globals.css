@@ -185,3 +185,22 @@
     opacity: 1;
   }
 }
+
+/* Animated Aurora Borealis gradient background for premium Fuchsia cards */
+@keyframes aurora-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.bg-aurora-borealis {
+  background: linear-gradient(135deg, #09090b 0%, #1e1b4b 25%, #0d9488 50%, #4c1d95 75%, #09090b 100%);
+  background-size: 300% 300%;
+  animation: aurora-flow 16s ease infinite;
+}

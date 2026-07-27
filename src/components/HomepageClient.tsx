@@ -41,6 +41,7 @@ interface HomepageClientProps {
     institutionalBgType?: 'color' | 'image';
     institutionalBgVal?: string;
     bannerOverlayOpacity?: number;
+    fuchsiaCardBgType?: 'glass' | 'aurora';
     fuchsiaPills?: FuchsiaPillConfig[];
 }
 
@@ -166,7 +167,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
     )
 }
 
-export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems, showProposals, layoutMode, institutionalBgType, institutionalBgVal, bannerOverlayOpacity, fuchsiaPills }: HomepageClientProps) {
+export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems, showProposals, layoutMode, institutionalBgType, institutionalBgVal, bannerOverlayOpacity, fuchsiaCardBgType, fuchsiaPills }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
     const { setActiveBg } = useBackground();
 
@@ -195,6 +196,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         institutionalBgVal={institutionalBgVal}
         onBgChange={setActiveBg}
         bannerOverlayOpacity={bannerOverlayOpacity}
+        fuchsiaCardBgType={fuchsiaCardBgType}
         fuchsiaPills={fuchsiaPills}
       />
 

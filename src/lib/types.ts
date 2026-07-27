@@ -180,6 +180,7 @@ export interface BannerConfig {
   pageBgOpacity?: number;
   pageBgOverlayOpacity?: number;
   bannerOverlayOpacity?: number;
+  fuchsiaCardBgType?: 'glass' | 'aurora';
   fuchsiaPills?: FuchsiaPillConfig[];
 }
 

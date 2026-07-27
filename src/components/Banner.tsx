@@ -66,6 +66,7 @@ interface BannerProps {
     institutionalBgVal?: string;
     onBgChange?: (url: string) => void;
     bannerOverlayOpacity?: number;
+    fuchsiaCardBgType?: 'glass' | 'aurora';
     fuchsiaPills?: FuchsiaPillConfig[];
 }
 
@@ -82,6 +83,7 @@ export function Banner({
   institutionalBgVal = 'linear-gradient(to bottom right, #09090b, #180828, #09090b)',
   onBgChange,
   bannerOverlayOpacity,
+  fuchsiaCardBgType = 'glass',
   fuchsiaPills
 }: BannerProps) {
   
@@ -224,17 +226,30 @@ export function Banner({
                   <div className="flex flex-col md:flex-row items-center justify-center gap-6 w-full max-w-4xl min-h-[340px] md:min-h-[400px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
                     
                     {/* Tarjeta de Foto Redondeada (Se encoge elásticamente si hay panel abierto) */}
-                    <div className={cn(
-                      "relative transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 bg-black/40 backdrop-blur-sm flex-shrink-0",
-                      activeFuchsiaTab 
-                        ? "w-[220px] h-[220px] sm:w-[260px] sm:h-[260px] md:w-[280px] md:h-[280px]" 
-                        : "w-full aspect-square max-w-[340px] sm:max-w-[400px]"
-                    )}>
-                      <AnimatedBannerBackground 
-                        slides={backgroundSlides} 
-                        disableParallax={true}
-                        disableOverlay={true} 
-                      />
+                    <div 
+                      className={cn(
+                        "relative transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] rounded-[2.5rem] overflow-hidden flex-shrink-0",
+                        fuchsiaCardBgType === 'aurora'
+                          ? "bg-aurora-borealis border border-white/20 shadow-[0_0_30px_rgba(6,182,212,0.25),0_0_60px_rgba(217,70,239,0.15)]"
+                          : "bg-black/40 border border-white/10 backdrop-blur-sm shadow-2xl",
+                        activeFuchsiaTab 
+                          ? "w-[220px] h-[220px] sm:w-[260px] sm:h-[260px] md:w-[280px] md:h-[280px]" 
+                          : "w-full aspect-square max-w-[340px] sm:max-w-[400px]"
+                      )}
+                    >
+                      <div className={cn(
+                        "w-full h-full transition-opacity duration-300",
+                        fuchsiaCardBgType === 'aurora' ? "opacity-85" : "opacity-100"
+                      )}>
+                        <AnimatedBannerBackground 
+                          slides={backgroundSlides} 
+                          disableParallax={true}
+                          disableOverlay={true} 
+                        />
+                      </div>
+                      {fuchsiaCardBgType === 'aurora' && (
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent pointer-events-none z-10" />
+                      )}
                     </div>
 
                     {/* Subtarjeta de Contenido Fuchsia (Se expande elásticamente) */}

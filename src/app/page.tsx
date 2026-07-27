@@ -77,6 +77,7 @@ export default async function Home() {
       institutionalBgType={bannerConfig.institutionalBgType}
       institutionalBgVal={bannerConfig.institutionalBgVal}
       bannerOverlayOpacity={bannerConfig.bannerOverlayOpacity}
+      fuchsiaCardBgType={bannerConfig.fuchsiaCardBgType}
       fuchsiaPills={bannerConfig.fuchsiaPills}
     />
   );
