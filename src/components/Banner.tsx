@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { X } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -101,6 +101,39 @@ export function Banner({
     ? 'bg-card/60 text-foreground/75 hover:bg-card/90 hover:text-foreground border-border/40 shadow-sm'
     : 'bg-white/10 text-white/80 hover:bg-white/20 border-white/5';
 
+  const bannerBgRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isInstitutional || institutionalBgType !== 'image') return;
+    let ticking = false;
+    let animationFrameId: number;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        animationFrameId = window.requestAnimationFrame(() => {
+          if (bannerBgRef.current) {
+            bannerBgRef.current.style.transform = `translate3d(0, ${window.scrollY * 0.35}px, 0)`;
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    if (bannerBgRef.current) {
+      bannerBgRef.current.style.transform = `translate3d(0, ${window.scrollY * 0.35}px, 0)`;
+    }
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (animationFrameId) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [isInstitutional, institutionalBgType]);
+
   useEffect(() => {
     if (isInstitutional) {
       if (institutionalBgType === 'image' && institutionalBgVal) {
@@ -117,13 +150,19 @@ export function Banner({
         {isInstitutional ? (
           institutionalBgType === 'image' ? (
             <div className="absolute inset-0 z-0 overflow-hidden">
-              <Image 
-                src={institutionalBgVal} 
-                alt="Banner Background Abstract" 
-                fill 
-                className="object-cover opacity-25"
-                priority
-              />
+              <div 
+                ref={bannerBgRef}
+                className="absolute inset-0 w-full h-full"
+                style={{ transform: 'translate3d(0, 0, 0)' }}
+              >
+                <Image 
+                  src={institutionalBgVal} 
+                  alt="Banner Background Abstract" 
+                  fill 
+                  className="object-cover opacity-25 scale-110"
+                  priority
+                />
+              </div>
               <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/80 to-background z-10" />
             </div>
           ) : (
@@ -190,8 +229,7 @@ export function Banner({
                     )}>
                       <AnimatedBannerBackground 
                         slides={backgroundSlides} 
-                        disableParallax={false}
-                        parallaxFactor={0.12}
+                        disableParallax={true}
                         disableOverlay={true} 
                       />
                     </div>
