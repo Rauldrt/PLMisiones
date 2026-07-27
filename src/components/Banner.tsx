@@ -104,7 +104,7 @@ export function Banner({
   const bannerBgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!isInstitutional || institutionalBgType !== 'image') return;
+    if (!isInstitutional) return;
     let ticking = false;
     let animationFrameId: number;
 
@@ -132,7 +132,7 @@ export function Banner({
         window.cancelAnimationFrame(animationFrameId);
       }
     };
-  }, [isInstitutional, institutionalBgType]);
+  }, [isInstitutional]);
 
   useEffect(() => {
     if (isInstitutional) {
@@ -148,13 +148,13 @@ export function Banner({
     <section className="relative w-full flex flex-col z-0 min-h-[600px] md:min-h-[720px] justify-between">
         {/* Background Rendering */}
         {isInstitutional ? (
-          institutionalBgType === 'image' ? (
-            <div className="absolute inset-0 z-0 overflow-hidden">
-              <div 
-                ref={bannerBgRef}
-                className="absolute inset-0 w-full h-full"
-                style={{ transform: 'translate3d(0, 0, 0)' }}
-              >
+          <div className="absolute inset-0 z-0 overflow-hidden">
+            <div 
+              ref={bannerBgRef}
+              className="absolute inset-0 w-full h-full"
+              style={{ transform: 'translate3d(0, 0, 0)' }}
+            >
+              {institutionalBgType === 'image' ? (
                 <Image 
                   src={institutionalBgVal} 
                   alt="Banner Background Abstract" 
@@ -162,12 +162,13 @@ export function Banner({
                   className="object-cover opacity-25 scale-110"
                   priority
                 />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/80 to-background z-10" />
+              ) : (
+                <div className="absolute inset-0 w-full h-full scale-115" style={{ background: institutionalBgVal }} />
+              )}
             </div>
-          ) : (
-            <div className="absolute inset-0 z-0" style={{ background: institutionalBgVal }} />
-          )
+            {/* Smooth bottom fade mask to blend perfectly with the page background color */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background z-10 pointer-events-none" />
+          </div>
         ) : (
           <AnimatedBannerBackground slides={backgroundSlides} onImageChange={onBgChange} bannerOverlayOpacity={bannerOverlayOpacity} parallaxFactor={0.35} />
         )}
