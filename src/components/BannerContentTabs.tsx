@@ -21,44 +21,14 @@ interface BannerContentTabsProps {
 export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
     const [api, setApi] = useState<CarouselApi>();
     const [expandedCandidate, setExpandedCandidate] = useState<Candidate | null>(null);
-    const [isAnimating, setIsAnimating] = useState(false);
     
-    const [cardPosition, setCardPosition] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
-
-    const handleCardClick = (candidate: Candidate, e: React.MouseEvent<HTMLDivElement>) => {
-        if (expandedCandidate) return;
-
-        const rect = e.currentTarget.getBoundingClientRect();
-        setCardPosition({
-            top: rect.top,
-            left: rect.left,
-            width: rect.width,
-            height: rect.height,
-        });
-
+    const handleCardClick = (candidate: Candidate) => {
         setExpandedCandidate(candidate);
     };
     
     const handleClose = () => {
-        if (!expandedCandidate) return;
-        
-        setIsAnimating(false);
-        // Delay hiding the component to allow the animation to finish
-        setTimeout(() => {
-            setExpandedCandidate(null);
-            setCardPosition(null);
-        }, 500); 
-    }
-
-    useEffect(() => {
-        if (expandedCandidate) {
-            // Use a short delay to allow the state to update before starting the animation
-            const timer = setTimeout(() => setIsAnimating(true), 10);
-            return () => clearTimeout(timer);
-        } else {
-            setIsAnimating(false);
-        }
-    }, [expandedCandidate]);
+        setExpandedCandidate(null);
+    };
 
     if (!candidates || candidates.length === 0) {
         return null;
@@ -83,7 +53,7 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                                 key={candidate.id} 
                                 className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4"
                             >
-                                <div onClick={(e) => handleCardClick(candidate, e)}>
+                                <div onClick={() => handleCardClick(candidate)}>
                                     <ExpandingCandidateCard 
                                         candidate={candidate}
                                         isExpanded={false}
@@ -96,26 +66,14 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                 </Carousel>
             </div>
             
-            {/* Expanded Card Layer - Animación */}
-            {expandedCandidate && cardPosition && (
+            {/* Expanded Card Layer - Animación Fuchsia OS Resorte */}
+            {expandedCandidate && (
                 <div 
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
                     onClick={handleClose}
                 >
                     <div
-                        className={cn(
-                            'absolute transition-all duration-500',
-                            isAnimating 
-                                ? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[16rem]'
-                                : 'top-[var(--top)] left-[var(--left)] w-[var(--width)] h-[var(--height)]'
-                        )}
-                        style={{
-                            '--top': `${cardPosition.top}px`,
-                            '--left': `${cardPosition.left}px`,
-                            '--width': `${cardPosition.width}px`,
-                            '--height': `${cardPosition.height}px`,
-                            transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
-                        } as React.CSSProperties}
+                        className="w-full max-w-[17rem] md:max-w-[19rem] p-2 bg-transparent relative animate-candidate-spring"
                         onClick={(e) => e.stopPropagation()} 
                     >
                          <ExpandingCandidateCard
@@ -126,11 +84,11 @@ export function BannerContentTabs({ candidates }: BannerContentTabsProps) {
                         <Button 
                             variant="ghost" 
                             size="icon" 
-                            className="absolute top-2 right-2 text-white bg-black/20 hover:bg-black/40 rounded-full z-30"
+                            className="absolute top-4 right-4 text-white bg-black/30 hover:bg-black/60 rounded-full z-30 transition-all active:scale-90"
                             onClick={handleClose}
                             aria-label="Cerrar candidato"
                         >
-                            <Icons.Close className="w-6 h-6" />
+                            <Icons.Close className="w-5 h-5" />
                         </Button>
                     </div>
                 </div>
