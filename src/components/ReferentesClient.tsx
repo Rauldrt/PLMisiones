@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import type { Referente, MapEmbed } from '@/lib/types';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -33,10 +33,13 @@ export function ReferentesClient({ initialReferentes, initialMaps }: ReferentesC
 
     const [searchTerm, setSearchTerm] = useState('');
 
-    const filteredReferentes = referentes.filter((referente) =>
-        (referente.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (referente.locality?.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+    const filteredReferentes = useMemo(() => {
+        const lowerSearchTerm = searchTerm.toLowerCase();
+        return referentes.filter((referente) =>
+            (referente.name.toLowerCase().includes(lowerSearchTerm)) ||
+            (referente.locality?.toLowerCase().includes(lowerSearchTerm))
+        );
+    }, [referentes, searchTerm]);
 
     const showReferentes = searchTerm !== '' && filteredReferentes.length > 0;
     const showNoResults = searchTerm !== '' && filteredReferentes.length === 0;
