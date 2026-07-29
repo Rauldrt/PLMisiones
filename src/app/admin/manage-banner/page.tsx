@@ -649,6 +649,46 @@ export default function ManageBannerPage() {
                         Ajusta la opacidad del velo claro del banner. Un valor de 0.3 a 0.45 permite ver la foto original manteniendo buena legibilidad.
                       </p>
                     </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="pageBgPosition">Posición del Fondo</Label>
+                      <select
+                        id="pageBgPosition"
+                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                        value={config.pageBgPosition ?? 'center'}
+                        onChange={(e) =>
+                          setConfig({ ...config, pageBgPosition: e.target.value })
+                        }
+                      >
+                        <option value="center" className="bg-zinc-950 text-white">Centrado</option>
+                        <option value="top" className="bg-zinc-950 text-white">Superior</option>
+                        <option value="bottom" className="bg-zinc-950 text-white">Inferior</option>
+                        <option value="left" className="bg-zinc-950 text-white">Izquierda</option>
+                        <option value="right" className="bg-zinc-950 text-white">Derecha</option>
+                        <option value="center top" className="bg-zinc-950 text-white">Centro Superior</option>
+                        <option value="center bottom" className="bg-zinc-950 text-white">Centro Inferior</option>
+                      </select>
+                      <p className="text-[11px] text-muted-foreground leading-tight">
+                        Alineación de la imagen de fondo (e.g. Centrado, Superior, Inferior) para enfocar la parte más importante.
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="pageBgSize">Escala del Fondo (Distribución)</Label>
+                      <select
+                        id="pageBgSize"
+                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                        value={config.pageBgSize ?? 'cover'}
+                        onChange={(e) =>
+                          setConfig({ ...config, pageBgSize: e.target.value })
+                        }
+                      >
+                        <option value="cover" className="bg-zinc-950 text-white">Cubrir (Llenar y Recortar)</option>
+                        <option value="contain" className="bg-zinc-950 text-white">Contener (Mostrar Completa)</option>
+                        <option value="auto" className="bg-zinc-950 text-white">Automático (Tamaño Original)</option>
+                      </select>
+                      <p className="text-[11px] text-muted-foreground leading-tight">
+                        Determina cómo se escala la imagen de fondo para cubrir la pantalla.
+                      </p>
+                    </div>
                   </div>
                 </div>
 

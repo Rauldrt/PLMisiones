@@ -67,6 +67,8 @@ export function SiteLayout({
   const bgBlur = bannerConfig?.pageBgBlur ?? 50;
   const bgOpacity = bannerConfig?.pageBgOpacity ?? 0.65;
   const bgOverlayOpacity = bannerConfig?.pageBgOverlayOpacity ?? 0.4;
+  const bgPosition = bannerConfig?.pageBgPosition ?? 'center';
+  const bgSize = bannerConfig?.pageBgSize ?? 'cover';
 
   return (
     <BackgroundContext.Provider value={{ activeBg, setActiveBg }}>
@@ -84,8 +86,8 @@ export function SiteLayout({
               className="absolute inset-0"
               style={{ 
                 backgroundImage: `url(${activeBg})`,
-                backgroundPosition: 'center',
-                backgroundSize: 'cover',
+                backgroundPosition: bgPosition,
+                backgroundSize: bgSize,
                 transform: `scale(1.25) translate3d(0, ${scrollY * -0.1}px, 0)`,
                 opacity: bgOpacity,
                 filter: `blur(${bgBlur}px)`,

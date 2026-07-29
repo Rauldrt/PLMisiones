@@ -182,6 +182,8 @@ export interface BannerConfig {
   bannerOverlayOpacity?: number;
   fuchsiaCardBgType?: 'glass' | 'aurora';
   fuchsiaPills?: FuchsiaPillConfig[];
+  pageBgPosition?: string;
+  pageBgSize?: string;
 }
 
 export interface FormSubmission {
