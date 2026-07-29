@@ -7,7 +7,7 @@ import path from 'path';
 
 // Note: This module should only be imported and used in server-side components or actions.
 
-const MEDIA_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.mp4', '.webm', '.mp3', '.wav', '.ogg'];
+const MEDIA_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.mp4', '.webm', '.mp3', '.wav', '.ogg'];
 
 /**
  * Recursively scans a directory and returns a list of all file paths.
