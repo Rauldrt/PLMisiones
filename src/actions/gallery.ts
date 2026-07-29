@@ -16,7 +16,8 @@ export async function uploadPublicFilesAction(files: { name: string; data: strin
     try {
         const publicDir = path.join(process.cwd(), 'public');
         
-        for (const file of files) {
+        // ⚡ Bolt: Execute I/O file writing operations concurrently rather than sequentially to prevent blocking.
+        const writePromises = files.map(async (file) => {
             // Security: Validate file extension to prevent unrestricted file upload (e.g., .html, .js)
             const ext = path.extname(file.name).toLowerCase();
             if (!ALLOWED_EXTENSIONS.includes(ext)) {
@@ -35,8 +36,10 @@ export async function uploadPublicFilesAction(files: { name: string; data: strin
                 throw new Error(`Datos inválidos para el archivo: ${file.name}`);
             }
 
-            await fs.writeFile(filePath, base64Data, 'base64');
-        }
+            return fs.writeFile(filePath, base64Data, 'base64');
+        });
+
+        await Promise.all(writePromises);
 
         revalidatePath('/admin/gallery');
         return { success: true, message: `${files.length} archivo(s) subido(s) con éxito.` };
