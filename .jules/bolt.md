@@ -13,3 +13,7 @@
 ## 2024-11-20 - Use useRef for scroll-based animations (parallax)
 **Learning:** Using `useState` inside a `requestAnimationFrame` loop attached to a `scroll` event listener causes continuous React re-renders and layout thrashing. Even though the frame loop throttles the state updates, the component and all its children still re-render on every frame where scrolling occurs, creating significant main thread blocking and jank.
 **Action:** When implementing scroll-based parallax or animations, store the DOM elements in a `useRef` and directly manipulate their `style.transform` properties inside the `requestAnimationFrame` callback. This completely bypasses the React render cycle, resulting in significantly smoother 60FPS scroll performance with less memory allocation. Ensure you still capture the animation frame ID and `cancelAnimationFrame` in the cleanup function.
+
+## 2024-05-25 - Avoid useEffect for derived state
+**Learning:** Using `useEffect` to parse or compute derived state (e.g., stripping HTML or checking text content) on the client side forces a second render cycle. Also, using an `isClient` flag to defer rendering to avoid hydration mismatches (e.g., for `Date.toLocaleDateString()`) triggers an unnecessary secondary render cycle.
+**Action:** Compute derived values directly in the component body during the initial render. To resolve React hydration mismatches caused by server/client locale differences, apply the `suppressHydrationWarning` attribute to the wrapping HTML element instead of using `useEffect`.
