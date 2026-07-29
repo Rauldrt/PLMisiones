@@ -1,0 +1,3 @@
+## 2026-06-19 - Restore focus on custom PopoverTrigger
+**Learning:** When using custom elements (like `<button>`) inside Radix UI components (like `PopoverTrigger` and `DialogTrigger`) with `asChild`, default keyboard focus styles are lost. The `<button>` also requires `type="button"` and an `aria-label` if it contains only non-text or icon elements.
+**Action:** Manually apply Tailwind CSS focus utilities (`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`), appropriate border-radius classes, `type="button"`, and `aria-label` to the custom trigger element to ensure full keyboard accessibility.
