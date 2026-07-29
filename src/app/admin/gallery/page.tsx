@@ -173,7 +173,7 @@ export default function GalleryPage() {
                 </CardHeader>
                  <CardContent>
                     <div className="max-h-[80vh] overflow-y-auto">
-                        <ImageGallery key={galleryKey} onImageSelect={(url) => {
+                        <ImageGallery key={galleryKey} showUploadTab={false} onImageSelect={(url) => {
                             navigator.clipboard.writeText(url);
                             toast({ title: "Copiado", description: `URL de la imagen copiada al portapapeles.` });
                         }} />
