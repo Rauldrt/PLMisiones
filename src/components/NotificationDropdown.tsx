@@ -64,12 +64,11 @@ export function NotificationDialog({
         ) : (
           <>
             {item.imageUrl && !isEmbed && (
-                <div className={cn("relative h-64 w-full overflow-hidden", hasTextContent ? "rounded-t-lg -mt-6 -mx-6" : "rounded-lg")}>
-                  <Image
+                <div className={cn("relative w-[calc(100%+3rem)] overflow-hidden", hasTextContent ? "rounded-t-lg -mt-6 -mx-6 mb-4" : "rounded-lg")}>
+                  <img
                     src={item.imageUrl}
                     alt={item.title || 'Notificación'}
-                    fill
-                    className="object-cover"
+                    className="w-full h-auto max-h-[45vh] object-contain bg-muted/5"
                     data-ai-hint={item.imageHint}
                   />
                 </div>

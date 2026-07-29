@@ -54,12 +54,11 @@ function NotificationDialog({
           <>
             <DialogHeader>
               {item.imageUrl && (
-                <div className="relative -mx-6 -mt-6 mb-6 h-48 w-full">
-                  <Image
+                <div className="relative -mx-6 -mt-6 mb-4 w-[calc(100%+3rem)] overflow-hidden rounded-t-lg">
+                  <img
                     src={item.imageUrl}
-                    alt={item.title}
-                    fill
-                    className="rounded-t-lg object-cover"
+                    alt={item.title || 'Notificación'}
+                    className="w-full h-auto max-h-[45vh] object-contain bg-muted/5"
                     data-ai-hint={item.imageHint}
                   />
                 </div>
