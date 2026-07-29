@@ -13,3 +13,7 @@
 ## 2024-05-17 - Custom State and ARIA expanded
 **Learning:** While Radix UI `PopoverTrigger` manages `aria-expanded` internally, if the component relies on an external, controlled React state (like `isMobileMenuOpen`) and visually changes its internal icons based on that state, the custom state variable's `aria-expanded` shouldn't be blindly removed without fully verifying it's actually completely redundant or ensuring that the trigger element retains a proper accessible name (e.g. `aria-label` or `.sr-only`). The button in `Header.tsx` did not have an `aria-label` and relied on a visual icon change.
 **Action:** Do not remove `aria-expanded` from trigger elements that rely on external state variables to manage visual icons without verifying. Always ensure icon-only buttons have an `aria-label` or `.sr-only` text.
+
+## 2024-05-18 - ARIA Labels on Buttons Wrapping Images
+**Learning:** When adding an `aria-label` to an interactive element (like a `<button>`) that wraps an `<Image>`, the button's `aria-label` entirely overrides the image's `alt` text for screen readers. This causes the screen reader to only announce the action (e.g., "Ver imagen ampliada") without providing context on what the image actually is.
+**Action:** To maintain full accessibility, ensure that the action-oriented `aria-label` dynamically includes the image's original descriptive text or title, resulting in a label like `aria-label={\`Ver imagen ampliada: \${item.title}\`}`.
