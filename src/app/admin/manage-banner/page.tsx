@@ -301,6 +301,57 @@ export default function ManageBannerPage() {
                           </div>
                         )}
                       </div>
+
+                      {config.institutionalBgType === 'image' && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t mt-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="institutionalBgPosition">Posición de Imagen del Banner</Label>
+                            <Select
+                              value={config.institutionalBgPosition || 'center'}
+                              onValueChange={(val) =>
+                                setConfig({ ...config, institutionalBgPosition: val })
+                              }
+                            >
+                              <SelectTrigger id="institutionalBgPosition">
+                                <SelectValue placeholder="Selecciona la posición" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="center">Centrado</SelectItem>
+                                <SelectItem value="top">Superior</SelectItem>
+                                <SelectItem value="bottom">Inferior</SelectItem>
+                                <SelectItem value="left">Izquierda</SelectItem>
+                                <SelectItem value="right">Derecha</SelectItem>
+                                <SelectItem value="center top">Centro Superior</SelectItem>
+                                <SelectItem value="center bottom">Centro Inferior</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <p className="text-[11px] text-muted-foreground leading-tight">
+                              Alineación de la imagen del banner en modo institucional.
+                            </p>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="institutionalBgSize">Escala del Banner</Label>
+                            <Select
+                              value={config.institutionalBgSize || 'cover'}
+                              onValueChange={(val) =>
+                                setConfig({ ...config, institutionalBgSize: val })
+                              }
+                            >
+                              <SelectTrigger id="institutionalBgSize">
+                                <SelectValue placeholder="Selecciona la escala" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="cover">Cubrir (Llenar y Recortar)</SelectItem>
+                                <SelectItem value="contain">Contener (Mostrar Completa)</SelectItem>
+                                <SelectItem value="auto">Automático (Tamaño Original)</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <p className="text-[11px] text-muted-foreground leading-tight">
+                              Método de escala para la imagen del banner.
+                            </p>
+                          </div>
+                        </div>
+                      )}
                     {/* Estilo de la Tarjeta de Foto */}
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-4 border-t">
                       <div className="space-y-0.5">

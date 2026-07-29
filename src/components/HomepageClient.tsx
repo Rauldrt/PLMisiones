@@ -44,6 +44,8 @@ interface HomepageClientProps {
     bannerOverlayOpacity?: number;
     fuchsiaCardBgType?: 'glass' | 'aurora';
     fuchsiaPills?: FuchsiaPillConfig[];
+    institutionalBgPosition?: string;
+    institutionalBgSize?: string;
 }
 
 interface LightboxData {
@@ -168,7 +170,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
     )
 }
 
-export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems, showProposals, layoutMode, institutionalBgType, institutionalBgVal, bannerOverlayOpacity, fuchsiaCardBgType, fuchsiaPills }: HomepageClientProps) {
+export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems, showProposals, layoutMode, institutionalBgType, institutionalBgVal, bannerOverlayOpacity, fuchsiaCardBgType, fuchsiaPills, institutionalBgPosition, institutionalBgSize }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
     const [api, setApi] = useState<CarouselApi>();
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -217,6 +219,8 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         bannerOverlayOpacity={bannerOverlayOpacity}
         fuchsiaCardBgType={fuchsiaCardBgType}
         fuchsiaPills={fuchsiaPills}
+        institutionalBgPosition={institutionalBgPosition}
+        institutionalBgSize={institutionalBgSize}
       />
 
       <div className={cn(

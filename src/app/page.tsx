@@ -79,6 +79,8 @@ export default async function Home() {
       bannerOverlayOpacity={bannerConfig.bannerOverlayOpacity}
       fuchsiaCardBgType={bannerConfig.fuchsiaCardBgType}
       fuchsiaPills={bannerConfig.fuchsiaPills}
+      institutionalBgPosition={bannerConfig.institutionalBgPosition}
+      institutionalBgSize={bannerConfig.institutionalBgSize}
     />
   );
 }

@@ -68,6 +68,8 @@ interface BannerProps {
     bannerOverlayOpacity?: number;
     fuchsiaCardBgType?: 'glass' | 'aurora';
     fuchsiaPills?: FuchsiaPillConfig[];
+    institutionalBgPosition?: string;
+    institutionalBgSize?: string;
 }
 
 export function Banner({ 
@@ -84,7 +86,9 @@ export function Banner({
   onBgChange,
   bannerOverlayOpacity,
   fuchsiaCardBgType = 'glass',
-  fuchsiaPills
+  fuchsiaPills,
+  institutionalBgPosition = 'center',
+  institutionalBgSize = 'cover'
 }: BannerProps) {
   
   const [activeFuchsiaTab, setActiveFuchsiaTab] = useState<'participa' | 'intereses' | 'comenta' | null>(null);
@@ -165,7 +169,8 @@ export function Banner({
                   src={institutionalBgVal} 
                   alt="Banner Background Abstract" 
                   fill 
-                  className="object-cover opacity-25 scale-110"
+                  className="opacity-25 scale-110"
+                  style={{ objectPosition: institutionalBgPosition, objectFit: institutionalBgSize as any }}
                   priority
                 />
               ) : (

@@ -184,6 +184,8 @@ export interface BannerConfig {
   fuchsiaPills?: FuchsiaPillConfig[];
   pageBgPosition?: string;
   pageBgSize?: string;
+  institutionalBgPosition?: string;
+  institutionalBgSize?: string;
 }
 
 export interface FormSubmission {
