@@ -38,23 +38,21 @@ export function NotificacionesClient({ initialNotifications }: NotificacionesCli
 
                 return (
                   <Card key={item.id} className="overflow-hidden">
-                    {item.imageUrl && (
-                      <DialogTrigger asChild>
-                         <button className="relative h-96 w-full cursor-pointer" onClick={() => handleImageClick(item.imageUrl!)}>
-                            <Image
-                                src={item.imageUrl}
-                                alt={item.title}
-                                fill
-                                className={cn(
-                                  "object-cover",
-                                  hasTextContent ? "rounded-t-lg" : "rounded-lg"
-                                )}
-                                sizes="(max-width: 768px) 100vw, 33vw"
-                                data-ai-hint={item.imageHint}
-                            />
-                         </button>
-                      </DialogTrigger>
-                    )}
+                     {item.imageUrl && (
+                       <DialogTrigger asChild>
+                          <button className="w-full cursor-pointer bg-muted/5 overflow-hidden block" onClick={() => handleImageClick(item.imageUrl!)}>
+                             <img
+                                 src={item.imageUrl}
+                                 alt={item.title}
+                                 className={cn(
+                                   "w-full h-auto max-h-[60vh] object-contain mx-auto",
+                                   hasTextContent ? "rounded-t-lg" : "rounded-lg"
+                                 )}
+                                 data-ai-hint={item.imageHint}
+                             />
+                          </button>
+                       </DialogTrigger>
+                     )}
                     
                     {hasTextContent && (
                       <>
