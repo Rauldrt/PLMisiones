@@ -13,8 +13,15 @@ import { Separator } from './ui/separator';
 import Image from 'next/image';
 import type { SocialLink, NotificationItem, Notification } from '@/lib/types';
 import { getPublicNotificationsAction, getNotificationAction } from '@/actions/data';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { clientSanitize } from '@/lib/client-sanitize';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from './ui/dialog';
+import { NotificationDialog } from './NotificationDropdown';
 
 const navLinks = [
   { href: '/', label: 'Inicio' },
@@ -148,6 +155,86 @@ export function Header({ socialLinks }: HeaderProps) {
           onClick={() => setIsMobileMenuOpen(false)}
         />
 
+        {/* Mobile Floating Notification Bubble */}
+        {notificationSettings?.enabled && notifications.length > 0 && !isMobileMenuOpen && (
+          <div className="fixed bottom-[96px] right-6 z-50 md:hidden animate-fade-in duration-300">
+            <Dialog>
+              <DialogTrigger asChild>
+                <button
+                  type="button"
+                  className={cn(
+                    "relative flex h-14 w-14 items-center justify-center rounded-full shadow-2xl border transition-all duration-300 hover:scale-105 active:scale-95",
+                    notificationSettings.glowColor === 'orange' && 'bg-orange-500 text-white border-orange-400/50 shadow-orange-500/30',
+                    notificationSettings.glowColor === 'blue' && 'bg-blue-500 text-white border-blue-400/50 shadow-blue-500/30',
+                    notificationSettings.glowColor === 'green' && 'bg-green-500 text-white border-green-400/50 shadow-green-500/30',
+                    notificationSettings.glowColor === 'red' && 'bg-red-500 text-white border-red-400/50 shadow-red-500/30'
+                  )}
+                >
+                  <span className={cn(
+                    "absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping",
+                    notificationSettings.glowColor === 'orange' && 'bg-orange-400',
+                    notificationSettings.glowColor === 'blue' && 'bg-blue-400',
+                    notificationSettings.glowColor === 'green' && 'bg-green-400',
+                    notificationSettings.glowColor === 'red' && 'bg-red-400',
+                    notificationSettings.glowSpeed === 'slow' && 'animate-ping-slow',
+                    notificationSettings.glowSpeed === 'normal' && 'animate-ping',
+                    notificationSettings.glowSpeed === 'fast' && 'animate-ping-fast'
+                  )}></span>
+                  
+                  <Icons.Notification className="h-6 w-6 relative z-10 animate-bounce" style={{ animationDuration: '2.5s' }} />
+                  
+                  <span className="absolute -top-1.5 -right-1.5 flex h-5 w-5 rounded-full bg-red-600 text-[10px] font-bold text-white items-center justify-center shadow border border-background z-20">
+                    {notifications.length}
+                  </span>
+                </button>
+              </DialogTrigger>
+              
+              <DialogContent className="max-w-md w-[calc(100vw-2rem)] rounded-2xl p-5">
+                <DialogHeader>
+                  <DialogTitle className="font-headline text-xl text-accent flex items-center gap-2">
+                    <Icons.Notification className="h-5 w-5 text-primary" />
+                    {notificationSettings.text || 'Notificaciones'}
+                  </DialogTitle>
+                </DialogHeader>
+                
+                <div className="space-y-2 mt-4 max-h-[50vh] overflow-y-auto pr-1">
+                  {notifications.map((item, index) => (
+                    <NotificationDialog item={item} key={item.id}>
+                      <button className="w-full text-left focus:outline-none">
+                        <div className={cn("space-y-1.5 rounded-xl p-3 hover:bg-muted bg-muted/20 border border-border/10 transition-all", index === 0 && "border-primary/20 bg-primary/5")}>
+                          <div className="flex items-center justify-between gap-2">
+                            <p className={cn("truncate text-sm flex-1 font-medium", index === 0 ? "text-foreground font-semibold" : "text-foreground/80")}>
+                              {item.title}
+                            </p>
+                            {item.tag && (
+                              <span className={cn(
+                                "px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider shrink-0 border",
+                                item.tag === 'Alerta' && 'bg-red-500/10 text-red-500 border-red-500/20',
+                                item.tag === 'Evento' && 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+                                item.tag === 'Institucional' && 'bg-green-500/10 text-green-500 border-green-500/20',
+                                item.tag === 'Comunicado' && 'bg-purple-500/10 text-purple-500 border-purple-500/20',
+                              )}>
+                                {item.tag}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-[10px] text-muted-foreground">
+                            {new Date(item.date).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })}
+                          </p>
+                        </div>
+                      </button>
+                    </NotificationDialog>
+                  ))}
+                </div>
+
+                <Button asChild variant="outline" size="sm" className="w-full mt-4 rounded-xl">
+                  <Link href="/notificaciones">Ver Todas las Notificaciones</Link>
+                </Button>
+              </DialogContent>
+            </Dialog>
+          </div>
+        )}
+
         {/* FAB / Modal Container */}
         <div 
           className={cn(
@@ -181,50 +268,8 @@ export function Header({ socialLinks }: HeaderProps) {
               {/* Scrollable Container (Notificaciones + Links de Navegación) */}
               <div className="flex-1 overflow-y-auto space-y-4 pr-1 scrollbar-thin">
                 
-                {/* Notificaciones en Acordeón */}
-                {notificationSettings?.enabled && notifications.length > 0 && (
-                  <div className="p-3 bg-orange-500/5 rounded-2xl border border-orange-500/10">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                      </span>
-                      <span className="text-xs font-bold text-orange-500 tracking-wide uppercase">
-                        {notificationSettings.text || 'Notificaciones'}
-                      </span>
-                    </div>
-                    <Accordion type="single" collapsible className="w-full space-y-1">
-                      {notifications.map((item) => (
-                        <AccordionItem key={item.id} value={item.id} className="border-b-0">
-                          <AccordionTrigger className="text-xs hover:no-underline py-1.5 px-2 rounded hover:bg-muted text-left text-foreground font-medium flex justify-between items-center w-full">
-                            <span className="truncate pr-4 flex-1">{item.title}</span>
-                          </AccordionTrigger>
-                          <AccordionContent className="pt-2 pb-3 px-2 text-xs text-muted-foreground bg-muted/40 rounded border border-border/10 mt-1">
-                            {item.imageUrl && (
-                              <div className="relative w-full h-32 mb-2 rounded overflow-hidden">
-                                <Image
-                                  src={item.imageUrl}
-                                  alt={item.title}
-                                  fill
-                                  className="object-cover"
-                                />
-                              </div>
-                            )}
-                            {item.content && (
-                              <div
-                                className="whitespace-normal [&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded [&_img]:rounded [&_img]:max-h-32 [&_img]:mx-auto [&_a]:text-orange-500 [&_a]:underline"
-                                dangerouslySetInnerHTML={{ __html: clientSanitize(item.content) }}
-                              />
-                            )}
-                            <p className="text-[10px] text-muted-foreground/60 mt-2 text-right">
-                              {new Date(item.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
-                            </p>
-                          </AccordionContent>
-                        </AccordionItem>
-                      ))}
-                    </Accordion>
-                  </div>
-                )}
+                {/* Espacio superior para compensar que no hay acordeón de notificaciones */}
+                <div className="pt-2" />
 
                 {/* Logo y Encabezado */}
                 <div className="p-2 border-b flex items-center gap-3">
