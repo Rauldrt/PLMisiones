@@ -46,9 +46,9 @@ export default function ManageNotificationsPage() {
     });
   };
 
-  const handleFieldChange = (index: number, field: keyof NotificationItem, value: string | boolean) => {
+  const handleFieldChange = <K extends keyof NotificationItem>(index: number, field: K, value: NotificationItem[K]) => {
     const newItems = [...items];
-    (newItems[index] as any)[field] = value;
+    newItems[index] = { ...newItems[index], [field]: value };
     setItems(newItems);
   };
   
