@@ -10,10 +10,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/icons';
 import { useToast } from '@/hooks/use-toast';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Accordion, AccordionContent, AccordionItem as UiAccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Accordion } from '@/components/ui/accordion';
 import { ImageGallery } from '@/components/ImageGallery';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { MosaicItemEditor } from './MosaicItemEditor';
 
 export default function ManageMosaicPage() {
   const [items, setItems] = useState<MosaicItem[]>([]);
@@ -50,44 +50,15 @@ export default function ManageMosaicPage() {
     newItems[index] = { ...newItems[index], [field]: value };
     setItems(newItems);
   };
-  
-  const handleImageChange = (itemIndex: number, imageIndex: number, value: string) => {
-    const newItems = [...items];
-    const newImageUrls = [...newItems[itemIndex].imageUrls];
-    newImageUrls[imageIndex] = value;
-    handleFieldChange(itemIndex, 'imageUrls', newImageUrls);
-  };
 
   const handleImageSelect = (imageUrl: string) => {
     if (editingItemIndex !== null && editingImageIndex !== null) {
-      handleImageChange(editingItemIndex, editingImageIndex, imageUrl);
+      const newImageUrls = [...items[editingItemIndex].imageUrls];
+      newImageUrls[editingImageIndex] = imageUrl;
+      handleFieldChange(editingItemIndex, 'imageUrls', newImageUrls);
     }
     setGalleryOpen(false);
   };
-
-  const addImage = (itemIndex: number) => {
-    const newItems = [...items];
-    const newImageUrls = [...newItems[itemIndex].imageUrls, `https://placehold.co/600x400`];
-    handleFieldChange(itemIndex, 'imageUrls', newImageUrls);
-  };
-
-  const removeImage = (itemIndex: number, imageIndex: number) => {
-    const newItems = [...items];
-    const newImageUrls = newItems[itemIndex].imageUrls.filter((_, i) => i !== imageIndex);
-    handleFieldChange(itemIndex, 'imageUrls', newImageUrls);
-  };
-
-  const moveImage = (itemIndex: number, imageIndex: number, direction: 'up' | 'down') => {
-    const newItems = [...items];
-    const newImageUrls = [...newItems[itemIndex].imageUrls];
-    if ((direction === 'up' && imageIndex === 0) || (direction === 'down' && imageIndex === newImageUrls.length - 1)) {
-        return;
-    }
-    const image = newImageUrls.splice(imageIndex, 1)[0];
-    const newIndex = direction === 'up' ? imageIndex - 1 : imageIndex + 1;
-    newImageUrls.splice(newIndex, 0, image);
-    handleFieldChange(itemIndex, 'imageUrls', newImageUrls);
-  }
 
   const addItem = () => {
     setItems([...items, { id: new Date().getTime().toString(), title: 'Nuevo Mosaico', imageUrls: ['https://placehold.co/600x400'], imageHints: [], colSpan: 1, rowSpan: 1, animationType: 'fade', animationDuration: 7000 }]);
@@ -114,99 +85,17 @@ export default function ManageMosaicPage() {
             {isLoading ? <p>Cargando...</p> : (
               <Accordion type="single" collapsible className="w-full">
                 {items.map((item, index) => (
-                  <UiAccordionItem key={item.id} value={item.id}>
-                      <div className="flex justify-between items-center w-full pr-4">
-                        <AccordionTrigger className="hover:no-underline flex-1 text-left">
-                          <span>{item.title || `Mosaico ${index + 1}`}</span>
-                        </AccordionTrigger>
-                        <div className="flex gap-2 items-center">
-                            <Button variant="destructive" size="icon" onClick={() => removeItem(item.id)} aria-label="Eliminar"><Icons.Trash className="w-4 h-4"/></Button>
-                        </div>
-                      </div>
-                    <AccordionContent className="p-4 border-t space-y-4">
-                        <div className="space-y-1">
-                          <Label htmlFor={`title-${index}`}>Título</Label>
-                          <Input id={`title-${index}`} value={item.title} onChange={e => handleFieldChange(index, 'title', e.target.value)} />
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-1">
-                              <Label>Ancho (Columnas)</Label>
-                              <Select value={String(item.colSpan)} onValueChange={(v) => handleFieldChange(index, 'colSpan', Number(v))}>
-                                  <SelectTrigger><SelectValue /></SelectTrigger>
-                                  <SelectContent>
-                                      <SelectItem value="1">1 Columna</SelectItem>
-                                      <SelectItem value="2">2 Columnas</SelectItem>
-                                  </SelectContent>
-                              </Select>
-                          </div>
-                          <div className="space-y-1">
-                              <Label>Alto (Filas)</Label>
-                              <Select value={String(item.rowSpan)} onValueChange={(v) => handleFieldChange(index, 'rowSpan', Number(v))}>
-                                  <SelectTrigger><SelectValue /></SelectTrigger>
-                                  <SelectContent>
-                                      <SelectItem value="1">1 Fila</SelectItem>
-                                      <SelectItem value="2">2 Filas</SelectItem>
-                                  </SelectContent>
-                              </Select>
-                          </div>
-                        </div>
-
-                        <div className="border-t pt-4 mt-4 space-y-4">
-                            <h4 className="text-base font-semibold">Animación y Apariencia</h4>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="space-y-1">
-                                    <Label>Tipo de Transición</Label>
-                                    <Select value={item.animationType || 'fade'} onValueChange={(v) => handleFieldChange(index, 'animationType', v as any)}>
-                                        <SelectTrigger><SelectValue /></SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="fade">Fade</SelectItem>
-                                            <SelectItem value="slide-left">Slide Left</SelectItem>
-                                            <SelectItem value="slide-right">Slide Right</SelectItem>
-                                            <SelectItem value="zoom">Zoom</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div className="space-y-1">
-                                    <Label>Duración de cada imagen (ms)</Label>
-                                    <Input type="number" value={item.animationDuration || 7000} onChange={e => handleFieldChange(index, 'animationDuration', Number(e.target.value))} placeholder="Ej: 7000" />
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div className="space-y-2 border-t pt-4 mt-4">
-                          <Label>Imágenes</Label>
-                          {item.imageUrls.map((url, imgIndex) => (
-                              <div key={imgIndex} className="flex items-center gap-2">
-                                  <Input value={url} onChange={e => handleImageChange(index, imgIndex, e.target.value)} />
-                                  <DialogTrigger asChild>
-                                    <Button variant="outline" size="icon" aria-label="Abrir galería" onClick={() => {
-                                        setEditingItemIndex(index);
-                                        setEditingImageIndex(imgIndex);
-                                    }}>
-                                        <Icons.Gallery className="w-4 h-4" />
-                                    </Button>
-                                  </DialogTrigger>
-                                  <div className="flex flex-col">
-                                    <Button variant="ghost" size="icon" className="h-5" onClick={() => moveImage(index, imgIndex, 'up')} disabled={imgIndex === 0} aria-label="Subir imagen">
-                                        <Icons.ChevronUp className="w-4 h-4"/>
-                                    </Button>
-                                    <Button variant="ghost" size="icon" className="h-5" onClick={() => moveImage(index, imgIndex, 'down')} disabled={imgIndex === item.imageUrls.length - 1} aria-label="Bajar imagen">
-                                        <Icons.ChevronDown className="w-4 h-4"/>
-                                    </Button>
-                                  </div>
-                                  <Button variant="ghost" size="icon" onClick={() => removeImage(index, imgIndex)} aria-label="Eliminar imagen">
-                                      <Icons.Trash className="w-4 h-4 text-destructive"/>
-                                  </Button>
-                              </div>
-                          ))}
-                          <Button variant="outline" size="sm" onClick={() => addImage(index)}>
-                              <Icons.Plus className="mr-2 h-4 w-4" /> Agregar Imagen
-                          </Button>
-                        </div>
-                    </AccordionContent>
-                  </UiAccordionItem>
+                  <MosaicItemEditor
+                    key={item.id}
+                    item={item}
+                    index={index}
+                    onUpdate={handleFieldChange}
+                    onRemove={removeItem}
+                    onImageSelectTrigger={(itemIndex, imageIndex) => {
+                      setEditingItemIndex(itemIndex);
+                      setEditingImageIndex(imageIndex);
+                    }}
+                  />
                 ))}
               </Accordion>
             )}
