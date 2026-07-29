@@ -2,7 +2,7 @@
 'use client';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { ReactNode, createContext, useContext, useState, useEffect } from 'react';
+import { ReactNode, createContext, useContext, useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { LoadingBar } from './LoadingBar';
 import type { SocialLink, FooterContent, GoogleForm, BannerConfig } from '@/lib/types';
@@ -40,7 +40,7 @@ export function SiteLayout({
   const pathname = usePathname();
   const isAdminRoute = pathname.startsWith('/admin') || pathname === '/login';
   const [activeBg, setActiveBg] = useState<string>('');
-  const [scrollY, setScrollY] = useState(0);
+  const bgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isAdminRoute) return;
@@ -49,7 +49,9 @@ export function SiteLayout({
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setScrollY(window.scrollY);
+          if (bgRef.current) {
+            bgRef.current.style.transform = `scale(1.25) translate3d(0, ${window.scrollY * -0.1}px, 0)`;
+          }
           ticking = false;
         });
         ticking = true;
@@ -57,8 +59,14 @@ export function SiteLayout({
     };
     
     window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Set initial position immediately
+    if (bgRef.current) {
+      bgRef.current.style.transform = `scale(1.25) translate3d(0, ${window.scrollY * -0.1}px, 0)`;
+    }
+    
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isAdminRoute]);
+  }, [isAdminRoute, activeBg]);
   
   if (isAdminRoute) {
     return <>{children}</>;
@@ -83,12 +91,13 @@ export function SiteLayout({
         {activeBg && (
           <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
             <div 
-              className="absolute inset-0"
+              ref={bgRef}
+              className="absolute inset-0 transition-transform duration-75 ease-out"
               style={{ 
                 backgroundImage: `url(${activeBg})`,
                 backgroundPosition: bgPosition,
                 backgroundSize: bgSize,
-                transform: `scale(1.25) translate3d(0, ${scrollY * -0.1}px, 0)`,
+                transform: 'scale(1.25) translate3d(0, 0px, 0)',
                 opacity: bgOpacity,
                 filter: `blur(${bgBlur}px)`,
               }}

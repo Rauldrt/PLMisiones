@@ -24,6 +24,7 @@ export function AnimatedBannerBackground({
   bannerOverlayOpacity 
 }: AnimatedBannerBackgroundProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isIntersecting, setIsIntersecting] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,7 +34,23 @@ export function AnimatedBannerBackground({
   }, [currentIndex, slides, onImageChange]);
 
   useEffect(() => {
-    if (disableParallax) return;
+    if (typeof window === 'undefined' || !containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(containerRef.current);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (disableParallax || !isIntersecting) return;
     let ticking = false;
     let animationFrameId: number;
 
@@ -63,7 +80,7 @@ export function AnimatedBannerBackground({
         window.cancelAnimationFrame(animationFrameId);
       }
     };
-  }, [disableParallax, parallaxFactor]);
+  }, [disableParallax, parallaxFactor, isIntersecting]);
 
 
   useEffect(() => {
