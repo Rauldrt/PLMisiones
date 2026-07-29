@@ -331,7 +331,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
                       loop: lightboxData.images.length > 1,
                       startIndex: lightboxData.startIndex,
                   }}
-                  className="w-full h-full"
+                  className="w-full h-full [&>div]:h-full"
                 >
                   <CarouselContent className="h-full ml-0">
                       {lightboxData.images.map((imageSrc, index) => (
