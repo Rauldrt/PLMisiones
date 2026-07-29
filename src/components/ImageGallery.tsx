@@ -112,8 +112,8 @@ export function ImageGallery({ onImageSelect, showUploadTab = true }: ImageGalle
                         description: `El archivo ${file.name} se subió y optimizó correctamente.`,
                     });
                     
-                    // Invocar la selección automática con la ruta pública
-                    onImageSelect(`/${file.name}`);
+                    // Invocar la selección automática con la ruta final retornada
+                    onImageSelect(uploadResult.url || `/${file.name}`);
                 } else {
                     toast({
                         variant: "destructive",
