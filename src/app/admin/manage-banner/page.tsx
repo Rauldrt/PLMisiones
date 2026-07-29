@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/icons';
+import { compressImage } from '@/lib/client-utils';
 import { useToast } from '@/hooks/use-toast';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Switch } from '@/components/ui/switch';
@@ -34,7 +35,16 @@ export default function ManageBannerPage() {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = async () => {
-        const base64Data = reader.result as string;
+        let base64Data = reader.result as string;
+        
+        if (file.type.startsWith('image/')) {
+          try {
+            base64Data = await compressImage(base64Data, 2048, 2048, 0.82);
+          } catch (compressErr) {
+            console.warn('Fallo al comprimir la imagen, se procederá a subir el archivo original:', compressErr);
+          }
+        }
+
         const result = await uploadBannerImageAction(base64Data, file.name);
         
         if (result.success && result.url) {

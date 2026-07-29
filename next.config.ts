@@ -22,6 +22,11 @@ const cspHeader = `
 
 const nextConfig: NextConfig = {
   /* config options here */
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '15mb',
+    },
+  },
   typescript: {
     ignoreBuildErrors: true,
   },

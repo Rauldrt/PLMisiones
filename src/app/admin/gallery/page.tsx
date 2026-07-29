@@ -11,6 +11,7 @@ import { Icons } from '@/components/icons';
 import Image from 'next/image';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import { compressImage } from '@/lib/client-utils';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -70,8 +71,16 @@ export default function GalleryPage() {
             const fileDataPromises = filesToUpload.map(file => {
                 return new Promise<{ name: string, data: string }>((resolve, reject) => {
                     const reader = new FileReader();
-                    reader.onloadend = () => {
-                        resolve({ name: file.name, data: reader.result as string });
+                    reader.onloadend = async () => {
+                        let base64Data = reader.result as string;
+                        if (file.type.startsWith('image/')) {
+                            try {
+                                base64Data = await compressImage(base64Data, 2048, 2048, 0.82);
+                            } catch (compressErr) {
+                                console.warn('Fallo al comprimir el archivo:', file.name, compressErr);
+                            }
+                        }
+                        resolve({ name: file.name, data: base64Data });
                     };
                     reader.onerror = reject;
                     reader.readAsDataURL(file);
