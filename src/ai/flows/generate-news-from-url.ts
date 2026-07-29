@@ -10,7 +10,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import * as cheerio from 'cheerio';
-import dns from 'dns';
+import { safeFetchWrap } from '@atproto-labs/fetch-node';
 
 const GenerateNewsContentInputSchema = z.object({
   url: z.string().url().describe('The URL to generate news content from.'),
@@ -36,25 +36,34 @@ const fetchAndParseUrlTool = ai.defineTool(
   },
   async ({ url }) => {
     try {
-      // SECURITY: Protect against SSRF by manually following redirects and validating IPs
+      // SECURITY: Protect against SSRF and TOCTOU DNS Rebinding attacks by wrapping native fetch.
+      // safeFetchWrap performs network boundary checks at the socket connection level.
+      const safeFetch = safeFetchWrap({
+        fetch,
+        allowHttp: true, // we want to allow fetching standard HTTP sites
+        allowImplicitRedirect: false,
+      });
+
+      const parsedUrl = new URL(url);
+      if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
+          throw new Error('Only HTTP/S allowed');
+      }
+
+      // safeFetchWrap handles redirects securely as well but requires explicit redirect behavior.
+      // Since we want to follow redirects we would need manual if follow is banned, but let's check
+      // if safeFetchWrap allows 'error' or 'manual' as the only options. If we want to follow redirects,
+      // we must implement a custom loop or let the package handle it if allowed.
+      // The tests showed "Request redirect must be "error" or "manual"", so we use 'manual' and handle redirects.
+
       let currentUrl = url;
       let response: Response;
       let redirects = 0;
 
       while (true) {
         if (redirects > 5) throw new Error('Too many redirects');
-        const parsedUrl = new URL(currentUrl);
-        if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') throw new Error('Only HTTP/S allowed');
 
-        const { address } = await dns.promises.lookup(parsedUrl.hostname);
-        const isPrivate = address === '::1' || address === '::' || /^127\.\d+\.\d+\.\d+$/.test(address) ||
-          /^10\.\d+\.\d+\.\d+$/.test(address) || /^172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+$/.test(address) ||
-          /^192\.168\.\d+\.\d+$/.test(address) || /^0\.0\.0\.0$/.test(address) || /^169\.254\.\d+\.\d+$/.test(address) ||
-          /^f[cd][0-9a-f]{2}:/i.test(address) || /^::ffff:(127|10|172\.(1[6-9]|2\d|3[0-1])|192\.168|169\.254|0)\./i.test(address);
+        response = await safeFetch(currentUrl, { redirect: 'manual' });
 
-        if (isPrivate) throw new Error('Access to private network forbidden');
-
-        response = await fetch(currentUrl, { redirect: 'manual' });
         if ([301, 302, 303, 307, 308].includes(response.status)) {
           const location = response.headers.get('location');
           if (!location) throw new Error('Redirect missing location header');
