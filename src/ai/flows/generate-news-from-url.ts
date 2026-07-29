@@ -11,6 +11,8 @@ import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import * as cheerio from 'cheerio';
 import dns from 'dns';
+import * as http from 'http';
+import * as https from 'https';
 
 const GenerateNewsContentInputSchema = z.object({
   url: z.string().url().describe('The URL to generate news content from.'),
@@ -46,7 +48,7 @@ const fetchAndParseUrlTool = ai.defineTool(
         const parsedUrl = new URL(currentUrl);
         if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') throw new Error('Only HTTP/S allowed');
 
-        const { address } = await dns.promises.lookup(parsedUrl.hostname);
+        const { address, family } = await dns.promises.lookup(parsedUrl.hostname);
         const isPrivate = address === '::1' || address === '::' || /^127\.\d+\.\d+\.\d+$/.test(address) ||
           /^10\.\d+\.\d+\.\d+$/.test(address) || /^172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+$/.test(address) ||
           /^192\.168\.\d+\.\d+$/.test(address) || /^0\.0\.0\.0$/.test(address) || /^169\.254\.\d+\.\d+$/.test(address) ||
@@ -54,7 +56,45 @@ const fetchAndParseUrlTool = ai.defineTool(
 
         if (isPrivate) throw new Error('Access to private network forbidden');
 
-        response = await fetch(currentUrl, { redirect: 'manual' });
+        response = await new Promise<Response>((resolve, reject) => {
+          const protocol = parsedUrl.protocol === 'https:' ? https : http;
+          const req = protocol.request({
+            hostname: parsedUrl.hostname,
+            port: parsedUrl.port || (parsedUrl.protocol === 'https:' ? 443 : 80),
+            path: parsedUrl.pathname + parsedUrl.search,
+            method: 'GET',
+            lookup: (hostname, opts, callback) => {
+              // Override DNS lookup to enforce the validated IP
+              callback(null, address, family);
+            }
+          }, (res) => {
+            const status = res.statusCode || 200;
+            const headers = new Headers();
+            for (const [key, value] of Object.entries(res.headers)) {
+              if (Array.isArray(value)) {
+                value.forEach(v => headers.append(key, v));
+              } else if (value !== undefined) {
+                headers.append(key, value);
+              }
+            }
+            const isRedirect = [301, 302, 303, 307, 308].includes(status);
+
+            if (isRedirect) {
+              resolve(new Response(null, { status, headers }));
+              return;
+            }
+
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => {
+              resolve(new Response(data, { status, headers }));
+            });
+          });
+
+          req.on('error', reject);
+          req.end();
+        });
+
         if ([301, 302, 303, 307, 308].includes(response.status)) {
           const location = response.headers.get('location');
           if (!location) throw new Error('Redirect missing location header');
