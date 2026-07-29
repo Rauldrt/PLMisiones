@@ -167,6 +167,9 @@ export default {
             opacity: '1',
           },
         },
+        'shimmer': {
+          '100%': { transform: 'translateX(100%)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -181,6 +184,7 @@ export default {
         'ping-slow': 'ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite',
         'ping-fast': 'ping-fast 0.7s cubic-bezier(0, 0, 0.2, 1) infinite',
         'icon-glow': 'icon-glow 2s ease-in-out infinite',
+        'shimmer': 'shimmer 1.2s ease-in-out',
       },
       transitionDuration: {
         '2000': '2000ms',

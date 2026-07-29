@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import type { BannerTextSlide, BannerBackgroundSlide, MosaicItem, AccordionItem as AccordionItemType, NewsArticle, Candidate, NotificationItem, OrganigramaMember, Proposal, StreamingItem, Notification, FuchsiaPillConfig } from '@/lib/types';
 import { Banner } from './Banner';
@@ -22,6 +22,7 @@ import { useBackground } from './SiteLayout';
 import { InstagramEmbedProcessor } from './InstagramEmbedProcessor';
 import { StreamingSection } from './StreamingSection';
 import { cn } from '@/lib/utils';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 
 interface HomepageClientProps {
@@ -169,7 +170,24 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
 
 export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems, showProposals, layoutMode, institutionalBgType, institutionalBgVal, bannerOverlayOpacity, fuchsiaCardBgType, fuchsiaPills }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
+    const [api, setApi] = useState<CarouselApi>();
+    const [currentIndex, setCurrentIndex] = useState(0);
     const { setActiveBg } = useBackground();
+
+    useEffect(() => {
+        if (!api) return;
+        
+        setCurrentIndex(api.selectedScrollSnap());
+        
+        const onSelect = () => {
+            setCurrentIndex(api.selectedScrollSnap());
+        };
+        
+        api.on("select", onSelect);
+        return () => {
+            api.off("select", onSelect);
+        };
+    }, [api]);
 
     const handleTileClick = (item: MosaicItem, startIndex: number) => {
         setLightboxData({ 
@@ -178,6 +196,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
             title: item.title,
             startIndex,
         });
+        setCurrentIndex(startIndex);
     };
 
   return (
@@ -271,33 +290,124 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
 
       <Dialog 
         open={!!lightboxData} 
-        onOpenChange={(isOpen) => !isOpen && setLightboxData(null)}
+        onOpenChange={(isOpen) => {
+            if (!isOpen) {
+                setLightboxData(null);
+                setApi(undefined);
+            }
+        }}
       >
-        <DialogContent className="max-w-7xl w-full h-full max-h-[90vh] p-2 bg-transparent border-0 shadow-none flex items-center justify-center">
+        <DialogContent className="max-w-5xl w-[95vw] h-auto p-0 border-0 bg-transparent shadow-none overflow-visible [&>button]:hidden">
           {lightboxData && (
-            <Carousel
-              opts={{
-                  loop: lightboxData.images.length > 1,
-                  startIndex: lightboxData.startIndex,
-              }}
-              className="w-full h-full"
-            >
-              <CarouselContent className="h-full">
-                  {lightboxData.images.map((imageSrc, index) => (
-                      <CarouselItem key={index} className="relative h-full flex items-center justify-center">
-                          <Image
-                              src={imageSrc}
-                              alt={`${lightboxData.title} - Imagen ${index + 1}`}
-                              width={1600}
-                              height={900}
-                              className="rounded-lg object-contain w-auto h-auto max-w-full max-h-full"
-                              data-ai-hint={lightboxData.imageHints ? lightboxData.imageHints[index] : ''}
-                          />
-                      </CarouselItem>
-                  ))}
-              </CarouselContent>
+            <div className="w-full flex flex-col bg-card/95 dark:bg-zinc-950/95 border border-white/10 dark:border-white/5 rounded-[2.5rem] shadow-2xl backdrop-blur-xl overflow-hidden animate-fade-in-up" style={{ animationDuration: '300ms' }}>
               
-            </Carousel>
+              {/* Header Bar */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 dark:border-white/5 bg-white/5 dark:bg-black/20 shrink-0">
+                <div>
+                  <h3 className="font-headline text-lg font-bold text-foreground">
+                    {lightboxData.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Imagen {currentIndex + 1} de {lightboxData.images.length}
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                      setLightboxData(null);
+                      setApi(undefined);
+                  }}
+                  className="p-2 rounded-full hover:bg-muted/80 text-muted-foreground hover:text-foreground transition-all duration-200 border border-transparent hover:border-border/50"
+                >
+                  <X className="w-5 h-5" />
+                  <span className="sr-only">Cerrar</span>
+                </button>
+              </div>
+
+              {/* Main Viewer Area (Standardized Height and Aspect Ratio) */}
+              <div className="relative w-full h-[55vh] md:h-[60vh] max-h-[500px] min-h-[300px] flex items-center justify-center bg-black/30 dark:bg-black/60 overflow-hidden">
+                <Carousel
+                  setApi={setApi}
+                  opts={{
+                      loop: lightboxData.images.length > 1,
+                      startIndex: lightboxData.startIndex,
+                  }}
+                  className="w-full h-full"
+                >
+                  <CarouselContent className="h-full ml-0">
+                      {lightboxData.images.map((imageSrc, index) => (
+                          <CarouselItem key={index} className="relative h-full flex items-center justify-center pl-0">
+                              <div className="relative w-full h-full p-4 flex items-center justify-center">
+                                  <Image
+                                      src={imageSrc}
+                                      alt={`${lightboxData.title} - Imagen ${index + 1}`}
+                                      fill
+                                      className="object-contain p-2 select-none"
+                                      sizes="(max-width: 1024px) 100vw, 1024px"
+                                      data-ai-hint={lightboxData.imageHints ? lightboxData.imageHints[index] : ''}
+                                      priority={index === 0}
+                                  />
+                              </div>
+                          </CarouselItem>
+                      ))}
+                  </CarouselContent>
+                </Carousel>
+
+                {/* Floating Navigation Controls */}
+                {lightboxData.images.length > 1 && (
+                  <>
+                    <button
+                      onClick={() => api?.scrollPrev()}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2.5 rounded-full bg-black/45 hover:bg-black/75 border border-white/10 text-white transition-all hover:scale-105 active:scale-95 shadow-lg backdrop-blur-sm"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() => api?.scrollNext()}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2.5 rounded-full bg-black/45 hover:bg-black/75 border border-white/10 text-white transition-all hover:scale-105 active:scale-95 shadow-lg backdrop-blur-sm"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  </>
+                )}
+              </div>
+
+              {/* Bottom Caption & Thumbnail Strip */}
+              <div className="px-6 py-4 bg-white/5 dark:bg-black/20 border-t border-white/10 dark:border-white/5 flex flex-col gap-4 shrink-0">
+                {/* Caption */}
+                {lightboxData.imageHints && lightboxData.imageHints[currentIndex] && (
+                  <p className="text-sm text-foreground/80 font-medium text-center italic">
+                    {lightboxData.imageHints[currentIndex]}
+                  </p>
+                )}
+
+                {/* Thumbnail list */}
+                {lightboxData.images.length > 1 && (
+                  <div className="flex items-center justify-center gap-2 overflow-x-auto py-1 max-w-full no-scrollbar">
+                    {lightboxData.images.map((imgUrl, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => api?.scrollTo(idx)}
+                        className={cn(
+                          "relative w-16 h-10 md:w-20 md:h-12 rounded-lg overflow-hidden border-2 transition-all duration-300 shrink-0 select-none",
+                          currentIndex === idx 
+                            ? "border-primary opacity-100 scale-105 shadow-md shadow-primary/20" 
+                            : "border-transparent opacity-50 hover:opacity-85 hover:scale-102"
+                        )}
+                      >
+                        <Image
+                          src={imgUrl}
+                          alt={`Thumbnail ${idx + 1}`}
+                          fill
+                          className="object-cover"
+                          sizes="80px"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+            </div>
           )}
         </DialogContent>
       </Dialog>
