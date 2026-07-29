@@ -46,11 +46,12 @@ const fetchAndParseUrlTool = ai.defineTool(
         const parsedUrl = new URL(currentUrl);
         if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') throw new Error('Only HTTP/S allowed');
 
-        const { address } = await dns.promises.lookup(parsedUrl.hostname);
+        const hostnameForLookup = parsedUrl.hostname.replace(/^\[|\]$/g, '');
+        const { address } = await dns.promises.lookup(hostnameForLookup);
         const isPrivate = address === '::1' || address === '::' || /^127\.\d+\.\d+\.\d+$/.test(address) ||
           /^10\.\d+\.\d+\.\d+$/.test(address) || /^172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+$/.test(address) ||
           /^192\.168\.\d+\.\d+$/.test(address) || /^0\.0\.0\.0$/.test(address) || /^169\.254\.\d+\.\d+$/.test(address) ||
-          /^f[cd][0-9a-f]{2}:/i.test(address) || /^::ffff:(127|10|172\.(1[6-9]|2\d|3[0-1])|192\.168|169\.254|0)\./i.test(address);
+          /^f[cd][0-9a-f]{2}:/i.test(address) || /^fe[89ab][0-9a-f]:/i.test(address) || /^::ffff:(127|10|172\.(1[6-9]|2\d|3[0-1])|192\.168|169\.254|0)\./i.test(address);
 
         if (isPrivate) throw new Error('Access to private network forbidden');
 
