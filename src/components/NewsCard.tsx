@@ -104,7 +104,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
             <div className="px-4 pt-0 pb-2 mt-auto">
                 <Button asChild variant="link" className="p-0 h-auto">
                     <Link href={`/noticias/${article.slug}`}>
-                        Leer más
+                        Leer más<span className="sr-only"> sobre {article.title}</span>
                     </Link>
                 </Button>
             </div>
