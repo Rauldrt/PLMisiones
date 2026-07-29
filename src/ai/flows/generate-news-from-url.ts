@@ -11,6 +11,10 @@ import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import * as cheerio from 'cheerio';
 import dns from 'dns';
+import http from 'http';
+import https from 'https';
+import zlib from 'zlib';
+import { Buffer } from 'buffer';
 
 const GenerateNewsContentInputSchema = z.object({
   url: z.string().url().describe('The URL to generate news content from.'),
@@ -54,7 +58,44 @@ const fetchAndParseUrlTool = ai.defineTool(
 
         if (isPrivate) throw new Error('Access to private network forbidden');
 
-        response = await fetch(currentUrl, { redirect: 'manual' });
+        response = await new Promise<Response>((resolve, reject) => {
+          const reqLib = parsedUrl.protocol === 'https:' ? https : http;
+          const req = reqLib.request(currentUrl, {
+            lookup: (hostname, opts, cb) => {
+               const callback = typeof opts === 'function' ? opts : cb;
+               // Handle node > 20 callback signature that might expect an array for family 'all'
+               if (typeof opts === 'object' && opts !== null && (opts as any).all === true) {
+                  callback(null, [{address, family: 4}]);
+               } else {
+                  callback(null, address, 4);
+               }
+            },
+            headers: { 'Accept-Encoding': 'gzip, deflate, br' }
+          }, (res) => {
+            const headers = new Headers();
+            for (const [key, value] of Object.entries(res.headers)) {
+              if (value !== undefined) {
+                headers.set(key, Array.isArray(value) ? JSON.stringify(value) : value);
+              }
+            }
+            let stream: import('stream').Readable = res;
+            const encoding = res.headers['content-encoding'];
+            if (encoding === 'gzip') stream = res.pipe(zlib.createGunzip());
+            else if (encoding === 'deflate') stream = res.pipe(zlib.createInflate());
+            else if (encoding === 'br') stream = res.pipe(zlib.createBrotliDecompress());
+
+            stream.on('error', reject);
+            const chunks: Buffer[] = [];
+            stream.on('data', (c) => chunks.push(Buffer.from(c)));
+            stream.on('end', () => {
+              const body = Buffer.concat(chunks).toString('utf-8');
+              resolve(new Response(body, { status: res.statusCode, headers }));
+            });
+          });
+          req.on('error', reject);
+          req.end();
+        });
+
         if ([301, 302, 303, 307, 308].includes(response.status)) {
           const location = response.headers.get('location');
           if (!location) throw new Error('Redirect missing location header');
