@@ -102,6 +102,14 @@ export interface OrganigramaMember {
     description: string;
 }
 
+export interface LinkPreviewMetadata {
+  url: string;
+  title?: string;
+  description?: string;
+  imageUrl?: string;
+  siteName?: string;
+}
+
 export interface Notification {
   enabled: boolean;
   text: string;
@@ -112,6 +120,7 @@ export interface Notification {
   imageHint?: string;
   glowColor?: 'orange' | 'blue' | 'green' | 'red';
   glowSpeed?: 'slow' | 'normal' | 'fast';
+  linkPreview?: LinkPreviewMetadata;
 }
 
 export interface NotificationItem {
@@ -123,6 +132,7 @@ export interface NotificationItem {
   imageHint?: string;
   hidden?: boolean;
   tag?: string;
+  linkPreview?: LinkPreviewMetadata;
 }
 
 export interface Proposal {

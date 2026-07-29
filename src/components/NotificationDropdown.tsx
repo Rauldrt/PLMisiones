@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/popover';
 import { cva } from 'class-variance-authority';
 import { clientSanitize } from '@/lib/client-sanitize';
+import { LinkPreviewCard } from './LinkPreviewCard';
 
 interface NotificationDropdownProps {
   notifications: NotificationItem[];
@@ -96,6 +97,11 @@ export function NotificationDialog({
                     dangerouslySetInnerHTML={{ __html: clientSanitize(item.content) }}
                   />
                 </div>
+            )}
+            {item.linkPreview && (
+              <div className="pb-4 px-6 -mx-6">
+                <LinkPreviewCard metadata={item.linkPreview} />
+              </div>
             )}
           </>
         )}

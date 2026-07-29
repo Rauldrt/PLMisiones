@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { clientSanitize } from '@/lib/client-sanitize';
+import { LinkPreviewCard } from './LinkPreviewCard';
 
 interface NotificacionesClientProps {
   initialNotifications: NotificationItem[];
@@ -83,6 +84,9 @@ export function NotificacionesClient({ initialNotifications }: NotificacionesCli
                               </div>
                           ) : (
                               <div className="prose prose-sm prose-invert max-w-full" dangerouslySetInnerHTML={{ __html: clientSanitize(item.content) }} />
+                          )}
+                          {item.linkPreview && (
+                            <LinkPreviewCard metadata={item.linkPreview} />
                           )}
                         </CardContent>
                       </>

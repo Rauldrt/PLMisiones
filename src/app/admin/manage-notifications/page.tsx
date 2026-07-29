@@ -3,6 +3,7 @@
 import { useState, useEffect, useTransition, useRef } from 'react';
 import { getNotificationAction, getNotificationsAction } from '@/actions/data';
 import { saveNotification, saveNotificationsPage } from '@/actions/admin';
+import { fetchUrlMetadataAction } from '@/actions/url-metadata';
 import type { Notification, NotificationItem } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,6 +18,7 @@ import { ImageGallery } from '@/components/ImageGallery';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { LinkPreviewCard } from '@/components/LinkPreviewCard';
 import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 
@@ -159,6 +161,10 @@ function NotificationCardPreview({ item }: { item: NotificationItem }) {
             {item.date ? new Date(item.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }) : 'Fecha'}
           </p>
           <div className="prose prose-xs prose-invert max-w-full text-xs text-muted-foreground mt-2 leading-relaxed max-h-[120px] overflow-y-auto" dangerouslySetInnerHTML={{ __html: item.content || 'Escribe contenido...' }} />
+          
+          {item.linkPreview && item.linkPreview.url && (
+            <LinkPreviewCard metadata={item.linkPreview} className="mt-3 bg-muted/10 border-border/60" />
+          )}
         </div>
       )}
     </div>
@@ -208,6 +214,7 @@ export default function UnifiedNotificationsPage() {
   const [feedItems, setFeedItems] = useState<NotificationItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, startSavingTransition] = useTransition();
+  const [isFetchingMetadata, setIsFetchingMetadata] = useState<Record<string, boolean>>({}); // Track loading state by item id (or 'bubble')
   const { toast } = useToast();
   
   const [galleryOpen, setGalleryOpen] = useState(false);
@@ -257,16 +264,54 @@ export default function UnifiedNotificationsPage() {
   };
 
   // Handlers for bubble config
-  const handleBubbleFieldChange = (field: keyof Notification, value: string | boolean) => {
+  const handleBubbleFieldChange = (field: keyof Notification, value: any) => {
     if (!bubbleConfig) return;
     setBubbleConfig({ ...bubbleConfig, [field]: value });
   };
 
+  const handleGenerateBubblePreview = async (url: string) => {
+    if (!url) return;
+    setIsFetchingMetadata(prev => ({ ...prev, bubble: true }));
+    try {
+      const res = await fetchUrlMetadataAction(url);
+      if (res.success && res.metadata) {
+        handleBubbleFieldChange('linkPreview', res.metadata);
+        toast({ title: 'Éxito', description: 'Metadatos del enlace cargados.' });
+      } else {
+        toast({ variant: 'destructive', title: 'Error', description: res.message });
+      }
+    } catch (err) {
+      console.error(err);
+      toast({ variant: 'destructive', title: 'Error', description: 'Fallo al obtener metadatos.' });
+    } finally {
+      setIsFetchingMetadata(prev => ({ ...prev, bubble: false }));
+    }
+  };
+
   // Handlers for feed items
-  const handleFeedFieldChange = (index: number, field: keyof NotificationItem, value: string | boolean) => {
+  const handleFeedFieldChange = (index: number, field: keyof NotificationItem, value: any) => {
     const newItems = [...feedItems];
     (newItems[index] as any)[field] = value;
     setFeedItems(newItems);
+  };
+
+  const handleGenerateFeedPreview = async (index: number, itemId: string, url: string) => {
+    if (!url) return;
+    setIsFetchingMetadata(prev => ({ ...prev, [itemId]: true }));
+    try {
+      const res = await fetchUrlMetadataAction(url);
+      if (res.success && res.metadata) {
+        handleFeedFieldChange(index, 'linkPreview', res.metadata);
+        toast({ title: 'Éxito', description: 'Metadatos del enlace cargados.' });
+      } else {
+        toast({ variant: 'destructive', title: 'Error', description: res.message });
+      }
+    } catch (err) {
+      console.error(err);
+      toast({ variant: 'destructive', title: 'Error', description: 'Fallo al obtener metadatos.' });
+    } finally {
+      setIsFetchingMetadata(prev => ({ ...prev, [itemId]: false }));
+    }
   };
 
   const handleToggleHidden = (id: string, isHidden: boolean) => {
@@ -409,11 +454,11 @@ export default function UnifiedNotificationsPage() {
                             </Button>
                           </div>
                         </div>
-                        <AccordionContent className="pt-2 pb-6 border-t space-y-4">
+                        <AccordionContent className="pt-2 pb-6 border-t space-y-6">
                           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             
                             {/* Editor fields */}
-                            <div className="lg:col-span-2 space-y-4">
+                            <div className="lg:col-span-2 space-y-5">
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-1">
                                   <Label htmlFor={`title-${index}`}>Título</Label>
@@ -491,10 +536,114 @@ export default function UnifiedNotificationsPage() {
                                   placeholder="Escribe el contenido de la notificación..."
                                 />
                               </div>
+
+                              {/* ENLACE ADJUNTO ENRIQUECIDO */}
+                              <div className="border p-4 rounded-lg bg-muted/10 space-y-4">
+                                <div className="flex items-center justify-between">
+                                  <Label className="font-bold text-xs">Enlace Adjunto (Estilo WhatsApp con Metadatos)</Label>
+                                  {item.linkPreview?.url && (
+                                    <Button 
+                                      type="button" 
+                                      variant="ghost" 
+                                      size="sm" 
+                                      className="h-6 text-destructive px-2 text-xs"
+                                      onClick={() => handleFeedFieldChange(index, 'linkPreview', undefined)}
+                                    >
+                                      Quitar Enlace
+                                    </Button>
+                                  )}
+                                </div>
+                                
+                                <div className="flex gap-2">
+                                  <Input
+                                    value={item.linkPreview?.url || ''}
+                                    onChange={e => {
+                                      const prev = item.linkPreview || { url: '' };
+                                      handleFeedFieldChange(index, 'linkPreview', { ...prev, url: e.target.value });
+                                    }}
+                                    placeholder="https://ejemplo.com/pagina-anuncio"
+                                    className="text-xs h-9"
+                                  />
+                                  <Button
+                                    type="button"
+                                    size="sm"
+                                    className="h-9 px-3 shrink-0"
+                                    disabled={isFetchingMetadata[item.id] || !item.linkPreview?.url}
+                                    onClick={() => handleGenerateFeedPreview(index, item.id, item.linkPreview?.url || '')}
+                                  >
+                                    {isFetchingMetadata[item.id] ? (
+                                      <>
+                                        <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" />
+                                        Obteniendo...
+                                      </>
+                                    ) : 'Autocompletar'}
+                                  </Button>
+                                </div>
+
+                                {item.linkPreview && (
+                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2 border-t border-border/40">
+                                    <div className="md:col-span-2 space-y-3">
+                                      <div className="space-y-1">
+                                        <Label className="text-[10px]">Título del Enlace</Label>
+                                        <Input
+                                          value={item.linkPreview.title || ''}
+                                          onChange={e => {
+                                            const prev = item.linkPreview!;
+                                            handleFeedFieldChange(index, 'linkPreview', { ...prev, title: e.target.value });
+                                          }}
+                                          className="text-xs h-8"
+                                        />
+                                      </div>
+                                      <div className="space-y-1">
+                                        <Label className="text-[10px]">Descripción</Label>
+                                        <Textarea
+                                          value={item.linkPreview.description || ''}
+                                          onChange={e => {
+                                            const prev = item.linkPreview!;
+                                            handleFeedFieldChange(index, 'linkPreview', { ...prev, description: e.target.value });
+                                          }}
+                                          className="text-xs min-h-[50px] p-2 leading-relaxed"
+                                          rows={2}
+                                        />
+                                      </div>
+                                      <div className="grid grid-cols-2 gap-2">
+                                        <div className="space-y-1">
+                                          <Label className="text-[10px]">Miniatura URL</Label>
+                                          <Input
+                                            value={item.linkPreview.imageUrl || ''}
+                                            onChange={e => {
+                                              const prev = item.linkPreview!;
+                                              handleFeedFieldChange(index, 'linkPreview', { ...prev, imageUrl: e.target.value });
+                                            }}
+                                            className="text-xs h-8"
+                                            placeholder="https://..."
+                                          />
+                                        </div>
+                                        <div className="space-y-1">
+                                          <Label className="text-[10px]">Nombre del Sitio</Label>
+                                          <Input
+                                            value={item.linkPreview.siteName || ''}
+                                            onChange={e => {
+                                              const prev = item.linkPreview!;
+                                              handleFeedFieldChange(index, 'linkPreview', { ...prev, siteName: e.target.value });
+                                            }}
+                                            className="text-xs h-8"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="flex flex-col items-center justify-center border border-dashed rounded-lg p-2 bg-muted/5">
+                                      <span className="text-[9px] font-bold text-muted-foreground mb-1 uppercase tracking-wider">Vista Previa</span>
+                                      <LinkPreviewCard metadata={item.linkPreview} className="mt-0 scale-[0.95]" />
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+
                             </div>
 
                             {/* Live preview */}
-                            <div className="flex items-center justify-center">
+                            <div className="flex items-start justify-center pt-2">
                               <NotificationCardPreview item={item} />
                             </div>
 
@@ -670,6 +819,110 @@ export default function UnifiedNotificationsPage() {
                             placeholder="Escribe el cuerpo detallado..."
                           />
                         </div>
+
+                        {/* ENLACE ADJUNTO EN LA BURBUJA */}
+                        <div className="border p-4 rounded-lg bg-muted/10 space-y-4">
+                          <div className="flex items-center justify-between">
+                            <Label className="font-bold text-xs">Enlace Adjunto al Popup (Metadatos WhatsApp)</Label>
+                            {bubbleConfig.linkPreview?.url && (
+                              <Button 
+                                type="button" 
+                                variant="ghost" 
+                                size="sm" 
+                                className="h-6 text-destructive px-2 text-xs"
+                                onClick={() => handleBubbleFieldChange('linkPreview', undefined)}
+                              >
+                                Quitar Enlace
+                              </Button>
+                            )}
+                          </div>
+                          
+                          <div className="flex gap-2">
+                            <Input
+                              value={bubbleConfig.linkPreview?.url || ''}
+                              onChange={e => {
+                                const prev = bubbleConfig.linkPreview || { url: '' };
+                                handleBubbleFieldChange('linkPreview', { ...prev, url: e.target.value });
+                              }}
+                              placeholder="https://ejemplo.com/pagina-popup"
+                              className="text-xs h-9"
+                            />
+                            <Button
+                              type="button"
+                              size="sm"
+                              className="h-9 px-3 shrink-0"
+                              disabled={isFetchingMetadata.bubble || !bubbleConfig.linkPreview?.url}
+                              onClick={() => handleGenerateBubblePreview(bubbleConfig.linkPreview?.url || '')}
+                            >
+                              {isFetchingMetadata.bubble ? (
+                                <>
+                                  <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" />
+                                  Obteniendo...
+                                </>
+                              ) : 'Autocompletar'}
+                            </Button>
+                          </div>
+
+                          {bubbleConfig.linkPreview && (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2 border-t border-border/40">
+                              <div className="md:col-span-2 space-y-3">
+                                <div className="space-y-1">
+                                  <Label className="text-[10px]">Título del Enlace</Label>
+                                  <Input
+                                    value={bubbleConfig.linkPreview.title || ''}
+                                    onChange={e => {
+                                      const prev = bubbleConfig.linkPreview!;
+                                      handleBubbleFieldChange('linkPreview', { ...prev, title: e.target.value });
+                                    }}
+                                    className="text-xs h-8"
+                                  />
+                                </div>
+                                <div className="space-y-1">
+                                  <Label className="text-[10px]">Descripción</Label>
+                                  <Textarea
+                                    value={bubbleConfig.linkPreview.description || ''}
+                                    onChange={e => {
+                                      const prev = bubbleConfig.linkPreview!;
+                                      handleBubbleFieldChange('linkPreview', { ...prev, description: e.target.value });
+                                    }}
+                                    className="text-xs min-h-[50px] p-2 leading-relaxed"
+                                    rows={2}
+                                  />
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                  <div className="space-y-1">
+                                    <Label className="text-[10px]">Miniatura URL</Label>
+                                    <Input
+                                      value={bubbleConfig.linkPreview.imageUrl || ''}
+                                      onChange={e => {
+                                        const prev = bubbleConfig.linkPreview!;
+                                        handleBubbleFieldChange('linkPreview', { ...prev, imageUrl: e.target.value });
+                                      }}
+                                      className="text-xs h-8"
+                                      placeholder="https://..."
+                                    />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <Label className="text-[10px]">Nombre del Sitio</Label>
+                                    <Input
+                                      value={bubbleConfig.linkPreview.siteName || ''}
+                                      onChange={e => {
+                                        const prev = bubbleConfig.linkPreview!;
+                                        handleBubbleFieldChange('linkPreview', { ...prev, siteName: e.target.value });
+                                      }}
+                                      className="text-xs h-8"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex flex-col items-center justify-center border border-dashed rounded-lg p-2 bg-muted/5">
+                                <span className="text-[9px] font-bold text-muted-foreground mb-1 uppercase tracking-wider">Vista Previa</span>
+                                <LinkPreviewCard metadata={bubbleConfig.linkPreview} className="mt-0 scale-[0.95]" />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
                       </div>
                     </div>
 
@@ -693,6 +946,10 @@ export default function UnifiedNotificationsPage() {
                         <div className="p-4 space-y-2 text-left">
                           <h4 className="font-headline font-bold text-base text-foreground leading-snug">{bubbleConfig.title || 'Título del Popup'}</h4>
                           <div className="prose prose-xs prose-invert max-w-full text-xs text-muted-foreground mt-2 leading-relaxed max-h-[120px] overflow-y-auto" dangerouslySetInnerHTML={{ __html: bubbleConfig.content || 'Escribe contenido...' }} />
+                          
+                          {bubbleConfig.linkPreview && bubbleConfig.linkPreview.url && (
+                            <LinkPreviewCard metadata={bubbleConfig.linkPreview} className="mt-3 bg-muted/10 border-border/60" />
+                          )}
                         </div>
                       </div>
                     </div>

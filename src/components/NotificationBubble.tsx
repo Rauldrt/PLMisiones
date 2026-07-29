@@ -18,6 +18,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { clientSanitize } from '@/lib/client-sanitize';
+import { LinkPreviewCard } from './LinkPreviewCard';
 
 interface NotificationDropdownProps {
   notifications: NotificationItem[];
@@ -74,6 +75,9 @@ function NotificationDialog({
               className="prose prose-sm prose-invert mt-4 max-w-full"
               dangerouslySetInnerHTML={{ __html: clientSanitize(item.content) }}
             />
+            {item.linkPreview && (
+              <LinkPreviewCard metadata={item.linkPreview} />
+            )}
             <Button asChild className="mt-4">
               <Link href="/notificaciones">Ver todas las notificaciones</Link>
             </Button>
