@@ -10,7 +10,8 @@ export async function getPublicImagesAction() {
     return getPublicImages();
 }
 
-const ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.mp4', '.webm', '.mp3', '.wav', '.ogg'];
+// Security Note: '.svg' is excluded due to Stored XSS risks from embedded <script> tags.
+const ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.mp4', '.webm', '.mp3', '.wav', '.ogg'];
 
 export async function uploadPublicFilesAction(files: { name: string; data: string }[]): Promise<{ success: boolean; message: string }> {
     try {
