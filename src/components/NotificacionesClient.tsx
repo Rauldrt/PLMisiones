@@ -57,11 +57,24 @@ export function NotificacionesClient({ initialNotifications }: NotificacionesCli
                     
                     {hasTextContent && (
                       <>
-                        <CardHeader className="p-4">
-                          <CardTitle>{item.title}</CardTitle>
-                          <CardDescription>
-                            {new Date(item.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}
-                          </CardDescription>
+                        <CardHeader className="p-4 flex flex-row items-center justify-between space-y-0 gap-4">
+                          <div>
+                            <CardTitle>{item.title}</CardTitle>
+                            <CardDescription>
+                              {new Date(item.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}
+                            </CardDescription>
+                          </div>
+                          {item.tag && (
+                            <span className={cn(
+                              "px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider shrink-0 border",
+                              item.tag === 'Alerta' && 'bg-red-500/10 text-red-500 border-red-500/20',
+                              item.tag === 'Evento' && 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+                              item.tag === 'Institucional' && 'bg-green-500/10 text-green-500 border-green-500/20',
+                              item.tag === 'Comunicado' && 'bg-purple-500/10 text-purple-500 border-purple-500/20',
+                            )}>
+                              {item.tag}
+                            </span>
+                          )}
                         </CardHeader>
                         <CardContent className="p-4 pt-0">
                           {isEmbed ? (

@@ -122,6 +122,7 @@ export interface NotificationItem {
   imageUrl?: string;
   imageHint?: string;
   hidden?: boolean;
+  tag?: string;
 }
 
 export interface Proposal {
