@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Icons, getIcon } from '@/components/icons';
 import { Button } from '@/components/ui/button';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon, Laptop } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { Separator } from './ui/separator';
@@ -41,24 +41,59 @@ export function Header({ socialLinks }: HeaderProps) {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [notificationSettings, setNotificationSettings] = useState<Notification | null>(null);
 
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system');
 
   useEffect(() => {
-    const isDark = document.documentElement.classList.contains('dark');
-    setTheme(isDark ? 'dark' : 'light');
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | 'system' | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else {
+      setTheme('system');
+    }
   }, []);
 
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
+  const handleThemeChange = (newTheme: 'light' | 'dark' | 'system') => {
     setTheme(newTheme);
-    if (newTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
+    if (newTheme === 'system') {
+      localStorage.removeItem('theme');
     } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+      localStorage.setItem('theme', newTheme);
     }
   };
+
+  useEffect(() => {
+    const applyTheme = (currentTheme: 'light' | 'dark' | 'system') => {
+      const root = document.documentElement;
+      if (currentTheme === 'system') {
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (systemPrefersDark) {
+          root.classList.add('dark');
+        } else {
+          root.classList.remove('dark');
+        }
+      } else if (currentTheme === 'dark') {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
+    };
+
+    applyTheme(theme);
+
+    if (theme === 'system') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const handleChange = (e: MediaQueryListEvent) => {
+        const root = document.documentElement;
+        if (e.matches) {
+          root.classList.add('dark');
+        } else {
+          root.classList.remove('dark');
+        }
+      };
+      mediaQuery.addEventListener('change', handleChange);
+      return () => mediaQuery.removeEventListener('change', handleChange);
+    }
+  }, [theme]);
 
   useEffect(() => {
     async function loadNotifications() {
@@ -123,19 +158,60 @@ export function Header({ socialLinks }: HeaderProps) {
             ))}
           </nav>
           <div className="hidden md:flex items-center gap-2">
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={toggleTheme} 
-                className="rounded-full w-10 h-10 transition-all duration-300 active:scale-95 hover:bg-muted mr-1"
-                aria-label="Cambiar tema"
-              >
-                {theme === 'light' ? (
-                  <Moon className="h-[1.2rem] w-[1.2rem] text-foreground transition-all duration-300 hover:rotate-12" />
-                ) : (
-                  <Sun className="h-[1.2rem] w-[1.2rem] text-yellow-400 transition-all duration-300 hover:rotate-45" />
-                )}
-              </Button>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="rounded-full w-10 h-10 transition-all duration-300 active:scale-95 hover:bg-muted mr-1"
+                    aria-label="Cambiar tema"
+                  >
+                    {theme === 'light' && (
+                      <Sun className="h-[1.2rem] w-[1.2rem] text-foreground transition-all duration-300 hover:rotate-12" />
+                    )}
+                    {theme === 'dark' && (
+                      <Moon className="h-[1.2rem] w-[1.2rem] text-yellow-400 transition-all duration-300 hover:rotate-12" />
+                    )}
+                    {theme === 'system' && (
+                      <Laptop className="h-[1.2rem] w-[1.2rem] text-foreground opacity-80" />
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-36 p-1.5 rounded-xl border border-border/60 shadow-lg" align="end">
+                  <div className="flex flex-col gap-1">
+                    <button
+                      onClick={() => handleThemeChange('light')}
+                      className={cn(
+                        "flex items-center gap-2 px-2.5 py-1.5 text-xs font-semibold rounded-lg hover:bg-muted text-left w-full transition-all",
+                        theme === 'light' ? "bg-primary/10 text-primary" : "text-foreground/80"
+                      )}
+                    >
+                      <Sun className="h-3.5 w-3.5" />
+                      <span>Claro</span>
+                    </button>
+                    <button
+                      onClick={() => handleThemeChange('dark')}
+                      className={cn(
+                        "flex items-center gap-2 px-2.5 py-1.5 text-xs font-semibold rounded-lg hover:bg-muted text-left w-full transition-all",
+                        theme === 'dark' ? "bg-primary/10 text-primary" : "text-foreground/80"
+                      )}
+                    >
+                      <Moon className="h-3.5 w-3.5" />
+                      <span>Oscuro</span>
+                    </button>
+                    <button
+                      onClick={() => handleThemeChange('system')}
+                      className={cn(
+                        "flex items-center gap-2 px-2.5 py-1.5 text-xs font-semibold rounded-lg hover:bg-muted text-left w-full transition-all",
+                        theme === 'system' ? "bg-primary/10 text-primary" : "text-foreground/80"
+                      )}
+                    >
+                      <Laptop className="h-3.5 w-3.5" />
+                      <span>Sistema</span>
+                    </button>
+                  </div>
+                </PopoverContent>
+              </Popover>
               <Button asChild variant="outline">
                   <Link href="/fiscales">Fiscalizá</Link>
               </Button>
@@ -311,24 +387,38 @@ export function Header({ socialLinks }: HeaderProps) {
                   {/* Selector de Tema en Móvil */}
                   <div className="flex items-center justify-between p-2 mt-1 rounded-xl bg-muted/40 border">
                     <span className="text-xs font-medium text-foreground/80">Tema del Sitio</span>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      onClick={toggleTheme} 
-                      className="rounded-full px-3 py-1.5 h-auto text-xs flex items-center gap-2"
-                    >
-                      {theme === 'light' ? (
-                        <>
-                          <Moon className="h-3.5 w-3.5 text-foreground" />
-                          <span>Modo Oscuro</span>
-                        </>
-                      ) : (
-                        <>
-                          <Sun className="h-3.5 w-3.5 text-yellow-500" />
-                          <span>Modo Claro</span>
-                        </>
-                      )}
-                    </Button>
+                    <div className="flex gap-1 bg-background/50 p-1 rounded-lg border border-border/40">
+                      <button
+                        onClick={() => handleThemeChange('light')}
+                        className={cn(
+                          "p-1.5 rounded-md transition-all",
+                          theme === 'light' ? "bg-primary/20 text-primary" : "text-muted-foreground"
+                        )}
+                        title="Tema Claro"
+                      >
+                        <Sun className="h-3.5 w-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleThemeChange('dark')}
+                        className={cn(
+                          "p-1.5 rounded-md transition-all",
+                          theme === 'dark' ? "bg-primary/20 text-primary" : "text-muted-foreground"
+                        )}
+                        title="Tema Oscuro"
+                      >
+                        <Moon className="h-3.5 w-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleThemeChange('system')}
+                        className={cn(
+                          "p-1.5 rounded-md transition-all",
+                          theme === 'system' ? "bg-primary/20 text-primary" : "text-muted-foreground"
+                        )}
+                        title="Seguir Sistema"
+                      >
+                        <Laptop className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
                   </div>
                 </div>
 
