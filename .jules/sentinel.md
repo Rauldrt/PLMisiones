@@ -10,3 +10,7 @@
 **Vulnerability:** The Genkit flow `generateNewsContent` allows fetching the contents of any arbitrary URL without checking if it resolves to a private or local IP address, leading to a Server-Side Request Forgery (SSRF) vulnerability. This could allow internal network mapping or reading sensitive metadata.
 **Learning:** Tools used by AI flows, especially those accepting raw URLs to fetch content, must have strict network boundary protections to prevent SSRF just like any traditional proxy or webhook endpoint.
 **Prevention:** Implement strict IP boundary checks and protocol validation using the `URL` API. Use boundary-matched regular expressions (e.g., `/^10\.\d+\.\d+\.\d+$/`) instead of prefix matching to accurately identify private ranges without accidentally blocking legitimate subdomains.
+## 2024-03-23 - DOMPurify Whitelisting for iframe src
+**Vulnerability:** Even when `dangerouslySetInnerHTML` is passed through `DOMPurify.sanitize` with `iframe` added to `ADD_TAGS`, it allows arbitrary `src` values. This opens up vulnerabilities where an attacker could embed malicious websites or execute scripts via data URIs in iframes.
+**Learning:** Adding `iframe` to DOMPurify`s allowed tags list without verifying the `src` attribute is not secure enough.
+**Prevention:** Always use `DOMPurify.addHook('uponSanitizeElement', ...)` to intercept iframe elements and strictly validate their `src` against a trusted whitelist (e.g., YouTube, Vimeo) before allowing them to be rendered.
