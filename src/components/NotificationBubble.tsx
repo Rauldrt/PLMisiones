@@ -39,7 +39,7 @@ function NotificationDialog({
         className={cn(
           isImageOnly
             ? 'w-auto max-w-5xl border-0 bg-transparent p-2 shadow-none'
-            : 'max-w-xl'
+            : 'max-w-xl max-h-[90vh] overflow-y-auto'
         )}
       >
         {isImageOnly && item.imageUrl ? (

@@ -37,6 +37,7 @@ interface HeaderProps {
 export function Header({ socialLinks }: HeaderProps) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileNotifsOpen, setIsMobileNotifsOpen] = useState(false);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [notificationSettings, setNotificationSettings] = useState<Notification | null>(null);
 
@@ -158,10 +159,11 @@ export function Header({ socialLinks }: HeaderProps) {
         {/* Mobile Floating Notification Bubble */}
         {notificationSettings?.enabled && notifications.length > 0 && !isMobileMenuOpen && (
           <div className="fixed bottom-[96px] right-6 z-50 md:hidden animate-fade-in duration-300">
-            <Dialog>
+            <Dialog open={isMobileNotifsOpen} onOpenChange={setIsMobileNotifsOpen}>
               <DialogTrigger asChild>
                 <button
                   type="button"
+                  onClick={() => setIsMobileNotifsOpen(true)}
                   className={cn(
                     "relative flex h-14 w-14 items-center justify-center rounded-full shadow-2xl border transition-all duration-300 hover:scale-105 active:scale-95",
                     notificationSettings.glowColor === 'orange' && 'bg-orange-500 text-white border-orange-400/50 shadow-orange-500/30',
@@ -227,7 +229,13 @@ export function Header({ socialLinks }: HeaderProps) {
                   ))}
                 </div>
 
-                <Button asChild variant="outline" size="sm" className="w-full mt-4 rounded-xl">
+                <Button 
+                  asChild 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full mt-4 rounded-xl"
+                  onClick={() => setIsMobileNotifsOpen(false)}
+                >
                   <Link href="/notificaciones">Ver Todas las Notificaciones</Link>
                 </Button>
               </DialogContent>
@@ -253,14 +261,6 @@ export function Header({ socialLinks }: HeaderProps) {
             /* --- FAB CERRADO --- */
             <div className="relative w-full h-full flex items-center justify-center">
               <Icons.Menu className="h-6 w-6 text-primary-foreground" />
-              {notificationSettings?.enabled && notifications.length > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-5 w-5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-5 w-5 bg-orange-500 text-[10px] font-bold text-white items-center justify-center shadow border border-background">
-                    {notifications.length}
-                  </span>
-                </span>
-              )}
             </div>
           ) : (
             /* --- MODAL ABIERTO --- */
