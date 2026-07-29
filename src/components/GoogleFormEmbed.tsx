@@ -18,6 +18,7 @@ export function GoogleFormEmbed({ form }: GoogleFormEmbedProps) {
         <div className="relative w-full h-[800px] overflow-hidden rounded-md">
             <iframe
             src={form.embedUrl}
+            title={form.title || 'Formulario de Google'}
             width="100%"
             height="100%"
             frameBorder="0"
