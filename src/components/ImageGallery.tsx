@@ -67,6 +67,7 @@ export function ImageGallery({ onImageSelect }: ImageGalleryProps) {
                     return (
                         <button
                             key={url}
+                            aria-label={"Seleccionar archivo " + url.split('/').pop()}
                             onClick={() => onImageSelect(url)}
                             className="relative aspect-square w-full rounded-md overflow-hidden group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 bg-muted flex items-center justify-center"
                         >
