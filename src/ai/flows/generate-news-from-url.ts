@@ -54,7 +54,14 @@ const fetchAndParseUrlTool = ai.defineTool(
 
         if (isPrivate) throw new Error('Access to private network forbidden');
 
-        response = await fetch(currentUrl, { redirect: 'manual' });
+        const safeUrl = new URL(currentUrl);
+        safeUrl.hostname = address; // Use the validated IP address
+
+        response = await fetch(safeUrl.toString(), {
+          redirect: 'manual',
+          headers: { 'Host': parsedUrl.hostname }
+        });
+
         if ([301, 302, 303, 307, 308].includes(response.status)) {
           const location = response.headers.get('location');
           if (!location) throw new Error('Redirect missing location header');
