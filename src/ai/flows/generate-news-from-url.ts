@@ -11,9 +11,12 @@ import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import * as cheerio from 'cheerio';
 import dns from 'dns';
+import { gemini15Flash } from '@genkit-ai/googleai';
 
 const GenerateNewsContentInputSchema = z.object({
   url: z.string().url().describe('The URL to generate news content from.'),
+  tone: z.string().optional().describe('The desired writing tone (e.g., Informativo, Institucional, Entusiasta).'),
+  instructions: z.string().optional().describe('Additional instructions for the AI generator.'),
 });
 export type GenerateNewsContentInput = z.infer<typeof GenerateNewsContentInputSchema>;
 
@@ -54,7 +57,15 @@ const fetchAndParseUrlTool = ai.defineTool(
 
         if (isPrivate) throw new Error('Access to private network forbidden');
 
-        response = await fetch(currentUrl, { redirect: 'manual' });
+        response = await fetch(currentUrl, { 
+          redirect: 'manual',
+          headers: {
+            'User-Agent': 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_aged_3.0.html)',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+            'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8',
+          }
+        });
+        
         if ([301, 302, 303, 307, 308].includes(response.status)) {
           const location = response.headers.get('location');
           if (!location) throw new Error('Redirect missing location header');
@@ -70,10 +81,33 @@ const fetchAndParseUrlTool = ai.defineTool(
       const $ = cheerio.load(html);
 
       // Remove script and style elements
-      $('script, style, noscript, iframe, header, footer, nav, aside').remove();
+      $('script, style, noscript, iframe, header, footer, nav, aside, svg, form, button').remove();
 
-      // Get text from the body, trying to find the main content area
-      let mainText = $('article').text() || $('main').text() || $('body').text();
+      // Get text from the body, trying to find the main content area using progressive selectors
+      let mainText = '';
+      const selectors = [
+        'article',
+        '[itemprop="articleBody"]',
+        '.post-content',
+        '.entry-content',
+        '.article-content',
+        'main',
+        '#main',
+        '.main',
+        'body'
+      ];
+      
+      for (const selector of selectors) {
+        const text = $(selector).text().trim();
+        if (text && text.length > 200) {
+          mainText = text;
+          break;
+        }
+      }
+
+      if (!mainText) {
+        mainText = $('body').text();
+      }
       
       // Basic cleanup
       mainText = mainText.replace(/\s\s+/g, ' ').replace(/\n/g, ' ').trim();
@@ -90,18 +124,32 @@ const fetchAndParseUrlTool = ai.defineTool(
 
 const newsGenerationPrompt = ai.definePrompt({
     name: 'newsGenerationPrompt',
-    input: { schema: z.object({ url: z.string().url() }) },
+    model: gemini15Flash,
+    input: { 
+      schema: z.object({ 
+        url: z.string().url(),
+        tone: z.string().optional(),
+        instructions: z.string().optional()
+      }) 
+    },
     output: { schema: GenerateNewsContentOutputSchema },
     tools: [fetchAndParseUrlTool],
     prompt: `Based on the content from the provided URL, please generate a news article in Spanish.
     
     Instructions:
     1. Use the 'fetchAndParseUrl' tool to get the text content from the URL: {{{url}}}.
-    2. From the extracted text, write a clear and concise news article.
+    2. From the extracted text, write a clear, objective and concise news article.
     3. Create a compelling and relevant title for the article.
-    4. The content should be objective and well-written.`,
+    4. The content should be well-written.
+    
+    {{#if tone}}
+    Writing Tone: {{{tone}}}. Please write the article in this specific tone/style.
+    {{/if}}
+    
+    {{#if instructions}}
+    Additional Instructions: {{{instructions}}}. Please follow these instructions during generation.
+    {{/if}}`,
 });
-
 
 const generateNewsContentFlow = ai.defineFlow(
   {
