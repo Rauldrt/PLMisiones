@@ -43,7 +43,47 @@ export async function fetchAndParseUrl(url: string): Promise<string> {
     const html = await response.text();
     const $ = cheerio.load(html);
 
-    // Remove script, style, header, footer, navigation, etc.
+    // Try to extract clean article body from JSON-LD metadata (highly reliable for paywalled/dynamic news sites)
+    let jsonLdBody = '';
+    $('script[type="application/ld+json"]').each((_, element) => {
+      try {
+        const jsonText = $(element).html();
+        if (jsonText) {
+          const data = JSON.parse(jsonText);
+          
+          const checkObject = (obj: any): boolean => {
+            if (obj && typeof obj === 'object') {
+              if (obj.articleBody) {
+                jsonLdBody = obj.articleBody;
+                return true;
+              }
+              for (const key in obj) {
+                if (checkObject(obj[key])) return true;
+              }
+            }
+            return false;
+          };
+
+          if (Array.isArray(data)) {
+            for (const item of data) {
+              if (checkObject(item)) break;
+            }
+          } else {
+            checkObject(data);
+          }
+        }
+      } catch (err) {
+        // ignore parse errors
+      }
+      return !jsonLdBody; // break loop once found
+    });
+
+    if (jsonLdBody && jsonLdBody.length > 200) {
+      const cleanText = jsonLdBody.replace(/\s+/g, ' ').replace(/\n/g, ' ').trim();
+      return cleanText.substring(0, 15000);
+    }
+
+    // Remove script, style, header, footer, navigation, etc. (fallback)
     $('script, style, noscript, iframe, header, footer, nav, aside, svg, form, button, head, metadata').remove();
 
     // Get text from the body, trying to find the main content area using progressive selectors
