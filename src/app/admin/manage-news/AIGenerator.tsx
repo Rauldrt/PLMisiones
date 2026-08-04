@@ -69,7 +69,7 @@ export function AIGenerator({ onApplyContent }: AIGeneratorProps) {
         setGeneratedResult(null);
         setSelectedTitle('');
 
-        const result = await generateNewsContent({ 
+        const response = await generateNewsContent({ 
           mode,
           url: mode === 'url' ? url : undefined,
           text: mode === 'text' ? text : undefined,
@@ -80,15 +80,23 @@ export function AIGenerator({ onApplyContent }: AIGeneratorProps) {
           instructions: instructions.trim() || undefined
         });
         
-        setGeneratedResult(result);
-        if (result.titles && result.titles.length > 0) {
-          setSelectedTitle(result.titles[0]);
+        if (response.success) {
+          const result = response.data;
+          setGeneratedResult(result);
+          if (result.titles && result.titles.length > 0) {
+            setSelectedTitle(result.titles[0]);
+          }
+          toast({
+            title: 'Noticia Generada con Éxito',
+            description: 'Se ha creado un borrador de noticia con múltiples opciones de título. Revísalo a continuación.',
+          });
+        } else {
+          toast({
+            variant: 'destructive',
+            title: 'Error de Generación',
+            description: response.error,
+          });
         }
-        
-        toast({
-          title: 'Noticia Generada con Éxito',
-          description: 'Se ha creado un borrador de noticia con múltiples opciones de título. Revísalo a continuación.',
-        });
       } catch (error) {
         console.error('Error generating content:', error);
         toast({

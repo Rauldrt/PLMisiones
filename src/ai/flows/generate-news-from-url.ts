@@ -83,8 +83,21 @@ export async function fetchAndParseUrl(url: string): Promise<string> {
   }
 }
 
-export async function generateNewsContent(input: GenerateNewsContentInput): Promise<GenerateNewsContentOutput> {
-  return generateNewsContentFlow(input);
+export type GenerateNewsContentResponse = 
+  | { success: true; data: GenerateNewsContentOutput }
+  | { success: false; error: string };
+
+export async function generateNewsContent(input: GenerateNewsContentInput): Promise<GenerateNewsContentResponse> {
+  try {
+    const data = await generateNewsContentFlow(input);
+    return { success: true, data };
+  } catch (error) {
+    console.error('Error in generateNewsContent flow:', error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Error desconocido en el servidor de IA.' 
+    };
+  }
 }
 
 const generateNewsContentFlow = ai.defineFlow(
