@@ -159,7 +159,7 @@ Requisitos de Salida (Formato JSON estructurado):
 `;
 
     const response = await ai.generate({
-      model: 'googleai/gemini-1.5-flash',
+      model: 'googleai/gemini-3.6-flash',
       prompt: promptText,
       output: {
         schema: GenerateNewsContentOutputSchema,
