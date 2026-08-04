@@ -43,6 +43,16 @@ export default function ManageNewsPage() {
   const { toast } = useToast();
   const [editingArticle, setEditingArticle] = useState<NewsArticle | null>(null);
 
+  // Parent draft state that populates NewsForm
+  const [formDraft, setFormDraft] = useState<Partial<NewsArticle>>({
+    title: '',
+    date: new Date().toISOString().split('T')[0],
+    imageUrl: '',
+    imageHint: '',
+    content: '',
+    hidden: false
+  });
+
   const fetchNews = useCallback(async () => {
     setIsLoading(true);
     const newsData = await getNewsAction();
@@ -54,10 +64,28 @@ export default function ManageNewsPage() {
     fetchNews();
   }, [fetchNews]);
 
-  const handleSetFormContent = (data: { title: string, content: string }) => {
-    // This is a dummy function to pass to NewsForm. 
-    // The actual logic is inside NewsForm component itself.
-  }
+  const handleArticleAdded = () => {
+    fetchNews();
+    setFormDraft({
+      title: '',
+      date: new Date().toISOString().split('T')[0],
+      imageUrl: '',
+      imageHint: '',
+      content: '',
+      hidden: false
+    });
+  };
+
+  const handleApplyContent = (data: { title: string; content: string; imageHint?: string }) => {
+    setFormDraft({
+      title: data.title,
+      date: new Date().toISOString().split('T')[0],
+      imageUrl: '',
+      imageHint: data.imageHint || '',
+      content: data.content,
+      hidden: false
+    });
+  };
   
   const handleSaveChanges = (updatedArticles: NewsArticle[], successMessage: string) => {
     setArticles(updatedArticles);
@@ -108,14 +136,14 @@ export default function ManageNewsPage() {
         <p className="text-muted-foreground">Agrega, edita o elimina artículos del sitio.</p>
       </div>
 
-      <AIGenerator onContentGenerated={(title, content) => handleSetFormContent({ title, content })} />
+      <AIGenerator onApplyContent={handleApplyContent} />
       
       <Card>
         <CardHeader>
           <CardTitle>Agregar Nuevo Artículo</CardTitle>
         </CardHeader>
         <CardContent>
-           <NewsForm onArticleAdded={fetchNews} setFormContent={handleSetFormContent} formContent={{title: '', date: '', imageUrl: '', content: ''}}/>
+           <NewsForm onArticleAdded={handleArticleAdded} formContent={formDraft}/>
         </CardContent>
       </Card>
       
@@ -199,7 +227,6 @@ export default function ManageNewsPage() {
                             <NewsForm
                                 key={editingArticle.id}
                                 onArticleAdded={() => {}} // Not used for editing
-                                setFormContent={() => {}} // Not used for editing
                                 formContent={editingArticle}
                                 isEditing={true}
                                 onEditSubmit={handleEdit}

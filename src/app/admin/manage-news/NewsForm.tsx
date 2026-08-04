@@ -28,7 +28,6 @@ type NewsFormValues = z.infer<typeof formSchema>;
 
 interface NewsFormProps {
   onArticleAdded: () => void;
-  setFormContent: (data: { title: string, content: string }) => void;
   formContent: Partial<NewsArticle>;
   isEditing?: boolean;
   onEditSubmit?: (data: NewsArticle) => void;
@@ -37,7 +36,6 @@ interface NewsFormProps {
 
 export function NewsForm({ 
     onArticleAdded, 
-    setFormContent, 
     formContent,
     isEditing = false,
     onEditSubmit,
@@ -49,7 +47,7 @@ export function NewsForm({
 
   const form = useForm<NewsFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    values: {
       title: formContent.title || '',
       date: formContent.date ? new Date(formContent.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
       imageUrl: formContent.imageUrl || '',
@@ -58,14 +56,6 @@ export function NewsForm({
       hidden: formContent.hidden || false,
     },
   });
-
-  useEffect(() => {
-    // This allows the AI Generator to update the form fields
-    setFormContent = ({ title, content }) => {
-      form.setValue('title', title);
-      form.setValue('content', content);
-    };
-  }, [form, setFormContent]);
   
   const handleImageSelect = (imageUrl: string) => {
     form.setValue('imageUrl', imageUrl);
@@ -100,7 +90,7 @@ export function NewsForm({
   return (
     <Dialog open={galleryOpen} onOpenChange={setGalleryOpen}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form id="news-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
             control={form.control}
             name="title"
