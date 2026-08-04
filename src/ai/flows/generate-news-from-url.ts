@@ -11,7 +11,7 @@ import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import * as cheerio from 'cheerio';
 import dns from 'dns';
-import { gemini15Flash } from '@genkit-ai/googleai';
+import { gemini15Pro } from '@genkit-ai/googleai';
 
 const GenerateNewsContentInputSchema = z.object({
   url: z.string().url().describe('The URL to generate news content from.'),
@@ -124,7 +124,7 @@ const fetchAndParseUrlTool = ai.defineTool(
 
 const newsGenerationPrompt = ai.definePrompt({
     name: 'newsGenerationPrompt',
-    model: gemini15Flash,
+    model: gemini15Pro,
     input: { 
       schema: z.object({ 
         url: z.string().url(),
