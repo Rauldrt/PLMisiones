@@ -124,7 +124,7 @@ const fetchAndParseUrlTool = ai.defineTool(
 
 const newsGenerationPrompt = ai.definePrompt({
     name: 'newsGenerationPrompt',
-    model: 'googleAI/gemini-3.6-flash',
+    model: 'googleai/gemini-3.6-flash',
     input: { 
       schema: z.object({ 
         url: z.string().url(),
