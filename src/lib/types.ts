@@ -9,6 +9,7 @@ export interface NewsArticle {
   imageHint?: string;
   content: string;
   hidden?: boolean;
+  linkPreview?: LinkPreviewMetadata;
 }
 
 export interface BannerTextSlide {

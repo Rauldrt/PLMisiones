@@ -9,6 +9,7 @@ import { notFound } from 'next/navigation';
 import { clientSanitize } from '@/lib/client-sanitize';
 import { useBackground } from '@/components/SiteLayout';
 import { Card } from '@/components/ui/card';
+import { LinkPreviewCard } from '@/components/LinkPreviewCard';
 
 interface NewsArticleClientProps {
   article: NewsArticle;
@@ -71,6 +72,13 @@ export function NewsArticleClient({ article, formattedDate }: NewsArticleClientP
                   className="prose mx-auto max-w-none prose-headings:font-headline prose-a:text-primary prose-strong:text-foreground text-foreground/90" 
                   dangerouslySetInnerHTML={{ __html: clientSanitize(article.content) }}
                 />
+              )}
+
+              {article.linkPreview && article.linkPreview.url && (
+                <div className="mt-8 border-t border-white/10 pt-6">
+                  <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Enlace relacionado:</h4>
+                  <LinkPreviewCard metadata={article.linkPreview} className="bg-muted/10 border-border/40" />
+                </div>
               )}
           </div>
         </Card>
