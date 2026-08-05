@@ -107,11 +107,19 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                 </p>
             </CardContent>
             <div className="px-4 pt-0 pb-2 mt-auto">
-                <Button asChild variant="link" className="p-0 h-auto">
-                    <Link href={`/noticias/${article.slug}`}>
-                        Leer más
-                    </Link>
-                </Button>
+                {article.linkPreview?.url ? (
+                    <Button asChild variant="link" className="p-0 h-auto">
+                        <a href={article.linkPreview.url} target="_blank" rel="noopener noreferrer">
+                            Leer más
+                        </a>
+                    </Button>
+                ) : (
+                    <Button asChild variant="link" className="p-0 h-auto">
+                        <Link href={`/noticias/${article.slug}`}>
+                            Leer más
+                        </Link>
+                    </Button>
+                )}
             </div>
         </Card>
     );
