@@ -226,6 +226,9 @@ export function NewsForm({
                     const res = await fetchUrlMetadataAction(url);
                     if (res.success && res.metadata) {
                       form.setValue('linkPreview', res.metadata);
+                      if (!form.getValues('imageUrl') && res.metadata.imageUrl) {
+                        form.setValue('imageUrl', res.metadata.imageUrl);
+                      }
                       toast({ title: 'Éxito', description: 'Metadatos del enlace cargados.' });
                     } else {
                       toast({ variant: 'destructive', title: 'Error', description: res.message });

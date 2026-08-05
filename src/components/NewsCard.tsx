@@ -56,24 +56,27 @@ export function NewsCard({ article }: { article: NewsArticle }) {
         <Card className="flex w-full flex-col overflow-hidden bg-card/90 border border-white/80 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12),0_10px_30px_-10px_rgba(139,31,164,0.15)] hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.22),0_15px_35px_-5px_rgba(139,31,164,0.3)] rounded-[2.5rem] backdrop-blur-sm transition-all duration-300 hover:-translate-y-2.5">
             <CardHeader className="p-0">
                 <div className="relative w-full bg-muted overflow-hidden">
-                    <Link
-                      href={`/noticias/${article.slug}`}
-                      className={cn(
-                        "block w-full",
-                         (article.imageUrl || isEmbed) && "h-[500px]"
-                      )}
-                      aria-label={article.title}
-                    >
-                        {article.imageUrl ? (
-                            <Image
-                                src={article.imageUrl}
-                                alt={article.title}
-                                fill
-                                className="object-cover"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                                data-ai-hint={article.imageHint}
-                            />
-                        ) : isEmbed ? (
+                    {(() => {
+                        const finalImageUrl = article.imageUrl || article.linkPreview?.imageUrl;
+                        return (
+                            <Link
+                              href={`/noticias/${article.slug}`}
+                              className={cn(
+                                "block w-full",
+                                 (finalImageUrl || isEmbed) && "h-[500px]"
+                              )}
+                              aria-label={article.title}
+                            >
+                                {finalImageUrl ? (
+                                    <Image
+                                        src={finalImageUrl}
+                                        alt={article.title}
+                                        fill
+                                        className="object-cover"
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                                        data-ai-hint={article.imageHint}
+                                    />
+                                ) : isEmbed ? (
                             <div className="relative h-full w-full">
                                 <div className="pointer-events-none absolute inset-0 z-10" />
                                 <div 
@@ -88,6 +91,8 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                             </div>
                         )}
                     </Link>
+                        );
+                    })()}
                 </div>
                 <div className="p-6 pb-2">
                     <CardTitle className="font-headline text-xl leading-tight">

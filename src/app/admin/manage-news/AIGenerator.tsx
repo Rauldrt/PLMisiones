@@ -18,7 +18,7 @@ import { cn } from '@/lib/utils';
 import { clientSanitize } from '@/lib/client-sanitize';
 
 interface AIGeneratorProps {
-  onApplyContent: (data: { title: string; content: string; imageHint?: string }) => void;
+  onApplyContent: (data: { title: string; content: string; imageHint?: string; sourceUrl?: string }) => void;
 }
 
 export function AIGenerator({ onApplyContent }: AIGeneratorProps) {
@@ -115,6 +115,7 @@ export function AIGenerator({ onApplyContent }: AIGeneratorProps) {
       title: selectedTitle,
       content: generatedResult.content,
       imageHint: generatedResult.imageHint,
+      sourceUrl: mode === 'url' ? url : undefined,
     });
 
     toast({

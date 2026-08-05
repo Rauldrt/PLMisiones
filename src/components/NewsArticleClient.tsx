@@ -49,19 +49,22 @@ export function NewsArticleClient({ article, formattedDate }: NewsArticleClientP
           
           {/* Media (Image or Embed) */}
           <div className="mt-8 w-full">
-              {article.imageUrl && !isEmbed && (
-                <div className="relative my-8 h-64 md:h-96 w-full overflow-hidden rounded-lg">
-                    <Image
-                        src={article.imageUrl}
-                        alt={article.title}
-                        fill
-                        className="object-cover"
-                        sizes="100vw"
-                        priority
-                        data-ai-hint={article.imageHint}
-                    />
-                </div>
-              )}
+              {(() => {
+                const finalImageUrl = article.imageUrl || article.linkPreview?.imageUrl;
+                return finalImageUrl && !isEmbed && (
+                  <div className="relative my-8 h-64 md:h-96 w-full overflow-hidden rounded-lg">
+                      <Image
+                          src={finalImageUrl}
+                          alt={article.title}
+                          fill
+                          className="object-cover"
+                          sizes="100vw"
+                          priority
+                          data-ai-hint={article.imageHint}
+                      />
+                  </div>
+                );
+              })()}
 
               {isEmbed ? (
                 // For embeds, we let them take the full width of the container.

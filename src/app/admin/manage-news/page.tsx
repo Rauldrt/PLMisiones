@@ -11,6 +11,7 @@ import { Icons } from '@/components/icons';
 import { useToast } from '@/hooks/use-toast';
 import { AIGenerator } from './AIGenerator';
 import { NewsForm } from './NewsForm';
+import { fetchUrlMetadataAction } from '@/actions/url-metadata';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import {
   AlertDialog,
@@ -76,14 +77,32 @@ export default function ManageNewsPage() {
     });
   };
 
-  const handleApplyContent = (data: { title: string; content: string; imageHint?: string }) => {
+  const handleApplyContent = async (data: { title: string; content: string; imageHint?: string; sourceUrl?: string }) => {
+    let linkPreview = undefined;
+    let imageUrl = '';
+    
+    if (data.sourceUrl) {
+      try {
+        const res = await fetchUrlMetadataAction(data.sourceUrl);
+        if (res.success && res.metadata) {
+          linkPreview = res.metadata;
+          if (res.metadata.imageUrl) {
+            imageUrl = res.metadata.imageUrl;
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching URL metadata inside handleApplyContent:", err);
+      }
+    }
+
     setFormDraft({
       title: data.title,
       date: new Date().toISOString().split('T')[0],
-      imageUrl: '',
+      imageUrl: imageUrl,
       imageHint: data.imageHint || '',
       content: data.content,
-      hidden: false
+      hidden: false,
+      linkPreview: linkPreview
     });
   };
   
