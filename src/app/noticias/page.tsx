@@ -22,7 +22,7 @@ export default async function NoticiasPage() {
     <div>
       {pageHeader && <PageHeader {...pageHeader} />}
       <div className="container max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
           {sortedNews.map((article) => (
               <NewsCard key={article.id} article={article} />
           ))}

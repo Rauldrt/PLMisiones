@@ -53,7 +53,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
     }, [article.content]);
 
     return (
-        <Card className="flex w-full flex-col overflow-hidden bg-card/90 border border-white/80 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12),0_10px_30px_-10px_rgba(139,31,164,0.15)] hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.22),0_15px_35px_-5px_rgba(139,31,164,0.3)] rounded-[2.5rem] backdrop-blur-sm transition-all duration-300 hover:-translate-y-2.5">
+        <Card className="flex w-full flex-col overflow-hidden bg-card/90 border border-white/80 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12),0_10px_30px_-10px_rgba(139,31,164,0.15)] hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.22),0_15px_35px_-5px_rgba(139,31,164,0.3)] rounded-[1.8rem] sm:rounded-[2.5rem] backdrop-blur-sm transition-all duration-300 hover:-translate-y-2.5 h-[42vh] sm:h-auto sm:min-h-[460px]">
             <CardHeader className="p-0">
                 <div className="relative w-full bg-muted overflow-hidden">
                     {(() => {
@@ -62,8 +62,8 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                             <Link
                               href={`/noticias/${article.slug}`}
                               className={cn(
-                                "block w-full",
-                                 (finalImageUrl || isEmbed) && "h-[500px]"
+                                "block w-full relative",
+                                 (finalImageUrl || isEmbed) ? "h-[18vh] sm:h-52" : "h-[12vh] sm:h-32"
                               )}
                               aria-label={article.title}
                             >
@@ -94,27 +94,27 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                         );
                     })()}
                 </div>
-                <div className="p-6 pb-2">
-                    <CardTitle className="font-headline text-xl leading-tight">
+                <div className="p-3 pb-1 sm:p-6 sm:pb-2">
+                    <CardTitle className="font-headline text-sm sm:text-xl leading-tight line-clamp-2">
                         <Link href={`/noticias/${article.slug}`} className="hover:text-primary transition-colors">{article.title}</Link>
                     </CardTitle>
-                    {isClient && <p className="text-sm text-foreground/60 mt-2">{formatDate(article.date)}</p>}
+                    {isClient && <p className="text-[10px] sm:text-sm text-foreground/60 mt-0.5 sm:mt-2">{formatDate(article.date)}</p>}
                 </div>
             </CardHeader>
-            <CardContent className="flex-1 min-h-0 px-4 pt-0">
-                <p className="text-foreground/80 line-clamp-4">
+            <CardContent className="flex-grow min-h-0 px-3 pt-0 sm:px-6">
+                <p className="text-foreground/80 text-xs sm:text-sm line-clamp-2 sm:line-clamp-4">
                     {cleanContent}
                 </p>
             </CardContent>
-            <div className="px-4 pt-0 pb-2 mt-auto">
+            <div className="px-3 pt-0 pb-2 sm:px-6 sm:pb-4 mt-auto">
                 {article.linkPreview?.url ? (
-                    <Button asChild variant="link" className="p-0 h-auto">
+                    <Button asChild variant="link" className="p-0 h-auto text-xs sm:text-sm">
                         <a href={article.linkPreview.url} target="_blank" rel="noopener noreferrer">
                             Leer más
                         </a>
                     </Button>
                 ) : (
-                    <Button asChild variant="link" className="p-0 h-auto">
+                    <Button asChild variant="link" className="p-0 h-auto text-xs sm:text-sm">
                         <Link href={`/noticias/${article.slug}`}>
                             Leer más
                         </Link>

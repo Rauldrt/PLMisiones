@@ -278,7 +278,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
             <p className="mt-4 text-center text-lg text-foreground/80">
                 Mantenete al tanto de nuestras últimas actividades y comunicados.
             </p>
-            <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-12 grid grid-cols-1 gap-4 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {newsArticles.map((article) => (
                     <NewsCard key={article.id} article={article} />
                 ))}
