@@ -102,7 +102,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                 </div>
             </CardHeader>
             <CardContent className="flex-grow min-h-0 px-3 pt-0 sm:px-6">
-                <p className="hidden sm:block text-foreground/80 text-xs sm:text-sm line-clamp-2">
+                <p className="text-foreground/80 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3">
                     {cleanContent}
                 </p>
             </CardContent>
