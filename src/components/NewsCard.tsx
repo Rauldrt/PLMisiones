@@ -63,7 +63,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                               href={`/noticias/${article.slug}`}
                               className={cn(
                                 "block w-full relative",
-                                 (finalImageUrl || isEmbed) ? "h-[18vh] sm:h-52" : "h-[12vh] sm:h-32"
+                                 (finalImageUrl || isEmbed) ? "h-[23vh] sm:h-60" : "h-[15vh] sm:h-40"
                               )}
                               aria-label={article.title}
                             >
@@ -102,7 +102,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
                 </div>
             </CardHeader>
             <CardContent className="flex-grow min-h-0 px-3 pt-0 sm:px-6">
-                <p className="text-foreground/80 text-xs sm:text-sm line-clamp-2 sm:line-clamp-4">
+                <p className="hidden sm:block text-foreground/80 text-xs sm:text-sm line-clamp-2">
                     {cleanContent}
                 </p>
             </CardContent>
