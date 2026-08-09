@@ -13,3 +13,7 @@
 ## 2024-11-20 - Use useRef for scroll-based animations (parallax)
 **Learning:** Using `useState` inside a `requestAnimationFrame` loop attached to a `scroll` event listener causes continuous React re-renders and layout thrashing. Even though the frame loop throttles the state updates, the component and all its children still re-render on every frame where scrolling occurs, creating significant main thread blocking and jank.
 **Action:** When implementing scroll-based parallax or animations, store the DOM elements in a `useRef` and directly manipulate their `style.transform` properties inside the `requestAnimationFrame` callback. This completely bypasses the React render cycle, resulting in significantly smoother 60FPS scroll performance with less memory allocation. Ensure you still capture the animation frame ID and `cancelAnimationFrame` in the cleanup function.
+
+## 2026-05-16 - Replaced Polling with MutationObserver for Third-Party Embeds
+**Learning:** Continuously polling the DOM with `setInterval` and `document.querySelector` to detect asynchronously injected third-party embeds (like Instagram) causes unnecessary main-thread blocking and layout thrashing, even when no DOM changes occur.
+**Action:** Use a `MutationObserver` configured with `{ childList: true, subtree: true }` to react to DOM insertions. Optimize the observer callback by checking `mutations.some(m => m.addedNodes.length > 0)` before performing document-wide element searches.
