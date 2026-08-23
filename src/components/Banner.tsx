@@ -408,22 +408,32 @@ export function Banner({
                     )}
                   </div>
 
-                  {/* Botones Visuales tipo Píldoras Interactivas */}
-                  <div className="flex gap-3 mt-6 relative z-10">
-                    {pills.map((pill) => (
-                      <button
-                        key={pill.id}
-                        onClick={() => setActiveFuchsiaTab(activeFuchsiaTab === pill.id ? null : pill.id)}
-                        className={cn(
-                          "px-6 py-2.5 rounded-full text-xs font-bold transition-all duration-300 border active:scale-95 shadow-md",
-                          activeFuchsiaTab === pill.id
-                            ? "bg-primary text-white border-primary shadow-[0_4px_15px_rgba(139,31,164,0.4)]"
-                            : cn("hover:scale-105", pillsColorClass)
-                        )}
-                      >
-                        {pill.label}
-                      </button>
-                    ))}
+                  {/* Botones Visuales tipo Píldoras Interactivas con Contorno Resplandeciente Aurora Boreal */}
+                  <div className="flex flex-wrap items-center justify-center gap-3 mt-6 relative z-10">
+                    {pills.map((pill) => {
+                      const isActive = activeFuchsiaTab === pill.id;
+                      return (
+                        <div
+                          key={pill.id}
+                          className={cn(
+                            "aurora-pill-wrapper",
+                            isActive && "active"
+                          )}
+                        >
+                          <button
+                            onClick={() => setActiveFuchsiaTab(isActive ? null : pill.id)}
+                            className={cn(
+                              "px-5 py-2 sm:px-6 sm:py-2.5 rounded-full text-xs font-bold transition-all duration-300 active:scale-95 flex items-center justify-center",
+                              isActive
+                                ? "bg-primary text-white shadow-md shadow-primary/30"
+                                : "bg-card/90 dark:bg-zinc-950/90 text-foreground/90 hover:text-foreground backdrop-blur-md"
+                            )}
+                          >
+                            {pill.label}
+                          </button>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
