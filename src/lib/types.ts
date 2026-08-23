@@ -167,6 +167,9 @@ export interface StreamingItem {
   id: string;
   title: string;
   embedCode: string;
+  thumbnailUrl?: string;
+  publishedAt?: string;
+  videoId?: string;
 }
 
 export interface FuchsiaPillConfig {

@@ -18,6 +18,7 @@ import {
     getReferentesAction,
     getBannerConfigAction
 } from '@/actions/data';
+import { getYouTubeChannelVideosAction } from '@/actions/youtube';
 
 export default async function Home() {
   const [
@@ -45,7 +46,7 @@ export default async function Home() {
     getNotificationAction(),
     getOrganigramaAction(),
     getProposalsAction(),
-    getStreamingAction(),
+    getYouTubeChannelVideosAction(),
     getReferentesAction(),
     getBannerConfigAction(),
   ]);
