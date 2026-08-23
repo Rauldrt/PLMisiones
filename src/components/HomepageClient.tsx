@@ -22,7 +22,7 @@ import { useBackground } from './SiteLayout';
 import { InstagramEmbedProcessor } from './InstagramEmbedProcessor';
 import { StreamingSection } from './StreamingSection';
 import { cn } from '@/lib/utils';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Target, Eye, Gem } from 'lucide-react';
 
 
 interface HomepageClientProps {
@@ -240,28 +240,64 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
             </div>
         </section>
         
-        {/* Accordion Section */}
+        {/* Identidad Section */}
         <section className="py-16 lg:py-24 bg-transparent relative z-10">
-            <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <Card className="bg-card/90 border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2.5rem] backdrop-blur-lg p-6 md:p-10 w-full text-foreground">
+            <div className="container max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <Card className="border border-white/80 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15),0_15px_30px_-20px_rgba(139,31,164,0.2)] rounded-[2.5rem] backdrop-blur-lg p-6 md:p-10 w-full text-foreground bg-gradient-to-br from-card/95 via-purple-50/10 to-card/90">
                     <h2 className="text-center font-headline text-3xl font-bold md:text-4xl text-foreground">
                         Nuestra Identidad
                     </h2>
                     <p className="mt-4 text-center text-lg text-foreground/80">
                         Los pilares que guían nuestro accionar.
                     </p>
-                    <UiAccordion type="single" collapsible className="w-full mt-12">
-                        {accordionItems.map((item) => (
-                        <AccordionItem key={item.id} value={item.id}>
-                            <AccordionTrigger className="font-headline text-xl text-left hover:no-underline">
-                            {item.title}
-                            </AccordionTrigger>
-                            <AccordionContent className="text-base text-foreground/80">
-                            {item.content}
-                            </AccordionContent>
-                        </AccordionItem>
-                        ))}
-                    </UiAccordion>
+
+                    {/* Desktop: 3 cards */}
+                    {(() => {
+                        const identityIcons = [Target, Eye, Gem];
+                        return (
+                            <div className="hidden md:grid md:grid-cols-3 gap-6 mt-10">
+                                {accordionItems.map((item, index) => {
+                                    const Icon = identityIcons[index % identityIcons.length];
+                                    return (
+                                        <div key={item.id} className="flex flex-col items-center text-center gap-4 p-6 rounded-2xl bg-white/40 border border-primary/20 shadow-sm hover:shadow-md hover:border-primary/50 transition-all duration-300">
+                                            <div className="flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 text-primary">
+                                                <Icon className="w-7 h-7" />
+                                            </div>
+                                            <h3 className="font-headline text-xl font-bold text-foreground">{item.title}</h3>
+                                            <p className="text-sm text-foreground/75 leading-relaxed">{item.content}</p>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        );
+                    })()}
+
+                    {/* Mobile: enriched accordion */}
+                    {(() => {
+                        const identityIcons = [Target, Eye, Gem];
+                        return (
+                            <UiAccordion type="single" collapsible className="w-full mt-8 md:hidden">
+                                {accordionItems.map((item, index) => {
+                                    const Icon = identityIcons[index % identityIcons.length];
+                                    return (
+                                        <AccordionItem key={item.id} value={item.id} className="border-b border-foreground/10">
+                                            <AccordionTrigger className="font-headline text-lg text-left hover:no-underline py-4 group">
+                                                <span className="flex items-center gap-3">
+                                                    <span className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10 text-primary group-data-[state=open]:bg-primary group-data-[state=open]:text-white transition-colors duration-200 shrink-0">
+                                                        <Icon className="w-4 h-4" />
+                                                    </span>
+                                                    <span>{item.title}</span>
+                                                </span>
+                                            </AccordionTrigger>
+                                            <AccordionContent className="text-base text-foreground/80 pl-12 pb-4 border-l-4 border-primary/40 ml-4">
+                                                {item.content}
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                    );
+                                })}
+                            </UiAccordion>
+                        );
+                    })()}
                 </Card>
             </div>
         </section>
