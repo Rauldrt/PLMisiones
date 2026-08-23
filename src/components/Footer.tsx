@@ -1,5 +1,6 @@
 
 'use client';
+import { useState } from 'react';
 import Link from 'next/link';
 import { Icons, IconName, getIcon } from '@/components/icons';
 import { Card, CardContent } from '@/components/ui/card';
@@ -7,6 +8,8 @@ import Image from 'next/image';
 import { Button } from './ui/button';
 import type { SocialLink, FooterContent, GoogleForm } from '@/lib/types';
 import { DynamicForm } from '@/components/forms/DynamicForm';
+import { cn } from '@/lib/utils';
+import { Mail, ChevronDown } from 'lucide-react';
 
 
 interface FooterProps {
@@ -16,6 +19,7 @@ interface FooterProps {
 }
 
 export function Footer({ socialLinks, contactForm, footerContent }: FooterProps) {
+  const [isMobileFormOpen, setIsMobileFormOpen] = useState(false);
   
   if (!contactForm || !footerContent) {
     return null; // or a loading state
@@ -75,8 +79,25 @@ export function Footer({ socialLinks, contactForm, footerContent }: FooterProps)
                             </div>
                         </div>
                     </div>
+                    {/* Collapsible Trigger Button for Mobile */}
+                    <div className="md:hidden pt-2">
+                        <Button 
+                            type="button" 
+                            onClick={() => setIsMobileFormOpen(!isMobileFormOpen)}
+                            variant="outline"
+                            className="w-full flex items-center justify-between py-6 px-5 rounded-2xl border-primary/30 bg-primary/5 hover:bg-primary/10 text-foreground font-semibold shadow-sm transition-all duration-300"
+                        >
+                            <span className="flex items-center gap-3">
+                                <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                    <Mail className="w-4 h-4" />
+                                </span>
+                                <span>{isMobileFormOpen ? 'Ocultar formulario de contacto' : 'Escribinos un mensaje'}</span>
+                            </span>
+                            <ChevronDown className={cn("w-5 h-5 text-primary transition-transform duration-300", isMobileFormOpen && "rotate-180")} />
+                        </Button>
+                    </div>
                 </div>
-                <div>
+                <div className={cn("transition-all duration-300", isMobileFormOpen ? "block" : "hidden md:block")}>
                     <DynamicForm formId="contacto" />
                 </div>
             </div>
