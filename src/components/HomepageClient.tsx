@@ -46,6 +46,7 @@ interface HomepageClientProps {
     fuchsiaPills?: FuchsiaPillConfig[];
     institutionalBgPosition?: string;
     institutionalBgSize?: string;
+    whatsappNumber?: string;
 }
 
 interface LightboxData {
@@ -170,7 +171,7 @@ function OrganigramaSection({ organigramaData }: { organigramaData: OrganigramaM
     )
 }
 
-export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems, showProposals, layoutMode, institutionalBgType, institutionalBgVal, bannerOverlayOpacity, fuchsiaCardBgType, fuchsiaPills, institutionalBgPosition, institutionalBgSize }: HomepageClientProps) {
+export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosaicItems, accordionItems, newsArticles, candidates, notifications, notificationSettings, organigramaData, proposals, streamingItems, showProposals, layoutMode, institutionalBgType, institutionalBgVal, bannerOverlayOpacity, fuchsiaCardBgType, fuchsiaPills, institutionalBgPosition, institutionalBgSize, whatsappNumber }: HomepageClientProps) {
     const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
     const [api, setApi] = useState<CarouselApi>();
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -221,6 +222,7 @@ export function HomepageClient({ bannerTextSlides, bannerBackgroundSlides, mosai
         fuchsiaPills={fuchsiaPills}
         institutionalBgPosition={institutionalBgPosition}
         institutionalBgSize={institutionalBgSize}
+        whatsappNumber={whatsappNumber}
       />
 
       <div className={cn(

@@ -52,7 +52,7 @@ const DEFAULT_FUCHSIA_PILLS: FuchsiaPillConfig[] = [
     label: 'Comentá',
     title: 'Escribinos por WhatsApp',
     description: 'Escribinos tus ideas, inquietudes o sugerencias. Te contactarás de forma directa con nuestro equipo.',
-    whatsappNumber: '+5493765028907'
+    whatsappNumber: '+5493757629729'
   }
 ];
 
@@ -73,6 +73,7 @@ interface BannerProps {
     fuchsiaPills?: FuchsiaPillConfig[];
     institutionalBgPosition?: string;
     institutionalBgSize?: string;
+    whatsappNumber?: string;
 }
 
 export function Banner({ 
@@ -91,7 +92,8 @@ export function Banner({
   fuchsiaCardBgType = 'glass',
   fuchsiaPills,
   institutionalBgPosition = 'center',
-  institutionalBgSize = 'cover'
+  institutionalBgSize = 'cover',
+  whatsappNumber
 }: BannerProps) {
   
   const [activeFuchsiaTab, setActiveFuchsiaTab] = useState<'participa' | 'intereses' | 'comenta' | null>(null);
@@ -393,7 +395,8 @@ export function Banner({
                                 className="w-full rounded-full py-5 text-xs font-semibold flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white shadow-md shadow-green-600/20"
                                 disabled={!commentText.trim()}
                                 onClick={() => {
-                                  const num = (comentaPill.whatsappNumber || '+5493765028907').replace(/[+\s-]/g, '');
+                                  const rawNum = whatsappNumber || comentaPill.whatsappNumber || '+5493757629729';
+                                  const num = rawNum.split(',')[0].trim().replace(/[+\s-]/g, '');
                                   window.open(`https://api.whatsapp.com/send?phone=${num}&text=${encodeURIComponent(commentText)}`, '_blank');
                                   setCommentText('');
                                 }}

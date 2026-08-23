@@ -19,6 +19,7 @@ import {
     getBannerConfigAction
 } from '@/actions/data';
 import { getYouTubeChannelVideosAction } from '@/actions/youtube';
+import { getWhatsappConfigAction } from '@/actions/submissions';
 
 export default async function Home() {
   const [
@@ -35,6 +36,7 @@ export default async function Home() {
     streamingItems,
     referentes,
     bannerConfig,
+    whatsappConfig,
   ] = await Promise.all([
     getBannerTextSlidesAction(),
     getBannerBackgroundSlidesAction(),
@@ -49,6 +51,7 @@ export default async function Home() {
     getYouTubeChannelVideosAction(),
     getReferentesAction(),
     getBannerConfigAction(),
+    getWhatsappConfigAction(),
   ]);
 
   // Resolving what content to display on the banner's bottom section based on configuration
@@ -59,6 +62,11 @@ export default async function Home() {
     // Map Referente to Candidate layout (Candidate extends Referente, so they are structurally identical)
     bannerBottomItems = referentes;
   }
+
+  // Resolve WhatsApp number configured in alerts settings
+  const whatsappAlertNumber = whatsappConfig?.numbers 
+    ? whatsappConfig.numbers.split(',')[0]?.trim() 
+    : '+5493757629729';
 
   return (
     <HomepageClient
@@ -82,6 +90,7 @@ export default async function Home() {
       fuchsiaPills={bannerConfig.fuchsiaPills}
       institutionalBgPosition={bannerConfig.institutionalBgPosition}
       institutionalBgSize={bannerConfig.institutionalBgSize}
+      whatsappNumber={whatsappAlertNumber}
     />
   );
 }
