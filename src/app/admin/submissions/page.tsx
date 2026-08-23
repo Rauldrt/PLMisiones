@@ -19,7 +19,7 @@ export default function SubmissionsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [activeTab, setActiveTab] = useState<'contacto' | 'afiliacion' | 'fiscales'>('contacto');
+  const [activeTab, setActiveTab] = useState<'contacto' | 'afiliacion' | 'fiscales' | 'test_libertario'>('contacto');
   const [viewingSubmission, setViewingSubmission] = useState<FormSubmission | null>(null);
 
   const [isUpdating, startUpdateTransition] = useTransition();
@@ -113,6 +113,7 @@ export default function SubmissionsPage() {
         (s.data.dni && s.data.dni.toLowerCase().includes(searchLower)) ||
         (s.data.email && s.data.email.toLowerCase().includes(searchLower)) ||
         (s.data.locality && s.data.locality.toLowerCase().includes(searchLower)) ||
+        (s.data.score && s.data.score.toLowerCase().includes(searchLower)) ||
         (s.data.subject && s.data.subject.toLowerCase().includes(searchLower));
 
       return matchesStatus && matchesSearch;
@@ -161,6 +162,20 @@ export default function SubmissionsPage() {
         s.data.electoralSection || '',
         s.data.availability === 'full_day' ? 'Jornada Completa' : s.data.availability === 'morning' ? 'Mañana' : 'Tarde',
         s.data.comments || '',
+        statusLabels[s.status]
+      ]);
+    } else if (activeTab === 'test_libertario') {
+      headers = ['Fecha', 'Nombre', 'Localidad', 'Teléfono', 'Resultado / Afinidad', 'Pilar Vida', 'Pilar Libertad', 'Pilar Propiedad', 'Pilar Estado', 'Estado'];
+      rows = filteredSubmissions.map(s => [
+        new Date(s.createdAt).toLocaleString('es-AR'),
+        s.data.name || '',
+        s.data.locality || '',
+        s.data.phone || '',
+        s.data.score || '',
+        s.data.pilar_vida || '',
+        s.data.pilar_libertad || '',
+        s.data.pilar_propiedad || '',
+        s.data.pilar_estado || '',
         statusLabels[s.status]
       ]);
     }
@@ -227,13 +242,14 @@ export default function SubmissionsPage() {
       </div>
 
       <Tabs defaultValue="contacto" onValueChange={(val: any) => { setActiveTab(val); setSearchQuery(''); }}>
-        <TabsList className="bg-muted/50 p-1 rounded-xl">
+        <TabsList className="bg-muted/50 p-1 rounded-xl flex-wrap">
           <TabsTrigger value="contacto" className="rounded-lg font-medium px-4">Contacto ({submissions.filter(s => s.type === 'contacto').length})</TabsTrigger>
           <TabsTrigger value="afiliacion" className="rounded-lg font-medium px-4">Pre-Afiliaciones ({submissions.filter(s => s.type === 'afiliacion').length})</TabsTrigger>
           <TabsTrigger value="fiscales" className="rounded-lg font-medium px-4">Fiscales Mesa ({submissions.filter(s => s.type === 'fiscales').length})</TabsTrigger>
+          <TabsTrigger value="test_libertario" className="rounded-lg font-medium px-4">🦁 Test Libertario ({submissions.filter(s => s.type === 'test_libertario').length})</TabsTrigger>
         </TabsList>
 
-        {['contacto', 'afiliacion', 'fiscales'].map((tab) => (
+        {['contacto', 'afiliacion', 'fiscales', 'test_libertario'].map((tab) => (
           <TabsContent key={tab} value={tab} className="mt-4">
             <Card className="border shadow-md rounded-2xl overflow-hidden bg-card/60 backdrop-blur-sm">
               <CardContent className="p-0">
@@ -254,10 +270,10 @@ export default function SubmissionsPage() {
                           <th className="w-12 px-6 py-4 text-center font-semibold text-muted-foreground">Leído</th>
                           <th className="px-6 py-4 text-left font-semibold text-muted-foreground">Fecha</th>
                           <th className="px-6 py-4 text-left font-semibold text-muted-foreground">Nombre</th>
-                          {tab !== 'contacto' && <th className="px-6 py-4 text-left font-semibold text-muted-foreground">DNI</th>}
+                          {tab !== 'contacto' && tab !== 'test_libertario' && <th className="px-6 py-4 text-left font-semibold text-muted-foreground">DNI</th>}
                           <th className="px-6 py-4 text-left font-semibold text-muted-foreground">Teléfono</th>
                           <th className="px-6 py-4 text-left font-semibold text-muted-foreground">
-                            {tab === 'contacto' ? 'Asunto' : tab === 'afiliacion' ? 'Localidad' : 'Escuela / Sección'}
+                            {tab === 'contacto' ? 'Asunto' : tab === 'afiliacion' ? 'Localidad' : tab === 'fiscales' ? 'Escuela / Sección' : 'Afinidad / Resultado'}
                           </th>
                           <th className="px-6 py-4 text-left font-semibold text-muted-foreground">Estado</th>
                           <th className="px-6 py-4 text-right font-semibold text-muted-foreground">Acciones</th>
@@ -284,10 +300,10 @@ export default function SubmissionsPage() {
                                 </div>
                               </td>
                               <td className="px-6 py-4 font-medium text-foreground">{s.data.name}</td>
-                              {tab !== 'contacto' && <td className="px-6 py-4 text-foreground">{s.data.dni}</td>}
+                              {tab !== 'contacto' && tab !== 'test_libertario' && <td className="px-6 py-4 text-foreground">{s.data.dni}</td>}
                               <td className="px-6 py-4">{s.data.phone || '-'}</td>
-                              <td className="px-6 py-4 truncate max-w-[180px]">
-                                {tab === 'contacto' ? s.data.subject : tab === 'afiliacion' ? s.data.locality : s.data.electoralSection}
+                              <td className="px-6 py-4 truncate max-w-[200px]">
+                                {tab === 'contacto' ? s.data.subject : tab === 'afiliacion' ? s.data.locality : tab === 'fiscales' ? s.data.electoralSection : (s.data.score || s.data.locality)}
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[s.status]}`}>
@@ -339,10 +355,12 @@ export default function SubmissionsPage() {
                   Recibida el {new Date(viewingSubmission.createdAt).toLocaleString('es-AR')}
                 </DialogDescription>
               </DialogHeader>
-              <div className="space-y-4 my-4 divide-y divide-border text-sm">
-                <div className="grid grid-cols-3 gap-2 py-3">
-                  <span className="font-semibold text-muted-foreground col-span-1">Tipo de Formulario:</span>
-                  <span className="col-span-2 font-medium uppercase">{viewingSubmission.type}</span>
+              <div className="space-y-3 my-4 divide-y divide-border text-sm max-h-[60vh] overflow-y-auto pr-1">
+                <div className="grid grid-cols-3 gap-2 py-2">
+                  <span className="font-semibold text-muted-foreground col-span-1">Tipo de Solicitud:</span>
+                  <span className="col-span-2 font-bold uppercase text-primary">
+                    {viewingSubmission.type === 'test_libertario' ? '🦁 Test de Aptitud Libertario' : viewingSubmission.type}
+                  </span>
                 </div>
                 
                 {Object.entries(viewingSubmission.data).map(([key, value]) => {
@@ -352,6 +370,11 @@ export default function SubmissionsPage() {
                     email: 'Correo Electrónico',
                     phone: 'Teléfono / WhatsApp',
                     locality: 'Localidad de residencia',
+                    score: 'Resultado de Afinidad',
+                    pilar_vida: 'Pilar: La Vida',
+                    pilar_libertad: 'Pilar: La Libertad',
+                    pilar_propiedad: 'Pilar: Propiedad Privada',
+                    pilar_estado: 'Pilar: Rol del Estado',
                     address: 'Domicilio Completo',
                     occupation: 'Profesión / Ocupación',
                     subject: 'Asunto de consulta',
@@ -367,9 +390,9 @@ export default function SubmissionsPage() {
                   }
 
                   return (
-                    <div key={key} className="grid grid-cols-3 gap-2 py-3">
+                    <div key={key} className="grid grid-cols-3 gap-2 py-2.5">
                       <span className="font-semibold text-muted-foreground col-span-1">{labels[key] || key}:</span>
-                      <span className="col-span-2 whitespace-pre-wrap">{formattedValue || '-'}</span>
+                      <span className="col-span-2 whitespace-pre-wrap font-medium">{formattedValue || '-'}</span>
                     </div>
                   );
                 })}
@@ -396,6 +419,21 @@ export default function SubmissionsPage() {
                 </div>
                 
                 <div className="flex gap-2 w-full sm:w-auto justify-end">
+                  {viewingSubmission.data.phone && (
+                    <Button 
+                      asChild
+                      size="sm"
+                      className="bg-green-600 hover:bg-green-700 text-white rounded-lg gap-1.5"
+                    >
+                      <a
+                        href={`https://api.whatsapp.com/send?phone=${String(viewingSubmission.data.phone).replace(/[+\s-]/g, '')}&text=${encodeURIComponent(`¡Hola ${viewingSubmission.data.name || ''}! Te contactamos desde el Partido Libertario Misiones.`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Icons.Whatsapp className="w-4 h-4" /> WhatsApp
+                      </a>
+                    </Button>
+                  )}
                   <Button 
                     variant="outline" 
                     className="rounded-lg"

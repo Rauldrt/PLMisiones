@@ -150,18 +150,24 @@ async function sendWhatsappNotification(config: WhatsappConfig, submission: Form
   const formNames = {
     contacto: 'Contacto',
     afiliacion: 'Pre-Afiliación',
-    fiscales: 'Fiscales de Mesa'
+    fiscales: 'Fiscales de Mesa',
+    test_libertario: 'Test de Aptitud Libertaria'
   };
 
   const text = `*Partido Libertario Misiones*\nNueva solicitud de *${formNames[submission.type] || submission.type}*:\n\n` +
     Object.entries(submission.data)
       .map(([key, val]) => {
         const labels: Record<string, string> = {
-          name: 'Nombre',
+          name: 'Nombre y Apellido',
           dni: 'DNI',
           email: 'Email',
-          phone: 'Teléfono',
+          phone: 'Teléfono / WhatsApp',
           locality: 'Localidad',
+          score: 'Resultado del Test',
+          pilar_vida: 'Pilar: La Vida',
+          pilar_libertad: 'Pilar: La Libertad',
+          pilar_propiedad: 'Pilar: Propiedad Privada',
+          pilar_estado: 'Pilar: Rol del Estado',
           address: 'Domicilio',
           occupation: 'Profesión',
           subject: 'Asunto',
@@ -262,7 +268,7 @@ async function sendWhatsappNotification(config: WhatsappConfig, submission: Form
 let localSubmissions: FormSubmission[] = [];
 
 export async function submitFormAction(
-  type: 'contacto' | 'afiliacion' | 'fiscales',
+  type: FormSubmission['type'],
   data: Record<string, any>
 ) {
   const id = crypto.randomUUID();

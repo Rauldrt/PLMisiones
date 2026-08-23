@@ -21,13 +21,15 @@ import { Dialog, DialogContent, DialogTrigger, DialogOverlay } from '@/component
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { clientSanitize } from '@/lib/client-sanitize';
 import { cn } from '@/lib/utils';
+import { ParticipaQuizModal } from './banner/ParticipaQuizModal';
+import { MessageCircle, Sparkles, GraduationCap, Users, Vote, Lightbulb, ArrowRight } from 'lucide-react';
 
 const DEFAULT_FUCHSIA_PILLS: FuchsiaPillConfig[] = [
   {
     id: 'participa',
     label: 'Participá',
-    title: 'Formá parte',
-    description: 'Formá parte de la transformación. Podés afiliarte como miembro oficial, sumarte como fiscal de mesa o participar en las reuniones locales.',
+    title: 'Test de Aptitud Libertario',
+    description: 'Poné a prueba tu visión sobre la Vida, la Libertad y la Propiedad Privada. ¡Sumate al equipo!',
     button1Text: 'Afiliarse',
     button1Link: '/afiliacion',
     button2Text: 'Fiscalizar',
@@ -36,20 +38,21 @@ const DEFAULT_FUCHSIA_PILLS: FuchsiaPillConfig[] = [
   {
     id: 'intereses',
     label: 'Intereses',
-    title: 'Nuestros Intereses',
-    description: 'Trabajamos activamente bajo pilares que representan la libertad, el crecimiento económico y la honestidad en la administración pública.',
+    title: 'Lo que te Ofrecemos',
+    description: 'Sumate a una comunidad activa que defiende las ideas de la libertad en toda la provincia de Misiones.',
     interestItems: [
-      { icon: '🗽', title: 'Libertad Económica', desc: 'Reducción de tasas municipales, simplificación de trámites y desregulación comercial.' },
-      { icon: '🌱', title: 'Desarrollo Local', desc: 'Apoyo a las PyMEs y productores de la provincia para fomentar empleo genuino.' },
-      { icon: '🏛️', title: 'Transparencia', desc: 'Fuerte control de las cuentas públicas, garantizando licitaciones e información transparente.' }
+      { icon: '🎓', title: 'Escuela de Formación', desc: 'Talleres de economía austriaca, debate, liderazgo y políticas públicas.' },
+      { icon: '🦁', title: 'Red de Jóvenes Libertarios', desc: 'Encuentros provinciales, actividades de streaming y proyectos juveniles.' },
+      { icon: '🗳️', title: 'Participación y Fiscalización', desc: 'Protagonismo real defendiendo las ideas y los votos en cada municipio.' },
+      { icon: '💡', title: 'Banco de Proyectos', desc: 'Espacio para proponer ordenanzas de desregulación y baja de tasas locales.' }
     ]
   },
   {
     id: 'comenta',
     label: 'Comentá',
-    title: 'Dejanos tu comentario',
-    description: 'Dejanos tus ideas, dudas o sugerencias. Al completar el cuadro y enviar, se abrirá un chat pre-redactado de WhatsApp para hablar directamente con nuestro equipo de coordinación.',
-    whatsappNumber: '+5493764000000'
+    title: 'Escribinos por WhatsApp',
+    description: 'Escribinos tus ideas, inquietudes o sugerencias. Te contactarás de forma directa con nuestro equipo.',
+    whatsappNumber: '+5493765028907'
   }
 ];
 
@@ -260,16 +263,36 @@ export function Banner({
                     {/* Subtarjeta de Contenido Fuchsia (Se expande elásticamente) */}
                     {activeFuchsiaTab && (
                       <div 
-                        className="w-full md:w-[360px] p-6 rounded-[2.5rem] bg-card/85 dark:bg-zinc-950/75 border border-white/20 dark:border-violet-500/20 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.25),0_15px_30px_-20px_rgba(139,31,164,0.3)] backdrop-blur-md animate-fade-in-up flex flex-col justify-between min-h-[260px] md:min-h-[280px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+                        className={cn(
+                          "w-full p-5 sm:p-6 rounded-[2.5rem] bg-card/90 dark:bg-zinc-950/85 border border-white/20 dark:border-violet-500/20 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.25),0_15px_30px_-20px_rgba(139,31,164,0.3)] backdrop-blur-md animate-fade-in-up flex flex-col justify-between transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+                          activeFuchsiaTab === 'participa' 
+                            ? "md:w-[420px] min-h-[320px] max-h-[560px] overflow-y-auto scrollbar-thin" 
+                            : "md:w-[380px] min-h-[260px] md:min-h-[280px]"
+                        )}
                         style={{ animationDuration: '450ms' }}
                       >
                         <div>
                           {/* Cabecera de la Tarjeta */}
                           <div className="flex justify-between items-center mb-3">
-                            <h3 className="font-headline text-lg font-bold text-primary">
-                              {activeFuchsiaTab === 'participa' && participaPill.title}
-                              {activeFuchsiaTab === 'intereses' && interesesPill.title}
-                              {activeFuchsiaTab === 'comenta' && comentaPill.title}
+                            <h3 className="font-headline text-lg font-bold text-primary flex items-center gap-1.5">
+                              {activeFuchsiaTab === 'participa' && (
+                                <>
+                                  <Sparkles className="w-4 h-4 text-primary" />
+                                  <span>{participaPill.title}</span>
+                                </>
+                              )}
+                              {activeFuchsiaTab === 'intereses' && (
+                                <>
+                                  <GraduationCap className="w-4 h-4 text-primary" />
+                                  <span>{interesesPill.title}</span>
+                                </>
+                              )}
+                              {activeFuchsiaTab === 'comenta' && (
+                                <>
+                                  <MessageCircle className="w-4 h-4 text-primary" />
+                                  <span>{comentaPill.title}</span>
+                                </>
+                              )}
                             </h3>
                             <button 
                               onClick={() => setActiveFuchsiaTab(null)}
@@ -280,65 +303,102 @@ export function Banner({
                             </button>
                           </div>
 
-                          {/* Descripción */}
-                          <p className="text-xs text-foreground/85 leading-relaxed mb-4">
-                            {activeFuchsiaTab === 'participa' && participaPill.description}
-                            {activeFuchsiaTab === 'intereses' && interesesPill.description}
-                            {activeFuchsiaTab === 'comenta' && comentaPill.description}
-                          </p>
+                          {/* Descripción corta si no es el test */}
+                          {activeFuchsiaTab !== 'participa' && (
+                            <p className="text-xs text-foreground/85 leading-relaxed mb-4">
+                              {activeFuchsiaTab === 'intereses' && interesesPill.description}
+                              {activeFuchsiaTab === 'comenta' && comentaPill.description}
+                            </p>
+                          )}
 
                           {/* Contenido Dinámico según la Píldora */}
                           {activeFuchsiaTab === 'participa' && (
-                            <div className="flex flex-col gap-2 mt-2">
-                              {participaPill.button1Text && participaPill.button1Link && (
-                                <Button asChild size="sm" className="w-full rounded-full py-5 text-xs font-semibold animate-shimmer">
-                                  <Link href={participaPill.button1Link}>{participaPill.button1Text}</Link>
-                                </Button>
-                              )}
-                              {participaPill.button2Text && participaPill.button2Link && (
-                                <Button asChild size="sm" variant="outline" className="w-full rounded-full py-5 text-xs font-semibold border-primary/40 hover:bg-primary/5">
-                                  <Link href={participaPill.button2Link}>{participaPill.button2Text}</Link>
-                                </Button>
-                              )}
-                            </div>
+                            <ParticipaQuizModal onClose={() => setActiveFuchsiaTab(null)} />
                           )}
 
                           {activeFuchsiaTab === 'intereses' && (
-                            <div className="space-y-3 mt-2">
+                            <div className="space-y-3">
                               {(interesesPill.interestItems || DEFAULT_FUCHSIA_PILLS[1].interestItems)?.map((item, idx) => (
                                 <div 
                                   key={idx} 
-                                  className="flex gap-2.5 p-2.5 rounded-2xl bg-muted/40 border border-border/10 animate-fade-in-up"
+                                  className="flex gap-2.5 p-2.5 rounded-2xl bg-muted/40 border border-border/10 animate-fade-in-up hover:border-primary/30 transition-colors"
                                   style={{ animationDelay: `${idx * 0.08}s`, animationDuration: '350ms' }}
                                 >
-                                  <span className="text-xl self-start">{item.icon}</span>
+                                  <span className="text-xl self-start shrink-0">{item.icon}</span>
                                   <div>
                                     <h4 className="font-headline text-xs font-bold text-foreground">{item.title}</h4>
-                                    <p className="text-[10px] text-muted-foreground mt-0.5 leading-normal">{item.desc}</p>
+                                    <p className="text-[11px] text-muted-foreground mt-0.5 leading-normal">{item.desc}</p>
                                   </div>
                                 </div>
                               ))}
+
+                              {/* Action buttons */}
+                              <div className="pt-2 flex flex-col gap-2">
+                                <Button
+                                  onClick={() => setActiveFuchsiaTab('participa')}
+                                  size="sm"
+                                  className="w-full rounded-full py-4 text-xs font-bold bg-primary hover:bg-primary/90 text-white gap-1.5 animate-shimmer"
+                                >
+                                  <Sparkles className="w-3.5 h-3.5" />
+                                  <span>¡Hacer el Test de Afinidad Libertario!</span>
+                                </Button>
+
+                                <div className="grid grid-cols-2 gap-2">
+                                  <Button asChild size="sm" variant="outline" className="w-full rounded-full py-4 text-xs font-semibold border-primary/40 hover:bg-primary/5">
+                                    <Link href="/afiliacion">Afiliarme</Link>
+                                  </Button>
+                                  <Button asChild size="sm" variant="outline" className="w-full rounded-full py-4 text-xs font-semibold border-primary/40 hover:bg-primary/5">
+                                    <Link href="/fiscales">Fiscalizar</Link>
+                                  </Button>
+                                </div>
+                              </div>
                             </div>
                           )}
 
                           {activeFuchsiaTab === 'comenta' && (
-                            <div className="space-y-3 mt-2 flex flex-col w-full">
+                            <div className="space-y-3 mt-1 flex flex-col w-full">
+                              {/* Quick tags */}
+                              <div className="space-y-1.5">
+                                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                                  Temas Frecuentes:
+                                </span>
+                                <div className="flex flex-wrap gap-1.5">
+                                  {[
+                                    '💡 Sugerencia para mi localidad',
+                                    '🤝 Quiero participar en el equipo',
+                                    '✍️ Consulta sobre afiliación',
+                                    '❓ Pregunta para los referentes'
+                                  ].map((tag, idx) => (
+                                    <button
+                                      key={idx}
+                                      type="button"
+                                      onClick={() => setCommentText(tag + ': ')}
+                                      className="text-[10px] px-2.5 py-1 rounded-full bg-muted/60 hover:bg-primary/15 hover:text-primary transition-colors text-foreground/80 border border-border/20 font-medium"
+                                    >
+                                      {tag}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+
                               <textarea
-                                className="w-full text-xs p-3 rounded-2xl border border-input/60 bg-muted/30 focus:bg-background focus:ring-1 focus:ring-primary focus:outline-none resize-none min-h-[90px] text-foreground"
-                                placeholder="Escribí tu mensaje acá..."
+                                className="w-full text-xs p-3 rounded-2xl border border-input/60 bg-muted/30 focus:bg-background focus:ring-1 focus:ring-primary focus:outline-none resize-none min-h-[90px] text-foreground placeholder:text-muted-foreground/70"
+                                placeholder="Escribí tu mensaje o propuesta acá..."
                                 value={commentText}
                                 onChange={(e) => setCommentText(e.target.value)}
                               />
+
                               <Button
                                 size="sm"
-                                className="w-full rounded-full py-5 text-xs font-semibold flex items-center justify-center gap-1.5 animate-shimmer"
+                                className="w-full rounded-full py-5 text-xs font-semibold flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white shadow-md shadow-green-600/20"
                                 disabled={!commentText.trim()}
                                 onClick={() => {
-                                  const num = (comentaPill.whatsappNumber || '+5493764000000').replace(/[+\s-]/g, '');
+                                  const num = (comentaPill.whatsappNumber || '+5493765028907').replace(/[+\s-]/g, '');
                                   window.open(`https://api.whatsapp.com/send?phone=${num}&text=${encodeURIComponent(commentText)}`, '_blank');
                                   setCommentText('');
                                 }}
                               >
+                                <Icons.Whatsapp className="w-4 h-4" />
                                 <span>Enviar por WhatsApp</span>
                               </Button>
                             </div>

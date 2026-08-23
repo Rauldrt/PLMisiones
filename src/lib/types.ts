@@ -205,7 +205,7 @@ export interface BannerConfig {
 
 export interface FormSubmission {
   id: string;
-  type: 'contacto' | 'afiliacion' | 'fiscales';
+  type: 'contacto' | 'afiliacion' | 'fiscales' | 'test_libertario';
   data: Record<string, any>;
   status: 'pending' | 'reviewed' | 'approved' | 'rejected';
   createdAt: string;
