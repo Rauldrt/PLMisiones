@@ -192,27 +192,27 @@ export function ParticipaQuizModal({ onClose }: ParticipaQuizModalProps) {
     <div className="w-full text-foreground">
       {/* ----------------- PASO 1: DATOS PERSONALES ----------------- */}
       {step === 'userData' && (
-        <div className="space-y-4 animate-fade-in-up">
-          <div className="text-center space-y-1.5">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
-              <Zap className="w-3.5 h-3.5" />
-              Paso 1 de 2: Queremos Conocerte
+        <div className="space-y-3 animate-fade-in-up">
+          <div className="text-center space-y-1">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider">
+              <Zap className="w-3 h-3" />
+              Queremos Conocerte
             </div>
-            <h3 className="font-headline text-xl font-bold text-foreground">
+            <h3 className="font-headline text-lg font-bold text-foreground">
               ¡Sumate al Movimiento! 🦁
             </h3>
-            <p className="text-xs text-muted-foreground">
-              Completá tus datos básicos para poner a prueba tu visión sobre las ideas de la libertad.
+            <p className="text-[11px] text-muted-foreground leading-tight">
+              Ingresá tus datos para poner a prueba tu visión sobre las ideas de la libertad.
             </p>
           </div>
 
-          <form onSubmit={handleStartQuiz} className="space-y-3 pt-2">
+          <form onSubmit={handleStartQuiz} className="space-y-2.5 pt-1">
             <div className="space-y-1">
-              <Label htmlFor="quiz-name" className="text-xs font-semibold">Nombre y Apellido *</Label>
+              <Label htmlFor="quiz-name" className="text-[11px] font-semibold">Nombre y Apellido *</Label>
               <Input
                 id="quiz-name"
                 placeholder="Ej. Juan Pérez"
-                className="h-10 text-xs rounded-xl bg-background/80 border-input"
+                className="h-9 text-xs rounded-xl bg-background/80 border-input"
                 value={userData.name}
                 onChange={(e) => setUserData({ ...userData, name: e.target.value })}
                 required
@@ -220,11 +220,11 @@ export function ParticipaQuizModal({ onClose }: ParticipaQuizModalProps) {
             </div>
 
             <div className="space-y-1">
-              <Label htmlFor="quiz-locality" className="text-xs font-semibold">Localidad / Municipio de Misiones *</Label>
+              <Label htmlFor="quiz-locality" className="text-[11px] font-semibold">Localidad / Municipio *</Label>
               <Input
                 id="quiz-locality"
                 placeholder="Ej. Posadas, Oberá, Eldorado, etc."
-                className="h-10 text-xs rounded-xl bg-background/80 border-input"
+                className="h-9 text-xs rounded-xl bg-background/80 border-input"
                 value={userData.locality}
                 onChange={(e) => setUserData({ ...userData, locality: e.target.value })}
                 required
@@ -232,12 +232,12 @@ export function ParticipaQuizModal({ onClose }: ParticipaQuizModalProps) {
             </div>
 
             <div className="space-y-1">
-              <Label htmlFor="quiz-phone" className="text-xs font-semibold">Teléfono / WhatsApp *</Label>
+              <Label htmlFor="quiz-phone" className="text-[11px] font-semibold">Teléfono / WhatsApp *</Label>
               <Input
                 id="quiz-phone"
                 type="tel"
                 placeholder="Ej. +54 9 376 1234567"
-                className="h-10 text-xs rounded-xl bg-background/80 border-input"
+                className="h-9 text-xs rounded-xl bg-background/80 border-input"
                 value={userData.phone}
                 onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
                 required
@@ -246,10 +246,10 @@ export function ParticipaQuizModal({ onClose }: ParticipaQuizModalProps) {
 
             <Button
               type="submit"
-              className="w-full h-11 rounded-full text-xs font-bold bg-primary hover:bg-primary/90 text-white shadow-md shadow-primary/25 mt-2 gap-2"
+              className="w-full h-10 rounded-full text-xs font-bold bg-primary hover:bg-primary/90 text-white shadow-md shadow-primary/25 mt-1 gap-2"
             >
               <span>¡Comenzar el Test Libertario!</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           </form>
         </div>
@@ -257,17 +257,17 @@ export function ParticipaQuizModal({ onClose }: ParticipaQuizModalProps) {
 
       {/* ----------------- PASO 2: PREGUNTAS DEL TEST ----------------- */}
       {step === 'quiz' && (
-        <div className="space-y-4 animate-fade-in-up">
+        <div className="space-y-3 animate-fade-in-up">
           {/* Barra de progreso */}
-          <div className="space-y-1.5">
-            <div className="flex justify-between items-center text-[11px] font-semibold text-muted-foreground">
-              <span className="flex items-center gap-1.5 text-primary">
+          <div className="space-y-1">
+            <div className="flex justify-between items-center text-[10px] font-semibold text-muted-foreground">
+              <span className="flex items-center gap-1.5 text-primary font-bold">
                 <span>{QUIZ_QUESTIONS[currentQuestionIdx].pillarIcon}</span>
                 <span>{QUIZ_QUESTIONS[currentQuestionIdx].pillarLabel}</span>
               </span>
               <span>Pregunta {currentQuestionIdx + 1} de {QUIZ_QUESTIONS.length}</span>
             </div>
-            <div className="w-full h-2 rounded-full bg-muted/60 overflow-hidden">
+            <div className="w-full h-1.5 rounded-full bg-muted/60 overflow-hidden">
               <div 
                 className="h-full bg-gradient-to-r from-primary via-purple-500 to-accent transition-all duration-300 rounded-full"
                 style={{ width: `${((currentQuestionIdx + 1) / QUIZ_QUESTIONS.length) * 100}%` }}
@@ -276,25 +276,25 @@ export function ParticipaQuizModal({ onClose }: ParticipaQuizModalProps) {
           </div>
 
           {/* Pregunta */}
-          <div className="py-2">
-            <h4 className="font-headline text-sm sm:text-base font-bold text-foreground leading-snug">
+          <div className="py-1">
+            <h4 className="font-headline text-xs sm:text-sm font-bold text-foreground leading-snug">
               {QUIZ_QUESTIONS[currentQuestionIdx].question}
             </h4>
           </div>
 
           {/* Opciones */}
-          <div className="space-y-2.5">
+          <div className="space-y-2">
             {QUIZ_QUESTIONS[currentQuestionIdx].options.map((option, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => handleSelectOption(option)}
-                className="w-full text-left p-3.5 rounded-2xl border border-primary/20 bg-background/80 hover:bg-primary/10 hover:border-primary/60 transition-all duration-200 group flex items-start gap-3 active:scale-[0.98] shadow-sm"
+                className="w-full text-left p-2.5 sm:p-3 rounded-xl border border-primary/20 bg-background/80 hover:bg-primary/10 hover:border-primary/60 transition-all duration-200 group flex items-start gap-2.5 active:scale-[0.98] shadow-sm"
               >
-                <span className="w-6 h-6 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                <span className="w-5 h-5 rounded-full bg-primary/10 text-primary font-bold text-[11px] flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
                   {option.label}
                 </span>
-                <span className="text-xs text-foreground/90 font-medium leading-relaxed">
+                <span className="text-[11px] sm:text-xs text-foreground/90 font-medium leading-relaxed">
                   {option.text}
                 </span>
               </button>
@@ -302,8 +302,8 @@ export function ParticipaQuizModal({ onClose }: ParticipaQuizModalProps) {
           </div>
 
           {isPending && (
-            <div className="text-center py-2 text-xs text-muted-foreground flex items-center justify-center gap-2">
-              <span className="w-3.5 h-3.5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            <div className="text-center py-1 text-[11px] text-muted-foreground flex items-center justify-center gap-2">
+              <span className="w-3 h-3 border-2 border-primary border-t-transparent rounded-full animate-spin" />
               <span>Calculando afinidad...</span>
             </div>
           )}
@@ -312,29 +312,29 @@ export function ParticipaQuizModal({ onClose }: ParticipaQuizModalProps) {
 
       {/* ----------------- PASO 3: RESULTADOS ----------------- */}
       {step === 'result' && (
-        <div className="space-y-4 text-center animate-fade-in-up py-1">
-          <div className="inline-flex p-3 rounded-full bg-gradient-to-tr from-primary/20 via-purple-500/20 to-yellow-500/20 text-primary mb-1 shadow-inner">
-            <Award className="w-10 h-10 text-primary animate-bounce" />
+        <div className="space-y-3 text-center animate-fade-in-up py-0.5">
+          <div className="inline-flex p-2.5 rounded-full bg-gradient-to-tr from-primary/20 via-purple-500/20 to-yellow-500/20 text-primary shadow-inner">
+            <Award className="w-8 h-8 text-primary animate-bounce" />
           </div>
 
-          <div className="space-y-1">
-            <div className="text-2xl font-black font-headline text-transparent bg-clip-text bg-gradient-to-r from-primary via-purple-600 to-accent">
+          <div className="space-y-0.5">
+            <div className="text-xl font-black font-headline text-transparent bg-clip-text bg-gradient-to-r from-primary via-purple-600 to-accent">
               {finalScore >= 75 ? '¡100% LIBERTARIO! 🦁' : '¡ESPÍRITU LIBRE! ⚡'}
             </div>
-            <p className="text-xs font-semibold text-foreground/90">
+            <p className="text-[11px] font-semibold text-foreground/90 leading-tight">
               {userData.name}, compartís plenamente los principios de la Vida, la Libertad y la Propiedad Privada.
             </p>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/20 text-xs text-muted-foreground leading-relaxed text-left">
+          <div className="p-2.5 rounded-xl bg-muted/40 border border-border/20 text-[11px] text-muted-foreground leading-relaxed text-left">
             🎯 <strong className="text-foreground">Tu diagnóstico:</strong> Creés en el mérito, la libre competencia y en un Estado que no asfixie a los que producen. ¡Misiones necesita jóvenes con tus convicciones!
           </div>
 
           {/* Acciones para el usuario */}
-          <div className="space-y-2 pt-1">
+          <div className="space-y-2 pt-0.5">
             <Button
               asChild
-              className="w-full h-11 rounded-full text-xs font-bold bg-green-600 hover:bg-green-700 text-white gap-2 shadow-md shadow-green-600/20"
+              className="w-full h-10 rounded-full text-xs font-bold bg-green-600 hover:bg-green-700 text-white gap-2 shadow-md shadow-green-600/20"
             >
               <Link 
                 href={`https://api.whatsapp.com/send?phone=5493765028907&text=${encodeURIComponent(`¡Hola! Hice el Test Libertario en la web (Afinidad: ${finalScore}%) y quiero sumarme a las actividades de los jóvenes en ${userData.locality}. Mi nombre es ${userData.name}.`)}`}
@@ -350,7 +350,7 @@ export function ParticipaQuizModal({ onClose }: ParticipaQuizModalProps) {
               <Button
                 asChild
                 variant="outline"
-                className="h-10 rounded-full text-xs font-semibold border-primary/40 text-primary hover:bg-primary/5"
+                className="h-9 rounded-full text-xs font-semibold border-primary/40 text-primary hover:bg-primary/5"
               >
                 <Link href="/afiliacion">
                   <UserCheck className="w-3.5 h-3.5 mr-1" />
@@ -364,10 +364,10 @@ export function ParticipaQuizModal({ onClose }: ParticipaQuizModalProps) {
                   setStep('quiz');
                   setCurrentQuestionIdx(0);
                 }}
-                className="h-10 rounded-full text-xs font-semibold text-muted-foreground hover:text-foreground"
+                className="h-9 rounded-full text-xs font-semibold text-muted-foreground hover:text-foreground"
               >
                 <RotateCcw className="w-3.5 h-3.5 mr-1" />
-                <span>Repetir Test</span>
+                <span>Repetir</span>
               </Button>
             </div>
           </div>

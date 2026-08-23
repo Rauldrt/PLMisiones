@@ -233,7 +233,7 @@ export function Banner({
                   {/* Contenedor Acoplador con Transición de Resorte */}
                   <div className="flex flex-col md:flex-row items-center justify-center gap-6 w-full max-w-4xl min-h-[340px] md:min-h-[400px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
                     
-                    {/* Tarjeta de Foto Redondeada (Se encoge elásticamente si hay panel abierto) */}
+                    {/* Tarjeta de Foto Redondeada (En móvil se oculta si hay panel abierto para que el panel suba y tome el protagonismo completo) */}
                     <div 
                       className={cn(
                         "relative transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] rounded-[2.5rem] overflow-hidden flex-shrink-0",
@@ -241,7 +241,7 @@ export function Banner({
                           ? "bg-aurora-borealis border border-white/20 shadow-[0_0_30px_rgba(6,182,212,0.25),0_0_60px_rgba(217,70,239,0.15)]"
                           : "bg-black/40 border border-white/10 backdrop-blur-sm shadow-2xl",
                         activeFuchsiaTab 
-                          ? "w-[220px] h-[220px] sm:w-[260px] sm:h-[260px] md:w-[280px] md:h-[280px]" 
+                          ? "hidden md:block md:w-[280px] md:h-[280px]" 
                           : "w-full aspect-square max-w-[340px] sm:max-w-[400px]"
                       )}
                     >
@@ -260,14 +260,14 @@ export function Banner({
                       )}
                     </div>
 
-                    {/* Subtarjeta de Contenido Fuchsia (Se expande elásticamente) */}
+                    {/* Subtarjeta de Contenido Fuchsia (Se expande con protagonismo completo y sin scrollbar) */}
                     {activeFuchsiaTab && (
                       <div 
                         className={cn(
-                          "w-full p-5 sm:p-6 rounded-[2.5rem] bg-card/90 dark:bg-zinc-950/85 border border-white/20 dark:border-violet-500/20 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.25),0_15px_30px_-20px_rgba(139,31,164,0.3)] backdrop-blur-md animate-fade-in-up flex flex-col justify-between transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+                          "w-full p-4 sm:p-6 rounded-[2.5rem] bg-card/90 dark:bg-zinc-950/85 border border-white/20 dark:border-violet-500/20 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.25),0_15px_30px_-20px_rgba(139,31,164,0.3)] backdrop-blur-md animate-fade-in-up flex flex-col justify-between transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
                           activeFuchsiaTab === 'participa' 
-                            ? "md:w-[420px] min-h-[320px] max-h-[560px] overflow-y-auto scrollbar-thin" 
-                            : "md:w-[380px] min-h-[260px] md:min-h-[280px]"
+                            ? "max-w-[420px] min-h-[300px]" 
+                            : "max-w-[390px] min-h-[260px] md:min-h-[280px]"
                         )}
                         style={{ animationDuration: '450ms' }}
                       >
