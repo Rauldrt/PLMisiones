@@ -324,8 +324,8 @@ export function Header({ socialLinks }: HeaderProps) {
           className={cn(
             "fixed z-50 transition-all duration-300 ease-in-out overflow-hidden shadow-2xl border",
             isMobileMenuOpen 
-              ? "bottom-6 right-6 w-[calc(100vw-2rem)] max-w-xs rounded-[2.5rem] bg-card border-border p-5 flex flex-col max-h-[80vh]" 
-              : "bottom-6 right-6 w-16 h-16 rounded-full bg-primary text-primary-foreground border-transparent flex items-center justify-center cursor-pointer hover:scale-105"
+              ? "bottom-6 right-6 w-[calc(100vw-2rem)] max-w-xs rounded-[2.5rem] bg-card border-border p-5 flex flex-col max-h-[80vh] dark:border-orange-500/50 dark:shadow-[0_0_30px_rgba(249,115,22,0.35),0_0_60px_rgba(249,115,22,0.18)] dark:ring-1 dark:ring-orange-500/30" 
+              : "bottom-6 right-6 w-16 h-16 rounded-full bg-primary text-primary-foreground border-transparent flex items-center justify-center cursor-pointer hover:scale-105 shadow-lg"
           )}
           onClick={() => {
             if (!isMobileMenuOpen) {

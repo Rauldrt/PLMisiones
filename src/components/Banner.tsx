@@ -384,7 +384,7 @@ export function Banner({
                               </div>
 
                               <textarea
-                                className="w-full text-xs p-3 rounded-2xl border border-input/60 bg-muted/30 focus:bg-background focus:ring-1 focus:ring-primary focus:outline-none resize-none min-h-[90px] text-foreground placeholder:text-muted-foreground/70"
+                                className="w-full text-xs p-3 rounded-2xl border border-input bg-muted/30 focus:bg-background focus:border-primary focus:ring-2 focus:ring-primary/25 focus:outline-none resize-none min-h-[90px] text-foreground placeholder:text-muted-foreground/70 transition-all shadow-sm"
                                 placeholder="Escribí tu mensaje o propuesta acá..."
                                 value={commentText}
                                 onChange={(e) => setCommentText(e.target.value)}
