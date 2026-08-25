@@ -2,9 +2,6 @@
 
 import { useEffect } from 'react';
 
-// This is a client component that will handle the Instagram embed script processing.
-// It can be included in any page that might display Instagram embeds.
-
 declare global {
   interface Window {
     instgrm?: {
@@ -18,35 +15,97 @@ declare global {
 export function InstagramEmbedProcessor() {
   useEffect(() => {
     const processInstagram = () => {
+      // Fix any blockquotes that might have lost their data-instgrm-permalink attribute
+      const blockquotes = document.querySelectorAll<HTMLElement>('blockquote.instagram-media');
+      blockquotes.forEach((bq) => {
+        if (!bq.getAttribute('data-instgrm-permalink')) {
+          const anchor = bq.querySelector<HTMLAnchorElement>('a[href*="instagram.com/"]');
+          if (anchor && anchor.href) {
+            bq.setAttribute('data-instgrm-permalink', anchor.href);
+          }
+        }
+        if (!bq.getAttribute('data-instgrm-version')) {
+          bq.setAttribute('data-instgrm-version', '14');
+        }
+      });
+
       if (window.instgrm) {
-        window.instgrm.Embeds.process();
+        try {
+          window.instgrm.Embeds.process();
+        } catch (e) {
+          console.warn('Instagram Embeds processing error:', e);
+        }
       }
     };
 
-    // Check if the Instagram embed script is already on the page.
-    const script = document.querySelector('script[src="//www.instagram.com/embed.js"]');
-    
-    // The script might already be loaded from the HTML content, or we might need to load it.
-    if (window.instgrm) {
+    const loadScript = () => {
+      if (window.instgrm) {
         processInstagram();
-    } else if (!script) {
-      const newScript = document.createElement('script');
-      newScript.async = true;
-      newScript.src = '//www.instagram.com/embed.js';
-      newScript.onload = processInstagram;
-      document.body.appendChild(newScript);
-    }
-    
-    // Re-run processing when navigation occurs, in case new embeds are loaded.
+        return;
+      }
+
+      const existingScript = document.querySelector('script[src*="instagram.com/embed.js"]') as HTMLScriptElement;
+      if (!existingScript) {
+        const script = document.createElement('script');
+        script.async = true;
+        script.defer = true;
+        script.src = 'https://www.instagram.com/embed.js';
+        script.onload = () => {
+          setTimeout(processInstagram, 100);
+        };
+        document.body.appendChild(script);
+      } else {
+        existingScript.addEventListener('load', () => {
+          setTimeout(processInstagram, 100);
+        });
+      }
+    };
+
+    loadScript();
+
+    // Observe DOM additions (e.g. Opening dialogs, popovers, navigation)
+    const observer = new MutationObserver((mutations) => {
+      let shouldProcess = false;
+      for (const mutation of mutations) {
+        if (mutation.addedNodes.length > 0) {
+          for (const node of Array.from(mutation.addedNodes)) {
+            if (node instanceof HTMLElement) {
+              if (
+                node.classList?.contains('instagram-media') ||
+                node.querySelector?.('.instagram-media') ||
+                node.getAttribute?.('role') === 'dialog'
+              ) {
+                shouldProcess = true;
+                break;
+              }
+            }
+          }
+        }
+        if (shouldProcess) break;
+      }
+
+      if (shouldProcess) {
+        loadScript();
+        setTimeout(processInstagram, 200);
+      }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Fallback interval to catch any unprocessed media
     const interval = setInterval(() => {
-      if (document.querySelector('.instagram-media:not(.instagram-media-rendered)')) {
+      const unprocessed = document.querySelectorAll('.instagram-media:not(.instagram-media-rendered)');
+      if (unprocessed.length > 0) {
         processInstagram();
       }
-    }, 1000);
+    }, 1500);
 
-    return () => clearInterval(interval);
-
+    return () => {
+      observer.disconnect();
+      clearInterval(interval);
+    };
   }, []);
 
-  return null; // This component does not render anything itself.
+  return null;
 }
+

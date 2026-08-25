@@ -1,6 +1,7 @@
 import { Toaster } from '@/components/ui/toaster';
 import { SiteLayout } from '@/components/SiteLayout';
 import { AuthProvider } from '@/context/AuthContext';
+import { InstagramEmbedProcessor } from '@/components/InstagramEmbedProcessor';
 import './globals.css';
 import type { Metadata } from 'next'
 import { getSocialLinksAction, getGoogleFormAction, getFooterContentAction, getBannerConfigAction } from '@/actions/data';
@@ -89,6 +90,7 @@ export default async function RootLayout({
               {children}
             </SiteLayout>
           </AuthProvider>
+          <InstagramEmbedProcessor />
           <Toaster />
       </body>
     </html>
