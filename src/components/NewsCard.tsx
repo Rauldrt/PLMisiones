@@ -53,7 +53,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
     }, [article.content]);
 
     return (
-        <Card className="flex w-full flex-col overflow-hidden bg-card/90 border border-white/80 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12),0_10px_30px_-10px_rgba(139,31,164,0.15)] hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.22),0_15px_35px_-5px_rgba(139,31,164,0.3)] rounded-[1.8rem] sm:rounded-[2.5rem] backdrop-blur-sm transition-all duration-300 hover:-translate-y-2.5 h-[42vh] sm:h-auto sm:min-h-[460px]">
+        <Card className="flex w-full flex-col overflow-hidden bg-card/90 border border-white/80 dark:border-white/10 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12),0_10px_30px_-10px_rgba(139,31,164,0.15)] hover:border-orange-500/40 dark:hover:border-orange-500/50 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.22),0_0_25px_rgba(249,115,22,0.3),0_15px_35px_-5px_rgba(139,31,164,0.3)] rounded-[1.8rem] sm:rounded-[2.5rem] backdrop-blur-sm transition-all duration-300 hover:-translate-y-2.5 h-[42vh] sm:h-auto sm:min-h-[460px]">
             <CardHeader className="p-0">
                 <div className="relative w-full bg-muted overflow-hidden">
                     {(() => {
