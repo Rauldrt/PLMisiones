@@ -252,3 +252,88 @@
     0 0 18px 1px rgba(192, 38, 211, 0.65),
     0 0 22px 1px rgba(6, 182, 212, 0.55);
 }
+
+/* ====================================================
+   Windows 11 Fluent Design / Acrylic 3D Utilities
+   ==================================================== */
+.fluent-card-3d {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(246, 246, 252, 0.88) 100%);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 
+    0 24px 48px -12px rgba(0, 0, 0, 0.15),
+    0 8px 18px -6px rgba(139, 31, 164, 0.16),
+    inset 0 1px 2px rgba(255, 255, 255, 1),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.dark .fluent-card-3d {
+  background: linear-gradient(135deg, rgba(24, 18, 34, 0.90) 0%, rgba(13, 9, 20, 0.94) 100%);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 
+    0 28px 56px -14px rgba(0, 0, 0, 0.6),
+    0 10px 24px -6px rgba(168, 85, 247, 0.22),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.22),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 3D Elevated Icon Badge */
+.fluent-icon-badge-3d {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(238, 238, 246, 0.85));
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    0 4px 10px rgba(0, 0, 0, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 1),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.06);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dark .fluent-icon-badge-3d {
+  background: linear-gradient(145deg, rgba(46, 34, 62, 0.95), rgba(24, 18, 36, 0.95));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 
+    0 6px 14px rgba(0, 0, 0, 0.45),
+    0 2px 5px rgba(168, 85, 247, 0.18),
+    inset 0 1px 1px rgba(255, 255, 255, 0.28),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.55);
+}
+
+/* Fluent 3D Interactive Tile Item */
+.fluent-tile-3d {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.7), rgba(248, 248, 254, 0.5));
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 
+    0 3px 10px rgba(0, 0, 0, 0.04),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.9);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.fluent-tile-3d:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 22px -4px rgba(139, 31, 164, 0.18),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 1.5px rgba(255, 255, 255, 1);
+  border-color: rgba(139, 31, 164, 0.35);
+}
+
+.dark .fluent-tile-3d {
+  background: linear-gradient(145deg, rgba(38, 28, 52, 0.65), rgba(20, 14, 30, 0.5));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.14);
+}
+
+.dark .fluent-tile-3d:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 10px 26px -4px rgba(168, 85, 247, 0.28),
+    0 4px 10px rgba(0, 0, 0, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.22);
+  border-color: rgba(168, 85, 247, 0.45);
+}
