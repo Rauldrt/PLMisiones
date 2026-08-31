@@ -46,9 +46,9 @@ export default function ManageBannerBackgroundPage() {
     });
   };
 
-  const handleFieldChange = (index: number, field: keyof BannerBackgroundSlide, value: string | number | undefined) => {
+  const handleFieldChange = <K extends keyof BannerBackgroundSlide>(index: number, field: K, value: BannerBackgroundSlide[K]) => {
     const newSlides = [...slides];
-    (newSlides[index] as any)[field] = value;
+    newSlides[index] = { ...newSlides[index], [field]: value };
     setSlides(newSlides);
   };
 
@@ -148,7 +148,7 @@ export default function ManageBannerBackgroundPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-1">
                                     <Label>Tipo de Animación</Label>
-                                    <Select value={slide.animationType || 'zoom-in'} onValueChange={(v) => handleFieldChange(index, 'animationType', v)}>
+                                    <Select value={slide.animationType || 'zoom-in'} onValueChange={(v) => handleFieldChange(index, 'animationType', v as BannerBackgroundSlide['animationType'])}>
                                         <SelectTrigger><SelectValue /></SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="zoom-in">Zoom In</SelectItem>
