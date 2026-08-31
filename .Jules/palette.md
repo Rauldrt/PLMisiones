@@ -13,3 +13,6 @@
 ## 2024-05-17 - Custom State and ARIA expanded
 **Learning:** While Radix UI `PopoverTrigger` manages `aria-expanded` internally, if the component relies on an external, controlled React state (like `isMobileMenuOpen`) and visually changes its internal icons based on that state, the custom state variable's `aria-expanded` shouldn't be blindly removed without fully verifying it's actually completely redundant or ensuring that the trigger element retains a proper accessible name (e.g. `aria-label` or `.sr-only`). The button in `Header.tsx` did not have an `aria-label` and relied on a visual icon change.
 **Action:** Do not remove `aria-expanded` from trigger elements that rely on external state variables to manage visual icons without verifying. Always ensure icon-only buttons have an `aria-label` or `.sr-only` text.
+## 2026-06-10 - PopoverTrigger Accessible Names
+**Learning:** Radix UI `PopoverTrigger` manages state attributes (`aria-expanded`, `aria-controls`) but still requires an accessible name (via `aria-label` or `span.sr-only`) if it contains only icons or custom visual elements.
+**Action:** Ensure icon-only or purely visual triggers explicitly provide an accessible name for screen readers.
