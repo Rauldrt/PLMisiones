@@ -13,3 +13,7 @@
 ## 2024-11-20 - Use useRef for scroll-based animations (parallax)
 **Learning:** Using `useState` inside a `requestAnimationFrame` loop attached to a `scroll` event listener causes continuous React re-renders and layout thrashing. Even though the frame loop throttles the state updates, the component and all its children still re-render on every frame where scrolling occurs, creating significant main thread blocking and jank.
 **Action:** When implementing scroll-based parallax or animations, store the DOM elements in a `useRef` and directly manipulate their `style.transform` properties inside the `requestAnimationFrame` callback. This completely bypasses the React render cycle, resulting in significantly smoother 60FPS scroll performance with less memory allocation. Ensure you still capture the animation frame ID and `cancelAnimationFrame` in the cleanup function.
+
+## 2024-02-21 - Optimize ISO 8601 Date Sorting
+**Learning:** Instantiating `new Date()` inside an array `sort` callback creates excessive memory allocation and garbage collection overhead because the comparator is called multiple times ($O(N \log N)$) during the sort. Since ISO 8601 strings inherently sort chronologically when evaluated lexicographically, full date parsing is an unnecessary anti-pattern for pure sorting operations.
+**Action:** Always use raw string comparison operators (e.g., `b.date > a.date ? 1 : b.date < a.date ? -1 : 0`) when sorting arrays of ISO date strings to eliminate object instantiation overhead and reduce the constant factor overhead of the sort algorithm.
