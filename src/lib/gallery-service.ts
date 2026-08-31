@@ -9,7 +9,7 @@ import { getStorage } from 'firebase-admin/storage';
 
 // Note: This module should only be imported and used in server-side components or actions.
 
-const MEDIA_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.mp4', '.webm', '.mp3', '.wav', '.ogg'];
+const MEDIA_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.mp4', '.webm', '.mp3', '.wav', '.ogg'];
 
 function initFirebaseAdmin() {
   if (typeof process === 'undefined' || !process.env.FIREBASE_SERVICE_ACCOUNT) {
