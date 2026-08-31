@@ -13,7 +13,7 @@ export async function getPublicImagesAction() {
     return getPublicImages();
 }
 
-const ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.mp4', '.webm', '.mp3', '.wav', '.ogg'];
+const ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.mp4', '.webm', '.mp3', '.wav', '.ogg'];
 
 function initFirebaseAdmin() {
   if (typeof process === 'undefined' || !process.env.FIREBASE_SERVICE_ACCOUNT) {
