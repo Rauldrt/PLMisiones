@@ -2,8 +2,8 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { Icons, IconName, getIcon } from '@/components/icons';
-import { Card, CardContent } from '@/components/ui/card';
+import { Icons, getIcon } from '@/components/icons';
+import { Card } from '@/components/ui/card';
 import Image from 'next/image';
 import { Button } from './ui/button';
 import type { SocialLink, FooterContent, GoogleForm } from '@/lib/types';
