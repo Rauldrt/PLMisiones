@@ -4,7 +4,7 @@
     "title": "Noticias y Novedades",
     "description": "Mantenete informado sobre nuestras actividades, comunicados y propuestas.",
     "icon": "News",
-    "imageUrl": "/IMG-20240221-WA0261.jpg",
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/partido-libertario-mns.firebasestorage.app/o/media%2FIMG-20240221-WA0261.jpg?alt=media&token=1052e7a8-1785-4afe-a638-386ac0cf4fcc",
     "imageHint": "political debate"
   },
   {
@@ -12,7 +12,7 @@
     "title": "Nuestros Referentes",
     "description": "Conocé a las personas que lideran el cambio en Misiones.",
     "icon": "Team",
-    "imageUrl": "/IMG-20241017-WA0305.jpg",
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/partido-libertario-mns.firebasestorage.app/o/media%2FIMG-20241017-WA0305.jpg?alt=media&token=ef3d34f8-e0fa-4bd8-a5b8-2cff93b574c7",
     "imageHint": "community leaders"
   },
   {
@@ -20,7 +20,7 @@
     "title": "Sumate al Cambio",
     "description": "Tu participación es clave para construir la Misiones que queremos. Afiliate ahora.",
     "icon": "Join",
-    "imageUrl": "/IMG-20230903-WA0054.jpg",
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/partido-libertario-mns.firebasestorage.app/o/media%2FIMG-20230903-WA0054.jpg?alt=media&token=5542457c-4877-42bd-9dd4-6528822e0786",
     "imageHint": "people joining"
   },
   {
@@ -28,7 +28,7 @@
     "title": "Inscripción de Fiscales",
     "description": "Cuidemos los votos. Anotate para ser fiscal en las próximas elecciones y defendé la libertad.",
     "icon": "Forms",
-    "imageUrl": "/20231022_123119_HDR.jpg",
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/partido-libertario-mns.firebasestorage.app/o/media%2F20231022_123119_HDR.jpg?alt=media&token=db55e332-ef12-49fa-8899-dd07e240f249",
     "imageHint": "voting ballot"
   }
 ]

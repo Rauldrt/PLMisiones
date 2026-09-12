@@ -4,5 +4,9 @@
       "database": "pl-misiones",
       "rules": "firestore.rules"
     }
-  ]
+  ],
+  "storage": {
+    "rules": "storage.rules"
+  }
 }
+

@@ -3,7 +3,7 @@
     "id": "1",
     "name": "Ninfa Alvarenga",
     "role": "Presidente",
-    "imageUrl": "/WhatsApp Image 2025-08-26 at 12.48.35 PM.jpeg",
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/partido-libertario-mns.firebasestorage.app/o/media%2FWhatsApp_Image_2025-08-26_at_12.48.35_PM.jpeg?alt=media&token=0a2352cb-f51f-4fb6-b572-609351da8686",
     "imageHint": "man portrait",
     "description": ""
   },
@@ -11,7 +11,7 @@
     "id": "2",
     "name": "Julio Peralta",
     "role": "Vicepresidente",
-    "imageUrl": "/WhatsApp Image 2025-08-26 at 12.48.36 PM.jpeg",
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/partido-libertario-mns.firebasestorage.app/o/media%2FWhatsApp_Image_2025-08-26_at_12.48.36_PM.jpeg?alt=media&token=563a74ed-a5d3-4785-93a6-cc6a08b3d23f",
     "imageHint": "woman portrait",
     "description": ""
   },
@@ -19,7 +19,7 @@
     "id": "3",
     "name": "Dora Schmiedel",
     "role": "Secretario General",
-    "imageUrl": "/IMG-20240811-WA0287.jpg",
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/partido-libertario-mns.firebasestorage.app/o/media%2FIMG-20240811-WA0287.jpg?alt=media&token=b2b8c3a6-d0ba-4b82-a91a-ba34e2be5fe4",
     "imageHint": "person portrait",
     "description": ""
   }

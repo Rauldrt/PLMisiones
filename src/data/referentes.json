@@ -3,7 +3,7 @@
     "id": "1",
     "name": "Miguel Duarte",
     "role": "Referente de Wanda",
-    "imageUrl": "/IMG-20230930-WA0024.jpeg",
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/partido-libertario-mns.firebasestorage.app/o/media%2FIMG-20230930-WA0024.jpeg?alt=media&token=33fcbd4f-908d-4e2b-b84b-81330d48af6e",
     "imageHint": "man portrait",
     "bio": "",
     "locality": "Wanda"
@@ -12,7 +12,7 @@
     "id": "2",
     "name": "Raul Duarte",
     "role": "Referente",
-    "imageUrl": "/IMG-20231126-WA0061.jpg",
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/partido-libertario-mns.firebasestorage.app/o/media%2FIMG-20231126-WA0061.jpg?alt=media&token=ca7d805c-7cb9-4ecb-a5b7-d488e4722b3f",
     "imageHint": "woman portrait",
     "bio": "",
     "locality": "Wanda"

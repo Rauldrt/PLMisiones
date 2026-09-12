@@ -47,33 +47,14 @@ async function getFilesRecursively(dir: string): Promise<string[]> {
 }
 
 /**
- * Scans the `public` directory for image files and returns their public URLs.
- * @returns A promise that resolves to an array of public image URLs (e.g., '/images/my-image.png').
+ * Scans the `public` directory and Firebase Storage for media files.
+ * @returns A promise that resolves to an array of public media URLs.
  */
 export async function getPublicImages(): Promise<string[]> {
     const mediaUrls: string[] = [];
+    const bucketName = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || 'partido-libertario-mns.firebasestorage.app';
 
-    // 1. Intentar cargar archivos locales del directorio /public
-    try {
-        const publicDir = path.join(process.cwd(), 'public');
-        const allFiles = await getFilesRecursively(publicDir);
-
-        const localUrls = allFiles
-            .filter(file => MEDIA_EXTENSIONS.includes(path.extname(file).toLowerCase()))
-            .map(file => path.relative(publicDir, file))
-            .map(file => `/${file.replace(/\\/g, '/')}`);
-
-        mediaUrls.push(...localUrls);
-    } catch (error) {
-        // En producción serverless local public folder podría no existir, no es error crítico
-        if (error instanceof Error && (error as NodeJS.ErrnoException).code === 'ENOENT') {
-            console.warn("La carpeta local 'public' no existe. No se cargarán archivos locales.");
-        } else {
-            console.error("Error al escanear la carpeta local 'public':", error);
-        }
-    }
-
-    // 2. Intentar cargar archivos de Firebase Storage si está disponible
+    // 1. Intentar cargar archivos de Firebase Storage vía REST API / Admin
     try {
         const bucket = initFirebaseAdmin();
         if (bucket) {
@@ -89,11 +70,52 @@ export async function getPublicImages(): Promise<string[]> {
                 });
 
             mediaUrls.push(...firebaseUrls);
+        } else {
+            // Fallback vía Firebase Storage REST API (público)
+            const response = await fetch(`https://firebasestorage.googleapis.com/v0/b/${bucketName}/o`, {
+                next: { revalidate: 60 }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                if (data.items && Array.isArray(data.items)) {
+                    const restUrls = data.items
+                        .filter((item: any) => {
+                            const ext = '.' + item.name.split('.').pop()?.toLowerCase();
+                            return MEDIA_EXTENSIONS.includes(ext);
+                        })
+                        .map((item: any) => {
+                            const token = item.downloadTokens || '';
+                            return `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(item.name)}?alt=media${token ? `&token=${token}` : ''}`;
+                        });
+                    mediaUrls.push(...restUrls);
+                }
+            }
         }
     } catch (error) {
-        console.error("Error al escanear Firebase Storage:", error);
+        console.error("Error al obtener imágenes de Firebase Storage:", error);
     }
 
-    return mediaUrls;
+    // 2. Cargar archivos locales que permanezcan en /public
+    try {
+        const publicDir = path.join(process.cwd(), 'public');
+        const allFiles = await getFilesRecursively(publicDir);
+
+        const localUrls = allFiles
+            .filter(file => MEDIA_EXTENSIONS.includes(path.extname(file).toLowerCase()))
+            .map(file => path.relative(publicDir, file))
+            .map(file => `/${file.replace(/\\/g, '/')}`);
+
+        mediaUrls.push(...localUrls);
+    } catch (error) {
+        if (error instanceof Error && (error as NodeJS.ErrnoException).code === 'ENOENT') {
+            // Folder not found in serverless
+        } else {
+            console.error("Error al escanear la carpeta local 'public':", error);
+        }
+    }
+
+    // Deduplicate URLs
+    return Array.from(new Set(mediaUrls));
 }
+
 
